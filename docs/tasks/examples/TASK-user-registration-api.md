@@ -2,7 +2,7 @@
 
 **Status:** done  
 **Priority:** P0  
-**Estimate:** 8h  
+**Complexity:** M  
 **Parent Epic:** User Authentication (EPIC-user-auth)  
 **Created:** 2025-02-10  
 **Last updated:** 2025-02-11  

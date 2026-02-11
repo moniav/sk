@@ -41,7 +41,7 @@ Before writing the task, scan the codebase to understand impact:
 1. **Identify affected files**: Use `Glob` and `Grep` to find files related to the feature
 2. **Check existing patterns**: Find similar features already implemented to follow their pattern
 3. **Map dependencies**: What must exist before this task can start?
-4. **Estimate complexity**: Count affected layers (DB, API, service, UI, tests, docs)
+4. **Rate complexity**: Count affected layers (DB, API, service, UI, tests, docs) → assign XS/S/M/L/XL
 
 ## Step 5: Create Task File
 
@@ -59,7 +59,7 @@ Save to `docs/tasks/TASK-kebab-case-title.md` using the template from `docs/temp
 
 ### DEV Section (define subtasks)
 Each subtask must be:
-- **≤ 4 hours** of work
+- **S complexity** (single concern, 1-2 files)
 - **Tagged**: `[DEV]`, `[TEST]`, or `[DOCS]`
 - **Specific**: Exact file paths, function names, what to implement
 - **Ordered**: Dependencies flow top-to-bottom
@@ -102,7 +102,7 @@ Add the new task to `docs/tasks/README.md` in the **Planning** section:
 Show the user:
 - Task ID and filename
 - Acceptance criteria summary
-- Subtask count and estimate
+- Subtask count and complexity rating
 - Dependencies identified
 - Open questions requiring resolution
 
@@ -114,7 +114,7 @@ Before saving:
 - [ ] Read `docs/lifecycle/README.md` and templates first
 - [ ] Objective is one clear sentence
 - [ ] Acceptance criteria are testable (yes/no answer possible)
-- [ ] Every subtask is ≤ 4 hours
+- [ ] Every subtask is S complexity (single concern, 1-2 files)
 - [ ] Subtasks have exact file paths (verified against codebase)
 - [ ] Subtask order respects dependencies
 - [ ] `[TEST]` subtasks include verifying acceptance criteria

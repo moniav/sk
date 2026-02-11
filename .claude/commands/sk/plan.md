@@ -79,7 +79,7 @@ Fill with **exact paths** verified by scanning the codebase:
 ```
 
 ### Subtask Breakdown
-Apply the ≤ 4h rule. For each subtask:
+Apply the S complexity rule. For each subtask:
 1. Tag it: `[DEV]`, `[TEST]`, or `[DOCS]`
 2. Include the exact file path
 3. Describe what to implement (not just "build the thing")
@@ -98,7 +98,7 @@ Run the PLAN exit gate checklist:
 ```markdown
 - [ ] Problem statement is clear (what & why)
 - [ ] Every acceptance criterion is testable (yes/no answer possible)
-- [ ] Every subtask is ≤ 4 hours
+- [ ] Every subtask is S complexity (single concern, 1-2 files)
 - [ ] Every subtask has an exact file path
 - [ ] Subtask order respects dependencies
 - [ ] No open questions remain unresolved
@@ -115,14 +115,14 @@ Run the PLAN exit gate checklist:
 ```markdown
 | Date | Phase | Note |
 |------|-------|------|
-| YYYY-MM-DD | PLAN | Plan complete — N subtasks, ~Xh total estimate |
+| YYYY-MM-DD | PLAN | Plan complete — N subtasks, complexity M |
 ```
 
 ## Step 7: Present to User
 
 Show:
 - Acceptance criteria (final)
-- Subtask list with estimates
+- Subtask list with complexity ratings
 - Key technical decisions made during planning
 - Any risks identified
 

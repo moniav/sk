@@ -10,7 +10,7 @@ Read the full lifecycle guide: `docs/lifecycle/README.md`
 
 ### Starting New Work
 
-1. **Decide scope:** Epic (>2 days) → Task (≤2 days) → Just do it (<4 hours)
+1. **Decide scope:** Epic (L/XL complexity) → Task (M complexity) → Just do it (XS/S complexity)
 2. **Follow the SOP:** `docs/sop/creating-a-task.md`
 3. **Use templates:**
    - Epic: `cp docs/templates/epic.md docs/tasks/EPIC-name.md`
@@ -20,7 +20,7 @@ Read the full lifecycle guide: `docs/lifecycle/README.md`
 ### 🎯 PLAN Phase (do this BEFORE writing code)
 
 1. Write the problem statement and acceptance criteria
-2. Break into subtasks (each ≤ 4 hours, self-contained)
+2. Break into subtasks (each S complexity — single concern, self-contained)
 3. Resolve all open questions
 4. Identify affected files and docs
 
@@ -78,8 +78,8 @@ Update these docs to reflect what changed:
 ### Creating New Docs
 
 Always use templates from `docs/templates/`:
-- New epic (>2 days) → `docs/templates/epic.md`
-- New task (≤2 days) → `docs/templates/task-prd.md`
+- New epic (L/XL complexity) → `docs/templates/epic.md`
+- New task (M complexity) → `docs/templates/task-prd.md`
 - New procedure → `docs/templates/sop-procedure.md`
 - New decision → `docs/templates/adr-decision.md`
 - New flow diagram → `docs/templates/flow-diagram.md`
@@ -92,8 +92,8 @@ Always use templates from `docs/templates/`:
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
 | `/sk:implement` | Full lifecycle: Plan → Dev → Test | Build a feature end-to-end |
-| `/sk:new-task` | Create a new task file | Starting planned work (≤2 days) |
-| `/sk:new-epic` | Create a new epic file | Starting large feature (>2 days) |
+| `/sk:new-task` | Create a new task file | Starting planned work (M complexity) |
+| `/sk:new-epic` | Create a new epic file | Starting large feature (L/XL complexity) |
 | `/sk:plan` | Complete PLAN phase | Break down and prepare a task |
 | `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
 | `/sk:test` | Execute TEST phase | Verify acceptance criteria |

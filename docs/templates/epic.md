@@ -58,7 +58,7 @@ graph TD
 
 ### Task 1: [Task Name]
 
-**Status:** `backlog` | **Estimate:** Xh | **Priority:** P1
+**Status:** `backlog` | **Complexity:** M | **Priority:** P1
 
 <!-- One sentence: What does this task deliver? -->
 
@@ -74,14 +74,14 @@ graph TD
 - [ ] `[TEST]` Verify acceptance criteria
 - [ ] `[DOCS]` Update [which docs]
 
-**Dependencies:** None | Task N must complete first  
+**Dependencies:** None | Task N must complete first
 **Files affected:** `src/path/to/file.ts`, `docs/system/schema.md`
 
 ---
 
 ### Task 2: [Task Name]
 
-**Status:** `backlog` | **Estimate:** Xh | **Priority:** P1
+**Status:** `backlog` | **Complexity:** M | **Priority:** P1
 
 <!-- One sentence: What does this task deliver? -->
 
@@ -97,14 +97,14 @@ graph TD
 - [ ] `[TEST]` Verify acceptance criteria
 - [ ] `[DOCS]` Update [which docs]
 
-**Dependencies:** Task 1 (needs schema)  
+**Dependencies:** Task 1 (needs schema)
 **Files affected:** `src/path/to/file.ts`
 
 ---
 
 ### Task 3: [Task Name]
 
-**Status:** `backlog` | **Estimate:** Xh | **Priority:** P2
+**Status:** `backlog` | **Complexity:** S | **Priority:** P2
 
 **Acceptance Criteria:**
 - [ ] AC 1

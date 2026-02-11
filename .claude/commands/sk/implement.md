@@ -27,9 +27,9 @@ Ask the user:
 - **Priority**: P0-P3
 
 Determine scope:
-- **>2 days** → Create an epic first (`/sk:new-epic`), then implement task by task
-- **≤2 days** → Continue with this command (single task)
-- **<4 hours** → Proceed directly (skip formal task creation, but still follow Plan→Dev→Test mentally)
+- **L/XL complexity** → Create an epic first (`/sk:new-epic`), then implement task by task
+- **M complexity** → Continue with this command (single task)
+- **XS/S complexity** → Proceed directly (skip formal task creation, but still follow Plan→Dev→Test mentally)
 
 ## Step 3: 🎯 PLAN Phase
 
@@ -40,13 +40,13 @@ Determine scope:
 ### Fill Plan
 1. **Scan codebase** — Map affected files, find existing patterns
 2. **Write acceptance criteria** — 3-5 testable conditions
-3. **Break into subtasks** — Each ≤ 4 hours, tagged `[DEV]`/`[TEST]`/`[DOCS]`
+3. **Break into subtasks** — Each S complexity (single concern), tagged `[DEV]`/`[TEST]`/`[DOCS]`
 4. **Resolve all questions** — No unknowns remaining
 
 ### PLAN Exit Gate
 ```markdown
 - [ ] Acceptance criteria are testable
-- [ ] Subtasks are ≤ 4h each with exact file paths
+- [ ] Subtasks are S complexity each (single concern) with exact file paths
 - [ ] No open questions
 - [ ] Approach follows existing codebase patterns
 ```

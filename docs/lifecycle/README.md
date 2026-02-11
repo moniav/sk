@@ -40,7 +40,7 @@ flowchart LR
 | Step | Action | Output |
 |------|--------|--------|
 | **Define** | Write the task with problem statement and goal | Task doc created |
-| **Break Down** | Split into subtasks (each ≤ 4 hours of work) | Subtask list with estimates |
+| **Break Down** | Split into subtasks (each S complexity — single concern) | Subtask list with complexity ratings |
 | **Acceptance Criteria** | Define how we know it's done | Testable checklist |
 | **Review** | Validate plan makes sense, check dependencies | Plan approved |
 
@@ -52,7 +52,7 @@ flowchart LR
 ```markdown
 - [ ] Problem statement is clear (what & why)
 - [ ] Success criteria are testable (not vague)
-- [ ] Task is broken into subtasks ≤ 4h each
+- [ ] Task is broken into subtasks at S complexity each (single concern)
 - [ ] Each subtask is self-contained (can be built & tested independently)
 - [ ] Dependencies between subtasks are identified
 - [ ] Affected system docs identified (what needs updating)
@@ -128,9 +128,9 @@ Task is complete when:
 ## Task Hierarchy
 
 ```
-Epic (large feature, multiple tasks)
-├── Task (self-contained deliverable, 1-2 days)
-│   ├── Subtask (single work unit, ≤ 4 hours)
+Epic (L/XL — large feature, multiple tasks)
+├── Task (M — self-contained deliverable, one feature area)
+│   ├── Subtask (S — single concern, atomic)
 │   ├── Subtask
 │   └── Subtask
 ├── Task
@@ -140,11 +140,11 @@ Epic (large feature, multiple tasks)
     └── Subtask
 ```
 
-| Level | Scope | Time | Has Own Doc? |
-|-------|-------|------|-------------|
-| **Epic** | Full feature or initiative | Days–weeks | Yes: `tasks/EPIC-name.md` |
-| **Task** | One shippable piece of the epic | 1-2 days | Yes: section in epic doc or own file |
-| **Subtask** | Atomic unit of work | ≤ 4 hours | No: lives as checklist in parent task |
+| Level | Scope | Complexity | Has Own Doc? |
+|-------|-------|------------|-------------|
+| **Epic** | Full feature or initiative | L/XL — cross-cutting, multiple areas | Yes: `tasks/EPIC-name.md` |
+| **Task** | One shippable piece of the epic | M — one feature area, multi-file | Yes: section in epic doc or own file |
+| **Subtask** | Atomic unit of work | S — single concern, 1-2 files | No: lives as checklist in parent task |
 
 ### Self-Contained Task Rules
 
@@ -159,12 +159,12 @@ Each task (and ideally each subtask) should be **self-contained**:
 
 ```mermaid
 flowchart TD
-    A[Feature Idea] --> B{Can it ship in 1-2 days?}
+    A[Feature Idea] --> B{M complexity or less?}
     B -->|Yes| C[It's a Task — write it up]
     B -->|No| D[It's an Epic — break it into Tasks]
-    C --> E{Can each piece be done in ≤ 4h?}
+    C --> E{Each piece is S complexity?}
     E -->|Yes| F[Those are your Subtasks]
-    E -->|No| G[Break further until ≤ 4h each]
+    E -->|No| G[Break further until single-concern each]
     D --> C
 ```
 
@@ -200,6 +200,25 @@ flowchart TD
 | **P1** | Important, needed soon | Do this sprint |
 | **P2** | Valuable, can wait | Do when P0/P1 clear |
 | **P3** | Nice to have | Do if time permits |
+
+## Complexity Scale
+
+Use complexity ratings instead of time estimates to size work:
+
+| Rating | Scope | Files | Layers | Maps To |
+|--------|-------|-------|--------|---------|
+| **XS** | Trivial change | 1 | 1 | Just do it |
+| **S** | Single concern | 1-2 | 1 | Subtask |
+| **M** | One feature area | 3-8 | 2-3 | Task |
+| **L** | Cross-cutting | 8+ | 3+ | Epic |
+| **XL** | System-wide | Many | All | Epic |
+
+**How to rate:** Count the files, concerns, and layers (DB, API, service, UI, tests, docs) the work touches. Pick the rating that matches.
+
+**Decomposition rule:** If a piece of work exceeds its target complexity, break it down:
+- Epic task rated L? → Break into M tasks
+- Task subtask rated M? → Break into S subtasks
+- Subtask still too big? → Break until it's single-concern
 
 ## Related Docs
 

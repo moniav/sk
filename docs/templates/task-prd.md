@@ -2,7 +2,7 @@
 
 **Status:** backlog | planning | ready | in-progress | in-review | testing | done | blocked  
 **Priority:** P0 | P1 | P2 | P3  
-**Estimate:** Xh  
+**Complexity:** XS | S | M | L | XL  
 **Parent Epic:** [Epic Name](./EPIC-name.md) (or "standalone")  
 **Created:** YYYY-MM-DD  
 **Last updated:** YYYY-MM-DD  
@@ -60,7 +60,7 @@
 
 ### Subtasks
 
-<!-- Each subtask ≤ 4 hours. Tagged by phase. Execute top-to-bottom. -->
+<!-- Each subtask at S complexity (single concern, 1-2 files). Tagged by phase. Execute top-to-bottom. -->
 
 - [ ] **ST-1** `[DEV]` — Description of what to implement
 - [ ] **ST-2** `[DEV]` — Description of what to implement

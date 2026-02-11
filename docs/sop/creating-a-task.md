@@ -14,18 +14,18 @@ Follow this procedure whenever starting new work — from a bug fix to a full fe
          │
          ▼
    ┌─────────────┐
-   │ Is it > 2    │──Yes──▶ Create an EPIC
-   │ days of work?│         (break into Tasks)
+   │ L/XL         │──Yes──▶ Create an EPIC
+   │ complexity?  │         (break into Tasks)
    └──────┬──────┘
           No
           ▼
    ┌─────────────┐
-   │ Is it > 4    │──Yes──▶ Create a TASK
-   │ hours?       │         (break into Subtasks)
+   │ M            │──Yes──▶ Create a TASK
+   │ complexity?  │         (break into Subtasks)
    └──────┬──────┘
           No
           ▼
-      Just do it
+      Just do it (XS/S)
    (still follow Plan→Dev→Test)
 ```
 
@@ -56,7 +56,7 @@ Complete these sections (do NOT skip to coding):
 
 ### 3. Break Down into Subtasks
 
-Apply the **≤ 4 hour rule**. Each subtask should be:
+Apply the **S complexity rule**. Each subtask should be:
 
 - **Self-contained:** Can be implemented and tested independently
 - **Tagged:** `[DEV]`, `[TEST]`, or `[DOCS]`
@@ -77,7 +77,7 @@ Apply the **≤ 4 hour rule**. Each subtask should be:
 Run this checklist before moving to DEV:
 
 - [ ] Every acceptance criterion is testable (yes/no answer possible)
-- [ ] Every subtask is ≤ 4 hours
+- [ ] Every subtask is S complexity (single concern, 1-2 files)
 - [ ] Subtask order respects dependencies
 - [ ] No open questions remain
 - [ ] You know which docs need updating
@@ -130,6 +130,6 @@ Here's a reusable pattern for most features:
 | Subtasks too vague ("build the feature") | Be specific about what code to write |
 | Skipping PLAN phase | The plan IS the work. Code is just typing. |
 | Acceptance criteria not testable | Rewrite as yes/no questions |
-| Subtasks > 4 hours | Break them down further |
+| Subtasks above S complexity | Break them down further |
 | Forgetting the DOCS subtask | Always include it — it's part of "done" |
 | Not updating Progress Log | Future-you will thank present-you |

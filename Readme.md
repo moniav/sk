@@ -36,14 +36,14 @@ docs/README.md (master index — navigation hub)
 ## Task Hierarchy
 
 ```
-Epic (large feature, days–weeks)
-├── Task (self-contained deliverable, 1-2 days)
-│   ├── Subtask ≤ 4h (tagged: [DEV] [TEST] [DOCS])
-│   ├── Subtask ≤ 4h
-│   └── Subtask ≤ 4h
+Epic (L/XL — large feature, cross-cutting)
+├── Task (M — self-contained deliverable, one feature area)
+│   ├── Subtask S (tagged: [DEV] [TEST] [DOCS])
+│   ├── Subtask S
+│   └── Subtask S
 └── Task
-    ├── Subtask ≤ 4h
-    └── Subtask ≤ 4h
+    ├── Subtask S
+    └── Subtask S
 ```
 
 Each task goes through **Plan → Dev → Test → Done** with explicit exit gates between phases.
@@ -89,7 +89,7 @@ bash sk-install.sh .
 
 **Plan → Dev → Test lifecycle** — Forces thinking before coding. Each phase has an explicit exit gate so nothing gets skipped. The 3-phase cycle is simple enough to actually follow.
 
-**Task hierarchy (Epic → Task → Subtask)** — Epics break into tasks, tasks break into subtasks. Each level has a clear scope and time limit. Subtasks capped at 4 hours prevent scope creep and make progress visible.
+**Task hierarchy (Epic → Task → Subtask)** — Epics break into tasks, tasks break into subtasks. Each level has a clear scope and complexity ceiling. Subtasks capped at S complexity (single concern) prevent scope creep and make progress visible.
 
 **Self-contained tasks** — Every task is independently buildable, testable, and shippable. This means Claude Code can execute a task without needing context from other in-flight work.
 

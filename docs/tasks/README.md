@@ -9,9 +9,9 @@
 ## How to Use This Board
 
 1. **New work?** → Follow the [Creating a Task SOP](../sop/creating-a-task.md)
-2. **Big feature (>2 days)?** → Create an Epic using [epic template](../templates/epic.md)
-3. **Small feature (≤2 days)?** → Create a Task using [task template](../templates/task-prd.md)
-4. **Tiny fix (<4 hours)?** → Just do it, still follow Plan→Dev→Test mentally
+2. **L/XL complexity?** → Create an Epic using [epic template](../templates/epic.md)
+3. **M complexity?** → Create a Task using [task template](../templates/task-prd.md)
+4. **XS/S complexity?** → Just do it, still follow Plan→Dev→Test mentally
 
 ## Active Epics
 

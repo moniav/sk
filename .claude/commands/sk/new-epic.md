@@ -4,7 +4,7 @@ description: Create a new epic — large feature broken into self-contained task
 
 # Create New Epic
 
-Create an epic file in `docs/tasks/` for features that span multiple tasks (>2 days of work).
+Create an epic file in `docs/tasks/` for features that span multiple tasks (L/XL complexity).
 
 ## Step 1: Read Context
 
@@ -48,7 +48,7 @@ This is the critical step. Break the epic into **self-contained tasks**:
 ### Rules for Task Decomposition
 
 1. **Each task ships independently** — Produces a working increment
-2. **Each task is 1-2 days** — If longer, break it further
+2. **Each task is M complexity** — If larger, break it further
 3. **Minimize cross-task dependencies** — Prefer vertical slices over horizontal layers
 4. **Order by dependency** — First task has zero dependencies
 
@@ -67,7 +67,7 @@ Pick the best strategy for this epic:
 
 - **Title**: Action-oriented, one line
 - **Acceptance criteria**: 2-5 testable conditions
-- **Subtasks**: ≤ 4h each, tagged `[DEV]`/`[TEST]`/`[DOCS]`
+- **Subtasks**: S complexity each (single concern), tagged `[DEV]`/`[TEST]`/`[DOCS]`
 - **Dependencies**: Which other tasks must complete first
 - **Files affected**: Exact paths from codebase scan
 
@@ -105,7 +105,7 @@ Add the epic to `docs/tasks/README.md`:
 
 Show the user:
 - Epic overview (goal + scope)
-- Task count with total estimate
+- Task count with complexity breakdown
 - Dependency graph (Mermaid)
 - Key risks
 - Recommended starting task
@@ -117,7 +117,7 @@ Ask: **"Want me to start with Task 1? I'll create its detailed task file."**
 - [ ] Read lifecycle and template docs first
 - [ ] Goal is one clear sentence
 - [ ] Epic-level acceptance criteria defined
-- [ ] Each task is self-contained and 1-2 days max
+- [ ] Each task is self-contained and M complexity max
 - [ ] Each task has testable acceptance criteria
 - [ ] Dependency graph is correct (no circular dependencies)
 - [ ] Files affected are verified against codebase
