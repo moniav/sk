@@ -1,0 +1,33 @@
+{
+  "name": "shipkit-cld",
+  "version": "1.0.0",
+  "description": "Documentation & lifecycle system for Claude Code — Plan, Dev, Test workflow with 12 slash commands",
+  "type": "module",
+  "bin": {
+    "shipkit-cld": "./cli.mjs"
+  },
+  "files": [
+    "cli.mjs",
+    "docs/",
+    ".claude/",
+    "CLAUDE.md"
+  ],
+  "keywords": [
+    "claude-code",
+    "documentation",
+    "developer-tools",
+    "ai-coding",
+    "lifecycle",
+    "project-management",
+    "plan-dev-test"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -15,9 +15,10 @@
 
 ```bash
 # Using your migration tool (adjust for your stack)
-npx drizzle-kit generate:pg --name add_user_preferences
-# or
-npx prisma migrate dev --name add_user_preferences
+# Node/TS:  npx drizzle-kit generate:pg --name add_user_preferences
+# Node/TS:  npx prisma migrate dev --name add_user_preferences
+# Python:   alembic revision --autogenerate -m "add_user_preferences"
+# Django:   python manage.py makemigrations --name add_user_preferences
 ```
 
 ### 2. Write the Migration
@@ -35,13 +36,13 @@ ALTER TABLE users DROP COLUMN preferences;
 
 ```bash
 # Apply migration to local DB
-npm run db:migrate
+# npm run db:migrate / alembic upgrade head / python manage.py migrate
 
 # Run the full test suite
-npm test
+# npm test / pytest / python -m unittest
 
 # Verify with a quick smoke test
-npm run dev  # Check the app works
+# npm run dev / uvicorn main:app --reload / python manage.py runserver
 ```
 
 ### 4. Update Documentation

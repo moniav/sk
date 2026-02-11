@@ -27,24 +27,20 @@ If DEV isn't complete → go back (`/sk:dev` command).
 ## Step 3: Run Automated Tests
 
 ```bash
-# Run the full test suite
-npm test                    # or your project's test command
-
-# Run tests related to this feature specifically
-npm test -- --grep "feature-name"
-
-# Type check
-npm run typecheck           # or tsc --noEmit
-
-# Lint
-npm run lint
+# Run your project's test, type-check, and lint commands
+# (check docs/system/tech-stack.md and CLAUDE.md for exact commands)
+#
+# Examples:
+#   npm test / pytest / python -m unittest
+#   npm run typecheck / mypy . / pyright
+#   npm run lint / ruff check . / flake8
 ```
 
 Document results:
 ```markdown
 - [ ] All unit tests pass
 - [ ] All integration tests pass
-- [ ] No TypeScript errors
+- [ ] No type errors
 - [ ] No lint errors
 - [ ] No new warnings introduced
 ```
@@ -107,7 +103,7 @@ Verify the existing system still works:
 
 - [ ] Full test suite passes (same as Step 3)
 - [ ] Existing features still work (quick manual smoke test)
-- [ ] No console errors or warnings in browser
+- [ ] No unexpected errors or warnings in output
 - [ ] No new errors in server logs
 - [ ] Performance not degraded (page loads, API response times)
 ```
@@ -122,7 +118,7 @@ Verify the existing system still works:
 - [ ] Edge cases tested — no crashes or unexpected behavior
 - [ ] All automated tests pass
 - [ ] No regressions in existing functionality
-- [ ] No TypeScript errors, lint errors, or new warnings
+- [ ] No type errors, lint errors, or new warnings
 ```
 
 ## Step 9: Update Task Status

@@ -4,36 +4,37 @@
 
 ## Core
 
+<!-- Fill in your actual stack. Examples for common setups shown as comments. -->
+
 | Layer | Technology | Version | Purpose |
 |-------|-----------|---------|---------|
-| Language | TypeScript | 5.x | Primary language |
-| Runtime | Node.js | 20.x | Server runtime |
-| Framework | Next.js | 15.x | Full-stack web framework |
-| Database | PostgreSQL | 16.x | Primary data store |
-| ORM | Drizzle | 0.3x | Type-safe DB queries |
-| Cache | Redis | 7.x | Session store, caching |
-| Auth | NextAuth | 5.x | Authentication |
+| Language | <!-- TypeScript / Python / Go / etc. --> | — | Primary language |
+| Runtime | <!-- Node.js 20+ / Python 3.12+ / etc. --> | — | Server runtime |
+| Framework | <!-- Next.js / FastAPI / Django / Flask / Express / etc. --> | — | Web framework |
+| Database | <!-- PostgreSQL / MySQL / SQLite / MongoDB / etc. --> | — | Primary data store |
+| ORM | <!-- Drizzle / Prisma / SQLAlchemy / Django ORM / etc. --> | — | DB queries |
+| Cache | <!-- Redis / Memcached / none --> | — | Session store, caching |
+| Auth | <!-- NextAuth / Passport / Django Auth / custom JWT / etc. --> | — | Authentication |
 
 ## Infrastructure
 
 | Service | Provider | Purpose |
 |---------|----------|---------|
-| Hosting | Vercel | Application hosting |
-| Database | Supabase / Neon | Managed Postgres |
-| Storage | S3 / R2 | File uploads |
-| Email | Resend | Transactional email |
-| Monitoring | Sentry | Error tracking |
-| Analytics | PostHog | Product analytics |
+| Hosting | <!-- Vercel / AWS / Railway / Fly.io / etc. --> | Application hosting |
+| Database | <!-- Supabase / Neon / RDS / managed / self-hosted --> | Managed DB |
+| Storage | <!-- S3 / R2 / GCS / local --> | File uploads |
+| Email | <!-- Resend / SendGrid / SES / none --> | Transactional email |
+| Monitoring | <!-- Sentry / Datadog / none --> | Error tracking |
 
 ## Dev Tools
 
 | Tool | Purpose |
 |------|---------|
-| pnpm | Package manager |
-| Biome / ESLint | Linting |
-| Vitest | Unit testing |
-| Playwright | E2E testing |
-| GitHub Actions | CI/CD |
+| <!-- npm / pnpm / pip / poetry / uv --> | Package manager |
+| <!-- ESLint / Biome / Ruff / Flake8 --> | Linting |
+| <!-- Vitest / Jest / pytest / unittest --> | Unit testing |
+| <!-- Playwright / Cypress / Selenium --> | E2E testing |
+| <!-- GitHub Actions / GitLab CI / etc. --> | CI/CD |
 
 ## Key Dependencies
 
@@ -41,5 +42,5 @@
 
 | Package | Why We Use It | Notes |
 |---------|--------------|-------|
-| `zod` | Runtime validation | Used for all API input validation |
-| `date-fns` | Date handling | Preferred over dayjs/moment |
+| <!-- e.g., zod / pydantic --> | Runtime validation | Used for all API input validation |
+| — | — | — |

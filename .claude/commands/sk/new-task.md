@@ -70,10 +70,10 @@ Follow this standard decomposition pattern, adapted to the specific task:
 ```markdown
 ### Subtasks
 
-- [ ] **ST-1** `[DEV]` — Define/update data models (`src/lib/db/schema.ts`)
-- [ ] **ST-2** `[DEV]` — Implement service logic (`src/services/feature.ts`)
-- [ ] **ST-3** `[DEV]` — Create API endpoint (`src/app/api/feature/route.ts`)
-- [ ] **ST-4** `[DEV]` — Build UI component (`src/components/Feature.tsx`)
+- [ ] **ST-1** `[DEV]` — Define/update data models (`path/to/models`)
+- [ ] **ST-2** `[DEV]` — Implement service logic (`path/to/services`)
+- [ ] **ST-3** `[DEV]` — Create API endpoint (`path/to/routes`)
+- [ ] **ST-4** `[DEV]` — Build UI component (`path/to/components`)
 - [ ] **ST-5** `[DEV]` — Wire up state and integration
 - [ ] **ST-6** `[TEST]` — Unit tests for service logic
 - [ ] **ST-7** `[TEST]` — Integration test for API endpoint

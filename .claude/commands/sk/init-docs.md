@@ -112,8 +112,8 @@ Based on the project type, create relevant SOPs:
 
 | Project Type | Starter SOPs |
 |-------------|-------------|
-| Next.js / React | Adding a page route, Adding a component |
-| API (FastAPI, Express) | Adding an API endpoint, Database migration |
+| Frontend (React, Vue, etc.) | Adding a page route, Adding a component |
+| API (FastAPI, Express, Django) | Adding an API endpoint, Database migration |
 | Full-stack | All of the above |
 | Any | Creating a task, Dependency updates |
 

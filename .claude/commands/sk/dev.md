@@ -84,7 +84,7 @@ After all subtasks are done, do a final pass:
 ### File Structure (docs/conventions/file-structure.md)
 - [ ] New files placed in correct directories
 - [ ] Co-location principle followed (related files together)
-- [ ] Barrel exports updated if new public APIs added
+- [ ] Public API exports updated if applicable
 - [ ] No file exceeds soft size limits
 
 ### Git Workflow (docs/conventions/git-workflow.md)

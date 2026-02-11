@@ -106,25 +106,23 @@ Always use templates from `docs/templates/`:
 
 ### Build Commands
 
+<!-- Replace with your project's actual commands -->
+
 ```bash
 # Development
-npm run dev              # Start dev server
-npm run build            # Production build
-npm run lint             # Run linter
-npm run typecheck        # TypeScript check
+# npm run dev / python manage.py runserver / uvicorn main:app --reload
+
+# Build
+# npm run build / python -m build / make build
+
+# Lint & Format
+# npm run lint / ruff check . / flake8
 
 # Testing
-npm test                 # Run all tests
-npm run test:unit        # Unit tests only
-npm run test:e2e         # E2E tests only
+# npm test / pytest / python -m unittest
 
 # Database
-npm run db:migrate       # Run migrations
-npm run db:seed          # Seed development data
-npm run db:studio        # Open DB GUI
-
-# Code Generation
-npm run generate         # Run code generators
+# npm run db:migrate / alembic upgrade head / python manage.py migrate
 ```
 
 ## Key Constraints
@@ -132,7 +130,7 @@ npm run generate         # Run code generators
 <!-- Add project-specific constraints Claude should always respect -->
 
 - Never commit `.env` files or secrets
-- All API inputs must be validated with Zod
+- All API inputs must be validated (e.g., Zod, Pydantic, Marshmallow)
 - All DB queries go through the ORM (no raw SQL in application code)
 - All user-facing text must support i18n
 - PRs must include test coverage for new logic

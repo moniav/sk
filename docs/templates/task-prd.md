@@ -33,9 +33,9 @@
 
 | Area | Change Type | Files |
 |------|-----------|-------|
-| Database | New table / Alter | `src/lib/db/schema.ts` |
-| API | New endpoint | `src/app/api/...` |
-| UI | New component | `src/components/...` |
+| Database | New table / Alter | `path/to/schema` |
+| API | New endpoint | `path/to/routes` |
+| UI | New component | `path/to/components` |
 | Docs | Update | `docs/system/...` |
 
 ### Dependencies

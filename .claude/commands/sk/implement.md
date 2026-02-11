@@ -83,7 +83,8 @@ For each `[DOCS]` subtask:
 
 ### Run Full Test Suite
 ```bash
-npm test && npm run typecheck && npm run lint
+# Run your project's test, type-check, and lint commands
+# (check docs/system/tech-stack.md and CLAUDE.md for exact commands)
 ```
 
 ### Verify Each Acceptance Criterion
@@ -94,7 +95,7 @@ Go through AC-1, AC-2, etc. one by one:
 
 ### Test Error Paths & Edge Cases
 - Invalid input handling
-- Empty/null/undefined states
+- Empty/null/None states
 - Boundary conditions
 - Error messages are helpful
 

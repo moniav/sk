@@ -50,32 +50,15 @@ Each task goes through **Plan → Dev → Test → Done** with explicit exit gat
 
 ## Installation
 
-### Node.js (cross-platform — recommended)
+### npx (recommended)
 ```bash
-# From the extracted sk folder, pointing at your project:
-node sk-install.mjs /path/to/my-project
+# From your project root:
+npx shipkit-cld
 
-# Or from within your project root:
-node sk-install.mjs .
+# Or targeting a specific directory:
+npx shipkit-cld /path/to/my-project
 ```
 
-### macOS / Linux
-```bash
-# From the extracted sk folder, pointing at your project:
-bash sk-install.sh /path/to/my-project
-
-# Or from within your project root:
-bash sk-install.sh .
-```
-
-### Windows (PowerShell)
-```powershell
-# From the extracted sk folder:
-.\sk-install.ps1 -Target "C:\path\to\my-project"
-
-# Or from within your project root:
-.\sk-install.ps1
-```
 
 ### Post-Install
 

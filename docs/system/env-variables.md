@@ -9,7 +9,7 @@
 | Variable | Purpose | Example | Required |
 |----------|---------|---------|----------|
 | `DATABASE_URL` | Primary database connection | `postgresql://user:pass@localhost:5432/db` | Yes |
-| `NODE_ENV` | Runtime environment | `development` / `production` | Yes |
+| `APP_ENV` | Runtime environment | `development` / `production` | Yes |
 
 ## Optional Variables
 
@@ -42,5 +42,5 @@ cp .env.example .env
 
 1. Add to `.env.example` with a placeholder value
 2. Add to this doc with purpose and example
-3. Add validation in config loader (e.g., `src/config/`)
+3. Add validation in config loader (e.g., `src/config/` or `config.py`)
 4. Update deployment configs if needed

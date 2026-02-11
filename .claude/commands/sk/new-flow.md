@@ -61,7 +61,7 @@ Below the diagram, document each step:
 ## Step-by-Step
 
 1. **Client sends request** — POST /api/endpoint with payload
-2. **Middleware validates** — Zod schema checks input
+2. **Middleware validates** — Schema validation checks input
 3. **Service processes** — Business logic executes
 4. **Database updates** — Transaction committed
 5. **Response returned** — 201 with created entity

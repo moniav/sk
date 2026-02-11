@@ -1,5 +1,7 @@
 # Task: User Registration API
 
+> **Note:** This is a worked example showing a TypeScript/Node.js implementation. Your project's file paths and tools will differ — the format and lifecycle process are what matter.
+
 **Status:** done  
 **Priority:** P0  
 **Complexity:** M  

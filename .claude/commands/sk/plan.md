@@ -70,11 +70,11 @@ Fill with **exact paths** verified by scanning the codebase:
 ```markdown
 | Area | Change Type | Files |
 |------|-----------|-------|
-| Database | New table | `src/lib/db/schema.ts`, `migrations/NNN_desc.sql` |
-| API | New endpoint | `src/app/api/feature/route.ts` |
-| Service | New service | `src/services/feature.ts` |
-| UI | New component | `src/components/Feature.tsx` |
-| Tests | New tests | `tests/services/feature.test.ts` |
+| Database | New table | `path/to/schema`, `migrations/NNN_desc.sql` |
+| API | New endpoint | `path/to/routes` |
+| Service | New service | `path/to/services` |
+| UI | New component | `path/to/components` |
+| Tests | New tests | `tests/path/to/test_file` |
 | Docs | Update | `docs/system/database-schema.md` |
 ```
 

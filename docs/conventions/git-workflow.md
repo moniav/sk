@@ -22,7 +22,7 @@ feat(auth): add Google OAuth login
 fix(payments): handle timeout on Stripe webhook
 refactor(api): extract validation middleware
 docs(sop): add database migration procedure
-chore(deps): upgrade Next.js to 15.1
+chore(deps): upgrade framework to latest version
 ```
 
 Types: `feat`, `fix`, `refactor`, `docs`, `chore`, `test`, `perf`

@@ -75,7 +75,7 @@ graph TD
 - [ ] `[DOCS]` Update [which docs]
 
 **Dependencies:** None | Task N must complete first
-**Files affected:** `src/path/to/file.ts`, `docs/system/schema.md`
+**Files affected:** `path/to/file`, `docs/system/schema.md`
 
 ---
 
@@ -98,7 +98,7 @@ graph TD
 - [ ] `[DOCS]` Update [which docs]
 
 **Dependencies:** Task 1 (needs schema)
-**Files affected:** `src/path/to/file.ts`
+**Files affected:** `path/to/file`
 
 ---
 
@@ -115,7 +115,7 @@ graph TD
 - [ ] `[DOCS]` Update [which docs]
 
 **Dependencies:** Task 1, Task 2  
-**Files affected:** `src/path/to/file.ts`
+**Files affected:** `path/to/file`
 
 ---
 
