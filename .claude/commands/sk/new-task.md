@@ -1,0 +1,123 @@
+---
+description: Create a new implementation task with Plan→Dev→Test lifecycle (project)
+---
+
+# Create New Task
+
+Create a self-contained task file in `docs/tasks/` following the development lifecycle.
+
+## Step 1: Read Context
+
+**ALWAYS start by reading these files for context:**
+1. `docs/README.md` — Documentation index
+2. `docs/lifecycle/README.md` — Plan → Dev → Test cycle and task hierarchy
+3. `docs/conventions/code-style.md` — Coding standards to reference in subtasks
+4. `docs/conventions/file-structure.md` — Where files should go
+5. `docs/system/tech-stack.md` — Current technologies and versions
+6. `docs/system/database-schema.md` — Current schema state
+7. `docs/tasks/README.md` — Existing tasks (avoid duplicates, find dependencies)
+8. `docs/tasks/examples/TASK-user-registration-api.md` — Reference example of a completed task
+
+## Step 2: Gather Information
+
+Ask the user:
+- **Task title**: Short, action-oriented (e.g., "Add PDF export for reports")
+- **Objective**: One sentence — what does the user get when this is done?
+- **Priority**: P0 (critical/blocking) | P1 (needed this sprint) | P2 (valuable) | P3 (nice to have)
+- **Context**: Any technical details, constraints, related features
+- **Parent epic**: Is this part of a larger epic? Which one?
+
+## Step 3: Generate Metadata
+
+1. **Check existing tasks**: Use Glob to scan `docs/tasks/TASK-*.md` — avoid duplicate names
+2. **Filename**: `TASK-kebab-case-title.md`
+   - Example: "Add PDF export" → `TASK-add-pdf-export.md`
+3. **Date**: Today's date as `YYYY-MM-DD`
+
+## Step 4: Analyze Scope
+
+Before writing the task, scan the codebase to understand impact:
+
+1. **Identify affected files**: Use `Glob` and `Grep` to find files related to the feature
+2. **Check existing patterns**: Find similar features already implemented to follow their pattern
+3. **Map dependencies**: What must exist before this task can start?
+4. **Estimate complexity**: Count affected layers (DB, API, service, UI, tests, docs)
+
+## Step 5: Create Task File
+
+Save to `docs/tasks/TASK-kebab-case-title.md` using the template from `docs/templates/task-prd.md`.
+
+**Critical requirements for task creation:**
+
+### PLAN Section (fill completely)
+- **What**: One paragraph max — problem + why
+- **Acceptance Criteria**: 3-5 testable conditions (yes/no verifiable)
+- **Approach**: Technical approach referencing project conventions
+- **Affected Areas**: Table with exact file paths (scan codebase to confirm they exist)
+- **Dependencies**: Link to prerequisite tasks or system requirements
+- **Open Questions**: List anything uncertain — these MUST be resolved before DEV
+
+### DEV Section (define subtasks)
+Each subtask must be:
+- **≤ 4 hours** of work
+- **Tagged**: `[DEV]`, `[TEST]`, or `[DOCS]`
+- **Specific**: Exact file paths, function names, what to implement
+- **Ordered**: Dependencies flow top-to-bottom
+- **Self-contained**: Can be implemented and verified independently
+
+Follow this standard decomposition pattern, adapted to the specific task:
+
+```markdown
+### Subtasks
+
+- [ ] **ST-1** `[DEV]` — Define/update data models (`src/lib/db/schema.ts`)
+- [ ] **ST-2** `[DEV]` — Implement service logic (`src/services/feature.ts`)
+- [ ] **ST-3** `[DEV]` — Create API endpoint (`src/app/api/feature/route.ts`)
+- [ ] **ST-4** `[DEV]` — Build UI component (`src/components/Feature.tsx`)
+- [ ] **ST-5** `[DEV]` — Wire up state and integration
+- [ ] **ST-6** `[TEST]` — Unit tests for service logic
+- [ ] **ST-7** `[TEST]` — Integration test for API endpoint
+- [ ] **ST-8** `[TEST]` — Verify all acceptance criteria
+- [ ] **ST-9** `[DOCS]` — Update system docs (schema, API, architecture)
+```
+
+### TEST Section (define test plan)
+- Map each acceptance criterion to a verification method
+- Include happy path, error cases, and edge cases
+
+## Step 6: Update Task Board
+
+Add the new task to `docs/tasks/README.md` in the **Planning** section:
+
+```markdown
+### 🎯 Planning
+
+| Task | Parent Epic | Priority | Link |
+|------|-------------|----------|------|
+| Title | Epic name | P1 | [Link](./TASK-title.md) |
+```
+
+## Step 7: Present Summary
+
+Show the user:
+- Task ID and filename
+- Acceptance criteria summary
+- Subtask count and estimate
+- Dependencies identified
+- Open questions requiring resolution
+
+Ask: **"Plan looks good? Should I resolve any open questions, or are you ready to start DEV?"**
+
+## Validation Checklist
+
+Before saving:
+- [ ] Read `docs/lifecycle/README.md` and templates first
+- [ ] Objective is one clear sentence
+- [ ] Acceptance criteria are testable (yes/no answer possible)
+- [ ] Every subtask is ≤ 4 hours
+- [ ] Subtasks have exact file paths (verified against codebase)
+- [ ] Subtask order respects dependencies
+- [ ] `[TEST]` subtasks include verifying acceptance criteria
+- [ ] `[DOCS]` subtask lists specific docs to update
+- [ ] Task added to `docs/tasks/README.md`
+- [ ] No unresolved open questions blocking DEV
