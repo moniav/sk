@@ -77,6 +77,16 @@ Reference `docs/conventions/code-style.md` and `docs/conventions/file-structure.
 - Complexity — deeply nested logic, long method chains
 - Naming clarity — can you understand the code without comments?
 
+### 4f: Scope & Simplicity
+
+Reference `docs/conventions/coding-behavior.md`:
+
+- Over-engineering — abstractions, classes, or patterns for single-use cases
+- Speculative features — code for requirements that don't exist yet
+- Drive-by changes — refactoring or "cleanup" outside the task's scope
+- Gold plating — extra configuration, logging, or error handling beyond what's needed
+- Premature abstraction — generic utilities where simple inline code would suffice
+
 ### 4e: Testing
 
 - Coverage gaps — new logic paths without corresponding tests

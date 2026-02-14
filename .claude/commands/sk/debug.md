@@ -70,9 +70,14 @@ Starting from the entry point (route handler, event handler, CLI command):
 Based on the trace, state a specific hypothesis:
 > "The bug occurs because [specific cause] in [specific location], which results in [specific symptom]."
 
+**Surface your assumptions.** Before investigating further, list what you're assuming:
+- What do you assume about the data flow?
+- What do you assume about the state at the failure point?
+- Could the bug have a different root cause than your first instinct?
+
 ### 5c: Verify the Hypothesis
 
-Test your hypothesis with minimal investigation:
+Test your hypothesis with minimal investigation — do not assume your hypothesis is correct:
 - Add a strategic log/breakpoint to confirm the data flow
 - Check the git log for recent changes to the suspect code: `git log --oneline -10 -- <file>`
 - Read the test coverage for the suspect code — is the failing case tested?
@@ -124,8 +129,9 @@ Follow the project's testing conventions from `docs/conventions/testing.md`.
 
 ### 8a: Confirm the Fix
 1. Re-run the original reproduction steps — bug should be gone
-2. Run the new regression test — should pass
-3. Run the full test suite — no regressions
+2. Verify with specific evidence (exact output, not "it works now")
+3. Run the new regression test — should pass
+4. Run the full test suite — no regressions
 
 ### 8b: Check for Related Issues
 - Are there similar patterns elsewhere that might have the same bug?

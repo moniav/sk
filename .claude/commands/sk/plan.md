@@ -50,6 +50,25 @@ For the specific task, perform a thorough analysis:
 - What's the simplest approach that meets the acceptance criteria?
 ```
 
+### 3d. Surface Assumptions and Ambiguity
+
+Before proceeding to the plan, explicitly list what you're assuming and flag what's unclear:
+
+1. **List assumptions** — Write down everything you believe to be true but haven't verified
+2. **Flag ambiguity** — Identify requirements that could be interpreted multiple ways
+3. **Present interpretations** — For each ambiguity, state the possible interpretations and your recommendation
+4. **Confirm with user** — Do not proceed past PLAN until assumptions are validated
+
+```markdown
+### Assumptions & Clarifications
+
+| # | Assumption / Ambiguity | Status | Resolution |
+|---|----------------------|--------|------------|
+| 1 | Email uniqueness is enforced at DB level | Verified -- unique constraint on users.email | -- |
+| 2 | "Handle errors" means validation errors only | Ambiguous -- could include auth errors | Ask user |
+| 3 | No rate limiting needed for this endpoint | Assumed -- not in AC | Confirm |
+```
+
 ## Step 4: Complete the PLAN Section
 
 Update the task file with:
@@ -109,6 +128,7 @@ Run the PLAN exit gate checklist:
 - [ ] No open questions remain unresolved
 - [ ] Affected docs identified for updating
 - [ ] Approach follows existing codebase patterns
+- [ ] Approach is the simplest that satisfies acceptance criteria (no speculative features)
 ```
 
 ## Step 6: Update Status
@@ -129,6 +149,8 @@ Show:
 - Acceptance criteria (final)
 - Subtask list with complexity ratings
 - Key technical decisions made during planning
+- Assumptions confirmed with user
+- Alternatives considered and rejected
 - Any risks identified
 
 Ask: **"Plan is complete. Ready to start DEV? I'll execute subtasks top-to-bottom."**

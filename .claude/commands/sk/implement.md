@@ -44,12 +44,15 @@ Determine scope:
 2. **Write acceptance criteria** — 3-5 testable conditions
 3. **Break into subtasks** — Each S complexity (single concern), tagged `[DEV]`/`[TEST]`/`[DOCS]`
 4. **Resolve all questions** — No unknowns remaining
+5. **Surface assumptions** — List assumptions and ambiguities; confirm with user before proceeding
 
 ### PLAN Exit Gate
 ```markdown
 - [ ] Acceptance criteria are testable
 - [ ] Subtasks are S complexity each (single concern) with exact file paths
 - [ ] No open questions
+- [ ] Assumptions confirmed with user
+- [ ] Simplest approach chosen (no speculative features)
 - [ ] Approach follows existing codebase patterns
 ```
 
@@ -95,6 +98,7 @@ Update frontmatter: `phase: test`, `status: testing`
 
 ### Verify Each Acceptance Criterion
 Go through AC-1, AC-2, etc. one by one:
+- Restate each AC as a verifiable goal ("Done when X") with exact verification method
 1. Execute the specific test scenario
 2. Record the result in the task's Verification section
 3. If any fails — fix in DEV, re-verify

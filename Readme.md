@@ -2,7 +2,12 @@
 
 ## Why This Exists
 
-Claude Code (and any AI coding agent) works dramatically better when it has structured context about your project's conventions, architecture, and procedures. This system gives it that context through a lightweight, maintainable doc structure.
+Claude Code (and any AI coding agent) works dramatically better when it has structured context about your project's conventions, architecture, and procedures. Without it, you get inconsistent code style, forgotten edge cases, and repeated mistakes across sessions.
+
+SK solves two problems:
+
+1. **Procedural context** -- Conventions, file structure, testing patterns, and step-by-step workflows so the agent follows your project's rules instead of inventing its own.
+2. **Behavioral guardrails** -- Principles that govern *how* the agent thinks: surface assumptions before coding, do exactly what was asked, keep solutions simple, and verify goals with evidence (see `docs/conventions/coding-behavior.md`).
 
 ## How It Works
 
@@ -51,9 +56,9 @@ stateDiagram-v2
     direction LR
 
     [*] --> Plan
-    Plan --> Dev : Exit gate:<br/>questions resolved,<br/>subtasks defined,<br/>criteria testable
-    Dev --> Test : Exit gate:<br/>subtasks done,<br/>code self-reviewed,<br/>docs updated
-    Test --> Done : Exit gate:<br/>all criteria verified,<br/>all tests pass
+    Plan --> Dev : Questions resolved, subtasks defined, criteria testable
+    Dev --> Test : Subtasks done, code reviewed, docs updated
+    Test --> Done : All criteria verified, all tests pass
     Done --> [*]
 
     state Plan {
@@ -371,6 +376,8 @@ graph LR
 
 **SOPs for procedures** — AI agents follow explicit steps better than vague guidelines. SOPs eliminate improvisation on critical tasks.
 
+**Behavioral guardrails** — LLMs over-engineer, make hidden assumptions, and drift from scope. Four principles (surface assumptions, do exactly what's asked, keep it simple, verify with evidence) are embedded in every lifecycle command to counteract this. See `docs/conventions/coding-behavior.md`.
+
 **Flat over deep** — Two levels max. Everything discoverable from the README index.
 
 ## Anti-Patterns to Avoid
@@ -382,3 +389,6 @@ graph LR
 | Let docs go stale | Update in the same PR as the code change |
 | Duplicate content across docs | Link to the single source of truth |
 | Write docs nobody reads | Write docs Claude Code reads every session |
+| Add features "while you're in the file" | Stick to the task scope, note improvements as follow-ups |
+| Build for hypothetical future needs | Implement the simplest thing that satisfies the acceptance criteria |
+| Mark criteria as "works" or "done" | Verify with specific evidence ("returns 201 with {id, email}") |

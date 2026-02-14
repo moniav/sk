@@ -82,10 +82,16 @@ For code without automated tests, note the current behavior:
 
 ## Step 5: Plan the Refactoring
 
+**Surface assumptions before planning.** List what you're assuming about:
+- How the target code is used (callers, consumers, dependents)
+- Whether changing the structure will affect performance or behavior
+- Which files are safe to change and which have hidden dependencies
+
 Break the refactoring into small, safe steps. Each step should:
 - Be independently committable
 - Keep the code working at every intermediate point
 - Be small enough to easily verify
+- Be the simplest transformation that achieves the goal (don't restructure more than needed)
 
 Present the plan:
 
@@ -209,6 +215,7 @@ Present to user:
 - [ ] No new type errors or lint violations
 - [ ] Code follows project conventions
 - [ ] No drive-by changes included
+- [ ] Result is simpler than before (fewer lines, less nesting, clearer names) — not just different
 
 ### Documentation (if task file was created)
 - [ ] Task file marked `phase: done`, `status: done`

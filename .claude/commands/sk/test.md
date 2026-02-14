@@ -48,6 +48,24 @@ Document results:
 
 ## Step 4: Verify Acceptance Criteria
 
+### Goal Transformation
+
+Before testing, restate each acceptance criterion as a concrete, verifiable goal:
+
+```markdown
+### Goal Transformation
+
+| AC | Original Criterion | Done When | Verification Method |
+|----|-------------------|-----------|-------------------|
+| AC-1 | Users can register | POST /api/users returns 201 with {id, email, name} | curl / test runner |
+| AC-2 | Validation works | POST with invalid email returns 400 with field-level error | curl / test runner |
+| AC-3 | No duplicates | POST with existing email returns 409 | curl / test runner |
+```
+
+**If you cannot restate an AC as a specific "Done when X" statement, the AC is too vague -- go back to PLAN.**
+
+### Per-Criterion Verification
+
 Go through each acceptance criterion **one by one**. For each:
 
 1. **Read the criterion** from the task file
@@ -64,6 +82,18 @@ Go through each acceptance criterion **one by one**. For each:
 ```
 
 **Be specific in verification notes.** Not "it works" but "POST /api/users with valid payload returns 201 with {id, email, name}, no password_hash field present."
+
+### Verification Loop
+
+When a criterion fails, follow this exact loop:
+
+1. **Diagnose** — Identify the root cause of the failure
+2. **Fix** — Make the minimal change to address the issue
+3. **Re-verify** — Test the specific criterion again
+4. **Re-run suite** — Ensure the fix didn't break other tests
+5. **Continue** — Move to the next criterion only after this one passes
+
+Do not batch fixes. Fix and verify one criterion at a time.
 
 ## Step 5: Test Error Paths
 
@@ -122,6 +152,7 @@ Verify the existing system still works:
 - [ ] All automated tests pass
 - [ ] No regressions in existing functionality
 - [ ] No type errors, lint errors, or new warnings
+- [ ] Each criterion has a concrete "Done when X" statement with evidence
 ```
 
 ## Step 9: Update Task Status

@@ -13,8 +13,9 @@ Execute the [DEV] phase for a task, implementing subtasks top-to-bottom.
 2. The task file being implemented — find task files with `phase: dev` in frontmatter
 3. The task's "Phase Analysis" section — skip re-scanning already-mapped files
 4. `docs/conventions/code-style.md` — Naming, patterns, anti-patterns
-5. `docs/conventions/file-structure.md` — Where files go
-6. `docs/conventions/testing.md` — Testing patterns (for `[TEST]` subtasks)
+5. `docs/conventions/coding-behavior.md` — Implementation thinking discipline
+6. `docs/conventions/file-structure.md` — Where files go
+7. `docs/conventions/testing.md` — Testing patterns (for `[TEST]` subtasks)
 7. `docs/system/database-schema.md` — If touching data layer
 8. Any relevant `docs/sop/` procedures (e.g., `database-migration.md`)
 
@@ -49,12 +50,16 @@ Process subtasks **top-to-bottom, one at a time**.
 1. **Read the subtask** — Understand exactly what to implement
 2. **Check conventions** — Reference `docs/conventions/code-style.md` for patterns
 3. **Implement** — Write the code following project conventions
+   - Implement exactly what the subtask describes — no more, no less
+   - Choose the simplest approach that satisfies the requirement
 4. **Self-review** — Before checking the box:
    - Follows naming conventions?
    - File in correct location per `docs/conventions/file-structure.md`?
    - Error handling in place?
    - No hardcoded values, magic numbers, or leftover TODOs?
    - No unused imports?
+   - No drive-by changes outside this subtask's scope?
+   - Is this the simplest solution, or did you over-engineer it?
 5. **Check the box** — Mark subtask complete in the task file
 
 ### For Each `[TEST]` Subtask:

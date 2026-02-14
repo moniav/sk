@@ -50,6 +50,36 @@ For trivial changes (typo fixes, one-line bugs, small tweaks):
 
 **Exit gate:** All criteria verified, all tests pass.
 
+## Coding Behavior (4 Principles)
+
+These principles govern how you think during implementation. See `docs/conventions/coding-behavior.md` for detailed examples and anti-patterns.
+
+### 1. Surface Assumptions Before Writing Code
+- State what you believe to be true about the codebase, requirements, and constraints
+- Verify assumptions by reading code, schema, and docs -- never guess
+- Flag ambiguity in requirements; present interpretations and confirm before proceeding
+- If a requirement says "handle errors," ask which errors specifically
+
+### 2. Do Exactly What Was Asked (No More, No Less)
+- Implement what the acceptance criteria specify -- nothing extra
+- No drive-by refactoring ("while I'm in this file...")
+- No speculative features ("they'll probably need this next...")
+- No gold plating (extra logging, configuration, or error handling beyond requirements)
+- If you see something worth improving outside the task scope, note it as a follow-up
+
+### 3. Keep the Solution as Simple as Possible
+- The right solution is the simplest one satisfying all acceptance criteria
+- Complexity must be justified by a specific requirement, not "what if" scenarios
+- A function is better than a class for single-use logic
+- Three similar lines are better than a premature abstraction
+- Hardcode known values; don't make everything configurable
+
+### 4. Verify Goals After Implementation
+- After implementing, re-read each acceptance criterion
+- Verify each with specific evidence, not "it works" or "looks good"
+- Test both happy paths and error cases mentioned in the criteria
+- Run the actual verification and read the output -- don't assume correctness
+
 ## Documentation System
 
 This project uses a structured documentation system. **Always consult docs before coding.**
