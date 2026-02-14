@@ -53,69 +53,19 @@ graph TD
 
 ## Task Breakdown
 
+> Each task is a **separate file** in `docs/tasks/`, created via `/sk:new-task`.
 > Each task is self-contained: independently buildable, testable, and shippable.
 > Tasks are ordered by dependency (do top-to-bottom).
 
-### Task 1: [Task Name]
+| # | Task | Complexity | Priority | Dependencies | File |
+|---|------|-----------|----------|--------------|------|
+| 1 | [Task Name] | M | P1 | None | [TASK-{N}-E{epicN}-p-{name}.md](./TASK-{N}-E{epicN}-p-{name}.md) |
+| 2 | [Task Name] | M | P1 | Task 1 | [TASK-{N}-E{epicN}-p-{name}.md](./TASK-{N}-E{epicN}-p-{name}.md) |
+| 3 | [Task Name] | S | P2 | Task 1, 2 | [TASK-{N}-E{epicN}-p-{name}.md](./TASK-{N}-E{epicN}-p-{name}.md) |
 
-**Status:** `backlog` | **Complexity:** M | **Priority:** P1
-
-<!-- One sentence: What does this task deliver? -->
-
-**Acceptance Criteria:**
-- [ ] AC 1
-- [ ] AC 2
-
-**Subtasks:**
-- [ ] `[PLAN]` Define data model / schema changes
-- [ ] `[DEV]` Implement [specific thing]
-- [ ] `[DEV]` Implement [specific thing]
-- [ ] `[TEST]` Write unit tests for [what]
-- [ ] `[TEST]` Verify acceptance criteria
-- [ ] `[DOCS]` Update [which docs]
-
-**Dependencies:** None | Task N must complete first
-**Files affected:** `path/to/file`, `docs/system/schema.md`
-
----
-
-### Task 2: [Task Name]
-
-**Status:** `backlog` | **Complexity:** M | **Priority:** P1
-
-<!-- One sentence: What does this task deliver? -->
-
-**Acceptance Criteria:**
-- [ ] AC 1
-- [ ] AC 2
-
-**Subtasks:**
-- [ ] `[PLAN]` Review API contract / design endpoint
-- [ ] `[DEV]` Implement [specific thing]
-- [ ] `[DEV]` Implement [specific thing]
-- [ ] `[TEST]` Write tests
-- [ ] `[TEST]` Verify acceptance criteria
-- [ ] `[DOCS]` Update [which docs]
-
-**Dependencies:** Task 1 (needs schema)
-**Files affected:** `path/to/file`
-
----
-
-### Task 3: [Task Name]
-
-**Status:** `backlog` | **Complexity:** S | **Priority:** P2
-
-**Acceptance Criteria:**
-- [ ] AC 1
-
-**Subtasks:**
-- [ ] `[DEV]` Implement [specific thing]
-- [ ] `[TEST]` Write tests
-- [ ] `[DOCS]` Update [which docs]
-
-**Dependencies:** Task 1, Task 2  
-**Files affected:** `path/to/file`
+<!-- Task files are created with `/sk:new-task` using this epic as parent. -->
+<!-- Each task file contains its own acceptance criteria, subtasks, and test plan. -->
+<!-- The phase shortcut in the filename (p/d/t/x) updates as the task progresses. -->
 
 ---
 

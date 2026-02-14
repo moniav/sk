@@ -27,8 +27,10 @@ Ask the user:
 
 ## Step 3: Generate Metadata
 
-1. **Find next ID**: Search `docs/tasks/` for `EPIC-` files, determine next sequential name
-2. **Filename**: `EPIC-kebab-case-title.md`
+1. **Find next epic number**: Scan `docs/tasks/EPIC-*.md` filenames, extract the number from `EPIC-{N}-...`, find the highest N, use N+1. If none exist, start at 1.
+2. **Filename**: `EPIC-{N}-p-{kebab-name}.md` (always starts in `p` = plan phase)
+   - Example: "User Authentication System" → `EPIC-1-p-user-auth-system.md`
+   - Phase shortcuts: `p` = plan, `d` = dev, `t` = test, `x` = done
 3. **Date**: Today's date
 
 ## Step 4: Deep Analysis
@@ -85,11 +87,27 @@ graph LR
 
 ## Step 7: Create Epic File
 
-Save to `docs/tasks/EPIC-kebab-case-title.md` using the template from `docs/templates/epic.md`.
+Save to `docs/tasks/EPIC-{N}-p-{kebab-name}.md` using the template from `docs/templates/epic.md`.
 
-Fill in all sections completely. The epic should be a complete project plan.
+Fill in the Problem Statement, Goal, Success Criteria, Solution Overview, Dependency Graph, and Risks sections. For the Task Breakdown table, fill in task names, complexity, priority, and dependencies — file links will be filled in Step 8.
 
-## Step 8: Update Task Board
+## Step 8: Create Separate Task Files
+
+For **each task** identified in Step 5, create a separate task file:
+
+1. **Find next task number**: Scan `docs/tasks/TASK-*.md`, extract highest N, increment for each task
+2. **Filename**: `TASK-{N}-E{epicN}-p-{kebab-name}.md` (where `epicN` is this epic's number)
+3. **Create each file** from `docs/templates/task-prd.md` with:
+   - **Parent Epic** linking back to this epic file
+   - **What** — one paragraph describing the task's deliverable
+   - **Acceptance Criteria** — 2-5 testable conditions (from Step 5 analysis)
+   - **PLAN section** — Approach, affected areas, dependencies
+   - **DEV section** — Subtasks at S complexity each, tagged `[DEV]`/`[TEST]`/`[DOCS]`
+   - **TEST section** — Test plan mapped to acceptance criteria
+4. **Update the epic's Task Breakdown table** — fill in the actual filenames and links for each task
+5. **Add each task** to `docs/tasks/README.md` in the Planning section
+
+## Step 9: Update Task Board
 
 Add the epic to `docs/tasks/README.md`:
 
@@ -98,19 +116,20 @@ Add the epic to `docs/tasks/README.md`:
 
 | Epic | Tasks | Progress | Priority | Link |
 |------|-------|----------|----------|------|
-| Epic Title | 0/N done | 🔴 | P1 | [Link](./EPIC-title.md) |
+| Epic Title | 0/N done | 🔴 | P1 | [Link](./EPIC-N-p-title.md) |
 ```
 
-## Step 9: Present Summary
+## Step 10: Present Summary
 
 Show the user:
 - Epic overview (goal + scope)
 - Task count with complexity breakdown
+- List of created task files with links
 - Dependency graph (Mermaid)
 - Key risks
 - Recommended starting task
 
-Ask: **"Want me to start with Task 1? I'll create its detailed task file."**
+Ask: **"Epic and all task files created. Want me to start planning Task 1 (`/sk:plan`)?"**
 
 ## Validation Checklist
 
@@ -118,8 +137,10 @@ Ask: **"Want me to start with Task 1? I'll create its detailed task file."**
 - [ ] Goal is one clear sentence
 - [ ] Epic-level acceptance criteria defined
 - [ ] Each task is self-contained and M complexity max
-- [ ] Each task has testable acceptance criteria
+- [ ] Each task has its own separate file (`TASK-{N}-E{epicN}-p-{name}.md`)
+- [ ] Each task file has testable acceptance criteria and subtask breakdown
+- [ ] Epic's Task Breakdown table links to all task files
 - [ ] Dependency graph is correct (no circular dependencies)
 - [ ] Files affected are verified against codebase
 - [ ] Risks and open questions documented
-- [ ] Added to `docs/tasks/README.md`
+- [ ] Epic and all tasks added to `docs/tasks/README.md`

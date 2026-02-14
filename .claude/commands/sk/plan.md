@@ -20,7 +20,7 @@ Complete the 🎯 PLAN phase for a task, taking it from `backlog`/`planning` →
 
 Ask the user which task to plan, or:
 - List tasks with status `backlog` or `planning` from `docs/tasks/README.md`
-- Scan `docs/tasks/TASK-*.md` files for status fields
+- Scan `docs/tasks/TASK-*-p-*.md` files (tasks in plan phase) and `docs/tasks/TASK-*.md` for status fields
 
 ## Step 3: Deep Codebase Analysis
 
@@ -109,13 +109,21 @@ Run the PLAN exit gate checklist:
 ## Step 6: Update Status
 
 1. Set task status to `ready` in the task file
-2. Update `docs/tasks/README.md` — move from Planning to "ready for dev"
-3. Add entry to task's Progress Log:
+2. **Rename the file**: Change the phase shortcut from `-p-` to `-d-` (plan complete = ready for dev)
+   - Example: `TASK-1-E1-p-registration-api.md` → `TASK-1-E1-d-registration-api.md`
+   - For epics: `EPIC-1-p-user-auth.md` → `EPIC-1-d-user-auth.md`
+   - Use `git mv` if the file is tracked
+3. **Update all references** to the old filename:
+   - `docs/tasks/README.md` — update any links pointing to the old name
+   - Parent epic file — update task references if applicable
+   - Any other files that link to this task
+4. Update `docs/tasks/README.md` — move from Planning to "ready for dev"
+5. Add entry to task's Progress Log:
 
 ```markdown
 | Date | Phase | Note |
 |------|-------|------|
-| YYYY-MM-DD | PLAN | Plan complete — N subtasks, complexity M |
+| YYYY-MM-DD | PLAN | Plan complete — N subtasks, complexity M. File renamed -p- to -d-. |
 ```
 
 ## Step 7: Present to User

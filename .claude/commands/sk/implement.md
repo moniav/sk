@@ -27,15 +27,17 @@ Ask the user:
 - **Priority**: P0-P3
 
 Determine scope:
-- **L/XL complexity** → Create an epic first (`/sk:new-epic`), then implement task by task
+- **L/XL complexity** → Create an epic first (`/sk:new-epic`) — this creates the epic file plus separate task files for each sub-task, then implement task by task
 - **M complexity** → Continue with this command (single task)
 - **XS/S complexity** → Proceed directly (skip formal task creation, but still follow Plan→Dev→Test mentally)
 
 ## Step 3: 🎯 PLAN Phase
 
 ### Create Task File
-1. Use Glob to scan `docs/tasks/TASK-*.md` — avoid duplicate names
-2. Create `docs/tasks/TASK-kebab-name.md` from template
+1. Use Glob to scan `docs/tasks/TASK-*.md` — find the highest task number N, use N+1
+2. Determine epic number: if part of an epic, extract its number from `EPIC-{N}-*.md`; if standalone use `S`
+3. Create `docs/tasks/TASK-{N}-{E{epicN}|S}-p-{kebab-name}.md` from template (always starts in `p` phase)
+   - Phase shortcuts: `p` = plan, `d` = dev, `t` = test, `x` = done
 
 ### Fill Plan
 1. **Scan codebase** — Map affected files, find existing patterns

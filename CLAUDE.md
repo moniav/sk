@@ -13,8 +13,10 @@ Read the full lifecycle guide: `docs/lifecycle/README.md`
 1. **Decide scope:** Epic (L/XL complexity) → Task (M complexity) → Just do it (XS/S complexity)
 2. **Follow the SOP:** `docs/sop/creating-a-task.md`
 3. **Use templates:**
-   - Epic: `cp docs/templates/epic.md docs/tasks/EPIC-name.md`
-   - Task: `cp docs/templates/task-prd.md docs/tasks/TASK-name.md`
+   - Epic: `cp docs/templates/epic.md docs/tasks/EPIC-{N}-p-{name}.md`
+   - Task: `cp docs/templates/task-prd.md docs/tasks/TASK-{N}-{E{epicN}|S}-p-{name}.md`
+   - Phase shortcuts in filename: `p` = plan, `d` = dev, `t` = test, `x` = done
+   - Counter: scan existing files, use next number
 4. **See worked example:** `docs/tasks/examples/TASK-user-registration-api.md`
 
 ### 🎯 PLAN Phase (do this BEFORE writing code)
@@ -99,6 +101,7 @@ Always use templates from `docs/templates/`:
 | `/sk:test` | Execute TEST phase | Verify acceptance criteria |
 | `/sk:task-status` | Show task board overview | Check progress across all tasks |
 | `/sk:update-docs` | Sync docs with codebase | After changes, or periodic audit |
+| `/sk:update` | Update SK commands & templates | Get latest version of shipkit-cld |
 | `/sk:init-docs` | Bootstrap docs from scratch | New project or full rebuild |
 | `/sk:new-sop` | Create a new SOP | Document a recurring procedure |
 | `/sk:new-adr` | Create an ADR | Record a significant tech decision |

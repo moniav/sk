@@ -3,7 +3,7 @@
 **Status:** backlog | planning | ready | in-progress | in-review | testing | done | blocked  
 **Priority:** P0 | P1 | P2 | P3  
 **Complexity:** XS | S | M | L | XL  
-**Parent Epic:** [Epic Name](./EPIC-name.md) (or "standalone")  
+**Parent Epic:** [Epic Name](./EPIC-N-p-name.md) (or "standalone")
 **Created:** YYYY-MM-DD  
 **Last updated:** YYYY-MM-DD  
 

@@ -9,7 +9,7 @@ Execute the 🧪 TEST phase for a task, verifying every acceptance criterion.
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. The task file being tested (`docs/tasks/TASK-*.md`) — especially Acceptance Criteria
+1. The task file being tested (`docs/tasks/TASK-*-t-*.md` — should be in test phase) — especially Acceptance Criteria
 2. `docs/lifecycle/README.md` — TEST phase rules and exit gate
 3. `docs/conventions/testing.md` — Testing standards and patterns
 
@@ -126,17 +126,25 @@ Verify the existing system still works:
 ### If ALL criteria pass:
 
 1. Set task status to `done`
-2. Update the Verification section with results
-3. Update Progress Log:
+2. **Rename the file**: Change the phase shortcut from `-t-` to `-x-` (test complete = done)
+   - Example: `TASK-1-E1-t-registration-api.md` → `TASK-1-E1-x-registration-api.md`
+   - For epics: `EPIC-1-t-user-auth.md` → `EPIC-1-x-user-auth.md`
+   - Use `git mv` if the file is tracked
+3. **Update all references** to the old filename:
+   - `docs/tasks/README.md` — update any links pointing to the old name
+   - Parent epic file — update task references if applicable
+   - Any other files that link to this task
+4. Update the Verification section with results
+5. Update Progress Log:
 
 ```markdown
-| YYYY-MM-DD | TEST | All ACs verified, all tests pass |
+| YYYY-MM-DD | TEST | All ACs verified, all tests pass. File renamed -t- to -x-. |
 | YYYY-MM-DD | DONE | Task complete |
 ```
 
-4. Move task in `docs/tasks/README.md` from "Testing" to "Recently Completed"
+6. Move task in `docs/tasks/README.md` from "Testing" to "Recently Completed"
 
-Inform user: **"✅ Task complete. All N acceptance criteria verified. Docs updated."**
+Inform user: **"Task complete. All N acceptance criteria verified. Docs updated."**
 
 ### If ANY criterion fails:
 

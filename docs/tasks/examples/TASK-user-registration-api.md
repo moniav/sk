@@ -1,13 +1,15 @@
 # Task: User Registration API
 
 > **Note:** This is a worked example showing a TypeScript/Node.js implementation. Your project's file paths and tools will differ — the format and lifecycle process are what matter.
+>
+> **Filename convention:** This file would be named `TASK-1-E1-x-user-registration-api.md` in the new naming convention — task #1, under epic #1, phase `x` (done).
 
-**Status:** done  
-**Priority:** P0  
-**Complexity:** M  
-**Parent Epic:** User Authentication (EPIC-user-auth)  
-**Created:** 2025-02-10  
-**Last updated:** 2025-02-11  
+**Status:** done
+**Priority:** P0
+**Complexity:** M
+**Parent Epic:** User Authentication ([EPIC-1-x-user-auth.md](../EPIC-1-x-user-auth.md))
+**Created:** 2025-02-10
+**Last updated:** 2025-02-11
 
 ---
 

@@ -9,7 +9,7 @@ Execute the 🔨 DEV phase for a task, implementing subtasks top-to-bottom.
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. The task file being implemented (`docs/tasks/TASK-*.md`)
+1. The task file being implemented (`docs/tasks/TASK-*-d-*.md` — should be in dev phase)
 2. `docs/lifecycle/README.md` — DEV phase rules and exit gate
 3. `docs/conventions/code-style.md` — Naming, patterns, anti-patterns
 4. `docs/conventions/file-structure.md` — Where files go
@@ -122,13 +122,21 @@ All conditions must be true:
 ## Step 8: Update Status
 
 1. Set task status to `testing` (or `in-review` if PR review needed)
-2. Update Progress Log:
+2. **Rename the file**: Change the phase shortcut from `-d-` to `-t-` (dev complete = ready for test)
+   - Example: `TASK-1-E1-d-registration-api.md` → `TASK-1-E1-t-registration-api.md`
+   - For epics: `EPIC-1-d-user-auth.md` → `EPIC-1-t-user-auth.md`
+   - Use `git mv` if the file is tracked
+3. **Update all references** to the old filename:
+   - `docs/tasks/README.md` — update any links pointing to the old name
+   - Parent epic file — update task references if applicable
+   - Any other files that link to this task
+4. Update Progress Log:
 
 ```markdown
-| YYYY-MM-DD | DEV | All N subtasks complete, docs updated |
+| YYYY-MM-DD | DEV | All N subtasks complete, docs updated. File renamed -d- to -t-. |
 ```
 
-3. Update `docs/tasks/README.md` — move from "In Progress" to "Testing"
+5. Update `docs/tasks/README.md` — move from "In Progress" to "Testing"
 
 Inform user: **"DEV phase complete. All subtasks implemented. Moving to TEST phase — I'll verify each acceptance criterion."**
 

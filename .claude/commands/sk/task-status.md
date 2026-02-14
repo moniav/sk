@@ -10,15 +10,21 @@ Scan all task files and present a complete status overview.
 
 1. Read `docs/tasks/README.md` for the current board state
 2. Scan all `docs/tasks/EPIC-*.md` and `docs/tasks/TASK-*.md` files
-3. Extract from each file:
-   - Title and ID
-   - Status (backlog, planning, ready, in-progress, testing, done, blocked)
+3. **Parse filename components** using the naming convention:
+   - Epics: `EPIC-{N}-{phase}-{kebab-name}.md` — extract counter N, phase (`p`/`d`/`t`/`x`)
+   - Tasks: `TASK-{N}-E{epicN}-{phase}-{kebab-name}.md` or `TASK-{N}-S-{phase}-{kebab-name}.md`
+     - Extract counter N, parent epic number (or S for standalone), phase shortcut
+   - Phase shortcuts: `p` = plan, `d` = dev, `t` = test, `x` = done
+4. Extract from each file:
+   - Title and counter number
+   - Phase (from filename: `p`/`d`/`t`/`x`) and status (from file content for more detail)
    - Priority (P0, P1, P2, P3)
-   - Parent epic (if applicable)
+   - Parent epic number (from filename `E{N}` or `S`)
    - Subtask progress (count checked / total)
    - Acceptance criteria progress (count checked / total)
    - Last updated date
    - Last Progress Log entry
+5. **Cross-check**: Verify that the filename phase matches the internal status (e.g., `-d-` file should have status `in-progress` or `ready`). Flag mismatches.
 
 ## Step 2: Detect Staleness
 

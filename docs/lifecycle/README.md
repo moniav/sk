@@ -142,9 +142,11 @@ Epic (L/XL — large feature, multiple tasks)
 
 | Level | Scope | Complexity | Has Own Doc? |
 |-------|-------|------------|-------------|
-| **Epic** | Full feature or initiative | L/XL — cross-cutting, multiple areas | Yes: `tasks/EPIC-name.md` |
-| **Task** | One shippable piece of the epic | M — one feature area, multi-file | Yes: section in epic doc or own file |
+| **Epic** | Full feature or initiative | L/XL — cross-cutting, multiple areas | Yes: `tasks/EPIC-{N}-{phase}-{name}.md` |
+| **Task** | One shippable piece of the epic | M — one feature area, multi-file | Yes: `tasks/TASK-{N}-E{epicN}-{phase}-{name}.md` or `tasks/TASK-{N}-S-{phase}-{name}.md` |
 | **Subtask** | Atomic unit of work | S — single concern, 1-2 files | No: lives as checklist in parent task |
+
+> **Filename phase shortcuts:** `p` = plan, `d` = dev, `t` = test, `x` = done. The phase shortcut in the filename is updated (file renamed) when the task transitions between lifecycle phases. This makes the current phase visible at a glance from the file listing.
 
 ### Self-Contained Task Rules
 

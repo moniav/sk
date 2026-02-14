@@ -17,7 +17,7 @@
 
 | Epic | Tasks | Progress | Priority | Link |
 |------|-------|----------|----------|------|
-| <!-- User Auth --> | <!-- 3/5 done --> | <!-- 🟡 --> | <!-- P0 --> | [Link](./EPIC-name.md) |
+| <!-- User Auth --> | <!-- 3/5 done --> | <!-- 🟡 --> | <!-- P0 --> | [Link](./EPIC-1-d-user-auth.md) |
 
 ## Task Pipeline
 
@@ -25,19 +25,19 @@
 
 | Task | Parent Epic | Priority | Link |
 |------|-------------|----------|------|
-| <!-- Define user roles --> | <!-- Auth --> | <!-- P1 --> | [Link](./TASK-name.md) |
+| <!-- Define user roles --> | <!-- Auth --> | <!-- P1 --> | [Link](./TASK-1-E1-p-define-user-roles.md) |
 
 ### 🔨 In Progress
 
 | Task | Parent Epic | Priority | Subtask Progress | Link |
 |------|-------------|----------|-----------------|------|
-| <!-- Registration API --> | <!-- Auth --> | <!-- P0 --> | <!-- 5/8 --> | [Link](./TASK-name.md) |
+| <!-- Registration API --> | <!-- Auth --> | <!-- P0 --> | <!-- 5/8 --> | [Link](./TASK-2-E1-d-registration-api.md) |
 
 ### 🧪 Testing
 
 | Task | Parent Epic | Criteria Met | Link |
 |------|-------------|-------------|------|
-| <!-- Login API --> | <!-- Auth --> | <!-- 3/4 --> | [Link](./TASK-name.md) |
+| <!-- Login API --> | <!-- Auth --> | <!-- 3/4 --> | [Link](./TASK-3-E1-t-login-api.md) |
 
 ### ✅ Recently Completed
 

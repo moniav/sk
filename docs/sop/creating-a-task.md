@@ -34,14 +34,33 @@ Follow this procedure whenever starting new work — from a bug fix to a full fe
 ### 1. Create the Task Doc
 
 ```bash
-# For an epic
-cp docs/templates/epic.md docs/tasks/EPIC-feature-name.md
+# For an epic (N = next sequential number)
+cp docs/templates/epic.md docs/tasks/EPIC-N-p-feature-name.md
+
+# For a task under epic 1
+cp docs/templates/task-prd.md docs/tasks/TASK-N-E1-p-feature-name.md
 
 # For a standalone task
-cp docs/templates/task-prd.md docs/tasks/TASK-feature-name.md
+cp docs/templates/task-prd.md docs/tasks/TASK-N-S-p-feature-name.md
 ```
 
-**Naming convention:** `EPIC-kebab-name.md` or `TASK-kebab-name.md`
+**Naming convention:**
+- Epics: `EPIC-{N}-{phase}-{kebab-name}.md` — e.g., `EPIC-1-p-user-auth.md`
+- Tasks (with epic): `TASK-{N}-E{epicN}-{phase}-{kebab-name}.md` — e.g., `TASK-1-E1-p-registration-api.md`
+- Tasks (standalone): `TASK-{N}-S-{phase}-{kebab-name}.md` — e.g., `TASK-5-S-p-fix-login-bug.md`
+
+**Phase shortcuts:** `p` = plan, `d` = dev, `t` = test, `x` = done
+
+**Counter logic:** Scan existing files in `docs/tasks/`, extract highest number, use next.
+
+### Phase Transition = File Rename
+
+When a task/epic moves between phases, **rename the file** to update the phase shortcut:
+- PLAN complete: rename `-p-` to `-d-`
+- DEV complete: rename `-d-` to `-t-`
+- TEST complete: rename `-t-` to `-x-`
+
+Update all internal links (task board, parent epic references) after renaming.
 
 ### 2. Fill In the PLAN Phase
 

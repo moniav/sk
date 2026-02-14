@@ -29,10 +29,13 @@ Ask the user:
 
 ## Step 3: Generate Metadata
 
-1. **Check existing tasks**: Use Glob to scan `docs/tasks/TASK-*.md` — avoid duplicate names
-2. **Filename**: `TASK-kebab-case-title.md`
-   - Example: "Add PDF export" → `TASK-add-pdf-export.md`
-3. **Date**: Today's date as `YYYY-MM-DD`
+1. **Find next task number**: Scan `docs/tasks/TASK-*.md` filenames, extract the number from `TASK-{N}-...`, find the highest N, use N+1. If none exist, start at 1.
+2. **Resolve epic number**: If the task has a parent epic, find the epic file (`docs/tasks/EPIC-{N}-*.md`) and extract its number N. Use `E{N}` in the filename. If standalone, use `S`.
+3. **Filename**: `TASK-{N}-E{epicN}-p-{kebab-name}.md` or `TASK-{N}-S-p-{kebab-name}.md`
+   - Example (with epic 1): "Add PDF export" → `TASK-3-E1-p-add-pdf-export.md`
+   - Example (standalone): "Fix login bug" → `TASK-4-S-p-fix-login-bug.md`
+   - Phase shortcuts: `p` = plan, `d` = dev, `t` = test, `x` = done
+4. **Date**: Today's date as `YYYY-MM-DD`
 
 ## Step 4: Analyze Scope
 
@@ -45,7 +48,7 @@ Before writing the task, scan the codebase to understand impact:
 
 ## Step 5: Create Task File
 
-Save to `docs/tasks/TASK-kebab-case-title.md` using the template from `docs/templates/task-prd.md`.
+Save to `docs/tasks/TASK-{N}-{E{epicN}|S}-p-{kebab-name}.md` using the template from `docs/templates/task-prd.md`.
 
 **Critical requirements for task creation:**
 
@@ -94,7 +97,7 @@ Add the new task to `docs/tasks/README.md` in the **Planning** section:
 
 | Task | Parent Epic | Priority | Link |
 |------|-------------|----------|------|
-| Title | Epic name | P1 | [Link](./TASK-title.md) |
+| Title | Epic name | P1 | [Link](./TASK-N-EN-p-title.md) |
 ```
 
 ## Step 7: Present Summary
