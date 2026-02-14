@@ -1,6 +1,6 @@
 {
   "name": "shipkit-cld",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Documentation & lifecycle system for Claude Code — Plan, Dev, Test workflow with 25 slash commands including code review, security analysis, debugging, refactoring, and git workflow",
   "type": "module",
   "bin": {
