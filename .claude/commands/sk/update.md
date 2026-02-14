@@ -23,7 +23,6 @@ npx shipkit-cld@latest update .
 This updates **only** the SK system files:
 - `.claude/commands/sk/` — all slash commands
 - `docs/templates/` — document templates
-- `docs/lifecycle/` — lifecycle guide
 - `docs/sop/` — standard operating procedures
 - `CLAUDE.md` — agent instructions
 

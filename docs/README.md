@@ -7,7 +7,6 @@
 
 | Section | Purpose | When to Read |
 |---------|---------|--------------|
-| [Lifecycle](./lifecycle/) | **Plan → Dev → Test** cycle, task hierarchy | Before starting ANY work |
 | [Tasks](./tasks/) | Task board, epics, PRDs & implementation plans | Before/during feature development |
 | [Architecture](./architecture/) | System design, component relationships, data flow | Before designing new features |
 | [Conventions](./conventions/) | Code standards, naming, patterns, file organization | Before writing any code |
@@ -30,12 +29,10 @@
 ```
 docs/
 ├── README.md                  ← You are here (master index)
-├── lifecycle/
-│   └── README.md              ← Plan → Dev → Test cycle & task hierarchy
 ├── tasks/
 │   ├── README.md              ← Task board (pipeline view)
-│   ├── EPIC-[name].md         ← Epic: large feature with multiple tasks
-│   ├── TASK-[name].md         ← Task: self-contained deliverable
+│   ├── EPIC-N-phase-name.md   ← Epic: large feature with multiple tasks
+│   ├── TASK-N-EN-phase-name.md ← Task: self-contained deliverable
 │   └── examples/              ← Worked examples of completed tasks
 ├── architecture/
 │   ├── README.md              ← Architecture overview + component map

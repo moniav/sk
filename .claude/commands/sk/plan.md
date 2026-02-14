@@ -9,8 +9,7 @@ Complete the 🎯 PLAN phase for a task, taking it from `backlog`/`planning` →
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/lifecycle/README.md` — PLAN phase rules and exit gate
-2. `docs/conventions/code-style.md` — To reference in subtasks
+1. `docs/conventions/code-style.md` — To reference in subtasks
 3. `docs/conventions/file-structure.md` — To identify correct file locations
 4. `docs/system/tech-stack.md` — Available tools and frameworks
 5. `docs/system/database-schema.md` — Current data model

@@ -10,8 +10,7 @@ Execute the 🔨 DEV phase for a task, implementing subtasks top-to-bottom.
 
 **ALWAYS start by reading:**
 1. The task file being implemented (`docs/tasks/TASK-*-d-*.md` — should be in dev phase)
-2. `docs/lifecycle/README.md` — DEV phase rules and exit gate
-3. `docs/conventions/code-style.md` — Naming, patterns, anti-patterns
+2. `docs/conventions/code-style.md` — Naming, patterns, anti-patterns
 4. `docs/conventions/file-structure.md` — Where files go
 5. `docs/conventions/testing.md` — Testing patterns (for `[TEST]` subtasks)
 6. `docs/system/database-schema.md` — If touching data layer

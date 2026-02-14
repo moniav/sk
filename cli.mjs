@@ -138,7 +138,6 @@ async function runInstall(target) {
     "docs/decisions",
     "docs/system",
     "docs/templates",
-    "docs/lifecycle",
     ".claude/commands/sk",
   ];
 
@@ -205,7 +204,6 @@ async function runInstall(target) {
 
   checkFile("CLAUDE.md");
   checkFile("docs/README.md");
-  checkFile("docs/lifecycle/README.md");
   checkFile("docs/conventions/code-style.md");
   checkFile("docs/templates/task-prd.md");
   checkFile("docs/templates/epic.md");
@@ -249,7 +247,6 @@ async function runInstall(target) {
   console.log("  |   ├── new-epic.md            /sk:new-epic");
   console.log("  |   └── ...                    (6 more)");
   console.log("  └── docs/                      <- Documentation hub");
-  console.log("      ├── lifecycle/             Plan -> Dev -> Test");
   console.log("      ├── conventions/           Code style, structure, git, testing");
   console.log("      ├── system/                Tech stack, schema, APIs");
   console.log("      ├── tasks/                 Task board + examples");
@@ -266,7 +263,7 @@ async function runInstall(target) {
 }
 
 // =============================================================================
-// UPDATE — commands, templates, and lifecycle only (preserves user content)
+// UPDATE — commands, templates, and SOPs only (preserves user content)
 // =============================================================================
 
 async function runUpdate(target) {
@@ -306,7 +303,6 @@ async function runUpdate(target) {
   console.log(c.bold("  Will update (overwrite):"));
   console.log(c.yellow("    .claude/commands/sk/    <- slash commands"));
   console.log(c.yellow("    docs/templates/         <- document templates"));
-  console.log(c.yellow("    docs/lifecycle/         <- lifecycle guide"));
   console.log(c.yellow("    docs/sop/               <- standard procedures"));
   console.log(c.yellow("    CLAUDE.md               <- agent instructions"));
   console.log();
@@ -351,14 +347,7 @@ async function runUpdate(target) {
 
   // --- Step 3: Update lifecycle & SOPs ---
 
-  console.log(c.blue("[3/4]") + " Updating lifecycle & SOPs...");
-
-  cpSync(
-    join(source, "docs", "lifecycle"),
-    join(target, "docs", "lifecycle"),
-    { recursive: true, force: true }
-  );
-  console.log(c.green("  [OK]") + " docs/lifecycle/ updated");
+  console.log(c.blue("[3/4]") + " Updating SOPs...");
 
   cpSync(
     join(source, "docs", "sop"),
@@ -384,7 +373,6 @@ async function runUpdate(target) {
   console.log(c.bold("  Updated:"));
   console.log("    .claude/commands/sk/   (slash commands)");
   console.log("    docs/templates/        (document templates)");
-  console.log("    docs/lifecycle/        (lifecycle guide)");
   console.log("    docs/sop/             (standard procedures)");
   console.log("    CLAUDE.md             (agent instructions)");
   console.log();

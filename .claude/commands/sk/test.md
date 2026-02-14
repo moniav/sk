@@ -10,8 +10,7 @@ Execute the 🧪 TEST phase for a task, verifying every acceptance criterion.
 
 **ALWAYS start by reading:**
 1. The task file being tested (`docs/tasks/TASK-*-t-*.md` — should be in test phase) — especially Acceptance Criteria
-2. `docs/lifecycle/README.md` — TEST phase rules and exit gate
-3. `docs/conventions/testing.md` — Testing standards and patterns
+2. `docs/conventions/testing.md` — Testing standards and patterns
 
 ## Step 2: Validate Readiness
 

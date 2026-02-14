@@ -9,8 +9,7 @@ Create an epic file in `docs/tasks/` for features that span multiple tasks (L/XL
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/lifecycle/README.md` — Task hierarchy and decomposition rules
-2. `docs/templates/epic.md` — Epic template to use
+1. `docs/templates/epic.md` — Epic template to use
 3. `docs/tasks/README.md` — Existing epics and tasks (avoid duplicates)
 4. `docs/system/tech-stack.md` — Current technologies
 5. `docs/architecture/README.md` — System design context

@@ -44,7 +44,7 @@ Use **Glob** to find test and config files:
 
 Use **Bash** to create directories:
 ```bash
-mkdir -p docs/architecture docs/conventions docs/sop docs/tasks/examples docs/flows docs/decisions docs/system docs/templates docs/lifecycle
+mkdir -p docs/architecture docs/conventions docs/sop docs/tasks/examples docs/flows docs/decisions docs/system docs/templates
 mkdir -p .claude/commands/sk
 ```
 
@@ -73,10 +73,9 @@ Based on the codebase scan, generate these files in order:
 8. **`docs/conventions/git-workflow.md`** — Check for .github/workflows, branch patterns
 9. **`docs/conventions/testing.md`** — Analyze existing test files for patterns
 
-### 3d. Lifecycle & Templates
+### 3d. Templates
 
-10. **`docs/lifecycle/README.md`** — Copy from template (lifecycle is universal)
-11. **`docs/templates/`** — Copy all templates (epic, task-prd, sop, adr, flow, component)
+10. **`docs/templates/`** — Copy all templates (epic, task-prd, sop, adr, flow, component)
 
 ### 3e. Index Files
 

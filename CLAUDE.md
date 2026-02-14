@@ -6,8 +6,6 @@
 
 **Every piece of work follows this cycle. No exceptions.**
 
-Read the full lifecycle guide: `docs/lifecycle/README.md`
-
 ### Starting New Work
 
 1. **Decide scope:** Epic (L/XL complexity) → Task (M complexity) → Just do it (XS/S complexity)
@@ -52,8 +50,7 @@ This project uses a structured documentation system. **Always consult docs befor
 ### Before ANY Implementation
 
 1. Read `docs/README.md` for full documentation map
-2. Read `docs/lifecycle/README.md` for the Plan → Dev → Test workflow
-3. Read `docs/conventions/` for code style, file structure, and patterns
+2. Read `docs/conventions/` for code style, file structure, and patterns
 4. Read relevant `docs/sop/` for step-by-step procedures
 5. Read relevant `docs/architecture/` for system design context
 6. Check `docs/decisions/` if you're unsure WHY something is done a certain way

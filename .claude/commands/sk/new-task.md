@@ -10,8 +10,7 @@ Create a self-contained task file in `docs/tasks/` following the development lif
 
 **ALWAYS start by reading these files for context:**
 1. `docs/README.md` — Documentation index
-2. `docs/lifecycle/README.md` — Plan → Dev → Test cycle and task hierarchy
-3. `docs/conventions/code-style.md` — Coding standards to reference in subtasks
+2. `docs/conventions/code-style.md` — Coding standards to reference in subtasks
 4. `docs/conventions/file-structure.md` — Where files should go
 5. `docs/system/tech-stack.md` — Current technologies and versions
 6. `docs/system/database-schema.md` — Current schema state
@@ -114,7 +113,7 @@ Ask: **"Plan looks good? Should I resolve any open questions, or are you ready t
 ## Validation Checklist
 
 Before saving:
-- [ ] Read `docs/lifecycle/README.md` and templates first
+- [ ] Read templates and conventions first
 - [ ] Objective is one clear sentence
 - [ ] Acceptance criteria are testable (yes/no answer possible)
 - [ ] Every subtask is S complexity (single concern, 1-2 files)

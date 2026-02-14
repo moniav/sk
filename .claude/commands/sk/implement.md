@@ -12,8 +12,7 @@ Run the complete development lifecycle for a feature in a single session.
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/lifecycle/README.md` — Full lifecycle rules
-2. `docs/conventions/code-style.md` — Coding standards
+1. `docs/conventions/code-style.md` — Coding standards
 3. `docs/conventions/file-structure.md` — Project organization
 4. `docs/conventions/testing.md` — Testing patterns
 5. `docs/system/tech-stack.md` — Current stack
