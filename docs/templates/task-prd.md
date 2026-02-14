@@ -1,11 +1,17 @@
-# Task: [Task Name]
+---
+schema: v1
+type: task
+id: TASK-{N}
+title: "{Task Title}"
+phase: plan
+status: planning
+priority: P1
+epic: E{N} | standalone
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
 
-**Status:** backlog | planning | ready | in-progress | in-review | testing | done | blocked  
-**Priority:** P0 | P1 | P2 | P3  
-**Complexity:** XS | S | M | L | XL  
-**Parent Epic:** [Epic Name](./EPIC-N-p-name.md) (or "standalone")
-**Created:** YYYY-MM-DD  
-**Last updated:** YYYY-MM-DD  
+# Task: [Task Name]
 
 ---
 
@@ -23,7 +29,7 @@
 
 ---
 
-## 🎯 PLAN
+## [PLAN]
 
 ### Approach
 
@@ -52,11 +58,29 @@
 |----------|--------|
 | — | — |
 
-> ✅ **PLAN exit gate:** All questions resolved, approach clear, subtasks defined below.
+> **PLAN exit gate:** All questions resolved, approach clear, subtasks defined below.
 
 ---
 
-## 🔨 DEV
+## Phase Analysis
+
+<!-- Written by /sk:plan, consumed by /sk:dev — DO NOT fill manually -->
+
+### Codebase Scan Results
+
+<!-- Patterns found, affected files, reusable utilities -->
+
+### Technical Decisions
+
+<!-- Approach chosen and why -->
+
+### Dev Notes
+
+<!-- Written by /sk:dev, consumed by /sk:test -->
+
+---
+
+## [DEV]
 
 ### Subtasks
 
@@ -73,11 +97,11 @@
 
 <!-- Key decisions, gotchas, or context for the person/agent implementing this -->
 
-> ✅ **DEV exit gate:** All DEV subtasks done, code self-reviewed, docs updated.
+> **DEV exit gate:** All DEV subtasks done, code self-reviewed, docs updated.
 
 ---
 
-## 🧪 TEST
+## [TEST]
 
 ### Test Plan
 
@@ -97,7 +121,7 @@
 - [ ] All existing tests still pass
 - [ ] No regressions
 
-> ✅ **TEST exit gate:** All criteria verified, all tests pass, no regressions.
+> **TEST exit gate:** All criteria verified, all tests pass, no regressions.
 
 ---
 

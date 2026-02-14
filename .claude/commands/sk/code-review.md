@@ -9,10 +9,11 @@ Perform a thorough code review across correctness, conventions, performance, mai
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/conventions/code-style.md` — Naming, patterns, anti-patterns
-2. `docs/conventions/file-structure.md` — Where files go, co-location rules
-3. `docs/conventions/testing.md` — Testing standards and patterns
-4. `docs/conventions/git-workflow.md` — Commit and PR conventions
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/conventions/code-style.md` — Naming, patterns, anti-patterns
+3. `docs/conventions/file-structure.md` — Where files go, co-location rules
+4. `docs/conventions/testing.md` — Testing standards and patterns
+5. `docs/conventions/git-workflow.md` — Commit and PR conventions
 
 ## Step 2: Determine Scope
 

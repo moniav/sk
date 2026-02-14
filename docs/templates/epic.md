@@ -1,10 +1,16 @@
-# Epic: [Feature Name]
+---
+schema: v1
+type: epic
+id: EPIC-{N}
+title: "{Epic Title}"
+phase: plan
+status: planning
+priority: P1
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
 
-**Status:** backlog | planning | in-progress | done | blocked  
-**Priority:** P0 | P1 | P2 | P3  
-**Created:** YYYY-MM-DD  
-**Last updated:** YYYY-MM-DD  
-**Target:** YYYY-MM-DD (optional)  
+# Epic: [Feature Name]
 
 ---
 
@@ -59,13 +65,13 @@ graph TD
 
 | # | Task | Complexity | Priority | Dependencies | File |
 |---|------|-----------|----------|--------------|------|
-| 1 | [Task Name] | M | P1 | None | [TASK-{N}-E{epicN}-p-{name}.md](./TASK-{N}-E{epicN}-p-{name}.md) |
-| 2 | [Task Name] | M | P1 | Task 1 | [TASK-{N}-E{epicN}-p-{name}.md](./TASK-{N}-E{epicN}-p-{name}.md) |
-| 3 | [Task Name] | S | P2 | Task 1, 2 | [TASK-{N}-E{epicN}-p-{name}.md](./TASK-{N}-E{epicN}-p-{name}.md) |
+| 1 | [Task Name] | M | P1 | None | [TASK-{N}-E{epicN}-{name}.md](./TASK-{N}-E{epicN}-{name}.md) |
+| 2 | [Task Name] | M | P1 | Task 1 | [TASK-{N}-E{epicN}-{name}.md](./TASK-{N}-E{epicN}-{name}.md) |
+| 3 | [Task Name] | S | P2 | Task 1, 2 | [TASK-{N}-E{epicN}-{name}.md](./TASK-{N}-E{epicN}-{name}.md) |
 
 <!-- Task files are created with `/sk:new-task` using this epic as parent. -->
 <!-- Each task file contains its own acceptance criteria, subtasks, and test plan. -->
-<!-- The phase shortcut in the filename (p/d/t/x) updates as the task progresses. -->
+<!-- Phase and status are tracked in YAML frontmatter inside each task file. -->
 
 ---
 

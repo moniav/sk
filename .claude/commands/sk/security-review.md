@@ -9,10 +9,11 @@ Analyze the codebase for security vulnerabilities covering OWASP Top 10, hardcod
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/system/tech-stack.md` — Framework, language, dependencies
-2. `docs/system/api-reference.md` — API endpoints and auth patterns
-3. `docs/system/env-variables.md` — Expected environment variables (if exists)
-4. `docs/system/integrations.md` — External service connections (if exists)
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/system/tech-stack.md` — Framework, language, dependencies
+3. `docs/system/api-reference.md` — API endpoints and auth patterns
+4. `docs/system/env-variables.md` — Expected environment variables (if exists)
+5. `docs/system/integrations.md` — External service connections (if exists)
 
 ## Step 2: Determine Scope
 
@@ -41,6 +42,12 @@ Scan for hardcoded secrets and credentials:
 - `.gitignore` includes `.env`, `.env.*`, `*.pem`, `*.key`
 - No secrets in committed files (check git history if suspicious)
 - Environment variables used instead of hardcoded values
+
+**Check git history for leaked secrets:**
+```bash
+git log --all --diff-filter=D -- "*.env" "*.pem" "*.key"
+git log --all -S "password" --oneline -- "*.json" "*.yaml" "*.yml" "*.toml"
+```
 
 ## Step 4: OWASP Top 10 Analysis
 
@@ -81,15 +88,16 @@ Review the codebase against each OWASP category:
 - Unnecessary features/endpoints disabled
 
 ### A06: Vulnerable Components
-- Run dependency audit:
-  ```bash
-  # Node.js
-  npm audit
-  # Python
-  pip audit  # or safety check
-  # Rust
-  cargo audit
-  ```
+
+Run the appropriate dependency audit tool:
+- If `package.json` exists: run `npm audit`
+- If `requirements.txt`/`pyproject.toml` exists: run `pip audit` (or `safety check`)
+- If `Cargo.toml` exists: run `cargo audit`
+- If `go.mod` exists: run `govulncheck ./...`
+
+Include the output in the findings.
+
+Also:
 - Check for known CVEs in major dependencies
 - Verify dependencies are reasonably up to date
 

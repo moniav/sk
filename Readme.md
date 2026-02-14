@@ -6,51 +6,113 @@ Claude Code (and any AI coding agent) works dramatically better when it has stru
 
 ## How It Works
 
-```
-CLAUDE.md (entry point — read automatically)
-    ↓
-.claude/commands/sk/ (12 commands: /sk:plan /sk:dev /sk:test ...)
-    ↓
-docs/README.md (master index — navigation hub)
-    ↓
-┌──────────────┬──────────────┬────────────┐
-│  LIFECYCLE   │  WHAT        │  WHY       │
-│              │              │            │
-│ lifecycle    │ architecture │  decisions │
-│ tasks        │ system       │            │
-│ (plan/dev/   │ flows        │            │
-│  test cycle) │              │            │
-├──────────────┤              │            │
-│  HOW         │              │            │
-│              │              │            │
-│ conventions  │              │            │
-│ sop          │              │            │
-└──────────────┴──────────────┴────────────┘
+```mermaid
+graph TD
+    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>19 slash commands</i>"]
+    B --> C["docs/README.md<br/><i>master index</i>"]
+
+    C --> D["LIFECYCLE"]
+    C --> E["WHAT"]
+    C --> F["WHY"]
+    C --> G["HOW"]
+
+    D --> D1["tasks/"]
+    D1 --> D2["Plan > Dev > Test cycle"]
+
+    E --> E1["architecture/"]
+    E --> E2["system/"]
+    E --> E3["flows/"]
+
+    G --> G1["conventions/"]
+    G --> G2["sop/"]
+
+    F --> F1["decisions/"]
+
+    style A fill:#2d6a4f,color:#fff
+    style B fill:#40916c,color:#fff
+    style C fill:#52b788,color:#fff
+    style D fill:#264653,color:#fff
+    style E fill:#264653,color:#fff
+    style F fill:#264653,color:#fff
+    style G fill:#264653,color:#fff
 ```
 
-**LIFECYCLE** = How work flows from idea to done (plan → dev → test, task hierarchy)
+**LIFECYCLE** = How work flows from idea to done (plan > dev > test, task hierarchy)
 **WHAT** = What the system looks like (architecture, current state, diagrams)
 **HOW** = How to work in it (coding rules, procedures)
 **WHY** = Why things are the way they are (decision records)
 
-## Task Hierarchy
+## Task Lifecycle
 
-```
-Epic (L/XL — large feature, cross-cutting)
-├── Task (M — self-contained deliverable, one feature area)
-│   ├── Subtask S (tagged: [DEV] [TEST] [DOCS])
-│   ├── Subtask S
-│   └── Subtask S
-└── Task
-    ├── Subtask S
-    └── Subtask S
+Every piece of work flows through three phases with explicit exit gates:
+
+```mermaid
+stateDiagram-v2
+    direction LR
+
+    [*] --> Plan
+    Plan --> Dev : Exit gate:<br/>questions resolved,<br/>subtasks defined,<br/>criteria testable
+    Dev --> Test : Exit gate:<br/>subtasks done,<br/>code self-reviewed,<br/>docs updated
+    Test --> Done : Exit gate:<br/>all criteria verified,<br/>all tests pass
+    Done --> [*]
+
+    state Plan {
+        direction TB
+        p1: Write problem statement
+        p2: Define acceptance criteria
+        p3: Break into subtasks
+        p4: Resolve open questions
+        p1 --> p2
+        p2 --> p3
+        p3 --> p4
+    }
+
+    state Dev {
+        direction TB
+        d1: Execute subtasks
+        d2: Follow conventions
+        d3: Update docs with code
+        d1 --> d2
+        d2 --> d3
+    }
+
+    state Test {
+        direction TB
+        t1: Verify each criterion
+        t2: Test error paths
+        t3: Confirm no regressions
+        t1 --> t2
+        t2 --> t3
+    }
 ```
 
-Each task goes through **Plan → Dev → Test → Done** with explicit exit gates between phases.
+### Task Hierarchy
+
+```mermaid
+graph TD
+    Epic["Epic<br/><i>L/XL — large feature, cross-cutting</i>"]
+    Epic --> T1["Task<br/><i>M — self-contained deliverable</i>"]
+    Epic --> T2["Task<br/><i>M — self-contained deliverable</i>"]
+
+    T1 --> S1["Subtask S<br/>[DEV]"]
+    T1 --> S2["Subtask S<br/>[TEST]"]
+    T1 --> S3["Subtask S<br/>[DOCS]"]
+
+    T2 --> S4["Subtask S"]
+    T2 --> S5["Subtask S"]
+
+    style Epic fill:#264653,color:#fff
+    style T1 fill:#2a9d8f,color:#fff
+    style T2 fill:#2a9d8f,color:#fff
+    style S1 fill:#e9c46a,color:#000
+    style S2 fill:#e9c46a,color:#000
+    style S3 fill:#e9c46a,color:#000
+    style S4 fill:#e9c46a,color:#000
+    style S5 fill:#e9c46a,color:#000
+```
 
 ## Installation
 
-### npx (recommended)
 ```bash
 # From your project root:
 npx shipkit-cld
@@ -59,20 +121,161 @@ npx shipkit-cld
 npx shipkit-cld /path/to/my-project
 ```
 
+## Getting Started
 
-### Post-Install
+SK works with both new projects and existing codebases. The setup path differs.
 
-1. Edit `docs/system/tech-stack.md` — add your real stack
-2. Edit `docs/conventions/code-style.md` — match your patterns
-3. Edit `CLAUDE.md` — add your project commands and constraints
-4. Run `/sk:init-docs` in Claude Code to auto-populate from codebase
-5. Run `/sk:new-task` to create your first task
+```mermaid
+flowchart TD
+    Start(["npx shipkit-cld"]) --> Q{"New or existing<br/>codebase?"}
+
+    Q -->|"Greenfield<br/>(no code yet)"| GF1["/sk:kickoff<br/><i>guided setup + research</i>"]
+    GF1 --> GF2["/sk:brainstorm<br/><i>define first feature</i>"]
+    GF2 --> Impl
+
+    Q -->|"Brownfield<br/>(existing code)"| BF1["/sk:init-docs<br/><i>auto-scan codebase<br/>+ detect build commands</i>"]
+    BF1 --> BF2["Review generated docs"]
+    BF2 --> BF3["/sk:new-task"]
+    BF3 --> Impl
+
+    Impl["/sk:implement<br/><i>build it</i>"]
+    Impl --> Ship(["Ship it"])
+
+    style Start fill:#2d6a4f,color:#fff
+    style Ship fill:#2d6a4f,color:#fff
+    style Q fill:#264653,color:#fff
+    style Impl fill:#e76f51,color:#fff
+    style GF1 fill:#2a9d8f,color:#fff
+    style GF2 fill:#2a9d8f,color:#fff
+    style BF1 fill:#e9c46a,color:#000
+    style BF2 fill:#e9c46a,color:#000
+    style BF3 fill:#e9c46a,color:#000
+```
+
+### Greenfield Project (starting from scratch)
+
+You have no code yet — you're setting up the project structure and want Claude Code to follow good practices from the start.
+
+```
+1. npx shipkit-cld                          # Install SK
+2. /sk:kickoff                              # Answer questions, docs auto-generated
+3. /sk:brainstorm                           # Describe your first feature, get epic + tasks
+4. /sk:implement                            # Build it
+```
+
+`/sk:kickoff` is a guided conversation that asks what you're building, what stack you want, and what the core features are. It then **researches current best practices** for your chosen stack (latest versions, recommended project structure, naming conventions, common pitfalls) and generates all foundation docs automatically:
+
+- `docs/system/tech-stack.md` — with current stable versions from research
+- `docs/system/project-context.md` — dense project summary
+- `docs/conventions/code-style.md` — conventions for your chosen language/framework
+- `docs/conventions/file-structure.md` — recommended project layout
+- `docs/conventions/testing.md` — test patterns for your stack
+- `CLAUDE.md` Build Commands — filled in for your stack
+- ADRs for your major stack choices
+
+`/sk:brainstorm` then takes your first feature idea, explores it through conversation, optionally researches domain patterns ("what do similar apps typically include?"), and produces a structured epic with tasks — ready for `/sk:implement`.
+
+**No manual file editing required.** Both commands generate everything through conversation.
+
+### Brownfield Project (existing codebase)
+
+You have an existing codebase — you want Claude Code to understand it and follow its patterns.
+
+```
+1. npx shipkit-cld                          # Install SK
+2. /sk:init-docs                            # Auto-scan codebase, detect build commands, populate docs
+3. Review generated docs                    # Verify accuracy, fix anything wrong
+4. /sk:new-task                             # Define your first piece of work
+5. /sk:implement                            # Build it
+```
+
+`/sk:init-docs` scans your codebase and generates:
+- `docs/system/tech-stack.md` — from `package.json`, `pyproject.toml`, etc.
+- `docs/system/project-context.md` — dense project summary
+- `docs/system/database-schema.md` — from schema/model files
+- `docs/system/api-reference.md` — from route definitions
+- `docs/conventions/code-style.md` — from observed naming and formatting patterns
+- `docs/conventions/file-structure.md` — from actual project layout
+- `docs/architecture/README.md` — component map from directory structure
+- ADRs for 2-3 major tech choices it discovers
+
+**What to review after init:** The auto-generated docs are best-effort. Skim each one and correct anything wrong — especially conventions and architecture docs. These are what Claude Code reads before every task, so accuracy matters.
+
+**Build commands are auto-detected** from `package.json` scripts, `Makefile` targets, `pyproject.toml` tools, `Cargo.toml`, `go.mod`, and CI workflows. The report shows what was detected and what's missing. You only need to fill in commands marked `[NOT DETECTED]`.
+
+**What to review manually:**
+- `docs/conventions/code-style.md` — add any unwritten rules the scan couldn't detect
+- `docs/system/project-context.md` — add gotchas, in-progress work, team context
+
+**Tip:** Run `/sk:update-docs` periodically to keep docs in sync as your codebase evolves.
+
+## Command Map
+
+```mermaid
+graph LR
+    subgraph "Getting Started"
+        kickoff["/sk:kickoff"]
+        brainstorm["/sk:brainstorm"]
+        initdocs["/sk:init-docs"]
+    end
+
+    subgraph "Lifecycle"
+        implement["/sk:implement"]
+        plan["/sk:plan"]
+        dev["/sk:dev"]
+        test["/sk:test"]
+    end
+
+    subgraph "Creation"
+        newtask["/sk:new-task"]
+        newepic["/sk:new-epic"]
+        newsop["/sk:new-sop"]
+        newadr["/sk:new-adr"]
+        newflow["/sk:new-flow"]
+    end
+
+    subgraph "Quality"
+        commit["/sk:commit"]
+        codereview["/sk:code-review"]
+        secreview["/sk:security-review"]
+        uireview["/sk:ui-review"]
+    end
+
+    subgraph "Management"
+        status["/sk:task-status"]
+        updatedocs["/sk:update-docs"]
+        update["/sk:update"]
+    end
+
+    kickoff -->|"generates docs"| brainstorm
+    brainstorm -->|"creates tasks"| implement
+    initdocs -->|"populates docs"| newtask
+
+    implement --> plan
+    plan --> dev
+    dev --> test
+
+    newepic -->|"creates tasks"| newtask
+
+    dev -->|"done"| codereview
+    codereview --> secreview
+    secreview --> commit
+
+    style kickoff fill:#2d6a4f,color:#fff
+    style brainstorm fill:#2d6a4f,color:#fff
+    style initdocs fill:#2d6a4f,color:#fff
+    style implement fill:#e76f51,color:#fff
+    style plan fill:#2a9d8f,color:#fff
+    style dev fill:#2a9d8f,color:#fff
+    style test fill:#2a9d8f,color:#fff
+    style commit fill:#e9c46a,color:#000
+```
 
 ## Key Design Decisions
 
-**Plan → Dev → Test lifecycle** — Forces thinking before coding. Each phase has an explicit exit gate so nothing gets skipped. The 3-phase cycle is simple enough to actually follow.
+**Plan > Dev > Test lifecycle** — Forces thinking before coding. Each phase has an explicit exit gate so nothing gets skipped. The 3-phase cycle is simple enough to actually follow.
 
-**Task hierarchy (Epic → Task → Subtask)** — Epics break into tasks, tasks break into subtasks. Each level has a clear scope and complexity ceiling. Subtasks capped at S complexity (single concern) prevent scope creep and make progress visible.
+**Task hierarchy (Epic > Task > Subtask)** — Epics break into tasks, tasks break into subtasks. Each level has a clear scope and complexity ceiling. Subtasks capped at S complexity (single concern) prevent scope creep and make progress visible.
 
 **Self-contained tasks** — Every task is independently buildable, testable, and shippable. This means Claude Code can execute a task without needing context from other in-flight work.
 
@@ -87,37 +290,6 @@ npx shipkit-cld /path/to/my-project
 **SOPs for procedures** — AI agents follow explicit steps better than vague guidelines. SOPs eliminate improvisation on critical tasks.
 
 **Flat over deep** — Two levels max. Everything discoverable from the README index.
-
-## Slash Commands
-
-The `.claude/commands/sk/` folder contains 17 Claude Code commands under the `sk` namespace:
-
-**Lifecycle Commands** (the core loop):
-- `/sk:implement` — Full Plan → Dev → Test in one session
-- `/sk:plan` — Complete the PLAN phase for a task
-- `/sk:dev` — Execute the DEV phase (implement subtasks)
-- `/sk:test` — Execute the TEST phase (verify acceptance criteria)
-
-**Creation Commands** (make new docs):
-- `/sk:new-task` — Create a task with full lifecycle structure
-- `/sk:new-epic` — Create an epic with task decomposition
-- `/sk:new-sop` — Create a standard operating procedure
-- `/sk:new-adr` — Record an architecture decision
-- `/sk:new-flow` — Create a Mermaid flow diagram from code analysis
-
-**Quality & Workflow Commands** (review and ship):
-- `/sk:commit` — Smart git commit with conventional format, optional push + PR
-- `/sk:code-review` — Analyze code for bugs, conventions, performance, maintainability
-- `/sk:security-review` — Security scan covering OWASP Top 10, secrets, dependencies
-- `/sk:ui-review` — UI quality review for accessibility, responsive design, UX patterns
-
-**Management Commands** (maintain the system):
-- `/sk:task-status` — Dashboard showing all task progress
-- `/sk:update-docs` — Deep scan codebase and sync documentation
-- `/sk:init-docs` — Bootstrap docs from scratch for a new project
-- `/sk:update` — Update SK commands and templates to the latest version
-
-Every command reads the relevant docs first, then acts. They reference each other — `/sk:implement` chains `/sk:plan` → `/sk:dev` → `/sk:test`, and `/sk:new-epic` can trigger `/sk:new-task` for each task in the breakdown.
 
 ## Anti-Patterns to Avoid
 

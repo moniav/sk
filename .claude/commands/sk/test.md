@@ -4,13 +4,15 @@ description: Execute the TEST phase — verify acceptance criteria and run all t
 
 # Test — Verify Implementation
 
-Execute the 🧪 TEST phase for a task, verifying every acceptance criterion.
+Execute the [TEST] phase for a task, verifying every acceptance criterion.
 
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. The task file being tested (`docs/tasks/TASK-*-t-*.md` — should be in test phase) — especially Acceptance Criteria
-2. `docs/conventions/testing.md` — Testing standards and patterns
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. The task file being tested — find task files with `phase: test` in frontmatter — especially Acceptance Criteria
+3. The task's "Phase Analysis > Dev Notes" section — understand what was built and why
+4. `docs/conventions/testing.md` — Testing standards and patterns
 
 ## Step 2: Validate Readiness
 
@@ -21,7 +23,7 @@ Execute the 🧪 TEST phase for a task, verifying every acceptance criterion.
 - [ ] All `[DOCS]` subtasks are checked off
 ```
 
-If DEV isn't complete → go back (`/sk:dev` command).
+If DEV isn't complete — go back (`/sk:dev` command).
 
 ## Step 3: Run Automated Tests
 
@@ -126,24 +128,16 @@ Verify the existing system still works:
 
 ### If ALL criteria pass:
 
-1. Set task status to `done`
-2. **Rename the file**: Change the phase shortcut from `-t-` to `-x-` (test complete = done)
-   - Example: `TASK-1-E1-t-registration-api.md` → `TASK-1-E1-x-registration-api.md`
-   - For epics: `EPIC-1-t-user-auth.md` → `EPIC-1-x-user-auth.md`
-   - Use `git mv` if the file is tracked
-3. **Update all references** to the old filename:
-   - `docs/tasks/README.md` — update any links pointing to the old name
-   - Parent epic file — update task references if applicable
-   - Any other files that link to this task
-4. Update the Verification section with results
-5. Update Progress Log:
+1. Update YAML frontmatter: set `phase: done`, `status: done`, update `updated` date
+2. Update the Verification section with results
+3. Update Progress Log:
 
 ```markdown
-| YYYY-MM-DD | TEST | All ACs verified, all tests pass. File renamed -t- to -x-. |
+| YYYY-MM-DD | TEST | All ACs verified, all tests pass. |
 | YYYY-MM-DD | DONE | Task complete |
 ```
 
-6. Move task in `docs/tasks/README.md` from "Testing" to "Recently Completed"
+4. Move task in `docs/tasks/README.md` from "Testing" to "Recently Completed"
 
 Inform user: **"Task complete. All N acceptance criteria verified. Docs updated."**
 
@@ -160,4 +154,4 @@ Inform user: **"Task complete. All N acceptance criteria verified. Docs updated.
 4. Return to DEV to fix the issue
 5. Re-run TEST from Step 3
 
-Inform user: **"❌ AC-2 failed: [description]. Returning to DEV to fix. Will re-verify after."**
+Inform user: **"[FAIL] AC-2 failed: [description]. Returning to DEV to fix. Will re-verify after."**

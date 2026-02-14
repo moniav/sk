@@ -13,15 +13,15 @@
 
 ### Option A: [Name]
 
-- ✅ Pro 1
-- ✅ Pro 2
-- ❌ Con 1
+- [+] Pro 1
+- [+] Pro 2
+- [-] Con 1
 
 ### Option B: [Name]
 
-- ✅ Pro 1
-- ❌ Con 1
-- ❌ Con 2
+- [+] Pro 1
+- [-] Con 1
+- [-] Con 2
 
 ## Decision
 

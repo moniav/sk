@@ -14,23 +14,23 @@ graph TB
         Web[Web App]
         Mobile[Mobile App]
     end
-    
+
     subgraph "API Layer"
         Gateway[API Gateway]
         Auth[Auth Service]
     end
-    
+
     subgraph "Business Logic"
         Core[Core Services]
         Workers[Background Workers]
     end
-    
+
     subgraph "Data Layer"
         DB[(Database)]
         Cache[(Cache)]
         Queue[(Message Queue)]
     end
-    
+
     Web --> Gateway
     Mobile --> Gateway
     Gateway --> Auth
@@ -41,7 +41,7 @@ graph TB
     Queue --> Workers
 ```
 
-> ⚠️ Replace the diagram above with your actual system architecture.
+> [WARN] Replace the diagram above with your actual system architecture.
 
 ## Component Index
 

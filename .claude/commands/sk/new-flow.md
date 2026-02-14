@@ -9,9 +9,10 @@ Create a visual flow diagram in `docs/flows/` by analyzing actual code paths.
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/flows/README.md` — Existing diagrams + Mermaid cheat sheet
-2. `docs/templates/flow-diagram.md` — Flow template
-3. `docs/architecture/README.md` — System components
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/flows/README.md` — Existing diagrams + Mermaid cheat sheet
+3. `docs/templates/flow-diagram.md` — Flow template
+4. `docs/architecture/README.md` — System components
 
 ## Step 2: Determine Flow Type
 

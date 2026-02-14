@@ -17,16 +17,17 @@ Create an SOP when:
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/sop/README.md` — Existing SOPs (avoid duplicates)
-2. `docs/templates/sop-procedure.md` — SOP template
-3. `docs/conventions/` — Relevant conventions the SOP should enforce
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/sop/README.md` — Existing SOPs (avoid duplicates)
+3. `docs/templates/sop-procedure.md` — SOP template
+4. `docs/conventions/` — Relevant conventions the SOP should enforce
 
 ## Step 2: Gather Information
 
 Ask the user:
 - **Procedure name**: Short (e.g., "Add a new API endpoint")
 - **When to follow this**: One sentence trigger condition
-- **Criticality**: 🔴 High (mistakes cause damage) | 🟡 Medium | 🟢 Low
+- **Criticality**: High (mistakes cause damage) | Medium | Low
 - **Current process**: How do they do it today? What goes wrong?
 
 ## Step 3: Analyze the Procedure
@@ -57,7 +58,7 @@ Save to `docs/sop/kebab-case-name.md` using `docs/templates/sop-procedure.md`.
 # SOP: [Name]
 
 **Last updated:** YYYY-MM-DD
-**Criticality:** 🔴 | 🟡 | 🟢
+**Criticality:** High | Medium | Low
 
 ## Purpose
 One sentence: When do you follow this SOP?
@@ -90,7 +91,7 @@ How to undo if something goes wrong.
 Add to `docs/sop/README.md`:
 
 ```markdown
-| [Procedure Name](./name.md) | When to use | 🟡 Medium |
+| [Procedure Name](./name.md) | When to use | Medium |
 ```
 
 ## Step 6: Validate

@@ -1,7 +1,7 @@
 # SOP: [Procedure Name]
 
 **Last updated:** YYYY-MM-DD  
-**Criticality:** 🔴 High | 🟡 Medium | 🟢 Low  
+**Criticality:** High | Medium | Low  
 
 ## Purpose
 

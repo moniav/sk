@@ -9,7 +9,8 @@ Create an epic file in `docs/tasks/` for features that span multiple tasks (L/XL
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/templates/epic.md` — Epic template to use
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/templates/epic.md` — Epic template to use
 3. `docs/tasks/README.md` — Existing epics and tasks (avoid duplicates)
 4. `docs/system/tech-stack.md` — Current technologies
 5. `docs/architecture/README.md` — System design context
@@ -27,10 +28,10 @@ Ask the user:
 ## Step 3: Generate Metadata
 
 1. **Find next epic number**: Scan `docs/tasks/EPIC-*.md` filenames, extract the number from `EPIC-{N}-...`, find the highest N, use N+1. If none exist, start at 1.
-2. **Filename**: `EPIC-{N}-p-{kebab-name}.md` (always starts in `p` = plan phase)
-   - Example: "User Authentication System" → `EPIC-1-p-user-auth-system.md`
-   - Phase shortcuts: `p` = plan, `d` = dev, `t` = test, `x` = done
-3. **Date**: Today's date
+2. **Filename**: `EPIC-{N}-{kebab-name}.md`
+   - Example: "User Authentication System" — `EPIC-1-user-auth-system.md`
+3. **Frontmatter**: Set `phase: plan`, `status: planning`, priority, today's date
+4. **Date**: Today's date
 
 ## Step 4: Deep Analysis
 
@@ -59,10 +60,10 @@ Pick the best strategy for this epic:
 
 | Strategy | When to Use | Example |
 |----------|------------|---------|
-| **Vertical slice** | User-facing features | "User can register" → "User can login" → "User can reset password" |
-| **By layer** | Infrastructure work | "Schema setup" → "API layer" → "UI layer" |
-| **By risk** | Uncertain requirements | "Spike/prototype" → "Core implementation" → "Polish" |
-| **By component** | Multi-component changes | "Auth module" → "Payment module" → "Notification module" |
+| **Vertical slice** | User-facing features | "User can register" > "User can login" > "User can reset password" |
+| **By layer** | Infrastructure work | "Schema setup" > "API layer" > "UI layer" |
+| **By risk** | Uncertain requirements | "Spike/prototype" > "Core implementation" > "Polish" |
+| **By component** | Multi-component changes | "Auth module" > "Payment module" > "Notification module" |
 
 ### For Each Task, Define
 
@@ -86,18 +87,18 @@ graph LR
 
 ## Step 7: Create Epic File
 
-Save to `docs/tasks/EPIC-{N}-p-{kebab-name}.md` using the template from `docs/templates/epic.md`.
+Save to `docs/tasks/EPIC-{N}-{kebab-name}.md` using the template from `docs/templates/epic.md`.
 
-Fill in the Problem Statement, Goal, Success Criteria, Solution Overview, Dependency Graph, and Risks sections. For the Task Breakdown table, fill in task names, complexity, priority, and dependencies — file links will be filled in Step 8.
+Fill in the YAML frontmatter with actual values. Fill in the Problem Statement, Goal, Success Criteria, Solution Overview, Dependency Graph, and Risks sections. For the Task Breakdown table, fill in task names, complexity, priority, and dependencies — file links will be filled in Step 8.
 
 ## Step 8: Create Separate Task Files
 
 For **each task** identified in Step 5, create a separate task file:
 
 1. **Find next task number**: Scan `docs/tasks/TASK-*.md`, extract highest N, increment for each task
-2. **Filename**: `TASK-{N}-E{epicN}-p-{kebab-name}.md` (where `epicN` is this epic's number)
+2. **Filename**: `TASK-{N}-E{epicN}-{kebab-name}.md` (where `epicN` is this epic's number)
 3. **Create each file** from `docs/templates/task-prd.md` with:
-   - **Parent Epic** linking back to this epic file
+   - YAML frontmatter with `epic: E{epicN}`, `phase: plan`, `status: planning`
    - **What** — one paragraph describing the task's deliverable
    - **Acceptance Criteria** — 2-5 testable conditions (from Step 5 analysis)
    - **PLAN section** — Approach, affected areas, dependencies
@@ -115,7 +116,7 @@ Add the epic to `docs/tasks/README.md`:
 
 | Epic | Tasks | Progress | Priority | Link |
 |------|-------|----------|----------|------|
-| Epic Title | 0/N done | 🔴 | P1 | [Link](./EPIC-N-p-title.md) |
+| Epic Title | 0/N done | -- | P1 | [Link](./EPIC-N-title.md) |
 ```
 
 ## Step 10: Present Summary
@@ -136,7 +137,7 @@ Ask: **"Epic and all task files created. Want me to start planning Task 1 (`/sk:
 - [ ] Goal is one clear sentence
 - [ ] Epic-level acceptance criteria defined
 - [ ] Each task is self-contained and M complexity max
-- [ ] Each task has its own separate file (`TASK-{N}-E{epicN}-p-{name}.md`)
+- [ ] Each task has its own separate file (`TASK-{N}-E{epicN}-{name}.md`)
 - [ ] Each task file has testable acceptance criteria and subtask breakdown
 - [ ] Epic's Task Breakdown table links to all task files
 - [ ] Dependency graph is correct (no circular dependencies)

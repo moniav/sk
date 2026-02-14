@@ -9,12 +9,13 @@ Scan the codebase and update `docs/` to accurately reflect the current system st
 ## Step 1: Read Current Documentation
 
 **ALWAYS start by reading:**
-1. `docs/README.md` — Master index and structure
-2. `docs/system/tech-stack.md` — Current recorded stack
-3. `docs/system/database-schema.md` — Current recorded schema
-4. `docs/architecture/README.md` — Current recorded architecture
-5. `docs/conventions/` — All convention files
-6. `docs/decisions/README.md` — Decision log
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/README.md` — Master index and structure
+3. `docs/system/tech-stack.md` — Current recorded stack
+4. `docs/system/database-schema.md` — Current recorded schema
+5. `docs/architecture/README.md` — Current recorded architecture
+6. `docs/conventions/` — All convention files
+7. `docs/decisions/README.md` — Decision log
 
 ## Step 2: Ask Scope
 
@@ -149,11 +150,11 @@ For each gap, starting with P0:
 
 ### Per-Section Update Patterns
 
-**tech-stack.md**: Compare `package.json`/`requirements.txt` → update table rows
-**database-schema.md**: Read schema files → update table definitions + ER diagram
-**api-reference.md**: Scan route files → update endpoint list
-**architecture/README.md**: Scan component structure → update diagram
-**conventions/file-structure.md**: Run `tree` or `find` → update structure diagram
+**tech-stack.md**: Compare `package.json`/`requirements.txt` > update table rows
+**database-schema.md**: Read schema files > update table definitions + ER diagram
+**api-reference.md**: Scan route files > update endpoint list
+**architecture/README.md**: Scan component structure > update diagram
+**conventions/file-structure.md**: Run `tree` or `find` > update structure diagram
 
 ## Step 7: Generate Report
 

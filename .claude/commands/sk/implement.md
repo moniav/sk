@@ -1,5 +1,5 @@
 ---
-description: Implement a feature end-to-end — Plan → Dev → Test in one flow (project)
+description: Implement a feature end-to-end — Plan > Dev > Test in one flow (project)
 ---
 
 # Implement Feature
@@ -12,7 +12,8 @@ Run the complete development lifecycle for a feature in a single session.
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/conventions/code-style.md` — Coding standards
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/conventions/code-style.md` — Coding standards
 3. `docs/conventions/file-structure.md` — Project organization
 4. `docs/conventions/testing.md` — Testing patterns
 5. `docs/system/tech-stack.md` — Current stack
@@ -26,17 +27,17 @@ Ask the user:
 - **Priority**: P0-P3
 
 Determine scope:
-- **L/XL complexity** → Create an epic first (`/sk:new-epic`) — this creates the epic file plus separate task files for each sub-task, then implement task by task
-- **M complexity** → Continue with this command (single task)
-- **XS/S complexity** → Proceed directly (skip formal task creation, but still follow Plan→Dev→Test mentally)
+- **L/XL complexity** — Create an epic first (`/sk:new-epic`) — this creates the epic file plus separate task files for each sub-task, then implement task by task
+- **M complexity** — Continue with this command (single task)
+- **XS/S complexity** — Proceed directly (skip formal task creation, but still follow Plan>Dev>Test mentally)
 
-## Step 3: 🎯 PLAN Phase
+## Step 3: [PLAN] Phase
 
 ### Create Task File
 1. Use Glob to scan `docs/tasks/TASK-*.md` — find the highest task number N, use N+1
 2. Determine epic number: if part of an epic, extract its number from `EPIC-{N}-*.md`; if standalone use `S`
-3. Create `docs/tasks/TASK-{N}-{E{epicN}|S}-p-{kebab-name}.md` from template (always starts in `p` phase)
-   - Phase shortcuts: `p` = plan, `d` = dev, `t` = test, `x` = done
+3. Create `docs/tasks/TASK-{N}-{E{epicN}|S}-{kebab-name}.md` from template
+4. Fill in YAML frontmatter: `phase: plan`, `status: planning`, today's date
 
 ### Fill Plan
 1. **Scan codebase** — Map affected files, find existing patterns
@@ -54,7 +55,9 @@ Determine scope:
 
 **Checkpoint:** Present plan summary to user. Wait for approval before proceeding.
 
-## Step 4: 🔨 DEV Phase
+## Step 4: [DEV] Phase
+
+Update frontmatter: `phase: dev`, `status: in-progress`
 
 ### Execute Subtasks (top-to-bottom)
 
@@ -80,7 +83,9 @@ For each `[DOCS]` subtask:
 - [ ] Docs updated
 ```
 
-## Step 5: 🧪 TEST Phase
+## Step 5: [TEST] Phase
+
+Update frontmatter: `phase: test`, `status: testing`
 
 ### Run Full Test Suite
 ```bash
@@ -92,7 +97,7 @@ For each `[DOCS]` subtask:
 Go through AC-1, AC-2, etc. one by one:
 1. Execute the specific test scenario
 2. Record the result in the task's Verification section
-3. If any fails → fix in DEV, re-verify
+3. If any fails — fix in DEV, re-verify
 
 ### Test Error Paths & Edge Cases
 - Invalid input handling
@@ -109,9 +114,9 @@ Go through AC-1, AC-2, etc. one by one:
 - [ ] All automated tests pass
 ```
 
-## Step 6: ✅ Close Out
+## Step 6: Close Out
 
-1. Update task status to `done`
+1. Update frontmatter: `phase: done`, `status: done`
 2. Update Progress Log with all phases
 3. Move task in `docs/tasks/README.md` to "Recently Completed"
 4. Final documentation check:
@@ -126,7 +131,7 @@ Go through AC-1, AC-2, etc. one by one:
 ## Step 7: Summary
 
 Present to user:
-- ✅ What was built (acceptance criteria met)
-- 📁 Files created/modified
-- 📝 Docs updated
-- ⚠️ Any notes or follow-up items
+- [DONE] What was built (acceptance criteria met)
+- Files: created/modified
+- Docs: updated
+- [WARN] Any notes or follow-up items

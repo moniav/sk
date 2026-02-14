@@ -9,9 +9,10 @@ Analyze UI code for accessibility, responsive design, design consistency, perfor
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/system/tech-stack.md` — UI framework, component library, styling approach
-2. `docs/conventions/code-style.md` — Component patterns, naming conventions
-3. `docs/architecture/` — Component hierarchy and relationships (if exists)
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/system/tech-stack.md` — UI framework, component library, styling approach
+3. `docs/conventions/code-style.md` — Component patterns, naming conventions
+4. `docs/architecture/` — Component hierarchy and relationships (if exists)
 
 ## Step 2: Determine Scope
 

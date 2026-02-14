@@ -18,10 +18,11 @@ Create an ADR when:
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/decisions/README.md` — Existing decisions (check for conflicts/supersedes)
-2. `docs/templates/adr-decision.md` — ADR template
-3. `docs/architecture/README.md` — Current architecture context
-4. `docs/system/tech-stack.md` — Current stack
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/decisions/README.md` — Existing decisions (check for conflicts/supersedes)
+3. `docs/templates/adr-decision.md` — ADR template
+4. `docs/architecture/README.md` — Current architecture context
+5. `docs/system/tech-stack.md` — Current stack
 
 ## Step 2: Gather Information
 
@@ -60,7 +61,7 @@ Save to `docs/decisions/NNN-kebab-case-title.md` using `docs/templates/adr-decis
 Add to `docs/decisions/README.md`:
 
 ```markdown
-| NNN | [Decision title](./NNN-title.md) | ✅ Accepted | YYYY-MM-DD |
+| NNN | [Decision title](./NNN-title.md) | Accepted | YYYY-MM-DD |
 ```
 
 If superseding an existing ADR:

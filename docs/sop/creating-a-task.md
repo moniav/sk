@@ -1,7 +1,7 @@
 # SOP: Creating & Managing Tasks
 
-**Last updated:** YYYY-MM-DD  
-**Criticality:** 🟡 Medium  
+**Last updated:** YYYY-MM-DD
+**Criticality:** Medium
 
 ## Purpose
 
@@ -11,22 +11,22 @@ Follow this procedure whenever starting new work — from a bug fix to a full fe
 
 ```
 "I need to build something"
-         │
-         ▼
-   ┌─────────────┐
-   │ L/XL         │──Yes──▶ Create an EPIC
-   │ complexity?  │         (break into Tasks)
-   └──────┬──────┘
+         |
+         v
+   +-----------+
+   | L/XL       |--Yes--> Create an EPIC
+   | complexity? |         (break into Tasks)
+   +------+-----+
           No
-          ▼
-   ┌─────────────┐
-   │ M            │──Yes──▶ Create a TASK
-   │ complexity?  │         (break into Subtasks)
-   └──────┬──────┘
+          v
+   +-----------+
+   | M          |--Yes--> Create a TASK
+   | complexity? |         (break into Subtasks)
+   +------+-----+
           No
-          ▼
+          v
       Just do it (XS/S)
-   (still follow Plan→Dev→Test)
+   (still follow Plan>Dev>Test)
 ```
 
 ## Steps
@@ -35,32 +35,32 @@ Follow this procedure whenever starting new work — from a bug fix to a full fe
 
 ```bash
 # For an epic (N = next sequential number)
-cp docs/templates/epic.md docs/tasks/EPIC-N-p-feature-name.md
+cp docs/templates/epic.md docs/tasks/EPIC-N-feature-name.md
 
 # For a task under epic 1
-cp docs/templates/task-prd.md docs/tasks/TASK-N-E1-p-feature-name.md
+cp docs/templates/task-prd.md docs/tasks/TASK-N-E1-feature-name.md
 
 # For a standalone task
-cp docs/templates/task-prd.md docs/tasks/TASK-N-S-p-feature-name.md
+cp docs/templates/task-prd.md docs/tasks/TASK-N-S-feature-name.md
 ```
 
 **Naming convention:**
-- Epics: `EPIC-{N}-{phase}-{kebab-name}.md` — e.g., `EPIC-1-p-user-auth.md`
-- Tasks (with epic): `TASK-{N}-E{epicN}-{phase}-{kebab-name}.md` — e.g., `TASK-1-E1-p-registration-api.md`
-- Tasks (standalone): `TASK-{N}-S-{phase}-{kebab-name}.md` — e.g., `TASK-5-S-p-fix-login-bug.md`
+- Epics: `EPIC-{N}-{kebab-name}.md` — e.g., `EPIC-1-user-auth.md`
+- Tasks (with epic): `TASK-{N}-E{epicN}-{kebab-name}.md` — e.g., `TASK-1-E1-registration-api.md`
+- Tasks (standalone): `TASK-{N}-S-{kebab-name}.md` — e.g., `TASK-5-S-fix-login-bug.md`
 
-**Phase shortcuts:** `p` = plan, `d` = dev, `t` = test, `x` = done
+**Phase and status tracking:** Tracked in YAML frontmatter inside each file. Filenames never change.
 
 **Counter logic:** Scan existing files in `docs/tasks/`, extract highest number, use next.
 
-### Phase Transition = File Rename
+### Phase Transitions = Frontmatter Updates
 
-When a task/epic moves between phases, **rename the file** to update the phase shortcut:
-- PLAN complete: rename `-p-` to `-d-`
-- DEV complete: rename `-d-` to `-t-`
-- TEST complete: rename `-t-` to `-x-`
+When a task/epic moves between phases, **update the YAML frontmatter** at the top of the file:
+- PLAN complete: set `phase: dev`, `status: ready`
+- DEV complete: set `phase: test`, `status: testing`
+- TEST complete: set `phase: done`, `status: done`
 
-Update all internal links (task board, parent epic references) after renaming.
+Update the `updated` date field each time. No file renaming needed.
 
 ### 2. Fill In the PLAN Phase
 
@@ -86,10 +86,10 @@ Apply the **S complexity rule**. Each subtask should be:
 
 | Pattern | Subtasks Look Like |
 |---------|-------------------|
-| By layer | Schema → API → Service → UI → Tests |
-| By operation | Create → Read → Update → Delete |
-| By user action | Sign up → Log in → Reset password |
-| By component | Header → Sidebar → Content → Footer |
+| By layer | Schema > API > Service > UI > Tests |
+| By operation | Create > Read > Update > Delete |
+| By user action | Sign up > Log in > Reset password |
+| By component | Header > Sidebar > Content > Footer |
 
 ### 4. Validate the Plan
 
@@ -119,7 +119,7 @@ For each subtask, top-to-bottom:
 
 ### 7. Close the Task
 
-1. Update task status to `done`
+1. Update frontmatter: `phase: done`, `status: done`
 2. Add final entry to Progress Log
 3. Update `docs/tasks/README.md` — move task from Active to Completed
 4. Update any affected system docs

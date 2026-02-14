@@ -1,15 +1,19 @@
+---
+schema: v1
+type: task
+id: TASK-1
+title: "User Registration API"
+phase: done
+status: done
+priority: P0
+epic: E1
+created: 2025-02-10
+updated: 2025-02-11
+---
+
 # Task: User Registration API
 
 > **Note:** This is a worked example showing a TypeScript/Node.js implementation. Your project's file paths and tools will differ — the format and lifecycle process are what matter.
->
-> **Filename convention:** This file would be named `TASK-1-E1-x-user-registration-api.md` in the new naming convention — task #1, under epic #1, phase `x` (done).
-
-**Status:** done
-**Priority:** P0
-**Complexity:** M
-**Parent Epic:** User Authentication ([EPIC-1-x-user-auth.md](../EPIC-1-x-user-auth.md))
-**Created:** 2025-02-10
-**Last updated:** 2025-02-11
 
 ---
 
@@ -21,13 +25,13 @@ Users need to create accounts with email and password so they can access protect
 
 - [x] **AC-1:** POST `/api/auth/register` accepts `{ email, password, name }` and returns `201` with user object (no password hash)
 - [x] **AC-2:** Duplicate email returns `409` with clear error message
-- [x] **AC-3:** Password must be ≥ 8 chars with at least 1 number — invalid input returns `400` with field-level errors
+- [x] **AC-3:** Password must be >= 8 chars with at least 1 number — invalid input returns `400` with field-level errors
 - [x] **AC-4:** Password is stored as bcrypt hash, never as plaintext
 - [x] **AC-5:** A welcome email job is queued (not sent synchronously)
 
 ---
 
-## 🎯 PLAN
+## [PLAN]
 
 ### Approach
 
@@ -57,7 +61,28 @@ Use Zod for input validation, bcrypt for hashing, and the existing queue system 
 
 ---
 
-## 🔨 DEV
+## Phase Analysis
+
+### Codebase Scan Results
+
+- Existing API pattern in `src/app/api/` uses route handlers with Zod validation
+- Queue system in `src/lib/queue/` supports typed job definitions
+- No existing auth module — this is the first auth feature
+
+### Technical Decisions
+
+- bcrypt over argon2: simpler setup, sufficient for registration use case
+- Unique constraint on email column + catch DB error for duplicate detection (faster than SELECT-first)
+
+### Dev Notes
+
+- Bcrypt cost factor 12 takes ~250ms — acceptable for registration but would be too slow for hot paths
+- Zod schema reusable for client-side validation later
+- Used `UNIQUE` constraint on email column for duplicate detection
+
+---
+
+## [DEV]
 
 ### Subtasks
 
@@ -78,7 +103,7 @@ Use Zod for input validation, bcrypt for hashing, and the existing queue system 
 
 ---
 
-## 🧪 TEST
+## [TEST]
 
 ### Test Plan
 
@@ -111,4 +136,4 @@ Use Zod for input validation, bcrypt for hashing, and the existing queue system 
 | 2025-02-10 | DEV | ST-1 through ST-5 complete |
 | 2025-02-11 | TEST | ST-6, ST-7 complete, all tests passing |
 | 2025-02-11 | DOCS | ST-8 complete, schema and API docs updated |
-| 2025-02-11 | DONE | All ACs verified, moved to done |
+| 2025-02-11 | DONE | All ACs verified, task complete |

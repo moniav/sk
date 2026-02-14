@@ -4,17 +4,19 @@ description: Execute the DEV phase — implement subtasks for a task (project)
 
 # Dev — Execute Implementation
 
-Execute the 🔨 DEV phase for a task, implementing subtasks top-to-bottom.
+Execute the [DEV] phase for a task, implementing subtasks top-to-bottom.
 
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. The task file being implemented (`docs/tasks/TASK-*-d-*.md` — should be in dev phase)
-2. `docs/conventions/code-style.md` — Naming, patterns, anti-patterns
-4. `docs/conventions/file-structure.md` — Where files go
-5. `docs/conventions/testing.md` — Testing patterns (for `[TEST]` subtasks)
-6. `docs/system/database-schema.md` — If touching data layer
-7. Any relevant `docs/sop/` procedures (e.g., `database-migration.md`)
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. The task file being implemented — find task files with `phase: dev` in frontmatter
+3. The task's "Phase Analysis" section — skip re-scanning already-mapped files
+4. `docs/conventions/code-style.md` — Naming, patterns, anti-patterns
+5. `docs/conventions/file-structure.md` — Where files go
+6. `docs/conventions/testing.md` — Testing patterns (for `[TEST]` subtasks)
+7. `docs/system/database-schema.md` — If touching data layer
+8. Any relevant `docs/sop/` procedures (e.g., `database-migration.md`)
 
 ## Step 2: Validate Readiness
 
@@ -28,13 +30,15 @@ Before writing any code, confirm:
 - [ ] Dependencies are met (prerequisite tasks done)
 ```
 
-If any check fails → go back to PLAN phase (`/sk:plan` command).
+If any check fails — go back to PLAN phase (`/sk:plan` command).
 
 ## Step 3: Set Status
 
-Update the task file:
-- Status: `in-progress`
-- Progress Log: Add entry `DEV phase started`
+Update the task file frontmatter:
+- `status: in-progress`
+- Update `updated` date
+
+Progress Log: Add entry `DEV phase started`
 
 ## Step 4: Execute Subtasks
 
@@ -74,7 +78,7 @@ After all subtasks are done, do a final pass:
 ```markdown
 ### Code Conventions (docs/conventions/code-style.md)
 - [ ] Naming follows project conventions (camelCase, PascalCase, etc.)
-- [ ] Import order is correct (external → internal → relative)
+- [ ] Import order is correct (external > internal > relative)
 - [ ] Boolean variables use is/has/can/should prefix
 - [ ] Early returns used instead of deep nesting
 - [ ] Comments explain WHY, not WHAT
@@ -107,7 +111,11 @@ Verify all `[DOCS]` subtasks completed:
 - [ ] `docs/decisions/` — new ADR created if significant tech decision was made
 ```
 
-## Step 7: DEV Exit Gate
+## Step 7: Write Dev Notes
+
+Record key decisions and implementation notes in the task's "Phase Analysis > Dev Notes" section for consumption by the TEST phase.
+
+## Step 8: DEV Exit Gate
 
 All conditions must be true:
 
@@ -120,32 +128,40 @@ All conditions must be true:
 - [ ] Documentation updated in same commit as code
 ```
 
-## Step 8: Update Status
+## Step 9: Update Status
 
-1. Set task status to `testing` (or `in-review` if PR review needed)
-2. **Rename the file**: Change the phase shortcut from `-d-` to `-t-` (dev complete = ready for test)
-   - Example: `TASK-1-E1-d-registration-api.md` → `TASK-1-E1-t-registration-api.md`
-   - For epics: `EPIC-1-d-user-auth.md` → `EPIC-1-t-user-auth.md`
-   - Use `git mv` if the file is tracked
-3. **Update all references** to the old filename:
-   - `docs/tasks/README.md` — update any links pointing to the old name
-   - Parent epic file — update task references if applicable
-   - Any other files that link to this task
-4. Update Progress Log:
+1. Update YAML frontmatter: set `phase: test`, `status: testing`, update `updated` date
+2. Update Progress Log:
 
 ```markdown
-| YYYY-MM-DD | DEV | All N subtasks complete, docs updated. File renamed -d- to -t-. |
+| YYYY-MM-DD | DEV | All N subtasks complete, docs updated. Ready for test. |
 ```
 
-5. Update `docs/tasks/README.md` — move from "In Progress" to "Testing"
+3. Update `docs/tasks/README.md` — move from "In Progress" to "Testing"
 
 Inform user: **"DEV phase complete. All subtasks implemented. Moving to TEST phase — I'll verify each acceptance criterion."**
 
 ## Error Recovery
 
-If a subtask reveals a problem with the plan:
-1. **Don't hack around it** — Stop and reassess
-2. Add the issue to Implementation Notes in the task file
-3. If scope changed: Update acceptance criteria and subtasks
-4. Log the change in Progress Log
-5. Continue from the adjusted plan
+### Plan Was Wrong (subtask reveals incorrect approach)
+1. Stop implementation — do not hack around it
+2. Document what was discovered in Implementation Notes
+3. Update the affected acceptance criteria if needed
+4. Revise subtask list (add/remove/modify subtasks)
+5. Log the deviation in Progress Log
+6. Continue from the revised plan
+
+### Acceptance Criterion is Untestable
+1. Rewrite the AC to be testable (yes/no verifiable)
+2. If the AC is truly unnecessary, remove it with justification
+3. Log the change in Progress Log
+
+### Dependency Discovered Mid-Dev
+1. Check if the dependency is a separate task that should exist
+2. If yes: create a blocker note, pause this task, create the dependency task
+3. If no: add it as a new subtask and implement inline
+
+### Scope Creep Detected
+1. If the new work is part of the original goal: add as subtask
+2. If it's a new feature: note it in Implementation Notes, create a separate task later
+3. Never expand scope without updating acceptance criteria

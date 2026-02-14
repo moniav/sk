@@ -1,5 +1,5 @@
 ---
-description: Create a new implementation task with Plan→Dev→Test lifecycle (project)
+description: Create a new implementation task with Plan>Dev>Test lifecycle (project)
 ---
 
 # Create New Task
@@ -9,8 +9,9 @@ Create a self-contained task file in `docs/tasks/` following the development lif
 ## Step 1: Read Context
 
 **ALWAYS start by reading these files for context:**
-1. `docs/README.md` — Documentation index
-2. `docs/conventions/code-style.md` — Coding standards to reference in subtasks
+1. `docs/system/project-context.md` — Dense project summary (if it exists)
+2. `docs/README.md` — Documentation index
+3. `docs/conventions/code-style.md` — Coding standards to reference in subtasks
 4. `docs/conventions/file-structure.md` — Where files should go
 5. `docs/system/tech-stack.md` — Current technologies and versions
 6. `docs/system/database-schema.md` — Current schema state
@@ -30,11 +31,11 @@ Ask the user:
 
 1. **Find next task number**: Scan `docs/tasks/TASK-*.md` filenames, extract the number from `TASK-{N}-...`, find the highest N, use N+1. If none exist, start at 1.
 2. **Resolve epic number**: If the task has a parent epic, find the epic file (`docs/tasks/EPIC-{N}-*.md`) and extract its number N. Use `E{N}` in the filename. If standalone, use `S`.
-3. **Filename**: `TASK-{N}-E{epicN}-p-{kebab-name}.md` or `TASK-{N}-S-p-{kebab-name}.md`
-   - Example (with epic 1): "Add PDF export" → `TASK-3-E1-p-add-pdf-export.md`
-   - Example (standalone): "Fix login bug" → `TASK-4-S-p-fix-login-bug.md`
-   - Phase shortcuts: `p` = plan, `d` = dev, `t` = test, `x` = done
+3. **Filename**: `TASK-{N}-E{epicN}-{kebab-name}.md` or `TASK-{N}-S-{kebab-name}.md`
+   - Example (with epic 1): "Add PDF export" — `TASK-3-E1-add-pdf-export.md`
+   - Example (standalone): "Fix login bug" — `TASK-4-S-fix-login-bug.md`
 4. **Date**: Today's date as `YYYY-MM-DD`
+5. **Frontmatter**: Set `phase: plan`, `status: planning`, priority, epic reference
 
 ## Step 4: Analyze Scope
 
@@ -43,11 +44,13 @@ Before writing the task, scan the codebase to understand impact:
 1. **Identify affected files**: Use `Glob` and `Grep` to find files related to the feature
 2. **Check existing patterns**: Find similar features already implemented to follow their pattern
 3. **Map dependencies**: What must exist before this task can start?
-4. **Rate complexity**: Count affected layers (DB, API, service, UI, tests, docs) → assign XS/S/M/L/XL
+4. **Rate complexity**: Count affected layers (DB, API, service, UI, tests, docs) — assign XS/S/M/L/XL
 
 ## Step 5: Create Task File
 
-Save to `docs/tasks/TASK-{N}-{E{epicN}|S}-p-{kebab-name}.md` using the template from `docs/templates/task-prd.md`.
+Save to `docs/tasks/TASK-{N}-{E{epicN}|S}-{kebab-name}.md` using the template from `docs/templates/task-prd.md`.
+
+Fill in the YAML frontmatter with actual values (id, title, priority, epic, dates).
 
 **Critical requirements for task creation:**
 
@@ -92,11 +95,11 @@ Follow this standard decomposition pattern, adapted to the specific task:
 Add the new task to `docs/tasks/README.md` in the **Planning** section:
 
 ```markdown
-### 🎯 Planning
+### [PLAN] Planning
 
 | Task | Parent Epic | Priority | Link |
 |------|-------------|----------|------|
-| Title | Epic name | P1 | [Link](./TASK-N-EN-p-title.md) |
+| Title | Epic name | P1 | [Link](./TASK-N-EN-title.md) |
 ```
 
 ## Step 7: Present Summary

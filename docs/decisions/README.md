@@ -16,7 +16,7 @@
 
 | # | Decision | Status | Date |
 |---|----------|--------|------|
-| 001 | Choose PostgreSQL over MongoDB | ✅ Accepted | YYYY-MM-DD |
+| 001 | Choose PostgreSQL over MongoDB | Accepted | YYYY-MM-DD |
 
 ## When to Write an ADR
 

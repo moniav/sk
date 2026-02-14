@@ -9,6 +9,7 @@
 
 | Doc | Contents |
 |-----|----------|
+| [Project Context](./project-context.md) | Dense project summary (read first) |
 | [Tech Stack](./tech-stack.md) | Languages, frameworks, tools, versions |
 | [Database Schema](./database-schema.md) | Tables, relationships, indexes |
 | [API Reference](./api-reference.md) | Endpoints, request/response contracts |

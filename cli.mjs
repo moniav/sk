@@ -258,11 +258,19 @@ async function runInstall(target) {
   console.log("      └── ...");
   console.log();
   console.log(c.bold("  Next steps:"));
-  console.log(`  1. Edit ${c.cyan("docs/system/tech-stack.md")} -- add your real stack`);
-  console.log(`  2. Edit ${c.cyan("docs/conventions/code-style.md")} -- match your patterns`);
-  console.log(`  3. Edit ${c.cyan("CLAUDE.md")} -- add your project commands`);
-  console.log(`  4. Run ${c.cyan("/sk:init-docs")} in Claude Code to auto-populate from codebase`);
-  console.log(`  5. Run ${c.cyan("/sk:new-task")} to create your first task`);
+  console.log();
+  console.log(`  ${c.bold("New project (greenfield):")}`);
+  console.log(`    1. Run ${c.cyan("/sk:kickoff")} -- guided setup + best-practice research`);
+  console.log(`    2. Run ${c.cyan("/sk:brainstorm")} -- define your first feature`);
+  console.log(`    3. Run ${c.cyan("/sk:implement")} -- build it`);
+  console.log();
+  console.log(`  ${c.bold("Existing project (brownfield):")}`);
+  console.log(`    1. Run ${c.cyan("/sk:init-docs")} -- auto-scan codebase and populate docs`);
+  console.log(`    2. Fill in Build Commands in ${c.cyan("CLAUDE.md")}`);
+  console.log(`    3. Run ${c.cyan("/sk:new-task")} -- create your first task`);
+  console.log(`    4. Run ${c.cyan("/sk:implement")} -- build it`);
+  console.log();
+  console.log(`  Run ${c.cyan("/sk:task-status")} to see your task board.`);
   console.log();
 }
 
