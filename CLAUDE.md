@@ -103,6 +103,10 @@ Always use templates from `docs/templates/`:
 | `/sk:new-sop` | Create a new SOP | Document a recurring procedure |
 | `/sk:new-adr` | Create an ADR | Record a significant tech decision |
 | `/sk:new-flow` | Create a flow diagram | Visualize a system process |
+| `/sk:commit` | Smart git commit + push + PR | After changes, ready to commit |
+| `/sk:code-review` | Analyze code for bugs, patterns, quality | Before committing or merging |
+| `/sk:security-review` | Security scan — OWASP, secrets, deps | Before release or on-demand |
+| `/sk:ui-review` | UI quality — a11y, responsive, UX | After UI changes |
 
 ### Build Commands
 

@@ -79,6 +79,8 @@ For each feature area, test what happens when things go wrong:
 | Server error | Force internal error | 500 + logged | — | — |
 ```
 
+**Tip:** For security-focused testing, run `/sk:security-review` to scan for OWASP vulnerabilities, hardcoded secrets, and dependency risks.
+
 ## Step 6: Test Edge Cases
 
 ```markdown

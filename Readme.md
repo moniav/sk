@@ -90,7 +90,7 @@ npx shipkit-cld /path/to/my-project
 
 ## Slash Commands
 
-The `.claude/commands/sk/` folder contains 12 Claude Code commands under the `sk` namespace:
+The `.claude/commands/sk/` folder contains 17 Claude Code commands under the `sk` namespace:
 
 **Lifecycle Commands** (the core loop):
 - `/sk:implement` — Full Plan → Dev → Test in one session
@@ -105,10 +105,17 @@ The `.claude/commands/sk/` folder contains 12 Claude Code commands under the `sk
 - `/sk:new-adr` — Record an architecture decision
 - `/sk:new-flow` — Create a Mermaid flow diagram from code analysis
 
+**Quality & Workflow Commands** (review and ship):
+- `/sk:commit` — Smart git commit with conventional format, optional push + PR
+- `/sk:code-review` — Analyze code for bugs, conventions, performance, maintainability
+- `/sk:security-review` — Security scan covering OWASP Top 10, secrets, dependencies
+- `/sk:ui-review` — UI quality review for accessibility, responsive design, UX patterns
+
 **Management Commands** (maintain the system):
 - `/sk:task-status` — Dashboard showing all task progress
 - `/sk:update-docs` — Deep scan codebase and sync documentation
 - `/sk:init-docs` — Bootstrap docs from scratch for a new project
+- `/sk:update` — Update SK commands and templates to the latest version
 
 Every command reads the relevant docs first, then acts. They reference each other — `/sk:implement` chains `/sk:plan` → `/sk:dev` → `/sk:test`, and `/sk:new-epic` can trigger `/sk:new-task` for each task in the breakdown.
 

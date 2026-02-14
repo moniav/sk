@@ -92,6 +92,8 @@ After all subtasks are done, do a final pass:
 - [ ] No temporary or debug code committed
 ```
 
+**Tip:** For a deeper analysis of code quality, run `/sk:code-review` on your changes before moving to the TEST phase.
+
 ## Step 6: Documentation Pass
 
 Verify all `[DOCS]` subtasks completed:

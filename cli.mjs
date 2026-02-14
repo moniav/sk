@@ -211,6 +211,10 @@ async function runInstall(target) {
   checkFile(".claude/commands/sk/dev.md");
   checkFile(".claude/commands/sk/test.md");
   checkFile(".claude/commands/sk/implement.md");
+  checkFile(".claude/commands/sk/commit.md");
+  checkFile(".claude/commands/sk/code-review.md");
+  checkFile(".claude/commands/sk/security-review.md");
+  checkFile(".claude/commands/sk/ui-review.md");
 
   console.log();
   if (errors > 0) {
@@ -238,14 +242,14 @@ async function runInstall(target) {
   console.log(c.bold("  Structure:"));
   console.log(`  ${target}/`);
   console.log("  ├── CLAUDE.md                  <- Agent reads this first");
-  console.log("  ├── .claude/commands/sk/       <- 12 slash commands");
+  console.log("  ├── .claude/commands/sk/       <- 17 slash commands");
   console.log("  |   ├── implement.md           /sk:implement");
   console.log("  |   ├── plan.md                /sk:plan");
   console.log("  |   ├── dev.md                 /sk:dev");
   console.log("  |   ├── test.md                /sk:test");
   console.log("  |   ├── new-task.md            /sk:new-task");
   console.log("  |   ├── new-epic.md            /sk:new-epic");
-  console.log("  |   └── ...                    (6 more)");
+  console.log("  |   └── ...                    (10 more)");
   console.log("  └── docs/                      <- Documentation hub");
   console.log("      ├── conventions/           Code style, structure, git, testing");
   console.log("      ├── system/                Tech stack, schema, APIs");
