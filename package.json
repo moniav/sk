@@ -10,7 +10,8 @@
     "cli.mjs",
     "docs/",
     ".claude/",
-    "CLAUDE.md"
+    "CLAUDE.md",
+    "!.claude/commands/sk/publish.md"
   ],
   "keywords": [
     "claude-code",
