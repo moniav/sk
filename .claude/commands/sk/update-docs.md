@@ -67,6 +67,13 @@ Compare code vs. docs for each section:
 ### System Docs (`docs/system/`)
 
 ```markdown
+#### project-context.md
+- [ ] Project description still accurate
+- [ ] Key features list reflects current state
+- [ ] Stack summary matches tech-stack.md
+- [ ] Current status / phase is up to date
+- [ ] Known gotchas and constraints still relevant
+
 #### tech-stack.md
 - [ ] Dependencies match package.json / requirements.txt
 - [ ] Versions are current
@@ -150,6 +157,7 @@ For each gap, starting with P0:
 
 ### Per-Section Update Patterns
 
+**project-context.md**: Review git log + current features > update summary, status, and key details
 **tech-stack.md**: Compare `package.json`/`requirements.txt` > update table rows
 **database-schema.md**: Read schema files > update table definitions + ER diagram
 **api-reference.md**: Scan route files > update endpoint list
