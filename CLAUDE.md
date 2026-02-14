@@ -118,6 +118,11 @@ Always use templates from `docs/templates/`:
 | `/sk:code-review` | Analyze code for bugs, patterns, quality | Before committing or merging |
 | `/sk:security-review` | Security scan — OWASP, secrets, deps | Before release or on-demand |
 | `/sk:ui-review` | UI quality — a11y, responsive, UX | After UI changes |
+| `/sk:perf-review` | Performance — queries, memory, rendering, caching | Before release or on-demand |
+| `/sk:debug` | Systematic debugging — reproduce, isolate, fix, verify | Bug reports and unexpected behavior |
+| `/sk:refactor` | Safe refactoring — restructure without behavior change | Code improvement without feature changes |
+| `/sk:changelog` | Generate changelog from git history | Before release or version bump |
+| `/sk:deps` | Dependency health — outdated, vulnerabilities, licenses | Periodic audit or before release |
 
 ### Build Commands
 
@@ -143,6 +148,11 @@ typecheck: # e.g., npm run typecheck
 | /sk:test | Build Commands filled in, test runner installed |
 | /sk:code-review | code-style.md populated |
 | /sk:security-review | tech-stack.md populated |
+| /sk:perf-review | tech-stack.md populated |
+| /sk:debug | Nothing (reads context as needed) |
+| /sk:refactor | code-style.md populated, test suite available |
+| /sk:changelog | Conventional commits in git history |
+| /sk:deps | Package manifest (package.json, pyproject.toml, etc.) |
 
 ## Key Constraints
 

@@ -8,7 +8,7 @@ Claude Code (and any AI coding agent) works dramatically better when it has stru
 
 ```mermaid
 graph TD
-    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>19 slash commands</i>"]
+    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>25 slash commands</i>"]
     B --> C["docs/README.md<br/><i>master index</i>"]
 
     C --> D["LIFECYCLE"]
@@ -239,12 +239,20 @@ graph LR
         codereview["/sk:code-review"]
         secreview["/sk:security-review"]
         uireview["/sk:ui-review"]
+        perfreview["/sk:perf-review"]
+    end
+
+    subgraph "Debugging & Refactoring"
+        debug["/sk:debug"]
+        refactor["/sk:refactor"]
     end
 
     subgraph "Management"
         status["/sk:task-status"]
         updatedocs["/sk:update-docs"]
         update["/sk:update"]
+        changelog["/sk:changelog"]
+        deps["/sk:deps"]
     end
 
     kickoff -->|"generates docs"| brainstorm
@@ -259,7 +267,15 @@ graph LR
 
     dev -->|"done"| codereview
     codereview --> secreview
+    codereview --> perfreview
     secreview --> commit
+    perfreview --> commit
+
+    debug -->|"fixed"| codereview
+    refactor -->|"restructured"| codereview
+
+    deps -.->|"updates needed"| commit
+    changelog -.->|"commit changelog"| commit
 
     style kickoff fill:#2d6a4f,color:#fff
     style brainstorm fill:#2d6a4f,color:#fff
@@ -268,8 +284,74 @@ graph LR
     style plan fill:#2a9d8f,color:#fff
     style dev fill:#2a9d8f,color:#fff
     style test fill:#2a9d8f,color:#fff
+    style perfreview fill:#e9c46a,color:#000
+    style debug fill:#e76f51,color:#fff
+    style refactor fill:#e76f51,color:#fff
+    style changelog fill:#264653,color:#fff
+    style deps fill:#264653,color:#fff
     style commit fill:#e9c46a,color:#000
 ```
+
+## Command Reference
+
+### Getting Started
+
+| Command | Purpose | When to Use |
+|---------|---------|-------------|
+| `/sk:kickoff` | Guided project setup + best-practice research | Starting a new (greenfield) project |
+| `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
+| `/sk:init-docs` | Auto-scan codebase, populate docs | Brownfield project or full rebuild |
+
+### Lifecycle (Plan > Dev > Test)
+
+| Command | Purpose | When to Use |
+|---------|---------|-------------|
+| `/sk:implement` | Full lifecycle: Plan > Dev > Test | Build a feature end-to-end |
+| `/sk:plan` | Complete PLAN phase | Break down and prepare a task |
+| `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
+| `/sk:test` | Execute TEST phase | Verify acceptance criteria |
+
+### Document Creation
+
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/sk:new-task` | Create a new task file | `docs/tasks/TASK-{N}-*.md` |
+| `/sk:new-epic` | Create a new epic + child tasks | `docs/tasks/EPIC-{N}-*.md` |
+| `/sk:new-sop` | Create a standard operating procedure | `docs/sop/*.md` |
+| `/sk:new-adr` | Record an architecture decision | `docs/decisions/*.md` |
+| `/sk:new-flow` | Create a Mermaid flow diagram | `docs/flows/*.md` |
+
+### Quality & Review
+
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/sk:code-review` | Analyze code for bugs, conventions, quality | Report (conversation) |
+| `/sk:security-review` | OWASP Top 10, secrets, dependency audit | Report (conversation) |
+| `/sk:ui-review` | Accessibility, responsive design, UX | Report (conversation) |
+| `/sk:perf-review` | Queries, memory, rendering, caching | Report (conversation) |
+
+### Debugging & Refactoring
+
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/sk:debug` | Reproduce, isolate, fix, verify with regression test | Code fix + test + task file (M+) |
+| `/sk:refactor` | Restructure code, verify behavior unchanged | Code changes + task file (M+) |
+
+### Git & Release
+
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/sk:commit` | Smart git commit + push + PR | Git commit |
+| `/sk:changelog` | Generate changelog from git history | `CHANGELOG.md` |
+
+### Management
+
+| Command | Purpose | When to Use |
+|---------|---------|-------------|
+| `/sk:task-status` | Show task board overview | Check progress across all tasks |
+| `/sk:update-docs` | Sync docs with codebase | After changes, or periodic audit |
+| `/sk:deps` | Dependency health check | Periodic audit or before release |
+| `/sk:update` | Update SK commands & templates | Get latest version of shipkit-cld |
 
 ## Key Design Decisions
 
