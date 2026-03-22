@@ -40,14 +40,18 @@ function countFiles(dir) {
   return count;
 }
 
+function isValidSource(dir) {
+  return existsSync(join(dir, "pkg", "CLAUDE.md"))
+      && existsSync(join(dir, "pkg", "docs"))
+      && existsSync(join(dir, "pkg", ".claude", "commands", "sk"));
+}
+
 function findSource(target, fromOverride) {
   // 1. Explicit --from flag
   if (fromOverride) {
-    if (existsSync(join(fromOverride, "pkg", "CLAUDE.md")) && existsSync(join(fromOverride, ".claude", "commands", "sk"))) {
-      return fromOverride;
-    }
+    if (isValidSource(fromOverride)) return fromOverride;
     console.log(c.red("[ERROR]") + ` --from path is not a valid SK source: ${fromOverride}`);
-    console.log("  Expected: pkg/CLAUDE.md and .claude/commands/sk/ in that directory");
+    console.log("  Expected: pkg/CLAUDE.md, pkg/docs/, and pkg/.claude/commands/sk/ in that directory");
     process.exit(1);
   }
 
@@ -55,21 +59,17 @@ function findSource(target, fromOverride) {
   const skSourceFile = join(target, ".claude", ".sk-source");
   if (existsSync(skSourceFile)) {
     const saved = readFileSync(skSourceFile, "utf-8").trim();
-    if (saved && existsSync(join(saved, "pkg", "CLAUDE.md"))) {
+    if (saved && isValidSource(saved)) {
       console.log(c.blue("[INFO]") + ` Using saved source: ${saved}`);
       return saved;
     }
   }
 
   // 3. Package location (__dirname)
-  if (existsSync(join(__dirname, "pkg", "CLAUDE.md")) && existsSync(join(__dirname, "pkg", "docs"))) {
-    return __dirname;
-  }
+  if (isValidSource(__dirname)) return __dirname;
 
   // 4. Current working directory
-  if (existsSync(join(process.cwd(), "pkg", "CLAUDE.md")) && existsSync(join(process.cwd(), "pkg", "docs"))) {
-    return process.cwd();
-  }
+  if (isValidSource(process.cwd())) return process.cwd();
 
   return null;
 }
@@ -213,33 +213,35 @@ async function runInstall(target) {
 
   console.log(c.blue("[2/4]") + " Copying documentation files...");
 
-  cpSync(join(source, "pkg", "docs"), join(target, "docs"), { recursive: true, force: true });
+  const pkg = join(source, "pkg");
+
+  cpSync(join(pkg, "docs"), join(target, "docs"), { recursive: true, force: true });
   console.log(c.green("  [OK]") + " docs/ content copied");
 
   cpSync(
-    join(source, ".claude", "commands", "sk"),
+    join(pkg, ".claude", "commands", "sk"),
     join(target, ".claude", "commands", "sk"),
     { recursive: true, force: true }
   );
   console.log(c.green("  [OK]") + " .claude/commands/sk/ copied");
 
-  // Copy agents if they exist
-  const agentsSource = join(source, ".claude", "agents");
+  // Copy agents
+  const agentsSource = join(pkg, ".claude", "agents");
   if (existsSync(agentsSource)) {
     mkdirSync(join(target, ".claude", "agents"), { recursive: true });
     cpSync(agentsSource, join(target, ".claude", "agents"), { recursive: true, force: true });
     console.log(c.green("  [OK]") + " .claude/agents/ copied");
   }
 
-  // Copy skills if they exist
-  const skillsSource = join(source, ".claude", "skills");
+  // Copy skills
+  const skillsSource = join(pkg, ".claude", "skills");
   if (existsSync(skillsSource)) {
     mkdirSync(join(target, ".claude", "skills"), { recursive: true });
     cpSync(skillsSource, join(target, ".claude", "skills"), { recursive: true, force: true });
     console.log(c.green("  [OK]") + " .claude/skills/ copied");
   }
 
-  cpSync(join(source, "pkg", "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
+  cpSync(join(pkg, "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
   if (existsSync(join(source, "GUIDE.md"))) {
     cpSync(join(source, "GUIDE.md"), join(target, "GUIDE.md"), { force: true });
   }
@@ -402,11 +404,13 @@ async function runUpdate(target, fromOverride) {
 
   console.log();
 
+  const pkg = join(source, "pkg");
+
   // --- Step 1: Update commands ---
 
   console.log(c.blue("[1/5]") + " Updating slash commands...");
   cpSync(
-    join(source, ".claude", "commands", "sk"),
+    join(pkg, ".claude", "commands", "sk"),
     join(target, ".claude", "commands", "sk"),
     { recursive: true, force: true }
   );
@@ -417,7 +421,7 @@ async function runUpdate(target, fromOverride) {
 
   console.log(c.blue("[2/5]") + " Updating templates...");
   cpSync(
-    join(source, "pkg", "docs", "templates"),
+    join(pkg, "docs", "templates"),
     join(target, "docs", "templates"),
     { recursive: true, force: true }
   );
@@ -429,7 +433,7 @@ async function runUpdate(target, fromOverride) {
   console.log(c.blue("[3/5]") + " Updating SOPs...");
 
   cpSync(
-    join(source, "pkg", "docs", "sop"),
+    join(pkg, "docs", "sop"),
     join(target, "docs", "sop"),
     { recursive: true, force: true }
   );
@@ -438,7 +442,7 @@ async function runUpdate(target, fromOverride) {
   // --- Step 4: Update CLAUDE.md ---
 
   console.log(c.blue("[4/5]") + " Updating CLAUDE.md...");
-  cpSync(join(source, "pkg", "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
+  cpSync(join(pkg, "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
   if (existsSync(join(source, "GUIDE.md"))) {
     cpSync(join(source, "GUIDE.md"), join(target, "GUIDE.md"), { force: true });
   }
@@ -448,14 +452,14 @@ async function runUpdate(target, fromOverride) {
 
   console.log(c.blue("[5/5]") + " Updating agents and skills...");
 
-  const agentsSource = join(source, ".claude", "agents");
+  const agentsSource = join(pkg, ".claude", "agents");
   if (existsSync(agentsSource)) {
     mkdirSync(join(target, ".claude", "agents"), { recursive: true });
     cpSync(agentsSource, join(target, ".claude", "agents"), { recursive: true, force: true });
     console.log(c.green("  [OK]") + " .claude/agents/ updated");
   }
 
-  const skillsSource = join(source, ".claude", "skills");
+  const skillsSource = join(pkg, ".claude", "skills");
   if (existsSync(skillsSource)) {
     mkdirSync(join(target, ".claude", "skills"), { recursive: true });
     cpSync(skillsSource, join(target, ".claude", "skills"), { recursive: true, force: true });

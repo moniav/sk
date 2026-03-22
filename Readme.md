@@ -420,13 +420,14 @@ sk/                              ← SK source repository
 ├── CLAUDE.md                    ← SK development instructions (NOT shipped)
 ├── cli.mjs                      ← CLI: install / update / remove
 ├── package.json                 ← npm package config
-├── pkg/                         ← Template content (shipped to target projects)
+├── pkg/                         ← Everything shipped to target projects
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
-│   └── docs/                    ← Template documentation tree
-└── .claude/                     ← Commands, agents, skills (shipped)
-    ├── commands/sk/             ← 26 slash commands
-    ├── agents/                  ← Implementer + 2-stage reviewers
-    └── skills/                  ← TDD, escalation, subagent-driven dev, verification
+│   ├── docs/                    ← Template documentation tree
+│   └── .claude/                 ← Commands, agents, skills
+│       ├── commands/sk/         ← 26 slash commands
+│       ├── agents/              ← Implementer + 2-stage reviewers
+│       └── skills/              ← TDD, escalation, subagent-driven dev, verification
+└── .claude/                     ← Development copy (dogfooding, not shipped)
 ```
 
 ## Key Design Decisions

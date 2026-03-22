@@ -19,25 +19,30 @@ sk/
 ├── cli.mjs                ← CLI entry point (install/update/remove)
 ├── package.json           ← npm package config
 ├── Readme.md              ← Public README
-├── pkg/                   ← TEMPLATE content installed into target projects
+├── pkg/                   ← EVERYTHING installed into target projects
 │   ├── CLAUDE.md          ← Template CLAUDE.md for target projects
-│   └── docs/              ← Template documentation tree
-├── .claude/
-│   ├── commands/sk/       ← Slash commands (THE PRODUCT)
-│   ├── agents/            ← Agent definitions (THE PRODUCT)
-│   └── skills/            ← Skill definitions (THE PRODUCT)
+│   ├── docs/              ← Template documentation tree
+│   └── .claude/           ← Commands, agents, skills
+│       ├── commands/sk/   ← 26 slash commands
+│       ├── agents/        ← Agent definitions
+│       └── skills/        ← Skill definitions
+├── .claude/               ← DEVELOPMENT copy (for dogfooding SK)
+│   ├── commands/sk/       ← Same commands, used during SK development
+│   ├── agents/            ← Same agents
+│   └── skills/            ← Same skills
 └── docs/                  ← SK's own documentation (not shipped)
 ```
 
 ## Key Separation: pkg/ vs root
 
-- **`pkg/`** — Template content that gets copied into target projects by `cli.mjs`
-- **`.claude/`** — Commands, agents, skills — the product AND used during SK development
+- **`pkg/`** — Self-contained package: everything that gets installed into target projects
+- **Root `.claude/`** — Development copy for dogfooding (same files as `pkg/.claude/`)
 - **Root `CLAUDE.md`** — SK-specific (this file). NOT shipped.
 - **`pkg/CLAUDE.md`** — Template for target projects. Shipped.
 
-When editing commands/agents/skills, you're editing the product.
-When editing `pkg/`, you're editing what users get on install.
+When editing commands/agents/skills, edit in BOTH root `.claude/` AND `pkg/.claude/`.
+Root is for testing locally, `pkg/` is what ships. Keep them in sync.
+When editing `pkg/docs/` or `pkg/CLAUDE.md`, you're editing what users get on install.
 
 ## Build Commands
 
