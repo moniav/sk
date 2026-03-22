@@ -9,11 +9,30 @@ SK solves two problems:
 1. **Procedural context** -- Conventions, file structure, testing patterns, and step-by-step workflows so the agent follows your project's rules instead of inventing its own.
 2. **Behavioral guardrails** -- Principles that govern *how* the agent thinks: surface assumptions before coding, do exactly what was asked, keep solutions simple, and verify goals with evidence (see `docs/conventions/coding-behavior.md`).
 
+## What Gets Installed
+
+```
+your-project/
+├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
+├── .claude/
+│   ├── commands/sk/             ← 26 slash commands
+│   ├── agents/                  ← Agent definitions (implementer, reviewers)
+│   └── skills/                  ← Active skills (TDD, escalation, verification)
+└── docs/                        ← Documentation hub
+    ├── conventions/             Code style, structure, git, testing
+    ├── system/                  Tech stack, schema, APIs
+    ├── tasks/                   Task board + examples
+    ├── templates/               Starter templates
+    ├── commands-reference.md    Full command table (loaded on demand)
+    └── ...
+```
+
 ## How It Works
 
 ```mermaid
 graph TD
-    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>25 slash commands</i>"]
+    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>26 slash commands</i>"]
+    A --> B2[".claude/skills/<br/><i>TDD, escalation, verification</i>"]
     B --> C["docs/README.md<br/><i>master index</i>"]
 
     C --> D["LIFECYCLE"]
@@ -35,6 +54,7 @@ graph TD
 
     style A fill:#2d6a4f,color:#fff
     style B fill:#40916c,color:#fff
+    style B2 fill:#40916c,color:#fff
     style C fill:#52b788,color:#fff
     style D fill:#264653,color:#fff
     style E fill:#264653,color:#fff
@@ -91,6 +111,10 @@ stateDiagram-v2
     }
 ```
 
+**Quick Path (XS/S complexity):** Most work doesn't need task files. Just describe what you want — Claude Code follows Plan > Dev > Test mentally and commits when done.
+
+**Formal lifecycle (M+ complexity):** Create a task file, go through each phase with exit gates.
+
 ### Task Hierarchy
 
 ```mermaid
@@ -126,6 +150,30 @@ npx shipkit-cld
 npx shipkit-cld /path/to/my-project
 ```
 
+## Updating
+
+Three ways to update after SK has been changed:
+
+```bash
+# 1. From npm (latest published version):
+npx shipkit-cld@latest update .
+
+# 2. From a local SK checkout (explicit):
+npx shipkit-cld update . --from /path/to/sk
+
+# 3. Automatic (if installed from local checkout, source path is remembered):
+npx shipkit-cld update .
+```
+
+Updates overwrite SK system files (commands, agents, skills, templates, SOPs, CLAUDE.md) but **preserve your project content** (tasks, conventions, system docs, architecture, decisions, flows).
+
+The source path is saved to `.claude/.sk-source` during install, so subsequent updates find it automatically.
+
+```bash
+# Remove SK (keeps your docs/):
+npx shipkit-cld remove .
+```
+
 ## Getting Started
 
 SK works with both new projects and existing codebases. The setup path differs.
@@ -159,8 +207,6 @@ flowchart TD
 
 ### Greenfield Project (starting from scratch)
 
-You have no code yet — you're setting up the project structure and want Claude Code to follow good practices from the start.
-
 ```
 1. npx shipkit-cld                          # Install SK
 2. /sk:kickoff                              # Answer questions, docs auto-generated
@@ -184,8 +230,6 @@ You have no code yet — you're setting up the project structure and want Claude
 
 ### Brownfield Project (existing codebase)
 
-You have an existing codebase — you want Claude Code to understand it and follow its patterns.
-
 ```
 1. npx shipkit-cld                          # Install SK
 2. /sk:init-docs                            # Auto-scan codebase, detect build commands, populate docs
@@ -204,15 +248,17 @@ You have an existing codebase — you want Claude Code to understand it and foll
 - `docs/architecture/README.md` — component map from directory structure
 - ADRs for 2-3 major tech choices it discovers
 
-**What to review after init:** The auto-generated docs are best-effort. Skim each one and correct anything wrong — especially conventions and architecture docs. These are what Claude Code reads before every task, so accuracy matters.
-
-**Build commands are auto-detected** from `package.json` scripts, `Makefile` targets, `pyproject.toml` tools, `Cargo.toml`, `go.mod`, and CI workflows. The report shows what was detected and what's missing. You only need to fill in commands marked `[NOT DETECTED]`.
-
-**What to review manually:**
-- `docs/conventions/code-style.md` — add any unwritten rules the scan couldn't detect
-- `docs/system/project-context.md` — add gotchas, in-progress work, team context
+**Build commands are auto-detected** from `package.json` scripts, `Makefile` targets, `pyproject.toml` tools, `Cargo.toml`, `go.mod`, and CI workflows. You only need to fill in commands marked `[NOT DETECTED]`.
 
 **Tip:** Run `/sk:update-docs` periodically to keep docs in sync as your codebase evolves.
+
+### Session Continuity
+
+SK tracks your active work across sessions:
+
+- **`docs/tasks/.current`** — automatically updated by lifecycle commands with your active task, phase, and subtask progress
+- **`/sk:resume`** — start a new session with a briefing: what you were working on, what's next, any uncommitted changes
+- **Claude Code memory** — user preferences and workflow patterns persist across sessions automatically
 
 ## Command Map
 
@@ -229,6 +275,7 @@ graph LR
         plan["/sk:plan"]
         dev["/sk:dev"]
         test["/sk:test"]
+        finish["/sk:finish"]
     end
 
     subgraph "Creation"
@@ -240,7 +287,6 @@ graph LR
     end
 
     subgraph "Quality"
-        commit["/sk:commit"]
         codereview["/sk:code-review"]
         secreview["/sk:security-review"]
         uireview["/sk:ui-review"]
@@ -253,9 +299,11 @@ graph LR
     end
 
     subgraph "Management"
+        resume["/sk:resume"]
         status["/sk:task-status"]
         updatedocs["/sk:update-docs"]
         update["/sk:update"]
+        commit["/sk:commit"]
         changelog["/sk:changelog"]
         deps["/sk:deps"]
     end
@@ -267,6 +315,7 @@ graph LR
     implement --> plan
     plan --> dev
     dev --> test
+    test --> finish
 
     newepic -->|"creates tasks"| newtask
 
@@ -289,12 +338,14 @@ graph LR
     style plan fill:#2a9d8f,color:#fff
     style dev fill:#2a9d8f,color:#fff
     style test fill:#2a9d8f,color:#fff
+    style finish fill:#2a9d8f,color:#fff
     style perfreview fill:#e9c46a,color:#000
     style debug fill:#e76f51,color:#fff
     style refactor fill:#e76f51,color:#fff
     style changelog fill:#264653,color:#fff
     style deps fill:#264653,color:#fff
     style commit fill:#e9c46a,color:#000
+    style resume fill:#264653,color:#fff
 ```
 
 ## Command Reference
@@ -315,6 +366,7 @@ graph LR
 | `/sk:plan` | Complete PLAN phase | Break down and prepare a task |
 | `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
 | `/sk:test` | Execute TEST phase | Verify acceptance criteria |
+| `/sk:finish` | Review + commit + push + PR + task update | After work is done, ready to ship |
 
 ### Document Creation
 
@@ -349,22 +401,49 @@ graph LR
 | `/sk:commit` | Smart git commit + push + PR | Git commit |
 | `/sk:changelog` | Generate changelog from git history | `CHANGELOG.md` |
 
-### Management
+### Session & Management
 
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
+| `/sk:resume` | Session briefing + context restore | Starting a new session with active work |
 | `/sk:task-status` | Show task board overview | Check progress across all tasks |
 | `/sk:update-docs` | Sync docs with codebase | After changes, or periodic audit |
 | `/sk:deps` | Dependency health check | Periodic audit or before release |
-| `/sk:update` | Update SK commands & templates | Get latest version of shipkit-cld |
+| `/sk:update` | Update SK commands & templates | Get latest version (npm or local) |
+
+## Package Structure
+
+SK separates the **product** (what gets installed) from **project files** (for developing SK itself):
+
+```
+sk/                              ← SK source repository
+├── CLAUDE.md                    ← SK development instructions (NOT shipped)
+├── cli.mjs                      ← CLI: install / update / remove
+├── package.json                 ← npm package config
+├── pkg/                         ← Template content (shipped to target projects)
+│   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
+│   └── docs/                    ← Template documentation tree
+└── .claude/                     ← Commands, agents, skills (shipped)
+    ├── commands/sk/             ← 26 slash commands
+    ├── agents/                  ← Implementer + 2-stage reviewers
+    └── skills/                  ← TDD, escalation, subagent-driven dev, verification
+```
 
 ## Key Design Decisions
 
 **Plan > Dev > Test lifecycle** — Forces thinking before coding. Each phase has an explicit exit gate so nothing gets skipped. The 3-phase cycle is simple enough to actually follow.
 
+**Quick Path as default** — Most work is XS/S complexity. The formal lifecycle exists for M+ work but the default is "just do it" with mental guardrails.
+
+**Lazy-loaded context** — Commands only read the docs they need for the current phase, not everything upfront. This keeps context windows lean and response times fast.
+
+**Session continuity** — `.current` file + `/sk:resume` command + memory integration means you never lose context between sessions.
+
 **Task hierarchy (Epic > Task > Subtask)** — Epics break into tasks, tasks break into subtasks. Each level has a clear scope and complexity ceiling. Subtasks capped at S complexity (single concern) prevent scope creep and make progress visible.
 
-**Self-contained tasks** — Every task is independently buildable, testable, and shippable. This means Claude Code can execute a task without needing context from other in-flight work.
+**Self-contained tasks** — Every task is independently buildable, testable, and shippable. Claude Code can execute a task without needing context from other in-flight work.
+
+**Source path persistence** — `.claude/.sk-source` remembers where SK was installed from, so local development changes flow to target projects with a simple `update` command.
 
 **Worked examples over abstract docs** — The `examples/` folder shows exactly what a completed task looks like. Worth more than pages of explanation.
 
@@ -377,8 +456,6 @@ graph LR
 **SOPs for procedures** — AI agents follow explicit steps better than vague guidelines. SOPs eliminate improvisation on critical tasks.
 
 **Behavioral guardrails** — LLMs over-engineer, make hidden assumptions, and drift from scope. Four principles (surface assumptions, do exactly what's asked, keep it simple, verify with evidence) are embedded in every lifecycle command to counteract this. See `docs/conventions/coding-behavior.md`.
-
-**Flat over deep** — Two levels max. Everything discoverable from the README index.
 
 ## Anti-Patterns to Avoid
 
