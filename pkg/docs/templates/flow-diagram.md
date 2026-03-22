@@ -1,0 +1,53 @@
+# Flow: [Process Name]
+
+**Last updated:** YYYY-MM-DD  
+**Type:** Sequence | Flowchart | State | Entity Relationship  
+
+## Overview
+
+<!-- 1-2 sentences explaining what this flow represents -->
+
+## Diagram
+
+<!-- Pick ONE diagram type below, delete the others -->
+
+### Option A: Sequence Diagram (for component interactions)
+
+```mermaid
+sequenceDiagram
+    participant A as Component A
+    participant B as Component B
+    A->>B: Request
+    B-->>A: Response
+```
+
+### Option B: Flowchart (for processes with decisions)
+
+```mermaid
+flowchart TD
+    A[Start] --> B{Decision?}
+    B -->|Yes| C[Action]
+    B -->|No| D[Other Action]
+```
+
+### Option C: State Diagram (for entity lifecycles)
+
+```mermaid
+stateDiagram-v2
+    [*] --> State1
+    State1 --> State2: Event
+```
+
+## Step-by-Step Explanation
+
+1. **Step name** — What happens and why
+2. **Step name** — What happens and why
+
+## Error Paths
+
+<!-- What happens when things go wrong? -->
+
+## Related Docs
+
+- [Architecture doc](../architecture/relevant-component.md)
+- [SOP for this process](../sop/relevant-sop.md)

@@ -11,14 +11,9 @@ Run the complete development lifecycle for a feature in a single session.
 
 ## Step 1: Read Context
 
-**ALWAYS start by reading:**
-1. `docs/system/project-context.md` — Dense project summary (if it exists)
-2. `docs/conventions/code-style.md` — Coding standards
-3. `docs/conventions/file-structure.md` — Project organization
-4. `docs/conventions/testing.md` — Testing patterns
-5. `docs/system/tech-stack.md` — Current stack
-6. `docs/system/database-schema.md` — Current schema
-7. `docs/tasks/README.md` — Existing tasks
+**Read only what's needed now** (conventions and skills are loaded later, per phase):
+1. `docs/system/project-context.md` — Dense project summary (if it exists — skip if empty/template)
+2. The task file being worked on (if resuming existing work)
 
 ## Step 2: Scope the Work
 
@@ -58,9 +53,34 @@ Determine scope:
 
 **Checkpoint:** Present plan summary to user. Wait for approval before proceeding.
 
+### Update Current Work Tracker
+Write `docs/tasks/.current` with:
+```
+task: TASK-{N}
+name: {task name}
+phase: plan
+subtask: 0/{total}
+updated: {ISO date}
+```
+
 ## Step 4: [DEV] Phase
 
 Update frontmatter: `phase: dev`, `status: in-progress`
+Update `docs/tasks/.current`: set `phase: dev`
+
+### Load Conventions and Skills
+
+Read these now (not earlier — save context for when they're needed):
+- `docs/conventions/code-style.md`, `file-structure.md`, `testing.md`
+- `.claude/skills/test-driven-development/SKILL.md` and `anti-patterns.md`
+- `.claude/skills/escalation-rules/SKILL.md`
+- `.claude/skills/verification-before-completion/SKILL.md`
+
+**Skills active:** `test-driven-development` (subtask execution), `escalation-rules` (failure handling), `verification-before-completion` (exit gate).
+
+Execute `[TEST]`+`[DEV]` subtask pairs using the TDD cycle: RED → GREEN → REFACTOR. If a subtask fails 3+ times, follow the escalation-rules skill.
+
+**Subagent mode (optional):** If 5+ subtasks, ask: "Use subagent mode?" If yes, read `.claude/skills/subagent-driven-development/SKILL.md`.
 
 ### Execute Subtasks (top-to-bottom)
 
@@ -89,6 +109,15 @@ For each `[DOCS]` subtask:
 ## Step 5: [TEST] Phase
 
 Update frontmatter: `phase: test`, `status: testing`
+Update `docs/tasks/.current`: set `phase: test`
+
+### Load TEST Phase Resources
+
+Read these now:
+- `docs/conventions/testing.md`
+- `.claude/skills/verification-before-completion/SKILL.md` — Evidence requirements for every verification claim
+
+**Skills active:** `verification-before-completion` (AC verification — paste actual test output for every claim).
 
 ### Run Full Test Suite
 ```bash
@@ -120,10 +149,11 @@ Go through AC-1, AC-2, etc. one by one:
 
 ## Step 6: Close Out
 
-1. Update frontmatter: `phase: done`, `status: done`
-2. Update Progress Log with all phases
-3. Move task in `docs/tasks/README.md` to "Recently Completed"
-4. Final documentation check:
+1. Delete `docs/tasks/.current` (work is complete)
+2. Update frontmatter: `phase: done`, `status: done`
+3. Update Progress Log with all phases
+4. Move task in `docs/tasks/README.md` to "Recently Completed"
+5. Final documentation check:
 
 ```markdown
 - [ ] docs/system/ updated (if schema, API, or stack changed)

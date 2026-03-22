@@ -136,3 +136,9 @@ Based on the audit, estimate the current WCAG 2.2 conformance level:
 - **Level AAA** — highest level, exceeds most requirements
 
 State the estimated level and list the specific gaps preventing the next level up.
+
+## Step 10: Persist Report (Optional)
+
+Ask: **"Save this UI review to `docs/reviews/ui/YYYY-MM-DD-{scope}.md`?"**
+
+If yes, save using the template from `docs/templates/review-report.md`.

@@ -9,10 +9,15 @@ Execute the [TEST] phase for a task, verifying every acceptance criterion.
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/system/project-context.md` — Dense project summary (if it exists)
+1. `docs/system/project-context.md` — Dense project summary (if it exists — skip if empty/template)
 2. The task file being tested — find task files with `phase: test` in frontmatter — especially Acceptance Criteria
 3. The task's "Phase Analysis > Dev Notes" section — understand what was built and why
 4. `docs/conventions/testing.md` — Testing standards and patterns
+
+## Step 1.5: Read Active Skills
+
+Read this skill file — its rules are active throughout this phase:
+1. `.claude/skills/verification-before-completion/SKILL.md` — Evidence requirements for every verification claim
 
 ## Step 2: Validate Readiness
 
@@ -37,12 +42,14 @@ If DEV isn't complete — go back (`/sk:dev` command).
 #   npm run lint / ruff check . / flake8
 ```
 
+**IMPORTANT:** Per the `verification-before-completion` skill, paste the ACTUAL command output below. "All tests pass" without output is not acceptable evidence.
+
 Document results:
 ```markdown
-- [ ] All unit tests pass
-- [ ] All integration tests pass
-- [ ] No type errors
-- [ ] No lint errors
+- [ ] All unit tests pass (paste output)
+- [ ] All integration tests pass (paste output)
+- [ ] No type errors (paste output)
+- [ ] No lint errors (paste output)
 - [ ] No new warnings introduced
 ```
 
@@ -65,6 +72,8 @@ Before testing, restate each acceptance criterion as a concrete, verifiable goal
 **If you cannot restate an AC as a specific "Done when X" statement, the AC is too vague -- go back to PLAN.**
 
 ### Per-Criterion Verification
+
+Per the `verification-before-completion` skill: for each AC, run the specific test or command and paste the output. Do not write "verified" without showing what you ran and what it returned.
 
 Go through each acceptance criterion **one by one**. For each:
 
@@ -159,16 +168,17 @@ Verify the existing system still works:
 
 ### If ALL criteria pass:
 
-1. Update YAML frontmatter: set `phase: done`, `status: done`, update `updated` date
-2. Update the Verification section with results
-3. Update Progress Log:
+1. Delete `docs/tasks/.current` (work is complete)
+2. Update YAML frontmatter: set `phase: done`, `status: done`, update `updated` date
+3. Update the Verification section with results
+4. Update Progress Log:
 
 ```markdown
 | YYYY-MM-DD | TEST | All ACs verified, all tests pass. |
 | YYYY-MM-DD | DONE | Task complete |
 ```
 
-4. Move task in `docs/tasks/README.md` from "Testing" to "Recently Completed"
+5. Move task in `docs/tasks/README.md` from "Testing" to "Recently Completed"
 
 Inform user: **"Task complete. All N acceptance criteria verified. Docs updated."**
 

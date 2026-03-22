@@ -121,6 +121,12 @@ Update `docs/tasks/README.md`:
 - Add the Epic to "Active Epics" table (if created)
 - Add all Tasks to the "[PLAN] Planning" section
 
+## Step 5.5: Save Research (Optional — only if Step 3 research was done)
+
+If web research was performed in Step 3, ask: **"Save research findings to `docs/research/YYYY-MM-DD-{topic}.md`?"**
+
+If yes, save using the template from `docs/templates/research-doc.md`. Include search queries used, key findings, comparison tables, and decision reasoning.
+
 ## Step 6: Summary
 
 Present the result:

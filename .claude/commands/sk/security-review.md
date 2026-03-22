@@ -171,3 +171,9 @@ For each Critical and High finding:
 4. **Priority** — order of remediation based on exploitability
 
 If no critical or high findings, acknowledge the codebase's security posture and highlight areas for ongoing vigilance.
+
+## Step 7: Persist Report (Optional)
+
+Ask: **"Save this security review to `docs/reviews/security/YYYY-MM-DD-{scope}.md`?"**
+
+If yes, save using the template from `docs/templates/review-report.md`. For Critical/High findings, suggest creating tasks: **"Create tasks for the N critical/high findings?"**

@@ -1,195 +1,89 @@
-# CLAUDE.md — Agent Instructions
+# CLAUDE.md — SK Development
 
-> This file is read automatically by Claude Code at the start of every session.
+> Instructions for developing the SK (shipkit-cld) package itself.
 
-## Development Lifecycle: Plan > Dev > Test
+## What is SK
 
-**M complexity and above follow this cycle strictly.**
+SK is a documentation & lifecycle system for Claude Code. It ships as an npm package (`shipkit-cld`) that installs:
+- Slash commands (`.claude/commands/sk/`) — 26 lifecycle commands
+- Agent definitions (`.claude/agents/`) — implementer, spec-reviewer, quality-reviewer
+- Skills (`.claude/skills/`) — TDD, escalation rules, subagent-driven dev, verification
+- Doc templates and conventions (`pkg/docs/`) — structured documentation system
+- Template CLAUDE.md (`pkg/CLAUDE.md`) — bootstrap instructions for target projects
 
-### Quick Path (XS/S Complexity)
+## Repository Structure
 
-For trivial changes (typo fixes, one-line bugs, small tweaks):
-- No task file needed
-- Follow Plan > Dev > Test mentally (don't skip thinking)
-- Use /sk:commit directly when done
-
-### Starting New Work
-
-1. **Decide scope:** Epic (L/XL complexity) > Task (M complexity) > Quick Path (XS/S complexity)
-2. **Follow the SOP:** `docs/sop/creating-a-task.md`
-3. **Use templates:**
-   - Epic: `cp docs/templates/epic.md docs/tasks/EPIC-{N}-{name}.md`
-   - Task: `cp docs/templates/task-prd.md docs/tasks/TASK-{N}-{E{epicN}|S}-{name}.md`
-   - Phase and status are tracked in YAML frontmatter inside each file (not in the filename)
-   - Counter: scan existing files, use next number
-4. **See worked example:** `docs/tasks/examples/TASK-user-registration-api.md`
-
-### [PLAN] Phase (do this BEFORE writing code)
-
-1. Write the problem statement and acceptance criteria
-2. Break into subtasks (each S complexity — single concern, self-contained)
-3. Resolve all open questions
-4. Identify affected files and docs
-
-**Exit gate:** All questions resolved, subtasks defined, acceptance criteria testable.
-
-### [DEV] Phase
-
-1. Execute subtasks top-to-bottom, checking them off
-2. Follow conventions in `docs/conventions/`
-3. Update docs in the same commit as code changes
-
-**Exit gate:** All subtasks done, code self-reviewed, docs updated.
-
-### [TEST] Phase
-
-1. Write tests per `docs/conventions/testing.md`
-2. Verify each acceptance criterion one-by-one
-3. Test error paths and edge cases
-4. Confirm no regressions
-
-**Exit gate:** All criteria verified, all tests pass.
-
-## Coding Behavior (4 Principles)
-
-These principles govern how you think during implementation. See `docs/conventions/coding-behavior.md` for detailed examples and anti-patterns.
-
-### 1. Surface Assumptions Before Writing Code
-- State what you believe to be true about the codebase, requirements, and constraints
-- Verify assumptions by reading code, schema, and docs -- never guess
-- Flag ambiguity in requirements; present interpretations and confirm before proceeding
-- If a requirement says "handle errors," ask which errors specifically
-
-### 2. Do Exactly What Was Asked (No More, No Less)
-- Implement what the acceptance criteria specify -- nothing extra
-- No drive-by refactoring ("while I'm in this file...")
-- No speculative features ("they'll probably need this next...")
-- No gold plating (extra logging, configuration, or error handling beyond requirements)
-- If you see something worth improving outside the task scope, note it as a follow-up
-
-### 3. Keep the Solution as Simple as Possible
-- The right solution is the simplest one satisfying all acceptance criteria
-- Complexity must be justified by a specific requirement, not "what if" scenarios
-- A function is better than a class for single-use logic
-- Three similar lines are better than a premature abstraction
-- Hardcode known values; don't make everything configurable
-
-### 4. Verify Goals After Implementation
-- After implementing, re-read each acceptance criterion
-- Verify each with specific evidence, not "it works" or "looks good"
-- Test both happy paths and error cases mentioned in the criteria
-- Run the actual verification and read the output -- don't assume correctness
-
-## Documentation System
-
-This project uses a structured documentation system. **Always consult docs before coding.**
-
-### Before ANY Implementation
-
-1. Read `docs/system/project-context.md` for dense project summary (if it exists)
-2. Read `docs/README.md` for full documentation map
-3. Read `docs/conventions/` for code style, file structure, and patterns
-4. Read relevant `docs/sop/` for step-by-step procedures
-5. Read relevant `docs/architecture/` for system design context
-6. Check `docs/decisions/` if you're unsure WHY something is done a certain way
-
-### During Implementation
-
-- Follow conventions in `docs/conventions/code-style.md` exactly
-- Follow file placement rules in `docs/conventions/file-structure.md`
-- Use the testing patterns from `docs/conventions/testing.md`
-- Reference `docs/system/` for current schema, APIs, and integrations
-
-### After Implementation
-
-Update these docs to reflect what changed:
-
-- [ ] `docs/system/database-schema.md` — if schema changed
-- [ ] `docs/system/api-reference.md` — if APIs changed
-- [ ] `docs/system/tech-stack.md` — if dependencies changed
-- [ ] `docs/system/project-context.md` — if project state changed significantly
-- [ ] `docs/architecture/` — if component relationships changed
-- [ ] `docs/flows/` — if process flows changed
-- [ ] `docs/tasks/` — mark task as complete, update status
-- [ ] `docs/decisions/` — if a significant technical decision was made
-
-### Creating New Docs
-
-Always use templates from `docs/templates/`:
-- New epic (L/XL complexity) > `docs/templates/epic.md`
-- New task (M complexity) > `docs/templates/task-prd.md`
-- New procedure > `docs/templates/sop-procedure.md`
-- New decision > `docs/templates/adr-decision.md`
-- New flow diagram > `docs/templates/flow-diagram.md`
-- New component doc > `docs/templates/component-doc.md`
-
-## Project Commands
-
-### Slash Commands (Claude Code — `sk` namespace)
-
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `/sk:kickoff` | Guided project setup + research | Starting a new (greenfield) project |
-| `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
-| `/sk:implement` | Full lifecycle: Plan > Dev > Test | Build a feature end-to-end |
-| `/sk:new-task` | Create a new task file | Starting planned work (M complexity) |
-| `/sk:new-epic` | Create a new epic file | Starting large feature (L/XL complexity) |
-| `/sk:plan` | Complete PLAN phase | Break down and prepare a task |
-| `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
-| `/sk:test` | Execute TEST phase | Verify acceptance criteria |
-| `/sk:task-status` | Show task board overview | Check progress across all tasks |
-| `/sk:update-docs` | Sync docs with codebase | After changes, or periodic audit |
-| `/sk:update` | Update SK commands & templates | Get latest version of shipkit-cld |
-| `/sk:init-docs` | Bootstrap docs from existing codebase | Brownfield project or full rebuild |
-| `/sk:new-sop` | Create a new SOP | Document a recurring procedure |
-| `/sk:new-adr` | Create an ADR | Record a significant tech decision |
-| `/sk:new-flow` | Create a flow diagram | Visualize a system process |
-| `/sk:commit` | Smart git commit + push + PR | After changes, ready to commit |
-| `/sk:code-review` | Analyze code for bugs, patterns, quality | Before committing or merging |
-| `/sk:security-review` | Security scan — OWASP, secrets, deps | Before release or on-demand |
-| `/sk:ui-review` | UI quality — a11y, responsive, UX | After UI changes |
-| `/sk:perf-review` | Performance — queries, memory, rendering, caching | Before release or on-demand |
-| `/sk:debug` | Systematic debugging — reproduce, isolate, fix, verify | Bug reports and unexpected behavior |
-| `/sk:refactor` | Safe refactoring — restructure without behavior change | Code improvement without feature changes |
-| `/sk:changelog` | Generate changelog from git history | Before release or version bump |
-| `/sk:deps` | Dependency health — outdated, vulnerabilities, licenses | Periodic audit or before release |
-
-### Build Commands
-
-<!-- REQUIRED: Fill these in before using /sk:dev or /sk:test -->
-
-```yaml
-dev:       # e.g., npm run dev
-build:     # e.g., npm run build
-test:      # e.g., npm test
-lint:      # e.g., npm run lint
-typecheck: # e.g., npm run typecheck
+```
+sk/
+├── CLAUDE.md              ← You are here (SK development instructions)
+├── cli.mjs                ← CLI entry point (install/update/remove)
+├── package.json           ← npm package config
+├── Readme.md              ← Public README
+├── pkg/                   ← TEMPLATE content installed into target projects
+│   ├── CLAUDE.md          ← Template CLAUDE.md for target projects
+│   └── docs/              ← Template documentation tree
+├── .claude/
+│   ├── commands/sk/       ← Slash commands (THE PRODUCT)
+│   ├── agents/            ← Agent definitions (THE PRODUCT)
+│   └── skills/            ← Skill definitions (THE PRODUCT)
+└── docs/                  ← SK's own documentation (not shipped)
 ```
 
-## Command Prerequisites
+## Key Separation: pkg/ vs root
 
-| Command | Requires |
-|---------|----------|
-| /sk:kickoff | Nothing (guided setup for greenfield) |
-| /sk:init-docs | Nothing (auto-scan for brownfield) |
-| /sk:brainstorm | project-context.md populated |
-| /sk:new-task | tech-stack.md populated |
-| /sk:dev | Build Commands filled in |
-| /sk:test | Build Commands filled in, test runner installed |
-| /sk:code-review | code-style.md populated |
-| /sk:security-review | tech-stack.md populated |
-| /sk:perf-review | tech-stack.md populated |
-| /sk:debug | Nothing (reads context as needed) |
-| /sk:refactor | code-style.md populated, test suite available |
-| /sk:changelog | Conventional commits in git history |
-| /sk:deps | Package manifest (package.json, pyproject.toml, etc.) |
+- **`pkg/`** — Template content that gets copied into target projects by `cli.mjs`
+- **`.claude/`** — Commands, agents, skills — the product AND used during SK development
+- **Root `CLAUDE.md`** — SK-specific (this file). NOT shipped.
+- **`pkg/CLAUDE.md`** — Template for target projects. Shipped.
 
-## Key Constraints
+When editing commands/agents/skills, you're editing the product.
+When editing `pkg/`, you're editing what users get on install.
 
-<!-- Add project-specific constraints Claude should always respect -->
+## Build Commands
 
-- Never commit `.env` files or secrets
-- All API inputs must be validated (e.g., Zod, Pydantic, Marshmallow)
-- All DB queries go through the ORM (no raw SQL in application code)
-- All user-facing text must support i18n
-- PRs must include test coverage for new logic
+```yaml
+dev:       # No dev server — SK is a CLI tool
+build:     # No build step — plain ES modules
+test:      node cli.mjs /tmp/sk-test   # Test install into temp dir
+lint:      # No linter configured
+typecheck: # No TypeScript — plain JavaScript
+```
+
+## Development Workflow
+
+SK itself follows the Quick Path for most changes (XS/S complexity):
+1. Edit the relevant file (command, template, skill, cli.mjs)
+2. Test manually: `node cli.mjs /tmp/sk-test` for CLI changes
+3. For command changes: test in a target project
+4. Commit with conventional format
+
+For M+ changes, use the SK commands themselves (dogfooding).
+
+## Constraints
+
+- `cli.mjs` must work with Node.js >= 18, no dependencies (zero-dep package)
+- Commands must be language/framework agnostic — never assume Node.js, Python, etc.
+- Templates must use placeholder comments, not hardcoded values
+- Skills and agents must be self-contained (no cross-references that break if files are missing)
+- `.claude/commands/sk/` files are the product — test changes in real projects
+- `pkg/CLAUDE.md` should stay under 100 lines — every line costs context on every session
+- Never ship SK-specific content in `pkg/` (no references to SK development)
+
+## Release Process
+
+1. Update version in `package.json`
+2. Update changelog (or use `/sk:changelog`)
+3. `npm publish`
+4. Tag: `git tag vX.Y.Z && git push --tags`
+
+## Session Continuity
+
+Use `/sk:resume` to pick up where you left off.
+Check `docs/tasks/.current` for active work context.
+
+## Memory Integration
+
+Use Claude Code memory for cross-session context:
+- **Save to memory:** User preferences, workflow patterns, SK-specific gotchas
+- **Save to docs:** Technical decisions, conventions, architecture
+- **Save to task files:** Current work state, progress, subtask status

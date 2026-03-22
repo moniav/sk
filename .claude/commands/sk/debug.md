@@ -82,7 +82,11 @@ Test your hypothesis with minimal investigation — do not assume your hypothesi
 - Check the git log for recent changes to the suspect code: `git log --oneline -10 -- <file>`
 - Read the test coverage for the suspect code — is the failing case tested?
 
-### 5d: Identify Root Cause vs Symptom
+### 5d: Escalation Check
+
+If your hypothesis is wrong 3 times, follow `.claude/skills/escalation-rules/SKILL.md`: stop fixing and question whether the architecture or design is the real problem.
+
+### 5e: Identify Root Cause vs Symptom
 
 Ask yourself:
 - Is this the **root cause** or a **symptom** of a deeper issue?
@@ -127,6 +131,9 @@ Follow the project's testing conventions from `docs/conventions/testing.md`.
 
 ## Step 8: Verify
 
+Read `.claude/skills/verification-before-completion/SKILL.md` before claiming the fix works.
+You MUST paste the actual test output showing the regression test passes and the full suite has no new failures.
+
 ### 8a: Confirm the Fix
 1. Re-run the original reproduction steps — bug should be gone
 2. Verify with specific evidence (exact output, not "it works now")
@@ -166,6 +173,12 @@ Present to user:
 - [ ] Task file marked `phase: done`, `status: done`
 - [ ] `docs/tasks/README.md` updated
 - [ ] `docs/system/` updated (if the fix changed APIs, schema, or stack)
+
+### Save Investigation (Optional — only for M+ complexity)
+
+If the investigation was substantial (multiple hypotheses tested, complex root cause), ask: **"Save investigation trace to `docs/research/YYYY-MM-DD-{bug-name}.md`?"**
+
+If yes, save using `docs/templates/research-doc.md`: symptom, hypotheses tested, root cause found, fix applied.
 
 ### Follow-up (if any)
 - Related issues found during investigation

@@ -166,8 +166,12 @@ Apply each step from the plan, one at a time:
 - **No drive-by improvements** — only change what's in the plan
 - **If you find a bug** — note it, don't fix it (that's a separate `/sk:debug` task)
 - **If tests break** — your refactoring changed behavior. Revert and rethink.
+- **If a refactoring step fails 3 times** — follow `.claude/skills/escalation-rules/SKILL.md`: stop, evaluate whether the approach is correct, ask the user.
 
 ## Step 7: Verify
+
+Read `.claude/skills/verification-before-completion/SKILL.md` before claiming verification.
+You MUST paste the actual test suite output and compare to the baseline from Step 4.
 
 After all steps are complete:
 

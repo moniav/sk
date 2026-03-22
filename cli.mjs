@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // cli.mjs — ShipKit Documentation CLI
 // Usage:
-//   npx shipkit-cld [target]          Install into target (default: .)
-//   npx shipkit-cld update [target]   Update commands & templates only (preserves user docs)
-//   npx shipkit-cld remove [target]   Remove SK system files (keeps docs/)
+//   npx shipkit-cld [target]                    Install into target (default: .)
+//   npx shipkit-cld update [target]             Update from package source
+//   npx shipkit-cld update [target] --from PATH Update from local SK checkout
+//   npx shipkit-cld remove [target]             Remove SK system files (keeps docs/)
 
-import { existsSync, mkdirSync, cpSync, renameSync, readdirSync, rmSync, unlinkSync } from "fs";
+import { existsSync, mkdirSync, cpSync, renameSync, readdirSync, rmSync, unlinkSync, writeFileSync, readFileSync } from "fs";
 import { resolve, dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { createInterface } from "readline";
@@ -39,6 +40,46 @@ function countFiles(dir) {
   return count;
 }
 
+function findSource(target, fromOverride) {
+  // 1. Explicit --from flag
+  if (fromOverride) {
+    if (existsSync(join(fromOverride, "pkg", "CLAUDE.md")) && existsSync(join(fromOverride, ".claude", "commands", "sk"))) {
+      return fromOverride;
+    }
+    console.log(c.red("[ERROR]") + ` --from path is not a valid SK source: ${fromOverride}`);
+    console.log("  Expected: pkg/CLAUDE.md and .claude/commands/sk/ in that directory");
+    process.exit(1);
+  }
+
+  // 2. Saved source path from previous install
+  const skSourceFile = join(target, ".claude", ".sk-source");
+  if (existsSync(skSourceFile)) {
+    const saved = readFileSync(skSourceFile, "utf-8").trim();
+    if (saved && existsSync(join(saved, "pkg", "CLAUDE.md"))) {
+      console.log(c.blue("[INFO]") + ` Using saved source: ${saved}`);
+      return saved;
+    }
+  }
+
+  // 3. Package location (__dirname)
+  if (existsSync(join(__dirname, "pkg", "CLAUDE.md")) && existsSync(join(__dirname, "pkg", "docs"))) {
+    return __dirname;
+  }
+
+  // 4. Current working directory
+  if (existsSync(join(process.cwd(), "pkg", "CLAUDE.md")) && existsSync(join(process.cwd(), "pkg", "docs"))) {
+    return process.cwd();
+  }
+
+  return null;
+}
+
+function saveSourcePath(target, source) {
+  const skSourceFile = join(target, ".claude", ".sk-source");
+  mkdirSync(dirname(skSourceFile), { recursive: true });
+  writeFileSync(skSourceFile, source + "\n");
+}
+
 // --- Colors (ANSI) ---
 
 const c = {
@@ -67,10 +108,14 @@ const args = process.argv.slice(2);
 const command = ["remove", "update"].includes(args[0]) ? args[0] : "install";
 const targetArg = command === "install" ? args[0] : args[1];
 
+// Parse --from flag for explicit source override
+const fromIdx = args.indexOf("--from");
+const fromArg = fromIdx !== -1 && args[fromIdx + 1] ? resolve(args[fromIdx + 1]) : null;
+
 if (command === "remove") {
   await runRemove(resolve(targetArg || "."));
 } else if (command === "update") {
-  await runUpdate(resolve(targetArg || "."));
+  await runUpdate(resolve(targetArg || "."), fromArg);
 } else {
   await runInstall(resolve(targetArg || "."));
 }
@@ -150,27 +195,25 @@ async function runInstall(target) {
 
   // --- Find source ---
 
-  let source = null;
-
-  if (existsSync(join(__dirname, "CLAUDE.md")) && existsSync(join(__dirname, "docs"))) {
-    source = __dirname;
-  } else if (existsSync(join(process.cwd(), "CLAUDE.md")) && existsSync(join(process.cwd(), "docs"))) {
-    source = process.cwd();
-  } else {
+  const source = findSource(target, null);
+  if (!source) {
     console.log(
       c.yellow("[WARN]") +
         " Cannot find SK source files.\n" +
         "  Make sure you run this from the extracted sk/ folder.\n" +
-        "  Expected: CLAUDE.md, docs/, .claude/ in the same directory"
+        "  Expected: pkg/CLAUDE.md, pkg/docs/, .claude/ in the same directory"
     );
     process.exit(1);
   }
+
+  // Save source path for future updates
+  saveSourcePath(target, source);
 
   // --- Step 2: Copy files ---
 
   console.log(c.blue("[2/4]") + " Copying documentation files...");
 
-  cpSync(join(source, "docs"), join(target, "docs"), { recursive: true, force: true });
+  cpSync(join(source, "pkg", "docs"), join(target, "docs"), { recursive: true, force: true });
   console.log(c.green("  [OK]") + " docs/ content copied");
 
   cpSync(
@@ -180,7 +223,23 @@ async function runInstall(target) {
   );
   console.log(c.green("  [OK]") + " .claude/commands/sk/ copied");
 
-  cpSync(join(source, "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
+  // Copy agents if they exist
+  const agentsSource = join(source, ".claude", "agents");
+  if (existsSync(agentsSource)) {
+    mkdirSync(join(target, ".claude", "agents"), { recursive: true });
+    cpSync(agentsSource, join(target, ".claude", "agents"), { recursive: true, force: true });
+    console.log(c.green("  [OK]") + " .claude/agents/ copied");
+  }
+
+  // Copy skills if they exist
+  const skillsSource = join(source, ".claude", "skills");
+  if (existsSync(skillsSource)) {
+    mkdirSync(join(target, ".claude", "skills"), { recursive: true });
+    cpSync(skillsSource, join(target, ".claude", "skills"), { recursive: true, force: true });
+    console.log(c.green("  [OK]") + " .claude/skills/ copied");
+  }
+
+  cpSync(join(source, "pkg", "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
   if (existsSync(join(source, "GUIDE.md"))) {
     cpSync(join(source, "GUIDE.md"), join(target, "GUIDE.md"), { force: true });
   }
@@ -215,6 +274,7 @@ async function runInstall(target) {
   checkFile(".claude/commands/sk/code-review.md");
   checkFile(".claude/commands/sk/security-review.md");
   checkFile(".claude/commands/sk/ui-review.md");
+  checkFile("docs/commands-reference.md");
 
   console.log();
   if (errors > 0) {
@@ -249,6 +309,8 @@ async function runInstall(target) {
   console.log("  |   ├── new-task.md            /sk:new-task");
   console.log("  |   ├── new-epic.md            /sk:new-epic");
   console.log("  |   └── ...                    (and more)");
+  console.log("  ├── .claude/agents/            <- Agent definitions");
+  console.log("  ├── .claude/skills/            <- Active skills (TDD, etc.)");
   console.log("  └── docs/                      <- Documentation hub");
   console.log("      ├── conventions/           Code style, structure, git, testing");
   console.log("      ├── system/                Tech stack, schema, APIs");
@@ -277,7 +339,7 @@ async function runInstall(target) {
 // UPDATE — commands, templates, and SOPs only (preserves user content)
 // =============================================================================
 
-async function runUpdate(target) {
+async function runUpdate(target, fromOverride) {
   banner();
 
   console.log(c.blue("[INFO]") + ` Updating SK in: ${target}`);
@@ -294,20 +356,24 @@ async function runUpdate(target) {
 
   // --- Find source ---
 
-  let source = null;
-
-  if (existsSync(join(__dirname, "CLAUDE.md")) && existsSync(join(__dirname, "docs"))) {
-    source = __dirname;
-  } else if (existsSync(join(process.cwd(), "CLAUDE.md")) && existsSync(join(process.cwd(), "docs"))) {
-    source = process.cwd();
-  } else {
+  const source = findSource(target, fromOverride);
+  if (!source) {
     console.log(
       c.red("[ERROR]") +
         " Cannot find SK source files.\n" +
-        "  Make sure you have the latest shipkit-cld package."
+        "  Options:\n" +
+        `  1. Update from local checkout:  ${c.cyan("npx shipkit-cld update . --from /path/to/sk")}\n` +
+        `  2. Update from npm:             ${c.cyan("npx shipkit-cld@latest update .")}\n` +
+        "  3. Run from the SK source dir:  cd /path/to/sk && node cli.mjs update " + target
     );
     process.exit(1);
   }
+
+  // Save source path for future updates
+  saveSourcePath(target, source);
+
+  console.log(c.blue("[INFO]") + ` Source: ${source}`);
+  console.log();
 
   // --- What gets updated vs preserved ---
 
@@ -316,6 +382,8 @@ async function runUpdate(target) {
   console.log(c.yellow("    docs/templates/         <- document templates"));
   console.log(c.yellow("    docs/sop/               <- standard procedures"));
   console.log(c.yellow("    CLAUDE.md               <- agent instructions"));
+  console.log(c.yellow("    .claude/agents/         <- agent definitions"));
+  console.log(c.yellow("    .claude/skills/         <- active skills"));
   console.log();
   console.log(c.bold("  Will preserve (not touched):"));
   console.log(c.green("    docs/tasks/             <- your task files"));
@@ -336,7 +404,7 @@ async function runUpdate(target) {
 
   // --- Step 1: Update commands ---
 
-  console.log(c.blue("[1/4]") + " Updating slash commands...");
+  console.log(c.blue("[1/5]") + " Updating slash commands...");
   cpSync(
     join(source, ".claude", "commands", "sk"),
     join(target, ".claude", "commands", "sk"),
@@ -347,9 +415,9 @@ async function runUpdate(target) {
 
   // --- Step 2: Update templates ---
 
-  console.log(c.blue("[2/4]") + " Updating templates...");
+  console.log(c.blue("[2/5]") + " Updating templates...");
   cpSync(
-    join(source, "docs", "templates"),
+    join(source, "pkg", "docs", "templates"),
     join(target, "docs", "templates"),
     { recursive: true, force: true }
   );
@@ -358,10 +426,10 @@ async function runUpdate(target) {
 
   // --- Step 3: Update lifecycle & SOPs ---
 
-  console.log(c.blue("[3/4]") + " Updating SOPs...");
+  console.log(c.blue("[3/5]") + " Updating SOPs...");
 
   cpSync(
-    join(source, "docs", "sop"),
+    join(source, "pkg", "docs", "sop"),
     join(target, "docs", "sop"),
     { recursive: true, force: true }
   );
@@ -369,12 +437,30 @@ async function runUpdate(target) {
 
   // --- Step 4: Update CLAUDE.md ---
 
-  console.log(c.blue("[4/4]") + " Updating CLAUDE.md...");
-  cpSync(join(source, "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
+  console.log(c.blue("[4/5]") + " Updating CLAUDE.md...");
+  cpSync(join(source, "pkg", "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
   if (existsSync(join(source, "GUIDE.md"))) {
     cpSync(join(source, "GUIDE.md"), join(target, "GUIDE.md"), { force: true });
   }
   console.log(c.green("  [OK]") + " CLAUDE.md updated");
+
+  // --- Step 5: Update agents and skills ---
+
+  console.log(c.blue("[5/5]") + " Updating agents and skills...");
+
+  const agentsSource = join(source, ".claude", "agents");
+  if (existsSync(agentsSource)) {
+    mkdirSync(join(target, ".claude", "agents"), { recursive: true });
+    cpSync(agentsSource, join(target, ".claude", "agents"), { recursive: true, force: true });
+    console.log(c.green("  [OK]") + " .claude/agents/ updated");
+  }
+
+  const skillsSource = join(source, ".claude", "skills");
+  if (existsSync(skillsSource)) {
+    mkdirSync(join(target, ".claude", "skills"), { recursive: true });
+    cpSync(skillsSource, join(target, ".claude", "skills"), { recursive: true, force: true });
+    console.log(c.green("  [OK]") + " .claude/skills/ updated");
+  }
 
   // --- Summary ---
 
@@ -386,6 +472,8 @@ async function runUpdate(target) {
   console.log("    docs/templates/        (document templates)");
   console.log("    docs/sop/             (standard procedures)");
   console.log("    CLAUDE.md             (agent instructions)");
+  console.log("    .claude/agents/        (agent definitions)");
+  console.log("    .claude/skills/        (active skills)");
   console.log();
   console.log(c.bold("  Preserved:"));
   console.log("    docs/tasks/           (your tasks & epics)");
@@ -428,6 +516,14 @@ async function runRemove(target) {
     const cmdCount = countFiles(skCommandsDir);
     console.log(c.red(`    .claude/commands/sk/    (${cmdCount} command files)`));
   }
+  const agentsDir = join(target, ".claude", "agents");
+  if (existsSync(agentsDir)) {
+    console.log(c.red(`    .claude/agents/         (agent definitions)`));
+  }
+  const skillsDir = join(target, ".claude", "skills");
+  if (existsSync(skillsDir)) {
+    console.log(c.red(`    .claude/skills/         (skill definitions)`));
+  }
   if (hasClaudeMd) console.log(c.red("    CLAUDE.md"));
   if (existsSync(guideMd)) console.log(c.red("    GUIDE.md"));
   console.log();
@@ -456,6 +552,18 @@ async function runRemove(target) {
   if (hasCommands) {
     rmSync(skCommandsDir, { recursive: true, force: true });
     console.log(c.green("  [OK]") + " .claude/commands/sk/ removed");
+    removed++;
+  }
+
+  if (existsSync(agentsDir)) {
+    rmSync(agentsDir, { recursive: true, force: true });
+    console.log(c.green("  [OK]") + " .claude/agents/ removed");
+    removed++;
+  }
+
+  if (existsSync(skillsDir)) {
+    rmSync(skillsDir, { recursive: true, force: true });
+    console.log(c.green("  [OK]") + " .claude/skills/ removed");
     removed++;
   }
 

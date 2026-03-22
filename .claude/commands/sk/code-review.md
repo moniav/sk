@@ -133,3 +133,9 @@ Provide an overall assessment:
 - **NEEDS DISCUSSION** — Architectural or design concerns need team input
 
 Include a brief summary: what the code does well, what needs attention, and any systemic patterns noticed.
+
+## Step 7: Persist Report (Optional)
+
+Ask: **"Save this review report to `docs/reviews/code/YYYY-MM-DD-{scope}.md`?"**
+
+If yes, save using the template from `docs/templates/review-report.md`. Add the review to `docs/reviews/README.md` index.

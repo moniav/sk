@@ -16,6 +16,8 @@ Complete the [PLAN] phase for a task, taking it from `backlog`/`planning` to `re
 5. `docs/system/database-schema.md` — Current data model
 6. `docs/architecture/README.md` — System design constraints
 
+**Skip files that are empty or contain only template placeholders.** Don't waste context on unfilled templates.
+
 ## Step 2: Identify the Task
 
 Ask the user which task to plan, or:

@@ -207,3 +207,9 @@ Format findings by severity and impact:
 1. Most impactful fix
 2. Second most impactful
 3. Third most impactful
+
+## Step 11: Persist Report (Optional)
+
+Ask: **"Save this performance review to `docs/reviews/performance/YYYY-MM-DD-{scope}.md`?"**
+
+If yes, save using the template from `docs/templates/review-report.md`.

@@ -8,16 +8,22 @@ Execute the [DEV] phase for a task, implementing subtasks top-to-bottom.
 
 ## Step 1: Read Context
 
-**ALWAYS start by reading:**
-1. `docs/system/project-context.md` — Dense project summary (if it exists)
+**Read only what's needed now** (conventions and skills are loaded later, at Step 4):
+1. `docs/system/project-context.md` — Dense project summary (if it exists — skip if empty/template)
 2. The task file being implemented — find task files with `phase: dev` in frontmatter
-3. The task's "Phase Analysis" section — skip re-scanning already-mapped files
-4. `docs/conventions/code-style.md` — Naming, patterns, anti-patterns
-5. `docs/conventions/coding-behavior.md` — Implementation thinking discipline
-6. `docs/conventions/file-structure.md` — Where files go
-7. `docs/conventions/testing.md` — Testing patterns (for `[TEST]` subtasks)
-7. `docs/system/database-schema.md` — If touching data layer
-8. Any relevant `docs/sop/` procedures (e.g., `database-migration.md`)
+
+Read conventions and skills when you start executing subtasks (Step 4), not now.
+
+## Step 1.5: Choose Execution Mode (Optional)
+
+If the task has 5+ subtasks, ask: **"This task has N subtasks. Use subagent mode? Each subtask gets a fresh agent with clean context. (Recommended for large tasks.)"**
+
+If yes: read `.claude/skills/subagent-driven-development/SKILL.md` and follow SDD pattern for subtask execution.
+If no: continue with direct execution (standard mode).
+
+**Worktree setup (optional):** If working on a feature branch for M+ complexity, ask: **"Set up an isolated worktree for this work?"**
+
+If yes: follow `.claude/skills/git-worktrees/SKILL.md` setup steps.
 
 ## Step 2: Validate Readiness
 
@@ -41,9 +47,30 @@ Update the task file frontmatter:
 
 Progress Log: Add entry `DEV phase started`
 
+Update `docs/tasks/.current`: set `phase: dev`, update subtask count.
+
 ## Step 4: Execute Subtasks
 
+### Load Conventions and Skills
+
+Before executing the first subtask, read:
+- `docs/conventions/code-style.md`, `file-structure.md`, `testing.md`
+- `.claude/skills/test-driven-development/SKILL.md` and `anti-patterns.md`
+- `.claude/skills/escalation-rules/SKILL.md`
+
 Process subtasks **top-to-bottom, one at a time**.
+
+Update `docs/tasks/.current` subtask progress after each subtask.
+
+### Subtask Execution Order (TDD)
+
+Follow the `test-driven-development` skill. For each feature unit, execute the `[TEST]` subtask BEFORE its paired `[DEV]` subtask:
+
+1. `[TEST]` Write failing test → run → confirm RED (paste output)
+2. `[DEV]` Implement to pass → run → confirm GREEN (paste output)
+3. Refactor → run → confirm still GREEN (paste output)
+
+If a subtask fails 3+ times, follow the `escalation-rules` skill: STOP, evaluate options, ask the user.
 
 ### For Each `[DEV]` Subtask:
 
@@ -122,6 +149,9 @@ Record key decisions and implementation notes in the task's "Phase Analysis > De
 
 ## Step 8: DEV Exit Gate
 
+Read `.claude/skills/verification-before-completion/SKILL.md` before claiming done.
+You MUST run the actual test suite and paste the output below. "Tests pass" is not evidence.
+
 All conditions must be true:
 
 ```markdown
@@ -135,14 +165,15 @@ All conditions must be true:
 
 ## Step 9: Update Status
 
-1. Update YAML frontmatter: set `phase: test`, `status: testing`, update `updated` date
-2. Update Progress Log:
+1. Update `docs/tasks/.current`: set `phase: test`
+2. Update YAML frontmatter: set `phase: test`, `status: testing`, update `updated` date
+3. Update Progress Log:
 
 ```markdown
 | YYYY-MM-DD | DEV | All N subtasks complete, docs updated. Ready for test. |
 ```
 
-3. Update `docs/tasks/README.md` — move from "In Progress" to "Testing"
+4. Update `docs/tasks/README.md` — move from "In Progress" to "Testing"
 
 Inform user: **"DEV phase complete. All subtasks implemented. Moving to TEST phase — I'll verify each acceptance criterion."**
 

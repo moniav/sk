@@ -8,9 +8,8 @@
   },
   "files": [
     "cli.mjs",
-    "docs/",
+    "pkg/",
     ".claude/",
-    "CLAUDE.md",
     "!.claude/commands/sk/publish.md"
   ],
   "keywords": [

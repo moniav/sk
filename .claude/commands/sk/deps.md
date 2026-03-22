@@ -226,3 +226,9 @@ npm ls --all 2>/dev/null | grep "deduped" | head -20
 1. Most urgent action
 2. Second priority
 3. Third priority
+
+## Step 11: Persist Report (Optional)
+
+Ask: **"Save this dependency report to `docs/reviews/deps/YYYY-MM-DD-audit.md`?"**
+
+If yes, save using the template from `docs/templates/review-report.md`.
