@@ -1,14 +1,15 @@
 # Git Workflow
 
-**Last updated:** YYYY-MM-DD
+**Last updated:** 2026-03-23
 
 ## Branch Naming
 
+SK development primarily uses `main` for direct commits (small CLI tool). For larger features:
+
 ```
 main                           # Production-ready code
-├── feat/[ticket]-short-desc   # New features
-├── fix/[ticket]-short-desc    # Bug fixes
-├── refactor/short-desc        # Code improvements (no behavior change)
+├── feat/short-desc            # New commands, skills, features
+├── fix/short-desc             # Bug fixes
 ├── docs/short-desc            # Documentation only
 └── chore/short-desc           # Tooling, deps, config
 ```
@@ -18,25 +19,24 @@ main                           # Production-ready code
 Format: `type(scope): description`
 
 ```
-feat(auth): add Google OAuth login
-fix(payments): handle timeout on Stripe webhook
-refactor(api): extract validation middleware
-docs(sop): add database migration procedure
-chore(deps): upgrade framework to latest version
+feat: add /sk:legal-scan command for legal-advisor skill
+fix: enforce docs/legal/ output structure for legal-advisor
+docs: update README for pkg/ separation, new features, and update flow
+chore: update version to 1.4.1
+feat: separate pkg/ from project root
 ```
 
-Types: `feat`, `fix`, `refactor`, `docs`, `chore`, `test`, `perf`
+Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`
 
 Rules:
 - Imperative mood ("add" not "added")
 - Lowercase, no period at end
 - Under 72 characters
-- Body for context when needed (separated by blank line)
+- Version bumps use the version number as message (e.g., `1.4.1`)
 
-## PR Process
+## Release Process
 
-1. Branch from `main`
-2. Keep PRs focused — one feature/fix per PR
-3. Self-review diff before requesting review
-4. Update relevant docs in same PR
-5. Squash merge to `main`
+1. Update version in `package.json`
+2. Commit: version number as message (e.g., `1.4.1`)
+3. `npm publish`
+4. Tag: `git tag vX.Y.Z && git push --tags`

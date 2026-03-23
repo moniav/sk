@@ -1,17 +1,16 @@
 # System State
 
-> Current state of the system: what we use, how it's connected, what the data looks like.
-> **Keep this updated after every deployment that changes infrastructure or schema.**
+> Current state of the SK project.
 
-**Last updated:** YYYY-MM-DD
+**Last updated:** 2026-03-23
 
 ## Quick Reference
 
 | Doc | Contents |
 |-----|----------|
 | [Project Context](./project-context.md) | Dense project summary (read first) |
-| [Tech Stack](./tech-stack.md) | Languages, frameworks, tools, versions |
-| [Database Schema](./database-schema.md) | Tables, relationships, indexes |
-| [API Reference](./api-reference.md) | Endpoints, request/response contracts |
-| [Integrations](./integrations.md) | External services, APIs, webhooks |
-| [Environment Variables](./env-variables.md) | All config vars and their purposes |
+| [Tech Stack](./tech-stack.md) | Node.js, zero deps, npm distribution |
+| [Database Schema](./database-schema.md) | N/A — SK is stateless |
+| [API Reference](./api-reference.md) | N/A — CLI interface only |
+| [Integrations](./integrations.md) | N/A — no external services |
+| [Environment Variables](./env-variables.md) | N/A — zero configuration |

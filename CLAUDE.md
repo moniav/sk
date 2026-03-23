@@ -5,9 +5,9 @@
 ## What is SK
 
 SK is a documentation & lifecycle system for Claude Code. It ships as an npm package (`shipkit-cld`) that installs:
-- Slash commands (`.claude/commands/sk/`) — 26 lifecycle commands
-- Agent definitions (`.claude/agents/`) — implementer, spec-reviewer, quality-reviewer
-- Skills (`.claude/skills/`) — TDD, escalation rules, subagent-driven dev, verification
+- Slash commands (`.claude/commands/sk/`) — 29 lifecycle commands
+- Agent definitions (`.claude/agents/`) — implementer, spec-reviewer, quality-reviewer, dependency-analyzer
+- Skills (`.claude/skills/`) — TDD, escalation, legal-advisor, technical-diagrams, subagent-dev, verification, git-worktrees
 - Doc templates and conventions (`pkg/docs/`) — structured documentation system
 - Template CLAUDE.md (`pkg/CLAUDE.md`) — bootstrap instructions for target projects
 
@@ -23,7 +23,7 @@ sk/
 │   ├── CLAUDE.md          ← Template CLAUDE.md for target projects
 │   ├── docs/              ← Template documentation tree
 │   └── .claude/           ← Commands, agents, skills
-│       ├── commands/sk/   ← 26 slash commands
+│       ├── commands/sk/   ← 29 slash commands
 │       ├── agents/        ← Agent definitions
 │       └── skills/        ← Skill definitions
 ├── .claude/               ← DEVELOPMENT copy (for dogfooding SK)

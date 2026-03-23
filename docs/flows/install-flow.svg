@@ -1,0 +1,117 @@
+<svg viewBox="0 0 620 750" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e5e5e5" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="620" height="750" fill="#fafafa"/>
+  <rect width="620" height="750" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="40" y="35" font-family="monospace" font-size="14" fill="#333" font-weight="bold">SK Install Flow</text>
+  <text x="200" y="35" font-family="monospace" font-size="12" fill="#888">[ FLOW ]</text>
+
+  <!-- Vertical guide -->
+  <line x1="310" y1="55" x2="310" y2="710" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- ═══ Step 1: Start ═══ -->
+  <ellipse cx="310" cy="80" rx="120" ry="22" fill="#fff" stroke="#3498db" stroke-width="2"/>
+  <text x="310" y="85" font-family="monospace" font-size="10" fill="#3498db" text-anchor="middle">npx shipkit-cld [target]</text>
+
+  <!-- Arrow down -->
+  <path d="M 310 102 L 310 125" stroke="#ccc" stroke-width="1.5"/>
+  <polygon points="305,123 310,133 315,123" fill="#ccc"/>
+
+  <!-- ═══ Step 2: Target exists? ═══ -->
+  <polygon points="310,135 395,170 310,205 225,170" fill="#fff" stroke="#e74c3c" stroke-width="2"/>
+  <text x="310" y="167" font-family="monospace" font-size="9" fill="#e74c3c" text-anchor="middle">target dir</text>
+  <text x="310" y="180" font-family="monospace" font-size="9" fill="#e74c3c" text-anchor="middle">exists?</text>
+
+  <!-- No path -->
+  <path d="M 395 170 L 470 170" stroke="#e74c3c" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="485" y="165" font-family="monospace" font-size="9" fill="#e74c3c">no</text>
+  <rect x="470" y="155" width="110" height="30" fill="#fff" stroke="#f39c12" stroke-width="1.5" rx="2"/>
+  <text x="525" y="175" font-family="monospace" font-size="9" fill="#f39c12" text-anchor="middle">prompt create?</text>
+
+  <!-- Return arrow from prompt -->
+  <path d="M 525 185 L 525 210 L 320 210" stroke="#ccc" stroke-width="1"/>
+  <polygon points="322,205 312,210 322,215" fill="#ccc"/>
+
+  <!-- Yes path -->
+  <path d="M 310 205 L 310 230" stroke="#ccc" stroke-width="1.5"/>
+  <polygon points="305,228 310,238 315,228" fill="#ccc"/>
+  <text x="322" y="220" font-family="monospace" font-size="8" fill="#27ae60">yes</text>
+
+  <!-- ═══ Step 3: Existing docs? ═══ -->
+  <polygon points="310,240 395,275 310,310 225,275" fill="#fff" stroke="#e74c3c" stroke-width="2"/>
+  <text x="310" y="272" font-family="monospace" font-size="9" fill="#e74c3c" text-anchor="middle">existing</text>
+  <text x="310" y="285" font-family="monospace" font-size="9" fill="#e74c3c" text-anchor="middle">docs/?</text>
+
+  <!-- Yes - backup path -->
+  <path d="M 395 275 L 470 275" stroke="#f39c12" stroke-width="1.5"/>
+  <rect x="470" y="260" width="110" height="30" fill="#fff" stroke="#f39c12" stroke-width="1.5" rx="2"/>
+  <text x="525" y="280" font-family="monospace" font-size="9" fill="#f39c12" text-anchor="middle">backup docs/old/</text>
+  <text x="420" y="268" font-family="monospace" font-size="8" fill="#f39c12">yes</text>
+
+  <!-- Return from backup -->
+  <path d="M 525 290 L 525 315 L 320 315" stroke="#ccc" stroke-width="1"/>
+  <polygon points="322,310 312,315 322,320" fill="#ccc"/>
+
+  <!-- No path -->
+  <path d="M 310 310 L 310 335" stroke="#ccc" stroke-width="1.5"/>
+  <polygon points="305,333 310,343 315,333" fill="#ccc"/>
+  <text x="322" y="325" font-family="monospace" font-size="8" fill="#27ae60">no</text>
+
+  <!-- ═══ Step 4: Create dirs ═══ -->
+  <rect x="200" y="345" width="220" height="40" fill="#fff" stroke="#9b59b6" stroke-width="2" rx="2"/>
+  <text x="310" y="362" font-family="monospace" font-size="10" fill="#9b59b6" text-anchor="middle">[1/4] create directories</text>
+  <text x="310" y="377" font-family="monospace" font-size="7" fill="#999" text-anchor="middle">docs/ tree + .claude/commands/sk/</text>
+
+  <!-- Arrow down -->
+  <path d="M 310 385 L 310 405" stroke="#ccc" stroke-width="1.5"/>
+  <polygon points="305,403 310,413 315,403" fill="#ccc"/>
+
+  <!-- ═══ Step 5: Find source ═══ -->
+  <rect x="200" y="415" width="220" height="40" fill="#fff" stroke="#9b59b6" stroke-width="2" rx="2"/>
+  <text x="310" y="432" font-family="monospace" font-size="10" fill="#9b59b6" text-anchor="middle">[2/4] copy from pkg/</text>
+  <text x="310" y="447" font-family="monospace" font-size="7" fill="#999" text-anchor="middle">docs, commands, agents, skills, CLAUDE.md</text>
+
+  <!-- Arrow down -->
+  <path d="M 310 455 L 310 475" stroke="#ccc" stroke-width="1.5"/>
+  <polygon points="305,473 310,483 315,473" fill="#ccc"/>
+
+  <!-- ═══ Step 6: Validate ═══ -->
+  <rect x="200" y="485" width="220" height="40" fill="#fff" stroke="#9b59b6" stroke-width="2" rx="2"/>
+  <text x="310" y="502" font-family="monospace" font-size="10" fill="#9b59b6" text-anchor="middle">[3/4] validate install</text>
+  <text x="310" y="517" font-family="monospace" font-size="7" fill="#999" text-anchor="middle">check core files exist</text>
+
+  <!-- Arrow down -->
+  <path d="M 310 525 L 310 545" stroke="#ccc" stroke-width="1.5"/>
+  <polygon points="305,543 310,553 315,543" fill="#ccc"/>
+
+  <!-- ═══ Step 7: Save source ═══ -->
+  <rect x="200" y="555" width="220" height="40" fill="#fff" stroke="#9b59b6" stroke-width="2" rx="2"/>
+  <text x="310" y="572" font-family="monospace" font-size="10" fill="#9b59b6" text-anchor="middle">[4/4] summary + next steps</text>
+  <text x="310" y="587" font-family="monospace" font-size="7" fill="#999" text-anchor="middle">save .sk-source, print guide</text>
+
+  <!-- Arrow down -->
+  <path d="M 310 595 L 310 620" stroke="#ccc" stroke-width="1.5"/>
+  <polygon points="305,618 310,628 315,618" fill="#ccc"/>
+
+  <!-- ═══ End ═══ -->
+  <ellipse cx="310" cy="650" rx="110" ry="22" fill="#fff" stroke="#27ae60" stroke-width="2"/>
+  <text x="310" y="655" font-family="monospace" font-size="10" fill="#27ae60" text-anchor="middle">[SUCCESS] SK installed</text>
+
+  <!-- Source resolution note -->
+  <rect x="30" y="430" width="145" height="70" fill="none" stroke="#ccc" stroke-width="1" rx="3"/>
+  <text x="102" y="448" font-family="monospace" font-size="8" fill="#666" text-anchor="middle" font-weight="bold">source resolution</text>
+  <text x="40" y="463" font-family="monospace" font-size="7" fill="#999">1. --from flag</text>
+  <text x="40" y="476" font-family="monospace" font-size="7" fill="#999">2. .sk-source saved path</text>
+  <text x="40" y="489" font-family="monospace" font-size="7" fill="#999">3. __dirname (npm pkg)</text>
+
+  <!-- Bottom note -->
+  <text x="310" y="710" font-family="monospace" font-size="9" fill="#999" text-anchor="middle">install backs up existing docs · update preserves user content · remove keeps docs/</text>
+  <text x="310" y="728" font-family="monospace" font-size="8" fill="#ccc" text-anchor="middle">npx shipkit-cld [install | update | remove] [target]</text>
+</svg>

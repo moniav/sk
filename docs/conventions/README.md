@@ -1,26 +1,26 @@
 # Conventions
 
-> Code standards, naming patterns, file organization, and development practices.
+> Code standards, naming patterns, file organization, and development practices for SK.
 > **Claude Code:** Always follow these conventions. When in doubt, check here first.
 
-**Last updated:** YYYY-MM-DD
+**Last updated:** 2026-03-23
 
 ## Quick Reference
 
 | Convention | Doc | Summary |
 |-----------|-----|---------|
-| Code Style | [code-style.md](./code-style.md) | Naming, formatting, language patterns |
-| File Structure | [file-structure.md](./file-structure.md) | Where things go, how to organize |
-| Git Workflow | [git-workflow.md](./git-workflow.md) | Branching, commits, PR process |
-| Testing | [testing.md](./testing.md) | Test patterns, coverage, naming |
+| Code Style | [code-style.md](./code-style.md) | JS/ES modules, ANSI colors, ASCII-only output |
+| File Structure | [file-structure.md](./file-structure.md) | pkg/ vs root separation, dual-edit rule |
+| Git Workflow | [git-workflow.md](./git-workflow.md) | Conventional commits, version-number releases |
+| Testing | [testing.md](./testing.md) | Manual CLI testing, command testing in target projects |
 | Coding Behavior | [coding-behavior.md](./coding-behavior.md) | Implementation approach, thinking discipline |
 
 ## Universal Rules
 
 These apply everywhere, no exceptions:
 
-1. **Naming is communication** — Names should explain intent, not implementation
-2. **Explicit over implicit** — Don't rely on convention when you can be clear
-3. **Consistency over preference** — Match the existing pattern, even if you'd do it differently
-4. **Small surface area** — Export the minimum, expose the minimum, accept the minimum
-5. **Think, then code** — Surface assumptions and verify goals before and after implementation
+1. **Zero dependencies** — `cli.mjs` uses only Node.js stdlib
+2. **Dual editing** — Edit both root `.claude/` and `pkg/.claude/` for commands/agents/skills
+3. **ASCII-only output** — No Unicode symbols in CLI output (Windows compatibility)
+4. **Language agnostic** — Commands never assume a specific language or framework
+5. **Self-contained** — Skills and agents must work if other files are missing

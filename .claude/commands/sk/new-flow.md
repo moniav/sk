@@ -1,87 +1,101 @@
 ---
-description: Create a Mermaid flow diagram for a system process (project)
+description: Create a flow diagram — Mermaid markdown or SVG with consistent design system (project)
 ---
 
 # New Flow Diagram
 
-Create a visual flow diagram in `docs/flows/` by analyzing actual code paths.
+Create a visual diagram in `docs/flows/` or `docs/architecture/` by analyzing actual code paths.
 
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
 1. `docs/system/project-context.md` — Dense project summary (if it exists)
-2. `docs/flows/README.md` — Existing diagrams + Mermaid cheat sheet
-3. `docs/templates/flow-diagram.md` — Flow template
-4. `docs/architecture/README.md` — System components
+2. `docs/flows/README.md` — Existing diagrams
+3. `docs/architecture/README.md` — System components
 
-## Step 2: Determine Flow Type
+## Step 2: Determine Output Format
 
-Ask the user what to diagram, then choose the best Mermaid diagram type:
+Ask the user what to diagram, then choose the output format:
 
-| What to Diagram | Mermaid Type | Use When |
-|----------------|-------------|----------|
-| Component interactions | `sequenceDiagram` | Showing how services talk to each other |
-| Process with decisions | `flowchart TD` | Showing logic paths and branches |
-| Entity lifecycle | `stateDiagram-v2` | Showing how an entity changes state |
-| Data model | `erDiagram` | Showing table relationships |
-| System overview | `graph TB` | Showing high-level architecture |
+| Format | Best For | Output |
+|--------|----------|--------|
+| **Mermaid** (`.md`) | Quick diagrams, GitHub rendering, sequences, ER diagrams | Markdown with fenced Mermaid block |
+| **SVG** (`.svg`) | Polished architecture, custom layouts, precise positioning, print/blog quality | Raw SVG file with design system |
 
-## Step 3: Trace the Code
+**Default to SVG** for architecture and flow diagrams. Use Mermaid for sequences, ER diagrams, and quick sketches.
+
+## Step 3: Choose Diagram Type
+
+| What to Diagram | Recommended Format | Mermaid Type |
+|----------------|-------------------|-------------|
+| System architecture | **SVG** | `graph TB` |
+| Process with decisions | **SVG** | `flowchart TD` |
+| Component internals | **SVG** | — |
+| Component interactions | Mermaid | `sequenceDiagram` |
+| Entity lifecycle | Mermaid | `stateDiagram-v2` |
+| Data model / ER | Mermaid | `erDiagram` |
+| Quick sketch | Mermaid | any |
+
+## Step 4: Trace the Code
 
 **Do not guess — read the actual code.**
 
-1. Identify the entry point (API route, event handler, user action)
+1. Identify the entry point (API route, event handler, CLI command, user action)
 2. Follow the execution path through the codebase
 3. Note every branch, decision, and external call
 4. Identify error paths and edge cases
 5. Map the exit points (responses, side effects, state changes)
 
-Use the **Grep** tool to find the entry point:
-- Search for function names, endpoint definitions, or handler registrations
-- Then search for imports to trace the call chain
+Use **Grep** to find the entry point, then **Read** to follow each file.
 
-Use the **Read** tool to follow each file in the execution path.
+## Step 5: Create Diagram
 
-## Step 4: Create Diagram
+### SVG Path
 
-Save to `docs/flows/kebab-case-name.md` using `docs/templates/flow-diagram.md`.
+Use the **technical-diagrams** skill. Read `.claude/skills/technical-diagrams/SKILL.md` for the design system and `.claude/skills/technical-diagrams/references/svg-elements.md` for copy-ready element patterns.
 
-### Diagram Quality Rules
+**Architecture diagrams** → save to `docs/architecture/{name}.svg`
+**Flow diagrams** → save to `docs/flows/{name}.svg`
 
-- **Label every arrow** — What data or event flows between nodes
-- **Show error paths** — Not just the happy path
-- **Use subgraphs** — Group related components
-- **Keep it readable** — Max ~15 nodes per diagram; split if larger
-- **Match reality** — Every node should correspond to actual code
+SVG requirements:
+- Grid background (`#fafafa` with `#e5e5e5` grid pattern)
+- Monospace font for all text
+- Title with bracketed tag: `TITLE [ TAG ]`
+- Semantic colors from the design system palette
+- Bottom summary note
+- Valid SVG XML
 
-## Step 5: Add Step-by-Step Explanation
+### Mermaid Path
 
-Below the diagram, document each step:
+Save to `docs/flows/{name}.md` using `docs/templates/flow-diagram.md` as starter.
 
-```markdown
-## Step-by-Step
-
-1. **Client sends request** — POST /api/endpoint with payload
-2. **Middleware validates** — Schema validation checks input
-3. **Service processes** — Business logic executes
-4. **Database updates** — Transaction committed
-5. **Response returned** — 201 with created entity
-```
+Mermaid requirements:
+- Label every arrow with data/event description
+- Show error paths, not just happy path
+- Use subgraphs to group related components
+- Max ~15 nodes per diagram; split if larger
+- Include step-by-step explanation below the diagram
 
 ## Step 6: Update Index
 
-Add to `docs/flows/README.md`:
+Add the new diagram to the appropriate README:
 
+**For `docs/flows/`:**
 ```markdown
-| [Flow Name](./flow-name.md) | Type | Description |
+| [Flow Name](./flow-name.svg) | Type | Description |
+```
+
+**For `docs/architecture/`:**
+```markdown
+See [diagram-name.svg](./diagram-name.svg) for visual representation.
 ```
 
 ## Validation
 
 - [ ] Diagram traces actual code paths (not imagined flow)
-- [ ] Error paths included
-- [ ] Every node corresponds to real code
-- [ ] Arrow labels describe what flows between nodes
-- [ ] Mermaid syntax renders correctly
-- [ ] Step-by-step explanation matches diagram
-- [ ] Added to `docs/flows/README.md`
+- [ ] Error/alternative paths included where relevant
+- [ ] Every node corresponds to real code or real component
+- [ ] Labels describe what flows between nodes
+- [ ] **SVG:** Uses design system colors, grid, monospace, title+tag, bottom note
+- [ ] **Mermaid:** Syntax renders correctly, step-by-step explanation included
+- [ ] Added to section README index

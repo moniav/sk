@@ -16,6 +16,8 @@
 | `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
 | `/sk:test` | Execute TEST phase | Verify acceptance criteria |
 | `/sk:finish` | Review + commit + push + PR + task update | After work is done, ready to ship |
+| `/sk:orchestrate` | Parallel agent team for task/epic | 3+ independent subtasks, want speed |
+| `/sk:council` | Multi-persona advisory council | Architecture decisions, strategy, trade-offs |
 | `/sk:commit` | Smart git commit + push + PR | After changes, ready to commit |
 | `/sk:resume` | Resume from previous session | Starting a new session with active work |
 | `/sk:task-status` | Show task board overview | Check progress across all tasks |
@@ -48,6 +50,8 @@
 | /sk:security-review | tech-stack.md populated |
 | /sk:perf-review | tech-stack.md populated |
 | /sk:debug | Nothing (reads context as needed) |
+| /sk:orchestrate | PLAN phase complete, 3+ subtasks with file paths |
+| /sk:council | project-context.md populated |
 | /sk:resume | Nothing (reads task state automatically) |
 | /sk:refactor | code-style.md populated, test suite available |
 | /sk:changelog | Conventional commits in git history |
@@ -66,11 +70,15 @@ Lifecycle
 ├── /sk:plan → PLAN phase only
 ├── /sk:dev → DEV phase
 ├── /sk:test → TEST phase
+├── /sk:orchestrate → parallel agent team (dependency-aware)
 └── /sk:finish → review + commit + push + PR
 
 Session Management
 ├── /sk:resume → restore context from previous session
 └── /sk:task-status → full task board overview
+
+Decision Making
+└── /sk:council → multi-persona deliberation → decision report
 
 Quality Gates
 ├── /sk:code-review

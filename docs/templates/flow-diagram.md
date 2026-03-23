@@ -1,7 +1,8 @@
 # Flow: [Process Name]
 
-**Last updated:** YYYY-MM-DD  
-**Type:** Sequence | Flowchart | State | Entity Relationship  
+**Last updated:** YYYY-MM-DD
+**Type:** Sequence | Flowchart | State | Entity Relationship
+**Format:** Mermaid | SVG
 
 ## Overview
 
@@ -9,7 +10,12 @@
 
 ## Diagram
 
-<!-- Pick ONE diagram type below, delete the others -->
+<!-- For SVG diagrams: create a separate .svg file using the technical-diagrams skill,
+     then link to it here:
+     See [process-name.svg](./process-name.svg)
+-->
+
+<!-- For Mermaid diagrams: pick ONE diagram type below, delete the others -->
 
 ### Option A: Sequence Diagram (for component interactions)
 

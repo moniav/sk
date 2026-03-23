@@ -1,61 +1,18 @@
 # API Reference
 
-**Last updated:** YYYY-MM-DD
+**Last updated:** 2026-03-23
 
-## Endpoints
+## Not Applicable
 
-<!-- Document your API endpoints here as you build them -->
+SK is a CLI tool, not a web service. It exposes no HTTP endpoints.
 
-| Method | Path | Description | Auth |
-|--------|------|-------------|------|
-| — | — | No endpoints documented yet | — |
+## CLI Interface
 
-## Request/Response Conventions
+See [Architecture README](../architecture/README.md) for the CLI commands:
 
-### Success Responses
-
-```json
-// 200 OK — Resource retrieved or updated
-{ "data": { ... } }
-
-// 201 Created — Resource created
-{ "data": { "id": "...", ... } }
-
-// 204 No Content — Resource deleted (empty body)
 ```
-
-### Error Responses
-
-```json
-// 400 Bad Request — Validation error
-{
-  "error": "Validation failed",
-  "details": {
-    "email": "Required",
-    "password": "Must be at least 8 characters"
-  }
-}
-
-// 401 Unauthorized — Not authenticated
-{ "error": "Authentication required" }
-
-// 403 Forbidden — Not authorized
-{ "error": "Insufficient permissions" }
-
-// 404 Not Found
-{ "error": "Resource not found" }
-
-// 409 Conflict — Duplicate resource
-{ "error": "Email already registered" }
-
-// 500 Internal Server Error
-{ "error": "Internal server error" }
+npx shipkit-cld [target]                     # Install
+npx shipkit-cld update [target]              # Update
+npx shipkit-cld update [target] --from PATH  # Update from local source
+npx shipkit-cld remove [target]              # Remove
 ```
-
-## Authentication
-
-<!-- Describe your auth mechanism: JWT, session, API key, etc. -->
-
-## Rate Limiting
-
-<!-- Describe rate limits if applicable -->

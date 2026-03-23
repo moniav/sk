@@ -1,36 +1,10 @@
 # External Integrations
 
-**Last updated:** YYYY-MM-DD
+**Last updated:** 2026-03-23
 
-## Service Map
+## Not Applicable
 
-<!-- Document external services your application connects to -->
-
-| Service | Purpose | Env Var(s) | Docs |
-|---------|---------|-----------|------|
-| — | No integrations documented yet | — | — |
-
-## Integration Patterns
-
-### API Clients
-
-<!-- Where do API client configurations live? -->
-
-### Webhooks
-
-<!-- What incoming webhooks does the application handle? -->
-
-| Webhook | Source | Endpoint | Purpose |
-|---------|--------|----------|---------|
-| — | — | — | — |
-
-### Background Jobs
-
-<!-- What external services do background workers interact with? -->
-
-## Failure Handling
-
-<!-- How does the system handle external service outages? -->
-- Retry strategy: —
-- Circuit breaker: —
-- Fallback behavior: —
+SK has no external service integrations. It is a self-contained CLI tool that:
+- Reads files from its `pkg/` directory (or a source path)
+- Writes files to a target project directory
+- Uses only Node.js stdlib — no network calls, no APIs, no webhooks

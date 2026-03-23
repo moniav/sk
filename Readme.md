@@ -15,9 +15,9 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 26 slash commands
-│   ├── agents/                  ← Agent definitions (implementer, reviewers)
-│   └── skills/                  ← Active skills (TDD, escalation, verification)
+│   ├── commands/sk/             ← 29 slash commands
+│   ├── agents/                  ← 4 agents (implementer, reviewers, dependency-analyzer)
+│   └── skills/                  ← 7 skills (TDD, diagrams, escalation, verification, ...)
 └── docs/                        ← Documentation hub
     ├── conventions/             Code style, structure, git, testing
     ├── system/                  Tech stack, schema, APIs
@@ -31,8 +31,8 @@ your-project/
 
 ```mermaid
 graph TD
-    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>26 slash commands</i>"]
-    A --> B2[".claude/skills/<br/><i>TDD, escalation, verification</i>"]
+    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>29 slash commands</i>"]
+    A --> B2[".claude/skills/<br/><i>TDD, diagrams, escalation, verification</i>"]
     B --> C["docs/README.md<br/><i>master index</i>"]
 
     C --> D["LIFECYCLE"]
@@ -275,6 +275,7 @@ graph LR
         plan["/sk:plan"]
         dev["/sk:dev"]
         test["/sk:test"]
+        orchestrate["/sk:orchestrate"]
         finish["/sk:finish"]
     end
 
@@ -291,6 +292,10 @@ graph LR
         secreview["/sk:security-review"]
         uireview["/sk:ui-review"]
         perfreview["/sk:perf-review"]
+    end
+
+    subgraph "Decision Making"
+        council["/sk:council"]
     end
 
     subgraph "Debugging & Refactoring"
@@ -314,7 +319,9 @@ graph LR
 
     implement --> plan
     plan --> dev
+    plan --> orchestrate
     dev --> test
+    orchestrate --> test
     test --> finish
 
     newepic -->|"creates tasks"| newtask
@@ -325,6 +332,7 @@ graph LR
     secreview --> commit
     perfreview --> commit
 
+    council -->|"decision"| newadr
     debug -->|"fixed"| codereview
     refactor -->|"restructured"| codereview
 
@@ -338,6 +346,8 @@ graph LR
     style plan fill:#2a9d8f,color:#fff
     style dev fill:#2a9d8f,color:#fff
     style test fill:#2a9d8f,color:#fff
+    style orchestrate fill:#e76f51,color:#fff
+    style council fill:#9b59b6,color:#fff
     style finish fill:#2a9d8f,color:#fff
     style perfreview fill:#e9c46a,color:#000
     style debug fill:#e76f51,color:#fff
@@ -367,6 +377,13 @@ graph LR
 | `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
 | `/sk:test` | Execute TEST phase | Verify acceptance criteria |
 | `/sk:finish` | Review + commit + push + PR + task update | After work is done, ready to ship |
+| `/sk:orchestrate` | Parallel agent team — dependency-aware | 3+ independent subtasks, want parallelism |
+
+### Decision Making
+
+| Command | Purpose | When to Use |
+|---------|---------|-------------|
+| `/sk:council` | Multi-persona advisory council (3-5 personas, structured debate) | Architecture decisions, strategy, trade-offs |
 
 ### Document Creation
 
@@ -376,7 +393,7 @@ graph LR
 | `/sk:new-epic` | Create a new epic + child tasks | `docs/tasks/EPIC-{N}-*.md` |
 | `/sk:new-sop` | Create a standard operating procedure | `docs/sop/*.md` |
 | `/sk:new-adr` | Record an architecture decision | `docs/decisions/*.md` |
-| `/sk:new-flow` | Create a Mermaid flow diagram | `docs/flows/*.md` |
+| `/sk:new-flow` | Create a flow diagram (SVG or Mermaid) | `docs/flows/*.svg` or `*.md` |
 
 ### Quality & Review
 
@@ -424,9 +441,9 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 26 slash commands
-│       ├── agents/              ← Implementer + 2-stage reviewers
-│       └── skills/              ← TDD, escalation, subagent-driven dev, verification
+│       ├── commands/sk/         ← 29 slash commands
+│       ├── agents/              ← Implementer, reviewers, dependency-analyzer
+│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees
 └── .claude/                     ← Development copy (dogfooding, not shipped)
 ```
 
@@ -450,11 +467,15 @@ sk/                              ← SK source repository
 
 **Templates over empty files** — Every doc type has a template. Copy, fill in, done. No blank page anxiety.
 
-**Mermaid for diagrams** — Renders in GitHub, VS Code, and most tools. No external diagram software needed. Lives in git alongside code.
+**SVG + Mermaid for diagrams** — SVG diagrams (via the `technical-diagrams` skill) for polished architecture and flow visuals with a consistent design system. Mermaid for quick sequences, ER diagrams, and state charts that render natively in GitHub. Both live in git alongside code.
 
 **ADRs for decisions** — "Why did we choose X?" is the most expensive question in a codebase. ADRs answer it once.
 
 **SOPs for procedures** — AI agents follow explicit steps better than vague guidelines. SOPs eliminate improvisation on critical tasks.
+
+**Parallel orchestration** — `/sk:orchestrate` analyzes subtask dependencies, builds a file-conflict graph, groups independent subtasks into waves, and dispatches parallel subagents with worktree isolation. Two-stage review (spec + quality) runs per agent. Merges wave results sequentially with conflict detection. Caps at 4 parallel agents (research-backed sweet spot).
+
+**Advisory council** — `/sk:council` convenes 3-5 AI personas with genuinely incompatible value systems (pragmatist vs architect vs adversary) to debate strategic questions. Structured rounds: independent positions (zero cross-visibility), challenge, optional rebuttal, synthesis. Produces a decision report with recommendation, confidence, dissent, and conditions for reversal. Research shows multi-agent debate reduces hallucinations by 30%+ and improves factual accuracy.
 
 **Behavioral guardrails** — LLMs over-engineer, make hidden assumptions, and drift from scope. Four principles (surface assumptions, do exactly what's asked, keep it simple, verify with evidence) are embedded in every lifecycle command to counteract this. See `docs/conventions/coding-behavior.md`.
 

@@ -1,46 +1,40 @@
 # Tech Stack
 
-**Last updated:** YYYY-MM-DD
+**Last updated:** 2026-03-23
 
 ## Core
 
-<!-- Fill in your actual stack. Examples for common setups shown as comments. -->
-
 | Layer | Technology | Version | Purpose |
 |-------|-----------|---------|---------|
-| Language | <!-- TypeScript / Python / Go / etc. --> | — | Primary language |
-| Runtime | <!-- Node.js 20+ / Python 3.12+ / etc. --> | — | Server runtime |
-| Framework | <!-- Next.js / FastAPI / Django / Flask / Express / etc. --> | — | Web framework |
-| Database | <!-- PostgreSQL / MySQL / SQLite / MongoDB / etc. --> | — | Primary data store |
-| ORM | <!-- Drizzle / Prisma / SQLAlchemy / Django ORM / etc. --> | — | DB queries |
-| Cache | <!-- Redis / Memcached / none --> | — | Session store, caching |
-| Auth | <!-- NextAuth / Passport / Django Auth / custom JWT / etc. --> | — | Authentication |
+| Language | JavaScript (ES modules) | ES2022 | Primary language |
+| Runtime | Node.js | >= 18 | CLI runtime |
+| Framework | None | — | Single-file CLI, no framework |
+| Database | None | — | SK is stateless — installs files only |
+| ORM | None | — | No database |
+| Dependencies | Zero | — | stdlib only (`fs`, `path`, `readline`, `url`) |
 
 ## Infrastructure
 
 | Service | Provider | Purpose |
 |---------|----------|---------|
-| Hosting | <!-- Vercel / AWS / Railway / Fly.io / etc. --> | Application hosting |
-| Database | <!-- Supabase / Neon / RDS / managed / self-hosted --> | Managed DB |
-| Storage | <!-- S3 / R2 / GCS / local --> | File uploads |
-| Email | <!-- Resend / SendGrid / SES / none --> | Transactional email |
-| Monitoring | <!-- Sentry / Datadog / none --> | Error tracking |
+| Package registry | npm | Distribution as `shipkit-cld` |
+| Source code | GitHub | Version control |
 
 ## Dev Tools
 
 | Tool | Purpose |
 |------|---------|
-| <!-- npm / pnpm / pip / poetry / uv --> | Package manager |
-| <!-- ESLint / Biome / Ruff / Flake8 --> | Linting |
-| <!-- Vitest / Jest / pytest / unittest --> | Unit testing |
-| <!-- Playwright / Cypress / Selenium --> | E2E testing |
-| <!-- GitHub Actions / GitLab CI / etc. --> | CI/CD |
+| npm | Package manager and publishing |
+| git | Version control with conventional commits |
+| Claude Code | Development environment (dogfooding SK itself) |
 
 ## Key Dependencies
 
-<!-- List non-obvious dependencies that have project-wide impact -->
+SK has **zero runtime dependencies** by design. The `package.json` has no `dependencies` or `devDependencies` fields. All functionality uses Node.js built-in modules:
 
-| Package | Why We Use It | Notes |
-|---------|--------------|-------|
-| <!-- e.g., zod / pydantic --> | Runtime validation | Used for all API input validation |
-| — | — | — |
+| Module | Why We Use It |
+|--------|--------------|
+| `fs` | File system operations (copy, read, write, delete) |
+| `path` | Path resolution and joining |
+| `readline` | Interactive CLI prompts |
+| `url` | `fileURLToPath` for `__dirname` in ES modules |

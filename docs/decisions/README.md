@@ -2,7 +2,7 @@
 
 > Capture the WHY behind key technical decisions so future-you (and future-Claude) don't have to guess.
 
-**Last updated:** YYYY-MM-DD
+**Last updated:** 2026-03-23
 
 ## Decision Log
 
@@ -10,13 +10,17 @@
 
 | # | Decision | Status | Date |
 |---|----------|--------|------|
-| — | No decisions recorded yet | — | — |
+| — | No ADRs recorded yet | — | — |
 
-**Example entry** (for reference — delete this row when you add your first real ADR):
+### Decisions Made (not yet recorded as ADRs)
 
-| # | Decision | Status | Date |
-|---|----------|--------|------|
-| 001 | Choose PostgreSQL over MongoDB | Accepted | YYYY-MM-DD |
+These decisions are documented in CLAUDE.md and code but don't have formal ADRs:
+
+- **Zero dependencies** — CLI uses only Node.js stdlib to minimize supply chain risk
+- **pkg/ separation** — Self-contained package directory vs project root for clean shipping
+- **Dual-edit pattern** — Root `.claude/` mirrors `pkg/.claude/` for dogfooding
+- **Language-agnostic commands** — Commands never assume specific tech stack
+- **ASCII-only CLI output** — Windows cp1255 compatibility over Unicode aesthetics
 
 ## When to Write an ADR
 

@@ -1,4 +1,4 @@
-# Project Documentation Index
+# SK Documentation Index
 
 > **Claude Code:** Always read this file first before planning any implementation.
 > After completing any feature, update the relevant docs to reflect current state.
@@ -8,12 +8,13 @@
 | Section | Purpose | When to Read |
 |---------|---------|--------------|
 | [Tasks](./tasks/) | Task board, epics, PRDs & implementation plans | Before/during feature development |
-| [Architecture](./architecture/) | System design, component relationships, data flow | Before designing new features |
+| [Architecture](./architecture/) | System design, component relationships | Before designing new features |
 | [Conventions](./conventions/) | Code standards, naming, patterns, file organization | Before writing any code |
 | [SOP](./sop/) | Step-by-step procedures for common tasks | Before executing any recurring task |
 | [Flows](./flows/) | Visual diagrams (Mermaid) for key processes | When understanding system behavior |
 | [Decisions](./decisions/) | ADRs - why we made key technical choices | When questioning "why is it done this way?" |
 | [System](./system/) | Current state: stack, schema, integrations, APIs | For reference during development |
+| [Reports](./reports/) | Analysis reports and design docs | For deep-dive context |
 | [Reviews](./reviews/) | Code, security, perf, UI review reports | After running review commands |
 | [Research](./research/) | Brainstorm findings, debug investigations | After brainstorm or complex debug |
 | [Templates](./templates/) | Starter templates for all doc types | When creating new documentation |
@@ -37,50 +38,48 @@ docs/
 |   |-- TASK-N-EN-name.md      <- Task: self-contained deliverable
 |   +-- examples/              <- Worked examples of completed tasks
 |-- architecture/
-|   |-- README.md              <- Architecture overview + component map
-|   |-- system-overview.md     <- High-level system design
-|   +-- [component].md         <- Per-component deep dives
+|   +-- README.md              <- Architecture overview + component map
 |-- conventions/
 |   |-- README.md              <- Conventions index
-|   |-- code-style.md          <- Naming, formatting, patterns
-|   |-- file-structure.md      <- Project organization rules
-|   |-- git-workflow.md        <- Branching, commits, PRs
-|   +-- testing.md             <- Testing standards & patterns
+|   |-- code-style.md          <- JS/ES modules, ANSI colors, ASCII output
+|   |-- file-structure.md      <- pkg/ vs root, dual-edit rule
+|   |-- git-workflow.md        <- Conventional commits, version releases
+|   |-- testing.md             <- Manual CLI + command testing
+|   +-- coding-behavior.md     <- Implementation thinking discipline
 |-- sop/
 |   |-- README.md              <- SOP index
 |   |-- creating-a-task.md     <- How to create & manage tasks
-|   +-- [procedure].md         <- Step-by-step procedures
+|   +-- database-migration.md  <- DB migration procedure (template)
 |-- flows/
-|   |-- README.md              <- Flow diagrams index
-|   +-- [flow-name].md         <- Mermaid diagrams + explanations
+|   +-- README.md              <- Flow diagrams index
 |-- decisions/
-|   |-- README.md              <- ADR index
-|   +-- [NNN]-[title].md       <- Architecture Decision Records
+|   +-- README.md              <- ADR index
 |-- system/
 |   |-- README.md              <- System state index
 |   |-- project-context.md     <- Dense project summary (read first)
-|   |-- tech-stack.md          <- Technologies & versions
-|   |-- database-schema.md     <- DB schema + relationships
-|   |-- api-reference.md       <- API endpoints & contracts
-|   |-- integrations.md        <- External service connections
-|   +-- env-variables.md       <- Environment variables & secrets
+|   |-- tech-stack.md          <- Node.js, zero deps, npm
+|   |-- database-schema.md     <- N/A (stateless CLI)
+|   |-- api-reference.md       <- N/A (CLI interface)
+|   |-- integrations.md        <- N/A (no external services)
+|   +-- env-variables.md       <- N/A (zero config)
+|-- reports/
+|   |-- IMPLEMENTATION-PLAN.md
+|   |-- deduplication-analysis.md
+|   |-- docs-structure-assessment.md
+|   |-- superpowers-workflow-analysis.md
+|   |-- system-integration-guide.md
+|   +-- unified-system-design.md
 |-- reviews/
-|   |-- README.md              <- Review report index
-|   |-- code/                  <- Code review reports
-|   |-- security/              <- Security audit reports
-|   |-- performance/           <- Performance analysis reports
-|   |-- ui/                    <- UI/a11y audit reports
-|   +-- deps/                  <- Dependency health reports
+|   +-- README.md              <- Review report index
 |-- research/
-|   |-- README.md              <- Research index
-|   +-- YYYY-MM-DD-topic.md   <- Research artifacts
+|   +-- README.md              <- Research index
 +-- templates/
-    |-- epic.md                <- Epic template (multi-task feature)
-    |-- task-prd.md            <- Task template (with Plan/Dev/Test phases)
+    |-- epic.md                <- Epic template
+    |-- task-prd.md            <- Task template
     |-- sop-procedure.md       <- SOP template
     |-- adr-decision.md        <- ADR template
     |-- flow-diagram.md        <- Flow diagram template
-    |-- component-doc.md       <- Component documentation template
+    |-- component-doc.md       <- Component doc template
     |-- review-report.md       <- Review report template
     +-- research-doc.md        <- Research artifact template
 ```
@@ -92,21 +91,15 @@ docs/
 | Event | Action |
 |-------|--------|
 | **New work starting** | Follow [Creating a Task SOP](./sop/creating-a-task.md) |
-| New feature planned | Create epic/task in `tasks/` using template |
-| Task enters DEV phase | Update task frontmatter, start checking subtasks |
-| Task enters TEST phase | Verify acceptance criteria in the task doc |
-| Feature implemented | Update `system/`, `architecture/`, relevant `flows/` |
+| New command/skill/agent added | Update architecture, file-structure, and project-context |
+| CLI logic changed | Update architecture and project-context |
 | New pattern established | Add to `conventions/` |
 | Tech decision made | Create ADR in `decisions/` |
-| New recurring process | Create SOP in `sop/` |
-| Dependency added/upgraded | Update `system/tech-stack.md` |
-| Schema changed | Update `system/database-schema.md` |
-| API changed | Update `system/api-reference.md` |
+| Version released | Update project-context current state |
 
 ### Doc Quality Checklist
 
 - [ ] Has `last_updated` date
 - [ ] Linked from parent README index
 - [ ] No duplicated content (links instead)
-- [ ] Code examples are tested/current
-- [ ] Mermaid diagrams render correctly
+- [ ] Reflects actual SK state (not generic templates)

@@ -1,109 +1,44 @@
 # Testing Conventions
 
-**Last updated:** YYYY-MM-DD
+**Last updated:** 2026-03-23
 
-## Test Pyramid
+## Testing Approach
 
-```
-         /  E2E  \          <- Few: Critical user journeys only
-        /----------\
-       / Integration \      <- Some: API routes, DB queries, service interactions
-      /----------------\
-     /    Unit Tests     \  <- Many: Pure functions, business logic, utilities
-    /----------------------\
-```
+SK has no automated test suite. Testing is manual:
 
-## Naming Pattern
+```bash
+# Test install into a temp directory
+node cli.mjs /tmp/sk-test
 
-<!-- Use your language's testing conventions -->
+# Test update
+node cli.mjs update /tmp/sk-test
 
-**TypeScript (Vitest / Jest):**
-```typescript
-describe('PaymentService', () => {
-  describe('processPayment', () => {
-    it('should charge the correct amount for a valid card', () => {});
-    it('should throw InsufficientFundsError when balance is too low', () => {});
-  });
-});
+# Test update from local source
+node cli.mjs update /tmp/sk-test --from /path/to/sk
+
+# Test remove
+node cli.mjs remove /tmp/sk-test
+
+# Test commands: open a target project in Claude Code and run /sk:* commands
 ```
 
-**Python (pytest):**
-```python
-class TestPaymentService:
-    def test_charges_correct_amount_for_valid_card(self):
-        ...
+## What to Verify
 
-    def test_raises_insufficient_funds_when_balance_too_low(self):
-        ...
-```
+| Scenario | Check |
+|----------|-------|
+| Fresh install | All files copied, validation passes, no errors |
+| Install with existing docs | Backup created in `docs/old/`, new files copied |
+| Update | Commands/templates overwritten, user content preserved |
+| Update with `--from` | Uses specified source path |
+| Remove | Commands/agents/skills removed, `docs/` preserved |
+| Target doesn't exist | Prompts to create directory |
+| Non-SK directory | Appropriate error message |
 
-Format: `should [expected behavior] when [condition]` (or `test_[behavior]_when_[condition]` for Python)
+## Command Testing
 
-## Test Structure (AAA)
+Test new or modified slash commands in a real target project:
 
-**TypeScript:**
-```typescript
-it('should apply discount for premium users', () => {
-  // Arrange
-  const user = createTestUser({ tier: 'premium' });
-  const cart = createTestCart({ total: 100 });
-
-  // Act
-  const result = calculateTotal(cart, user);
-
-  // Assert
-  expect(result.total).toBe(80);
-  expect(result.discountApplied).toBe(true);
-});
-```
-
-**Python:**
-```python
-def test_applies_discount_for_premium_users():
-    # Arrange
-    user = create_test_user(tier="premium")
-    cart = create_test_cart(total=100)
-
-    # Act
-    result = calculate_total(cart, user)
-
-    # Assert
-    assert result.total == 80
-    assert result.discount_applied is True
-```
-
-## What to Test
-
-| Layer | Test | Don't Test |
-|-------|------|-----------|
-| Utils/Helpers | All pure functions | Framework internals |
-| Services | Business logic, edge cases | External API responses (mock them) |
-| API Routes | Request/response contracts | Auth middleware (test separately) |
-| Components | User interactions, conditional rendering | Styling, layout |
-
-## Test Utilities
-
-Keep test helpers in `tests/helpers/` or `tests/conftest.py`:
-
-**TypeScript:**
-```typescript
-// tests/helpers/factories.ts
-export function createTestUser(overrides?: Partial<User>): User {
-  return {
-    id: 'test-user-1',
-    email: 'test@example.com',
-    role: 'user',
-    ...overrides,
-  };
-}
-```
-
-**Python:**
-```python
-# tests/conftest.py
-import pytest
-
-@pytest.fixture
-def test_user():
-    return User(id="test-user-1", email="test@example.com", role="user")
-```
+1. Install SK into a test project: `node cli.mjs /path/to/test-project`
+2. Open that project in Claude Code
+3. Run the command (e.g., `/sk:plan`)
+4. Verify output and behavior

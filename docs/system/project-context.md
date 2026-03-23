@@ -4,27 +4,75 @@
      Keep it dense, accurate, and under 100 lines.
      Update after every significant change. -->
 
+## What is SK
+
+SK (shipkit-cld) is a documentation and lifecycle system for Claude Code. It ships as an npm package that installs slash commands, agent definitions, skills, doc templates, and conventions into any project — giving Claude Code a structured Plan > Dev > Test workflow.
+
 ## Stack
 
-<!-- e.g., Node.js 20, TypeScript 5.3, Express 4, PostgreSQL 15, Prisma ORM -->
+- **Runtime:** Node.js >= 18
+- **Language:** JavaScript (ES modules, zero TypeScript)
+- **Dependencies:** Zero (stdlib only: `fs`, `path`, `readline`, `url`)
+- **Package manager:** npm
+- **Distribution:** npm registry as `shipkit-cld`
 
 ## Build Commands
 
-<!-- Mirror from CLAUDE.md for quick reference -->
-<!-- e.g., dev: npm run dev, test: npm test, lint: npm run lint -->
+```yaml
+dev:       # No dev server — CLI tool
+build:     # No build step — plain ES modules
+test:      node cli.mjs /tmp/sk-test   # Test install into temp dir
+lint:      # No linter configured
+typecheck: # No TypeScript
+```
 
 ## Key Patterns
 
-<!-- e.g., Repository pattern, middleware chain, Zod validation -->
+- Single-file CLI (`cli.mjs`) — all install/update/remove logic in one file
+- `pkg/` directory is the self-contained package shipped to users
+- Root `.claude/` mirrors `pkg/.claude/` for dogfooding during SK development
+- ANSI color helpers (no external deps) for CLI output
+- Interactive prompts via `readline`
 
 ## Project Structure
 
-<!-- e.g., src/routes/, src/services/, src/models/, tests/ -->
+```
+sk/
+├── cli.mjs                ← CLI entry point (install/update/remove)
+├── package.json           ← npm package config (v1.4.1)
+├── CLAUDE.md              ← SK development instructions
+├── Readme.md              ← Public README
+├── pkg/                   ← Everything installed into target projects
+│   ├── CLAUDE.md          ← Template CLAUDE.md for target projects
+│   ├── docs/              ← Template documentation tree
+│   └── .claude/           ← Commands (29), agents (4), skills (7)
+├── .claude/               ← Development copy (dogfooding)
+├── docs/                  ← SK's own documentation (not shipped)
+└── docs/reports/          ← Analysis reports and design docs
+```
+
+## Shipped Content
+
+| Category | Count | Location |
+|----------|-------|----------|
+| Slash commands | 29 | `pkg/.claude/commands/sk/` |
+| Agents | 4 | `pkg/.claude/agents/` (implementer, spec-reviewer, quality-reviewer, dependency-analyzer) |
+| Skills | 7 | `pkg/.claude/skills/` (TDD, escalation, legal-advisor, technical-diagrams, etc.) |
+| Doc templates | 8 | `pkg/docs/templates/` |
+| Convention docs | 5 | `pkg/docs/conventions/` |
+| SOPs | 2 | `pkg/docs/sop/` |
 
 ## Gotchas
 
-<!-- e.g., Always use transactions for multi-table writes -->
+- `cli.mjs` must stay zero-dependency — only Node.js stdlib imports
+- Edit commands in BOTH root `.claude/` AND `pkg/.claude/` — keep them in sync
+- `pkg/CLAUDE.md` is for target projects, root `CLAUDE.md` is for SK development
+- Root `docs/` is SK-specific; `pkg/docs/` is what ships to users
+- ASCII-only CLI output (no Unicode symbols) for Windows compatibility
 
 ## Current State
 
-<!-- What's built, what's in progress, what's planned -->
+- **Version:** 1.4.1
+- **Status:** Active development, published on npm
+- **Recent work:** Added `/sk:orchestrate` (parallel agent teams), `/sk:council` (multi-persona deliberation), `technical-diagrams` skill, dependency-analyzer agent, `pkg/` separation
+- **Next:** Continued refinement of commands and skills
