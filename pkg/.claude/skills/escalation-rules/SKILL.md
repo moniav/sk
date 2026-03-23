@@ -1,56 +1,52 @@
-# Skill: Escalation Rules
+---
+name: escalation-rules
+description: >
+  Prevents wasted effort by stopping after 3 failed attempts and presenting
+  structured options to the user. Use this skill whenever you find yourself
+  stuck on the same problem, retrying the same fix, going in circles on a bug,
+  or when a subtask keeps failing. Also activates during /sk:dev, /sk:implement,
+  /sk:refactor, and /sk:debug execution. If you've tried multiple approaches and
+  none worked, this skill tells you when and how to stop and escalate.
+---
 
-> **Rule:** After 3 failed attempts on the same subtask or issue, STOP.
+# Escalation Rules
 
-## When This Skill Is Active
-
-This skill is active during execution in:
-- `/sk:dev` — subtask implementation
-- `/sk:implement` — DEV phase
-- `/sk:refactor` — refactoring steps
-- `/sk:debug` — hypothesis testing
+> After 3 failed attempts on the same problem, stop and escalate.
 
 ## The Rule
 
-If you have tried 3 different approaches to fix the same problem and none worked:
+If you've tried 3 different approaches and none solved the problem:
 
-1. **STOP.** Do not try a 4th approach.
-2. **State what you tried** and why each attempt failed.
-3. **Present options to the user:**
+1. **Stop.** Do not try a 4th approach.
+2. **State what you tried** and why each failed.
+3. **Present options:**
 
 | Option | When to Choose |
 |--------|----------------|
-| **(a) Break it down** | The subtask is too large — split into smaller pieces |
-| **(b) Revise the plan** | The plan's approach is wrong — return to `/sk:plan` |
-| **(c) Rethink the approach** | The fundamental approach is wrong — return to `/sk:brainstorm` |
-| **(d) Debug systematically** | This is a deeper bug — switch to `/sk:debug` |
+| **(a) Break it down** | Subtask is too large — split into smaller pieces |
+| **(b) Revise the plan** | The approach is wrong — return to `/sk:plan` |
+| **(c) Rethink entirely** | Fundamental approach is wrong — return to `/sk:brainstorm` |
+| **(d) Debug systematically** | Deeper bug — switch to `/sk:debug` |
 
 4. **Let the user decide.** Do not pick an option yourself.
 
-## Counting Failures
+## What Counts as a Failure
 
-A "failure" is an attempt that doesn't solve the problem:
+An attempt that doesn't solve the problem:
 - Test still fails after your change
 - Build breaks after your change
 - A different test breaks as a result
-- The behavior doesn't match expectations
+- Behavior doesn't match expectations
 
-Variations on the same approach count as separate attempts (e.g., trying 3 different regex patterns for the same parsing problem = 3 attempts).
+Variations on the same approach count as separate attempts (e.g., 3 different regex patterns = 3 attempts).
 
 ## Brownfield Additions
 
-When escalating in a brownfield codebase, also consider:
+In legacy codebases, also consider:
 
 | Option | When to Choose |
 |--------|----------------|
-| **(e) Characterize first** | Is there undocumented behavior you're breaking? Write characterization tests before continuing |
-| **(f) Map dependencies** | Is there hidden coupling to another module? Trace the dependency chain before continuing |
-| **(g) Refactor first** | Is the existing code too tangled to modify safely? Consider `/sk:refactor` as a prerequisite |
-| **(h) Adjust prerequisites** | Is the codebase in worse shape than the plan assumed? Return to `/sk:plan` and add prerequisite subtasks |
-
-## How Commands Use This Skill
-
-Commands include a line like:
-> If a subtask fails 3+ times, follow `.claude/skills/escalation-rules/SKILL.md`.
-
-When you read this file, you MUST track failure count and stop at 3.
+| **(e) Characterize first** | Undocumented behavior you're breaking? Write characterization tests |
+| **(f) Map dependencies** | Hidden coupling? Trace the dependency chain |
+| **(g) Refactor first** | Code too tangled? `/sk:refactor` as prerequisite |
+| **(h) Adjust prerequisites** | Codebase worse than assumed? Add prerequisite subtasks |

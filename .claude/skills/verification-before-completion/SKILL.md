@@ -1,29 +1,31 @@
-# Skill: Verification Before Completion
+---
+name: verification-before-completion
+description: >
+  Enforces evidence-based verification before claiming any task is complete.
+  Use this skill whenever you are about to say "done", "complete", "finished",
+  "verified", or "all tests pass" — for ANY development task, not just SK commands.
+  Also triggers during exit gates in /sk:dev, /sk:test, /sk:implement, /sk:refactor,
+  and /sk:debug. If you're about to claim completion without showing actual command
+  output, this skill applies to you.
+---
 
-> **Iron Law:** NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE.
+# Verification Before Completion
 
-## When This Skill Is Active
+> No completion claims without fresh verification evidence.
 
-This skill is active during exit gates and completion claims in:
-- `/sk:dev` — DEV exit gate
-- `/sk:test` — AC verification
-- `/sk:implement` — DEV and TEST phases
-- `/sk:refactor` — behavior verification
-- `/sk:debug` — fix verification
+## Core Rule
 
-## Rules
+Before claiming any task is done, you must:
 
-1. You MUST run the actual test/check command in THIS session
-2. You MUST paste the raw output (not summarize, not paraphrase)
-3. These phrases are NEVER acceptable as evidence:
-   - "It works"
-   - "Tests pass"
-   - "Looks good"
-   - "Verified"
-   - "Confirmed"
-   - "Everything is working"
-4. Acceptable evidence looks like:
+1. **Run** the actual test/check command in THIS session
+2. **Show** the raw output — not a summary, not a paraphrase
+3. **Map** each acceptance criterion to specific evidence (what you ran + what it returned)
 
+If a test command exists, always prefer it over manual verification.
+
+## What Counts as Evidence
+
+**Acceptable:**
 ```
 $ npm test
  ✓ user service returns profile (3ms)
@@ -31,30 +33,20 @@ $ npm test
  Tests: 2 passed, 0 failed
 ```
 
-5. For each acceptance criterion, show WHAT you ran and WHAT it returned
-6. If a test command is available, always prefer it over manual verification
+**Not acceptable** — these phrases alone are never evidence:
+- "It works" / "Tests pass" / "Looks good" / "Verified" / "Confirmed"
 
-## Brownfield Adaptation
+## When No Test Command Exists
 
-### If test command exists (detected by /sk:init-docs)
-Standard rule: run tests, paste output.
+Manual verification is acceptable if specific:
+- **Good:** "Ran `curl -X POST /api/users -d '{...}'`, got `201` with `{id: 1, ...}`"
+- **Bad:** "Tested manually, it works"
 
-### If no test command exists
-1. Manual verification is acceptable BUT must be specific:
-   - ACCEPTABLE: "Ran `curl -X POST /api/users -d '{"email":"test@example.com"}'`, got `201` with `{id: 1, email: 'test@example.com'}`"
-   - NOT ACCEPTABLE: "Tested manually, it works"
-2. First task in any brownfield project SHOULD set up a test runner
-3. After test runner exists, switch to standard rule
+Setting up a test runner should be the first priority in any untested codebase.
 
-### If tests exist but are flaky/broken
-1. Record baseline before your changes: "847 pass, 123 fail, 12 pending"
-2. After your changes: "851 pass, 123 fail, 12 pending"
-3. Your changes must not INCREASE the failure count
-4. Fixing existing flaky tests is a separate `/sk:debug` task
+## When Tests Are Flaky
 
-## How Commands Use This Skill
-
-Commands include a line like:
-> Read `.claude/skills/verification-before-completion/SKILL.md` before claiming done.
-
-When you read this file, the rules above become active constraints on your behavior for the rest of that phase.
+1. Record baseline before changes: "847 pass, 123 fail, 12 pending"
+2. Record after changes: "851 pass, 123 fail, 12 pending"
+3. Your changes must not increase the failure count
+4. Fixing existing flaky tests is a separate task
