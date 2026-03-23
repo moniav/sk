@@ -141,7 +141,7 @@ Deep-dive on one framework (e.g., `/sk:legal-scan compliance HIPAA`).
    - Departure terms philosophy
 4. Fill template with project-specific details
 5. Mark all jurisdiction-sensitive sections with `[⚖️ ATTORNEY REVIEW]`
-6. Save to `docs/legal/founders-agreement.md`
+6. Save to `docs/legal/agreements/founders-agreement.md`
 
 ---
 
@@ -156,7 +156,7 @@ Deep-dive on one framework (e.g., `/sk:legal-scan compliance HIPAA`).
    - Profit/loss distribution method
    - Transfer restrictions and buy-sell provisions
 4. Fill template
-5. Save to `docs/legal/operating-agreement.md`
+5. Save to `docs/legal/agreements/operating-agreement.md`
 
 ---
 
@@ -172,7 +172,7 @@ Deep-dive on one framework (e.g., `/sk:legal-scan compliance HIPAA`).
    - Cookie/tracking policy decisions
    - Data subject rights process
 6. Generate policy that accurately reflects what the code actually does
-7. Save to `docs/legal/privacy-policy.md`
+7. Save to `docs/legal/policies/privacy-policy.md`
 
 ---
 
@@ -190,7 +190,7 @@ Deep-dive on one framework (e.g., `/sk:legal-scan compliance HIPAA`).
    - Governing law jurisdiction
    - Dispute resolution preference (arbitration vs courts)
 3. Generate ToS tailored to product type
-4. Save to `docs/legal/terms-of-service.md`
+4. Save to `docs/legal/policies/terms-of-service.md`
 
 ---
 
@@ -247,11 +247,52 @@ Deep-dive on one framework (e.g., `/sk:legal-scan compliance HIPAA`).
    - Any open source components to declare?
    - Any prior employer IP concerns?
 4. Fill template with specific repos, assets, and IP being assigned
-5. Save to `docs/legal/ip-assignment.md`
+5. Save to `docs/legal/agreements/ip-assignment.md`
 
-## Step 4: Disclaimer
+## Step 4: Save All Outputs to `docs/legal/`
 
-Every output — whether scan report or document draft — MUST include:
+Every output MUST be saved as a markdown file. Create directories as needed.
+
+**Directory structure:**
+```
+docs/legal/
+├── README.md                              ← Index (create/update every run)
+├── scans/
+│   ├── compliance-scan-YYYY-MM-DD.md      ← Full scan reports
+│   └── compliance-FRAMEWORK-YYYY-MM-DD.md ← Framework deep-dives
+├── agreements/
+│   ├── founders-agreement.md
+│   ├── operating-agreement.md
+│   └── ip-assignment.md
+├── policies/
+│   ├── privacy-policy.md
+│   ├── terms-of-service.md
+│   └── cookie-policy.md
+└── reviews/
+    └── contract-review-YYYY-MM-DD-{name}.md
+```
+
+**File mapping by mode:**
+
+| Mode | Save to |
+|------|---------|
+| `scan` | `docs/legal/scans/compliance-scan-YYYY-MM-DD.md` |
+| `compliance HIPAA` | `docs/legal/scans/compliance-hipaa-YYYY-MM-DD.md` |
+| `founders-agreement` | `docs/legal/agreements/founders-agreement.md` |
+| `operating-agreement` | `docs/legal/agreements/operating-agreement.md` |
+| `ip-assignment` | `docs/legal/agreements/ip-assignment.md` |
+| `privacy-policy` | `docs/legal/policies/privacy-policy.md` |
+| `terms-of-service` | `docs/legal/policies/terms-of-service.md` |
+| `contract-review` | `docs/legal/reviews/contract-review-YYYY-MM-DD-{name}.md` |
+| `entity-guide` | `docs/legal/scans/entity-guide-YYYY-MM-DD.md` |
+
+**After saving each file:**
+1. Update `docs/legal/README.md` — add or update the entry in the index table
+2. If `docs/legal/README.md` doesn't exist, create it with the index template from the skill
+
+## Step 5: Disclaimer
+
+Every generated file MUST start with:
 
 ```markdown
 ---
@@ -261,12 +302,10 @@ Laws vary by jurisdiction and change frequently. Last generated: [DATE].
 ---
 ```
 
-## Step 5: Save and Follow Up
+## Step 6: Follow Up
 
-1. Save all outputs to `docs/legal/` directory
-2. Create `docs/legal/README.md` index if it doesn't exist
-3. Present summary of findings/documents generated
-4. Offer next steps:
+1. Confirm what was saved and where
+2. Offer next steps:
    - "Want me to generate any documents from the checklist?"
    - "Want a deep-dive on any specific framework?"
    - "Want to create tasks for the remediation items?"

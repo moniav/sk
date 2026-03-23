@@ -292,6 +292,67 @@ Include state-specific considerations (Delaware vs Wyoming vs home state) and ta
 
 ---
 
+## Output Directory: `docs/legal/`
+
+All outputs MUST be saved as markdown files to `docs/legal/` or its subdirectories. Create the directory if it doesn't exist. Use this structure:
+
+```
+docs/legal/
+├── README.md                          ← Index of all legal documents (create/update on every run)
+├── scans/
+│   ├── compliance-scan-YYYY-MM-DD.md  ← Full scan report (compliance matrix + risk register + checklist)
+│   └── compliance-FRAMEWORK-YYYY-MM-DD.md ← Framework-specific deep-dive
+├── agreements/
+│   ├── founders-agreement.md
+│   ├── operating-agreement.md
+│   └── ip-assignment.md
+├── policies/
+│   ├── privacy-policy.md
+│   ├── terms-of-service.md
+│   ├── cookie-policy.md
+│   └── acceptable-use-policy.md
+└── reviews/
+    └── contract-review-YYYY-MM-DD-{name}.md
+```
+
+### README.md Format
+
+Maintain `docs/legal/README.md` as an index. Create it on first run, update it on every subsequent run:
+
+```markdown
+# Legal Documents
+
+⚖️ All documents in this directory are AI-generated drafts. They must be
+reviewed by a qualified attorney before use.
+
+## Scans & Assessments
+| Document | Date | Status |
+|----------|------|--------|
+| [Compliance Scan](scans/compliance-scan-YYYY-MM-DD.md) | YYYY-MM-DD | Draft |
+
+## Agreements
+| Document | Date | Status |
+|----------|------|--------|
+| [Founders Agreement](agreements/founders-agreement.md) | YYYY-MM-DD | Draft |
+
+## Policies
+| Document | Date | Status |
+|----------|------|--------|
+| [Privacy Policy](policies/privacy-policy.md) | YYYY-MM-DD | Draft |
+
+## Reviews
+| Document | Date | Status |
+|----------|------|--------|
+| [Vendor Contract Review](reviews/contract-review-YYYY-MM-DD-vendor.md) | YYYY-MM-DD | Draft |
+```
+
+### File Naming Rules
+
+- Scan reports include the date: `compliance-scan-2024-03-15.md`
+- Agreements use stable names (overwrite on regeneration): `founders-agreement.md`
+- Reviews include date and subject: `contract-review-2024-03-15-acme-vendor.md`
+- All filenames are kebab-case, lowercase
+
 ## Important Constraints
 
 1. **Every generated document** must include the disclaimer header:
@@ -303,4 +364,5 @@ Include state-specific considerations (Delaware vs Wyoming vs home state) and ta
 3. **Mark jurisdiction-sensitive sections** with `[⚖️ ATTORNEY REVIEW — varies by state/country]`
 4. **Don't guess at specific dollar amounts** for liability caps, penalties, etc.
 5. **Scan evidence must be cited** — every finding references the file/pattern that triggered it
-6. **Save outputs** to `docs/legal/` directory with clear filenames
+6. **Always save to `docs/legal/`** — never output legal documents only to the conversation
+7. **Always update `docs/legal/README.md`** — keep the index current after every run
