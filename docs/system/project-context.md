@@ -39,7 +39,7 @@ typecheck: # No TypeScript
 ```
 sk/
 ├── cli.mjs                ← CLI entry point (install/update/remove)
-├── package.json           ← npm package config (v1.5.0)
+├── package.json           ← npm package config (v1.6.0)
 ├── CLAUDE.md              ← SK development instructions
 ├── Readme.md              ← Public README
 ├── pkg/                   ← Everything installed into target projects
@@ -72,7 +72,7 @@ sk/
 
 ## Current State
 
-- **Version:** 1.5.0
+- **Version:** 1.6.0
 - **Status:** Active development, published on npm
 - **Recent work:** Added `/sk:retro` (retrospectives), `/sk:migrate` (upgrades/migrations), `architecture-reviewer` agent, `error-recovery` skill, `context-priming` skill, `technical-writing` skill, convention graceful degradation, command decision matrix, skill interaction docs
 - **Next:** Continued refinement of commands and skills
