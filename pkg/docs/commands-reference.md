@@ -35,6 +35,8 @@
 | `/sk:refactor` | Safe refactoring — restructure without behavior change | Code improvement without feature changes |
 | `/sk:changelog` | Generate changelog from git history | Before release or version bump |
 | `/sk:deps` | Dependency health — outdated, vulnerabilities, licenses | Periodic audit or before release |
+| `/sk:legal-scan` | Legal & compliance scan — regulatory requirements, document generation | Starting a project, adding payments/health data, fundraising |
+| `/sk:copywrite` | Write marketing copy — landing pages, emails, ads, CTAs, social posts | Any marketing copy task for SaaS/tech products |
 
 ## Command Prerequisites
 
@@ -56,6 +58,8 @@
 | /sk:refactor | code-style.md populated, test suite available |
 | /sk:changelog | Conventional commits in git history |
 | /sk:deps | Package manifest (package.json, pyproject.toml, etc.) |
+| /sk:legal-scan | Nothing (reads context as needed) |
+| /sk:copywrite | project-context.md populated (optional) |
 
 ## Command Workflow Map
 
@@ -90,4 +94,8 @@ Git & Release
 ├── /sk:commit → conventional commit
 ├── /sk:changelog → generate changelog
 └── /sk:deps → dependency audit
+
+Marketing & Legal
+├── /sk:copywrite → marketing copy (landing pages, emails, ads, social)
+└── /sk:legal-scan → compliance scan + legal document generation
 ```

@@ -15,9 +15,9 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 29 slash commands
+│   ├── commands/sk/             ← 30 slash commands
 │   ├── agents/                  ← 4 agents (implementer, reviewers, dependency-analyzer)
-│   └── skills/                  ← 7 skills (TDD, diagrams, escalation, verification, ...)
+│   └── skills/                  ← 8 skills (TDD, diagrams, escalation, verification, copywriting, ...)
 └── docs/                        ← Documentation hub
     ├── conventions/             Code style, structure, git, testing
     ├── system/                  Tech stack, schema, APIs
@@ -31,8 +31,8 @@ your-project/
 
 ```mermaid
 graph TD
-    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>29 slash commands</i>"]
-    A --> B2[".claude/skills/<br/><i>TDD, diagrams, escalation, verification</i>"]
+    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>30 slash commands</i>"]
+    A --> B2[".claude/skills/<br/><i>TDD, diagrams, escalation, verification, copywriting</i>"]
     B --> C["docs/README.md<br/><i>master index</i>"]
 
     C --> D["LIFECYCLE"]
@@ -303,6 +303,11 @@ graph LR
         refactor["/sk:refactor"]
     end
 
+    subgraph "Marketing & Legal"
+        copywrite["/sk:copywrite"]
+        legalscan["/sk:legal-scan"]
+    end
+
     subgraph "Management"
         resume["/sk:resume"]
         status["/sk:task-status"]
@@ -428,6 +433,13 @@ graph LR
 | `/sk:deps` | Dependency health check | Periodic audit or before release |
 | `/sk:update` | Update SK commands & templates | Get latest version (npm or local) |
 
+### Marketing & Legal
+
+| Command | Purpose | When to Use |
+|---------|---------|-------------|
+| `/sk:copywrite` | Write marketing copy — landing pages, emails, ads, CTAs | Any SaaS/tech marketing copy task |
+| `/sk:legal-scan` | Legal & compliance scan + document generation | Starting a project, adding payments, fundraising |
+
 ## Package Structure
 
 SK separates the **product** (what gets installed) from **project files** (for developing SK itself):
@@ -441,9 +453,9 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 29 slash commands
+│       ├── commands/sk/         ← 30 slash commands
 │       ├── agents/              ← Implementer, reviewers, dependency-analyzer
-│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees
+│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting
 └── .claude/                     ← Development copy (dogfooding, not shipped)
 ```
 

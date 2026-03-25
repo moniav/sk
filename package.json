@@ -1,7 +1,7 @@
 {
   "name": "shipkit-cld",
   "version": "1.5.0",
-  "description": "Documentation & lifecycle system for Claude Code — Plan, Dev, Test workflow with 29 slash commands, 7 skills, and 3 agents for code review, security, debugging, refactoring, diagrams, and git workflow",
+  "description": "Documentation & lifecycle system for Claude Code — Plan, Dev, Test workflow with 30 slash commands, 8 skills, and 4 agents for code review, security, debugging, refactoring, copywriting, diagrams, and git workflow",
   "type": "module",
   "bin": {
     "shipkit-cld": "./cli.mjs"
