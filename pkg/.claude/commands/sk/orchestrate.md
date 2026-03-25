@@ -18,6 +18,8 @@ Analyze subtask dependencies, dispatch parallel subagents with worktree isolatio
 3. `.claude/skills/subagent-driven-development/SKILL.md` — Existing SDD pattern
 4. `.claude/skills/escalation-rules/SKILL.md` — Failure handling
 
+**Skip convention files that are empty or contain only template placeholders.** Agents should infer patterns from the existing codebase if conventions aren't configured.
+
 ## Step 2: Select Target
 
 Ask the user what to orchestrate:

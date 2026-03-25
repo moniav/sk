@@ -15,6 +15,8 @@ Analyze the codebase for security vulnerabilities covering OWASP Top 10, hardcod
 4. `docs/system/env-variables.md` — Expected environment variables (if exists)
 5. `docs/system/integrations.md` — External service connections (if exists)
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Determine Scope
 
 Ask the user what to scan:

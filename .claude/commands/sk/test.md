@@ -14,6 +14,8 @@ Execute the [TEST] phase for a task, verifying every acceptance criterion.
 3. The task's "Phase Analysis > Dev Notes" section — understand what was built and why
 4. `docs/conventions/testing.md` — Testing standards and patterns
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 1.5: Read Active Skills
 
 Read this skill file — its rules are active throughout this phase:

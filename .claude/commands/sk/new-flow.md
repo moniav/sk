@@ -13,6 +13,8 @@ Create a visual diagram in `docs/flows/` or `docs/architecture/` by analyzing ac
 2. `docs/flows/README.md` — Existing diagrams
 3. `docs/architecture/README.md` — System components
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Determine Output Format
 
 Ask the user what to diagram, then choose the output format:

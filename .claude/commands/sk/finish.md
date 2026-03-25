@@ -16,6 +16,8 @@ Chain code review + commit + push + PR + task board update into one flow.
 2. `docs/system/project-context.md` — Dense project summary (if it exists)
 3. `docs/conventions/git-workflow.md` — Commit and PR conventions
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Identify What to Finish
 
 1. Check current branch: `git branch --show-current`

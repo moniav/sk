@@ -17,6 +17,8 @@ Read these files to understand the project:
 3. `docs/conventions/code-style.md` — coding patterns to follow
 4. `docs/tasks/README.md` — existing tasks and epics (avoid duplicating work)
 
+**Skip files that are empty or contain only template placeholders.**
+
 If none of these exist, suggest running `/sk:kickoff` first.
 
 ## Step 2: Identify the Starting Point

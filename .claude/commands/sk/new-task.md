@@ -18,6 +18,8 @@ Create a self-contained task file in `docs/tasks/` following the development lif
 7. `docs/tasks/README.md` — Existing tasks (avoid duplicates, find dependencies)
 8. `docs/tasks/examples/TASK-user-registration-api.md` — Reference example of a completed task
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Gather Information
 
 Ask the user:

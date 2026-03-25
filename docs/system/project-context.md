@@ -39,13 +39,13 @@ typecheck: # No TypeScript
 ```
 sk/
 ├── cli.mjs                ← CLI entry point (install/update/remove)
-├── package.json           ← npm package config (v1.4.1)
+├── package.json           ← npm package config (v1.5.0)
 ├── CLAUDE.md              ← SK development instructions
 ├── Readme.md              ← Public README
 ├── pkg/                   ← Everything installed into target projects
 │   ├── CLAUDE.md          ← Template CLAUDE.md for target projects
 │   ├── docs/              ← Template documentation tree
-│   └── .claude/           ← Commands (29), agents (4), skills (7)
+│   └── .claude/           ← Commands (32), agents (5), skills (11)
 ├── .claude/               ← Development copy (dogfooding)
 ├── docs/                  ← SK's own documentation (not shipped)
 └── docs/reports/          ← Analysis reports and design docs
@@ -55,9 +55,9 @@ sk/
 
 | Category | Count | Location |
 |----------|-------|----------|
-| Slash commands | 29 | `pkg/.claude/commands/sk/` |
-| Agents | 4 | `pkg/.claude/agents/` (implementer, spec-reviewer, quality-reviewer, dependency-analyzer) |
-| Skills | 7 | `pkg/.claude/skills/` (TDD, escalation, legal-advisor, technical-diagrams, etc.) |
+| Slash commands | 32 | `pkg/.claude/commands/sk/` |
+| Agents | 5 | `pkg/.claude/agents/` (implementer, spec-reviewer, quality-reviewer, dependency-analyzer, architecture-reviewer) |
+| Skills | 11 | `pkg/.claude/skills/` (test-driven-development, escalation-rules, legal-advisor, technical-diagrams, subagent-driven-development, verification-before-completion, git-worktrees, copywriting, error-recovery, context-priming, technical-writing) |
 | Doc templates | 8 | `pkg/docs/templates/` |
 | Convention docs | 5 | `pkg/docs/conventions/` |
 | SOPs | 2 | `pkg/docs/sop/` |
@@ -72,7 +72,7 @@ sk/
 
 ## Current State
 
-- **Version:** 1.4.1
+- **Version:** 1.5.0
 - **Status:** Active development, published on npm
-- **Recent work:** Added `/sk:orchestrate` (parallel agent teams), `/sk:council` (multi-persona deliberation), `technical-diagrams` skill, dependency-analyzer agent, `pkg/` separation
+- **Recent work:** Added `/sk:retro` (retrospectives), `/sk:migrate` (upgrades/migrations), `architecture-reviewer` agent, `error-recovery` skill, `context-priming` skill, `technical-writing` skill, convention graceful degradation, command decision matrix, skill interaction docs
 - **Next:** Continued refinement of commands and skills

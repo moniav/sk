@@ -14,6 +14,8 @@ Find and fix bugs using a structured workflow: reproduce, isolate, fix, verify. 
 3. `docs/conventions/testing.md` — Testing patterns
 4. `docs/system/tech-stack.md` — Current stack
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Scope and Track
 
 Assess bug complexity:

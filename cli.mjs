@@ -63,6 +63,14 @@ function findSource(target, fromOverride) {
       console.log(c.blue("[INFO]") + ` Using saved source: ${saved}`);
       return saved;
     }
+    // Fallback: try as relative path from target
+    if (saved) {
+      const relative = resolve(target, saved);
+      if (isValidSource(relative)) {
+        console.log(c.blue("[INFO]") + ` Using resolved source: ${relative}`);
+        return relative;
+      }
+    }
   }
 
   // 3. Package location (__dirname)
@@ -277,6 +285,9 @@ async function runInstall(target) {
   checkFile(".claude/commands/sk/security-review.md");
   checkFile(".claude/commands/sk/ui-review.md");
   checkFile("docs/commands-reference.md");
+  checkFile(".claude/agents/architecture-reviewer.md");
+  checkFile(".claude/commands/sk/retro.md");
+  checkFile(".claude/commands/sk/migrate.md");
 
   console.log();
   if (errors > 0) {

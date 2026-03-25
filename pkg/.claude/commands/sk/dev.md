@@ -58,6 +58,8 @@ Before executing the first subtask, read:
 - `.claude/skills/test-driven-development/SKILL.md` and `anti-patterns.md`
 - `.claude/skills/escalation-rules/SKILL.md`
 
+**Skip convention files that are empty or contain only template placeholders.** If conventions aren't configured, match patterns found in the existing codebase.
+
 Process subtasks **top-to-bottom, one at a time**.
 
 Update `docs/tasks/.current` subtask progress after each subtask.

@@ -16,6 +16,8 @@ Follow all instructions in the skill for voice, principles, and output format.
 
 Check if `docs/system/project-context.md` exists — read it for product context.
 
+**Skip files that are empty or contain only template placeholders.**
+
 Then confirm with the user:
 
 1. **Product** — What does it do? Who is it for? (skip if project context covers this)

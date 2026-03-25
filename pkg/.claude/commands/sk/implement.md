@@ -15,6 +15,8 @@ Run the complete development lifecycle for a feature in a single session.
 1. `docs/system/project-context.md` — Dense project summary (if it exists — skip if empty/template)
 2. The task file being worked on (if resuming existing work)
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Scope the Work
 
 Ask the user:

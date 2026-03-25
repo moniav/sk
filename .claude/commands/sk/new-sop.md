@@ -22,6 +22,8 @@ Create an SOP when:
 3. `docs/templates/sop-procedure.md` — SOP template
 4. `docs/conventions/` — Relevant conventions the SOP should enforce
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Gather Information
 
 Ask the user:

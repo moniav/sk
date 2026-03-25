@@ -12,6 +12,8 @@ Generate a structured changelog from git commit history. Works best with convent
 1. `docs/system/project-context.md` — Dense project summary (if it exists)
 2. `docs/conventions/git-workflow.md` — Commit message format
 
+**Skip files that are empty or contain only template placeholders.**
+
 Check if a changelog already exists:
 - Look for `CHANGELOG.md` in the project root
 - If it exists, read it to understand the existing format and latest version

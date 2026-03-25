@@ -15,6 +15,8 @@ Perform a thorough code review across correctness, conventions, performance, mai
 4. `docs/conventions/testing.md` — Testing standards and patterns
 5. `docs/conventions/git-workflow.md` — Commit and PR conventions
 
+**Skip files that are empty or contain only template placeholders.** If conventions aren't configured, review against language/framework defaults instead.
+
 ## Step 2: Determine Scope
 
 Ask the user what to review:

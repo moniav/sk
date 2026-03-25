@@ -16,6 +16,8 @@ Create an epic file in `docs/tasks/` for features that span multiple tasks (L/XL
 5. `docs/architecture/README.md` — System design context
 6. `docs/conventions/` — All conventions (code style, file structure, testing)
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Gather Information
 
 Ask the user:

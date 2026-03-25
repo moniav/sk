@@ -14,6 +14,8 @@ Analyze UI code for accessibility, responsive design, design consistency, perfor
 3. `docs/conventions/code-style.md` — Component patterns, naming conventions
 4. `docs/architecture/` — Component hierarchy and relationships (if exists)
 
+**Skip files that are empty or contain only template placeholders.** If conventions aren't configured, review against platform defaults and WCAG standards.
+
 ## Step 2: Determine Scope
 
 Ask the user what to review:

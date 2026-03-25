@@ -12,6 +12,8 @@ Audit project dependencies for security vulnerabilities, outdated packages, unus
 1. `docs/system/project-context.md` — Dense project summary (if it exists)
 2. `docs/system/tech-stack.md` — Current stack and key dependencies
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Detect Package Ecosystem
 
 Scan for manifest files to determine the ecosystem:

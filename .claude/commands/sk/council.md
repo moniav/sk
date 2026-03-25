@@ -18,6 +18,8 @@ Convene a council of AI personas with genuinely different perspectives to debate
 3. `docs/architecture/README.md` — System design
 4. `docs/decisions/README.md` — Previous decisions (avoid re-litigating settled questions)
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Frame the Question
 
 Ask the user: **"What question should the council deliberate?"**

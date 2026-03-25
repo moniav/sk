@@ -15,6 +15,8 @@ Restructure code without changing its external behavior. The key constraint: **b
 4. `docs/conventions/testing.md` — Testing patterns
 5. `docs/system/tech-stack.md` — Current stack
 
+**Skip files that are empty or contain only template placeholders.** If conventions aren't configured, infer patterns from the existing codebase.
+
 ## Step 2: Scope and Track
 
 Assess refactoring complexity:

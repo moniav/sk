@@ -24,6 +24,8 @@ Create an ADR when:
 4. `docs/architecture/README.md` — Current architecture context
 5. `docs/system/tech-stack.md` — Current stack
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Gather Information
 
 Ask the user:

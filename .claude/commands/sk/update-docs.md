@@ -17,6 +17,8 @@ Scan the codebase and update `docs/` to accurately reflect the current system st
 6. `docs/conventions/` — All convention files
 7. `docs/decisions/README.md` — Decision log
 
+**Skip files that are empty or contain only template placeholders.** Only update docs that have been populated — don't modify unfilled templates.
+
 ## Step 2: Ask Scope
 
 Ask the user:

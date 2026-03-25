@@ -10,6 +10,8 @@ Update the ShipKit slash commands, templates, agents, skills, and SOPs to the la
 
 Check how SK was installed by reading `.claude/.sk-source` (if it exists).
 
+**Skip files that are empty or contain only template placeholders.**
+
 **Three update paths:**
 
 1. **Saved local source** — `.claude/.sk-source` exists and points to a valid SK checkout:

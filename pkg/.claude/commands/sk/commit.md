@@ -12,6 +12,8 @@ Stage, commit with conventional format, optionally push and create a PR.
 1. `docs/system/project-context.md` — Dense project summary (if it exists)
 2. `docs/conventions/git-workflow.md` — Commit message format, branch naming, PR process
 
+**Skip files that are empty or contain only template placeholders.** Use conventional commit format as default.
+
 ## Step 2: Assess Working Tree
 
 Run these commands to understand the current state:

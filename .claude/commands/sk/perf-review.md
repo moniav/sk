@@ -14,6 +14,8 @@ Analyze code for performance issues across database queries, memory usage, rende
 3. `docs/system/database-schema.md` — Tables, indexes, relationships (if exists)
 4. `docs/conventions/code-style.md` — Existing patterns and practices
 
+**Skip files that are empty or contain only template placeholders.**
+
 ## Step 2: Determine Scope
 
 Ask the user what to analyze:
