@@ -15,9 +15,9 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 30 slash commands
-│   ├── agents/                  ← 4 agents (implementer, reviewers, dependency-analyzer)
-│   └── skills/                  ← 8 skills (TDD, diagrams, escalation, verification, copywriting, ...)
+│   ├── commands/sk/             ← 32 slash commands
+│   ├── agents/                  ← 5 agents (implementer, reviewers, dependency-analyzer, architecture-reviewer)
+│   └── skills/                  ← 11 skills (TDD, diagrams, escalation, verification, copywriting, ...)
 └── docs/                        ← Documentation hub
     ├── conventions/             Code style, structure, git, testing
     ├── system/                  Tech stack, schema, APIs
@@ -31,8 +31,8 @@ your-project/
 
 ```mermaid
 graph TD
-    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>30 slash commands</i>"]
-    A --> B2[".claude/skills/<br/><i>TDD, diagrams, escalation, verification, copywriting</i>"]
+    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>32 slash commands</i>"]
+    A --> B2[".claude/skills/<br/><i>TDD, diagrams, escalation, verification, copywriting, technical-writing, ...</i>"]
     B --> C["docs/README.md<br/><i>master index</i>"]
 
     C --> D["LIFECYCLE"]
@@ -301,6 +301,7 @@ graph LR
     subgraph "Debugging & Refactoring"
         debug["/sk:debug"]
         refactor["/sk:refactor"]
+        migrate["/sk:migrate"]
     end
 
     subgraph "Marketing & Legal"
@@ -310,6 +311,7 @@ graph LR
 
     subgraph "Management"
         resume["/sk:resume"]
+        retro["/sk:retro"]
         status["/sk:task-status"]
         updatedocs["/sk:update-docs"]
         update["/sk:update"]
@@ -340,6 +342,8 @@ graph LR
     council -->|"decision"| newadr
     debug -->|"fixed"| codereview
     refactor -->|"restructured"| codereview
+    migrate -->|"migrated"| test
+    test -->|"shipped"| retro
 
     deps -.->|"updates needed"| commit
     changelog -.->|"commit changelog"| commit
@@ -357,6 +361,8 @@ graph LR
     style perfreview fill:#e9c46a,color:#000
     style debug fill:#e76f51,color:#fff
     style refactor fill:#e76f51,color:#fff
+    style migrate fill:#e76f51,color:#fff
+    style retro fill:#264653,color:#fff
     style changelog fill:#264653,color:#fff
     style deps fill:#264653,color:#fff
     style commit fill:#e9c46a,color:#000
@@ -415,6 +421,7 @@ graph LR
 |---------|---------|--------|
 | `/sk:debug` | Reproduce, isolate, fix, verify with regression test | Code fix + test + task file (M+) |
 | `/sk:refactor` | Restructure code, verify behavior unchanged | Code changes + task file (M+) |
+| `/sk:migrate` | Handle breaking changes, dependency upgrades, DB migrations | Safe migration with rollback plan |
 
 ### Git & Release
 
@@ -431,6 +438,7 @@ graph LR
 | `/sk:task-status` | Show task board overview | Check progress across all tasks |
 | `/sk:update-docs` | Sync docs with codebase | After changes, or periodic audit |
 | `/sk:deps` | Dependency health check | Periodic audit or before release |
+| `/sk:retro` | Run a retrospective on completed work | Capture lessons, patterns, improvements |
 | `/sk:update` | Update SK commands & templates | Get latest version (npm or local) |
 
 ### Marketing & Legal
@@ -453,9 +461,9 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 30 slash commands
-│       ├── agents/              ← Implementer, reviewers, dependency-analyzer
-│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting
+│       ├── commands/sk/         ← 32 slash commands
+│       ├── agents/              ← Implementer, reviewers, dependency-analyzer, architecture-reviewer
+│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming
 └── .claude/                     ← Development copy (dogfooding, not shipped)
 ```
 
