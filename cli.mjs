@@ -396,13 +396,15 @@ async function runUpdate(target, fromOverride) {
   console.log(c.yellow("    docs/sop/               <- standard procedures"));
   console.log(c.yellow("    docs/reference/         <- shipped reference data"));
   console.log(c.yellow("    docs/commands-reference.md"));
+  console.log(c.yellow("    docs/README.md          <- doc map"));
+  console.log(c.yellow("    docs/conventions/coding-behavior.md"));
   console.log(c.yellow("    CLAUDE.md               <- agent instructions"));
   console.log(c.yellow("    .claude/agents/         <- agent definitions"));
   console.log(c.yellow("    .claude/skills/         <- active skills"));
   console.log();
   console.log(c.bold("  Will preserve (not touched):"));
   console.log(c.green("    docs/tasks/             <- your task files"));
-  console.log(c.green("    docs/conventions/       <- your code style"));
+  console.log(c.green("    docs/conventions/       <- your code style (except coding-behavior.md)"));
   console.log(c.green("    docs/system/            <- your tech stack, schema, APIs"));
   console.log(c.green("    docs/architecture/      <- your architecture docs"));
   console.log(c.green("    docs/decisions/         <- your ADRs"));
@@ -451,6 +453,22 @@ async function runUpdate(target, fromOverride) {
   if (existsSync(cmdRefSource)) {
     cpSync(cmdRefSource, join(target, "docs", "commands-reference.md"), { force: true });
     console.log(c.green("  [OK]") + " docs/commands-reference.md updated");
+  }
+
+  // SK-authored docs that live alongside user content — refresh the individual
+  // files only (never the whole parent dir, which would clobber user files).
+  const shippedDocs = [
+    ["docs/README.md", "docs/README.md"],
+    ["docs/conventions/coding-behavior.md", "docs/conventions/coding-behavior.md"],
+  ];
+  for (const [rel] of shippedDocs) {
+    const src = join(pkg, rel);
+    if (existsSync(src)) {
+      const dest = join(target, rel);
+      mkdirSync(dirname(dest), { recursive: true });
+      cpSync(src, dest, { force: true });
+      console.log(c.green("  [OK]") + ` ${rel} updated`);
+    }
   }
 
   // --- Step 3: Update lifecycle & SOPs ---
@@ -502,6 +520,8 @@ async function runUpdate(target, fromOverride) {
   console.log("    docs/sop/             (standard procedures)");
   console.log("    docs/reference/        (shipped reference data)");
   console.log("    docs/commands-reference.md");
+  console.log("    docs/README.md         (doc map)");
+  console.log("    docs/conventions/coding-behavior.md");
   console.log("    CLAUDE.md             (agent instructions)");
   console.log("    .claude/agents/        (agent definitions)");
   console.log("    .claude/skills/        (active skills)");

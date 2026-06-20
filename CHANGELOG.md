@@ -27,7 +27,7 @@ recommendations from `docs/enhancement-report-external-skills.md` implemented.
 
 ### Fixes
 
-- **Update propagation** — `npx shipkit-cld update` now refreshes `docs/reference/` and `docs/commands-reference.md` (SK-shipped reference content), so `/sk:ui-review`'s reference corpus and the command list reach updated projects, not just fresh installs. User content (tasks, conventions, system, architecture, decisions, flows) remains preserved.
+- **Update propagation** — `npx shipkit-cld update` now refreshes all SK-shipped docs that previously went stale: `docs/reference/`, `docs/commands-reference.md`, `docs/README.md`, and `docs/conventions/coding-behavior.md`. The last is refreshed as an individual file so the user's own `code-style.md`/`testing.md` in the same directory are preserved. User content (tasks, conventions, system, architecture, decisions, flows) remains untouched.
 
 ### Docs
 
