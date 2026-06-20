@@ -9,10 +9,13 @@ Analyze UI code for accessibility, responsive design, design consistency, perfor
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `docs/system/project-context.md` — Dense project summary (if it exists)
+1. `docs/system/project-context.md` — Dense project summary + **product type** (drives category-specific anti-patterns)
 2. `docs/system/tech-stack.md` — UI framework, component library, styling approach
 3. `docs/conventions/code-style.md` — Component patterns, naming conventions
 4. `docs/architecture/` — Component hierarchy and relationships (if exists)
+5. `docs/design/DESIGN.md` — Project design system, if one exists (review against it, not generic defaults)
+6. `docs/reference/ui-design/anti-patterns.md` — Category-specific + AI-slop anti-patterns (severity + fixes)
+7. `docs/reference/ui-design/visual-design.md` — Aesthetic audit checklist + numeric thresholds
 
 **Skip files that are empty or contain only template placeholders.** If conventions aren't configured, review against platform defaults and WCAG standards.
 
@@ -80,6 +83,20 @@ Ask the user what to review:
 - **Icons** — consistent icon set and sizing throughout
 - **Animation** — consistent timing and easing, respects `prefers-reduced-motion`
 
+## Step 5b: Visual Design & Aesthetic Audit
+
+Compliance (Steps 3–5) checks whether the UI is *correct*; this step checks whether it's *good*. Use `docs/reference/ui-design/visual-design.md` (aesthetic checklist + thresholds) and `docs/reference/ui-design/anti-patterns.md` (severity-rated patterns).
+
+- **Visual hierarchy** — does the eye land on the most important element first?
+- **Whitespace & rhythm** — related elements grouped, sections separated; consistent spacing scale (not uniform gaps)
+- **Type scale** — one modular ratio, ≤2 font families, 60–75 char line length
+- **Color** — deliberate palette with one accent; not default-purple, not rainbow
+- **Restraint** — shadow/blur/gradient/motion used with intent, not everywhere
+- **AI-slop & category fit** — match the **product type** against the anti-patterns reference (e.g. B2B SaaS should not look like a consumer AI demo). Cite the row number and the specific fix.
+- **Design-system adherence** — if `docs/design/DESIGN.md` exists, flag deviations from its canonical tokens.
+
+Fold findings into the Step 8 tables (Critical/Warning/Suggestion) using the reference severities.
+
 ## Step 6: Performance
 
 - **Image optimization** — appropriate formats (WebP/AVIF), correct sizing, not oversized
@@ -138,6 +155,10 @@ Based on the audit, estimate the current WCAG 2.2 conformance level:
 - **Level AAA** — highest level, exceeds most requirements
 
 State the estimated level and list the specific gaps preventing the next level up.
+
+**End with a one-line tally** so the verdict is glanceable and comparable across reviews:
+
+`Found: N critical, N warning, N suggestion — WCAG <estimated level>` (or `Clean — ship` if nothing found).
 
 ## Step 10: Persist Report (Optional)
 

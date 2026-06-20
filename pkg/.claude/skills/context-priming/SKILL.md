@@ -1,10 +1,7 @@
 ---
 name: context-priming
-description: >
-  Efficiently build a mental model of an unfamiliar codebase or module.
-  Use at the start of new sessions, when entering unfamiliar code areas,
-  or when onboarding to a new project. Reads files in priority order to
-  maximize understanding per token.
+description: Build a mental model of an unfamiliar codebase or module by reading files in priority order. Run at the start of a session or when onboarding to new code.
+disable-model-invocation: true
 ---
 
 # Context Priming

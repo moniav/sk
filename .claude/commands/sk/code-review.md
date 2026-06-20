@@ -83,6 +83,7 @@ Reference `docs/conventions/code-style.md` and `docs/conventions/file-structure.
 
 Reference `docs/conventions/coding-behavior.md`:
 
+- Simplicity ladder — could this be stdlib, a native platform feature, or an already-installed dependency instead of new code? (coding-behavior §3)
 - Over-engineering — abstractions, classes, or patterns for single-use cases
 - Speculative features — code for requirements that don't exist yet
 - Drive-by changes — refactoring or "cleanup" outside the task's scope
@@ -135,6 +136,10 @@ Provide an overall assessment:
 - **NEEDS DISCUSSION** — Architectural or design concerns need team input
 
 Include a brief summary: what the code does well, what needs attention, and any systemic patterns noticed.
+
+**End with a one-line tally** so the result is glanceable and comparable across reviews:
+
+`Found: N critical, N warning, N suggestion — <APPROVE | REQUEST CHANGES | NEEDS DISCUSSION>` (or `Clean — ship` if nothing found).
 
 ## Step 7: Persist Report (Optional)
 

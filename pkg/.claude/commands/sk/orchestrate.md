@@ -17,6 +17,7 @@ Analyze subtask dependencies, dispatch parallel subagents with worktree isolatio
 2. The task or epic file to orchestrate
 3. `.claude/skills/subagent-driven-development/SKILL.md` — Existing SDD pattern
 4. `.claude/skills/escalation-rules/SKILL.md` — Failure handling
+5. `.claude/skills/stay-within-limits/SKILL.md` — Bounded waves and budget governance (dispatch in waves of ~3, check usage between waves)
 
 **Skip convention files that are empty or contain only template placeholders.** Agents should infer patterns from the existing codebase if conventions aren't configured.
 

@@ -86,3 +86,4 @@ Output a concise retrospective report:
 - Prefer concrete actions over vague observations
 - Keep the retro short (5-10 minutes of Claude time, not an hour)
 - If the user doesn't specify scope, default to the most recently completed task
+- **Never fabricate metrics.** Velocity, time saved, "% faster", coverage deltas — only state a number if you measured it against a real baseline (git log counts, test output, benchmark runs). If you don't have the baseline, say so or omit the number. A plausible-sounding invented metric erodes trust in every report.

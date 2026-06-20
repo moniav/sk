@@ -110,6 +110,8 @@ Classify each commit by its conventional commit type:
 
 6. **Scope matters** — if commits have scopes like `feat(auth):`, group entries under the scope
 
+7. **Never invent metrics or impact claims** — describe *what* changed, not unmeasured numbers like "30% faster" or "halved memory". Only state a metric if a commit, benchmark, or measurement actually produced it; otherwise omit it.
+
 ## Step 5: Check for Breaking Changes
 
 For any commits with `!` in the type or `BREAKING CHANGE` in the body:

@@ -15,9 +15,9 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 32 slash commands
+│   ├── commands/sk/             ← 34 slash commands
 │   ├── agents/                  ← 5 agents (implementer, reviewers, dependency-analyzer, architecture-reviewer)
-│   └── skills/                  ← 11 skills (TDD, diagrams, escalation, verification, copywriting, ...)
+│   └── skills/                  ← 13 skills (TDD, diagrams, escalation, verification, copywriting, ...)
 └── docs/                        ← Documentation hub
     ├── conventions/             Code style, structure, git, testing
     ├── system/                  Tech stack, schema, APIs
@@ -31,7 +31,7 @@ your-project/
 
 ```mermaid
 graph TD
-    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>32 slash commands</i>"]
+    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>34 slash commands</i>"]
     A --> B2[".claude/skills/<br/><i>TDD, diagrams, escalation, verification, copywriting, technical-writing, ...</i>"]
     B --> C["docs/README.md<br/><i>master index</i>"]
 
@@ -414,6 +414,7 @@ graph LR
 | `/sk:security-review` | OWASP Top 10, secrets, dependency audit | Report (conversation) |
 | `/sk:ui-review` | Accessibility, responsive design, UX | Report (conversation) |
 | `/sk:perf-review` | Queries, memory, rendering, caching | Report (conversation) |
+| `/sk:recap` | Reviewer-facing recap of a diff — what changed and why | Report (conversation, optional save) |
 
 ### Debugging & Refactoring
 
@@ -422,6 +423,7 @@ graph LR
 | `/sk:debug` | Reproduce, isolate, fix, verify with regression test | Code fix + test + task file (M+) |
 | `/sk:refactor` | Restructure code, verify behavior unchanged | Code changes + task file (M+) |
 | `/sk:migrate` | Handle breaking changes, dependency upgrades, DB migrations | Safe migration with rollback plan |
+| `/sk:debt` | Harvest `sk-debt` markers into a ranked ledger | Tech-debt ledger (optional save) |
 
 ### Git & Release
 
@@ -461,7 +463,7 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 32 slash commands
+│       ├── commands/sk/         ← 34 slash commands
 │       ├── agents/              ← Implementer, reviewers, dependency-analyzer, architecture-reviewer
 │       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming
 └── .claude/                     ← Development copy (dogfooding, not shipped)

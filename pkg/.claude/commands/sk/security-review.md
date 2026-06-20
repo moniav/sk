@@ -174,6 +174,10 @@ For each Critical and High finding:
 
 If no critical or high findings, acknowledge the codebase's security posture and highlight areas for ongoing vigilance.
 
+**End with a one-line tally** so the result is glanceable and comparable across reviews:
+
+`Found: N critical, N high, N medium, N low` (or `Clean — no critical/high findings` if none).
+
 ## Step 7: Persist Report (Optional)
 
 Ask: **"Save this security review to `docs/reviews/security/YYYY-MM-DD-{scope}.md`?"**
