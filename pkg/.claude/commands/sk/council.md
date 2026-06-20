@@ -10,6 +10,8 @@ Convene a council of AI personas with genuinely different perspectives to debate
 
 **Do NOT use for:** Implementation details (use `/sk:plan`), brainstorming features (use `/sk:brainstorm`), or debugging (use `/sk:debug`).
 
+**Plan-arbiter mode:** If you already have two or more *complete, competing plans* for the same goal (e.g. an `/sk:plan` output vs. a Codex second opinion vs. a prior council recommendation) and the job is to **pick one**, skip the persona debate and use **Plan-Arbiter Mode** (near the end of this file).
+
 ## Step 1: Read Context
 
 **Read these first:**
@@ -338,6 +340,48 @@ If accepted as ADR, also update `docs/decisions/README.md` with the new entry.
 | 5 personas, 3 rounds | ~35-50K tokens | Maximum depth, use sparingly |
 
 Show estimate before dispatching: **"This council will use approximately {N} personas over {R} rounds (~{T}K tokens). Proceed?"**
+
+## Plan-Arbiter Mode (resolving competing plans)
+
+Use this when the input is **two or more complete plans for the same goal**, and the task is to choose — not to debate an open question. Blending competing plans usually produces incoherent architecture; pick one spine and graft the best ideas from the rest.
+
+### Process
+
+1. **Normalize** — restate each plan in the same shape: goal, key decisions, file/area changes, risks, validation approach. Make them directly comparable.
+2. **Cross-review** — for each plan, list where it is stronger and weaker than the others. Check each against the real codebase (Read/Grep): a plan grounded in actual files beats a plausible-sounding one that isn't.
+3. **Score on the ranked tiebreaker** — apply in order; a higher criterion settles the choice before a lower one is considered:
+
+   | Rank | Criterion | Question |
+   |------|-----------|----------|
+   | 1 | **Correctness** | Does it actually solve the problem and meet the acceptance criteria? |
+   | 2 | **Grounding** | Is it anchored in real files, symbols, and constraints — not invented ones? |
+   | 3 | **Simplicity** | Is it the simplest approach that works (fewest moving parts)? |
+   | 4 | **Validation robustness** | How well can it be tested and verified? |
+   | 5 | **Execution cost** | Effort, risk, and blast radius to implement. |
+
+4. **Decide and hand off** — name the winning plan, justify it against the tiebreaker, and **graft** the specific better ideas from the runners-up into it. Produce one merged, executable direction.
+
+### Output
+
+```markdown
+# Plan Arbitration: {goal}
+**Plans compared:** {N} · **Winner:** {plan name}
+
+## Decision
+{Which plan wins and why, in terms of the ranked tiebreaker.}
+
+## Ranked Comparison
+| Plan | Correctness | Grounding | Simplicity | Validation | Cost | Verdict |
+|------|-------------|-----------|------------|------------|------|---------|
+
+## Ideas Grafted from Runners-Up
+- {idea} from {plan} — {why it improves the winner}
+
+## Final Executable Direction
+{The merged plan, ready for /sk:dev or /sk:orchestrate.}
+```
+
+Never average competing plans into a blend — choose one spine and improve it.
 
 ## Guard Rails
 

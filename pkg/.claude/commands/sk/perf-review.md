@@ -210,6 +210,10 @@ Format findings by severity and impact:
 2. Second most impactful
 3. Third most impactful
 
+**End with a one-line tally** so the result is glanceable and comparable across reviews:
+
+`Found: N critical, N warning, N suggestion` (or `Clean — ship` if nothing found). Do not invent performance numbers — only cite a measured benchmark if one was actually run.
+
 ## Step 11: Persist Report (Optional)
 
 Ask: **"Save this performance review to `docs/reviews/performance/YYYY-MM-DD-{scope}.md`?"**

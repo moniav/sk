@@ -117,7 +117,20 @@ Record scan results and technical decisions in the task's "Phase Analysis" secti
 - **Codebase Scan Results**: Patterns found, affected files, reusable utilities
 - **Technical Decisions**: Approach chosen and why
 
-## Step 5: Validate Plan
+## Step 5: Adversarial Self-Review (high-stakes plans)
+
+Before validating, attack your own plan. **Make no source edits during PLAN — stay read-only until the user approves the direction.**
+
+For high-stakes work — architecture, backend, data-model, migration, or multi-file changes — dispatch the **spec-reviewer** agent (`.claude/agents/spec-reviewer.md`) in plan-review mode, or run the pass yourself. Check the plan against four failure classes:
+
+1. **Hard-to-reverse decisions made implicitly (or not at all)** — wire format, public IDs, data-model shape, auth, ownership. These are expensive to undo once data or callers depend on them. Surface each one explicitly instead of letting it leak in during DEV.
+2. **Steps not anchored in real files or symbols** — every subtask must name actual files/functions verified in the codebase, not invented ones.
+3. **A menu of options where the plan should commit to one** — pick a direction and justify it; don't defer the decision into DEV.
+4. **Obvious missing decisions** — error handling, edge cases, rollout/migration order.
+
+Route every unresolved judgment call into the Open Questions table **with a recommended answer** — never silently assume. Do not exit PLAN with a known decision left implicit.
+
+## Step 6: Validate Plan
 
 Run the PLAN exit gate checklist:
 
@@ -131,9 +144,10 @@ Run the PLAN exit gate checklist:
 - [ ] Affected docs identified for updating
 - [ ] Approach follows existing codebase patterns
 - [ ] Approach is the simplest that satisfies acceptance criteria (no speculative features)
+- [ ] Adversarial self-review done — hard-to-reverse decisions surfaced explicitly, not left implicit
 ```
 
-## Step 6: Update Status
+## Step 7: Update Status
 
 1. Update YAML frontmatter: set `phase: dev`, `status: ready`, update `updated` date
 2. Update `docs/tasks/README.md` — move from Planning to "ready for dev"
@@ -145,7 +159,7 @@ Run the PLAN exit gate checklist:
 | YYYY-MM-DD | PLAN | Plan complete — N subtasks, complexity M. Ready for dev. |
 ```
 
-## Step 7: Present to User
+## Step 8: Present to User
 
 Show:
 - Acceptance criteria (final)

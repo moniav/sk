@@ -5,7 +5,7 @@
 ## What is SK
 
 SK is a documentation & lifecycle system for Claude Code. It ships as an npm package (`shipkit-cld`) that installs:
-- Slash commands (`.claude/commands/sk/`) — 32 lifecycle commands
+- Slash commands (`.claude/commands/sk/`) — 34 lifecycle commands
 - Agent definitions (`.claude/agents/`) — implementer, spec-reviewer, quality-reviewer, dependency-analyzer, architecture-reviewer
 - Skills (`.claude/skills/`) — test-driven-development, escalation-rules, legal-advisor, technical-diagrams, subagent-driven-development, verification-before-completion, git-worktrees, copywriting, error-recovery, context-priming, technical-writing
 - Doc templates and conventions (`pkg/docs/`) — structured documentation system
@@ -23,7 +23,7 @@ sk/
 │   ├── CLAUDE.md          ← Template CLAUDE.md for target projects
 │   ├── docs/              ← Template documentation tree
 │   └── .claude/           ← Commands, agents, skills
-│       ├── commands/sk/   ← 32 slash commands
+│       ├── commands/sk/   ← 34 slash commands
 │       ├── agents/        ← Agent definitions
 │       └── skills/        ← Skill definitions
 ├── .claude/               ← DEVELOPMENT copy (for dogfooding SK)
@@ -73,6 +73,14 @@ For M+ changes, use the SK commands themselves (dogfooding).
 - `.claude/commands/sk/` files are the product — test changes in real projects
 - `pkg/CLAUDE.md` should stay under 100 lines — every line costs context on every session
 - Never ship SK-specific content in `pkg/` (no references to SK development)
+
+### Skill invocation discipline
+
+A skill's `description` is loaded into context on **every turn** so the model can decide whether to auto-fire it — a standing context tax. When authoring/editing a skill, classify it:
+- **Model-invoked** (default) — the model should reach for it autonomously (e.g. during the dev loop or on topic mention). Keep a trigger-rich "Use when…" description.
+- **User-invoked only** — it only ever fires by hand (e.g. `context-priming`, a start-of-session tool). Add `disable-model-invocation: true` to the frontmatter and trim the description to a plain one-line summary, so it costs no per-turn context.
+
+The deciding question: *could the model usefully reach for this on its own?* If no, make it user-invoked.
 
 ## Release Process
 

@@ -7,7 +7,7 @@ Claude Code (and any AI coding agent) works dramatically better when it has stru
 SK solves two problems:
 
 1. **Procedural context** -- Conventions, file structure, testing patterns, and step-by-step workflows so the agent follows your project's rules instead of inventing its own.
-2. **Behavioral guardrails** -- Principles that govern *how* the agent thinks: surface assumptions before coding, do exactly what was asked, keep solutions simple, and verify goals with evidence (see `docs/conventions/coding-behavior.md`).
+2. **Behavioral guardrails** -- Principles that govern *how* the agent thinks: surface assumptions before coding, do exactly what was asked, keep solutions simple, verify goals with evidence, and track deliberate shortcuts (see `docs/conventions/coding-behavior.md`).
 
 ## What Gets Installed
 
@@ -15,9 +15,9 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 32 slash commands
+│   ├── commands/sk/             ← 34 slash commands
 │   ├── agents/                  ← 5 agents (implementer, reviewers, dependency-analyzer, architecture-reviewer)
-│   └── skills/                  ← 11 skills (TDD, diagrams, escalation, verification, copywriting, ...)
+│   └── skills/                  ← 13 skills (TDD, diagrams, escalation, verification, copywriting, ...)
 └── docs/                        ← Documentation hub
     ├── conventions/             Code style, structure, git, testing
     ├── system/                  Tech stack, schema, APIs
@@ -31,7 +31,7 @@ your-project/
 
 ```mermaid
 graph TD
-    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>32 slash commands</i>"]
+    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>34 slash commands</i>"]
     A --> B2[".claude/skills/<br/><i>TDD, diagrams, escalation, verification, copywriting, technical-writing, ...</i>"]
     B --> C["docs/README.md<br/><i>master index</i>"]
 
@@ -292,6 +292,7 @@ graph LR
         secreview["/sk:security-review"]
         uireview["/sk:ui-review"]
         perfreview["/sk:perf-review"]
+        recap["/sk:recap"]
     end
 
     subgraph "Decision Making"
@@ -302,6 +303,7 @@ graph LR
         debug["/sk:debug"]
         refactor["/sk:refactor"]
         migrate["/sk:migrate"]
+        debt["/sk:debt"]
     end
 
     subgraph "Marketing & Legal"
@@ -344,6 +346,9 @@ graph LR
     refactor -->|"restructured"| codereview
     migrate -->|"migrated"| test
     test -->|"shipped"| retro
+    test -->|"recap diff"| recap
+    recap -->|"before PR"| commit
+    debt -.->|"feeds backlog"| refactor
 
     deps -.->|"updates needed"| commit
     changelog -.->|"commit changelog"| commit
@@ -365,6 +370,8 @@ graph LR
     style retro fill:#264653,color:#fff
     style changelog fill:#264653,color:#fff
     style deps fill:#264653,color:#fff
+    style recap fill:#e9c46a,color:#000
+    style debt fill:#264653,color:#fff
     style commit fill:#e9c46a,color:#000
     style resume fill:#264653,color:#fff
 ```
@@ -414,6 +421,7 @@ graph LR
 | `/sk:security-review` | OWASP Top 10, secrets, dependency audit | Report (conversation) |
 | `/sk:ui-review` | Accessibility, responsive design, UX | Report (conversation) |
 | `/sk:perf-review` | Queries, memory, rendering, caching | Report (conversation) |
+| `/sk:recap` | Reviewer-facing recap of a diff — what changed and why | Report (conversation, optional save) |
 
 ### Debugging & Refactoring
 
@@ -422,6 +430,7 @@ graph LR
 | `/sk:debug` | Reproduce, isolate, fix, verify with regression test | Code fix + test + task file (M+) |
 | `/sk:refactor` | Restructure code, verify behavior unchanged | Code changes + task file (M+) |
 | `/sk:migrate` | Handle breaking changes, dependency upgrades, DB migrations | Safe migration with rollback plan |
+| `/sk:debt` | Harvest `sk-debt` markers into a ranked ledger | Tech-debt ledger (optional save) |
 
 ### Git & Release
 
@@ -461,9 +470,9 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 32 slash commands
+│       ├── commands/sk/         ← 34 slash commands
 │       ├── agents/              ← Implementer, reviewers, dependency-analyzer, architecture-reviewer
-│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming
+│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits
 └── .claude/                     ← Development copy (dogfooding, not shipped)
 ```
 
@@ -495,9 +504,9 @@ sk/                              ← SK source repository
 
 **Parallel orchestration** — `/sk:orchestrate` analyzes subtask dependencies, builds a file-conflict graph, groups independent subtasks into waves, and dispatches parallel subagents with worktree isolation. Two-stage review (spec + quality) runs per agent. Merges wave results sequentially with conflict detection. Caps at 4 parallel agents (research-backed sweet spot).
 
-**Advisory council** — `/sk:council` convenes 3-5 AI personas with genuinely incompatible value systems (pragmatist vs architect vs adversary) to debate strategic questions. Structured rounds: independent positions (zero cross-visibility), challenge, optional rebuttal, synthesis. Produces a decision report with recommendation, confidence, dissent, and conditions for reversal. Research shows multi-agent debate reduces hallucinations by 30%+ and improves factual accuracy.
+**Advisory council** — `/sk:council` convenes 3-5 AI personas with genuinely incompatible value systems (pragmatist vs architect vs adversary) to debate strategic questions. Structured rounds: independent positions (zero cross-visibility), challenge, optional rebuttal, synthesis. Produces a decision report with recommendation, confidence, dissent, and conditions for reversal. A plan-arbiter mode resolves competing plans via a ranked tiebreaker instead of blending them. Research shows multi-agent debate reduces hallucinations by 30%+ and improves factual accuracy.
 
-**Behavioral guardrails** — LLMs over-engineer, make hidden assumptions, and drift from scope. Four principles (surface assumptions, do exactly what's asked, keep it simple, verify with evidence) are embedded in every lifecycle command to counteract this. See `docs/conventions/coding-behavior.md`.
+**Behavioral guardrails** — LLMs over-engineer, make hidden assumptions, and drift from scope. Five principles (surface assumptions, do exactly what's asked, keep it simple, verify with evidence, track deliberate shortcuts via `sk-debt` markers) are embedded in every lifecycle command to counteract this. See `docs/conventions/coding-behavior.md`.
 
 ## Anti-Patterns to Avoid
 

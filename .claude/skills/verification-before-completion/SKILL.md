@@ -23,6 +23,18 @@ Before claiming any task is done, you must:
 
 If a test command exists, always prefer it over manual verification.
 
+## Audit Against the Original Contract
+
+Passing tests are necessary but not sufficient — they prove the code you wrote works, not that you built what was asked. Before claiming done, reconstruct the original contract and audit the real evidence against it:
+
+1. **Reconstruct the ask** — the user's actual request, stated constraints, and every acceptance criterion. Treat the user's intent as ground truth, not your own summary of what you did.
+2. **Audit the evidence** — the diff, test output, and any CI/screenshots. For each acceptance criterion, point to the specific change that satisfies it.
+3. **Check both directions:**
+   - **Missing** — every requirement has a corresponding change (nothing silently dropped).
+   - **Extra** — no scope creep: features, refactors, or files that were never asked for. Note those as follow-ups instead of folding them into "done".
+
+If any criterion has no evidence, or the diff does things outside the ask, you are not done — fix it or surface it before claiming completion.
+
 ## What Counts as Evidence
 
 **Acceptable:**

@@ -39,6 +39,8 @@
 | `/sk:copywrite` | Write marketing copy — landing pages, emails, ads, CTAs, social posts | Any marketing copy task for SaaS/tech products |
 | `/sk:retro` | Run retrospective on completed work — capture lessons and improvements | After completing a task/epic, periodic reflection |
 | `/sk:migrate` | Handle breaking changes, dependency upgrades, and database migrations safely | Major version bumps, schema changes, runtime upgrades |
+| `/sk:recap` | Reviewer-facing recap of a diff — what changed and why | After implementation, before PR review |
+| `/sk:debt` | Harvest `sk-debt` markers into a ranked ledger | Periodic debt sweep, or feeding `/sk:refactor` |
 
 ## Command Prerequisites
 
@@ -50,6 +52,7 @@
 | /sk:commit | git-workflow.md populated (optional) |
 | /sk:copywrite | project-context.md populated (optional) |
 | /sk:council | project-context.md populated |
+| /sk:debt | Nothing (scans for `sk-debt` markers) |
 | /sk:debug | Nothing (reads context as needed) |
 | /sk:deps | Package manifest (package.json, pyproject.toml, etc.) |
 | /sk:dev | Build Commands filled in |
@@ -67,6 +70,7 @@
 | /sk:orchestrate | PLAN phase complete, 3+ subtasks with file paths |
 | /sk:perf-review | tech-stack.md populated |
 | /sk:plan | project-context.md, tech-stack.md populated |
+| /sk:recap | A diff in scope (branch, staged, or commit range) |
 | /sk:refactor | code-style.md populated, test suite available |
 | /sk:resume | Nothing (reads task state automatically) |
 | /sk:retro | A completed task or recent commits to review |
@@ -91,6 +95,7 @@ Lifecycle
 ├── /sk:dev → DEV phase
 ├── /sk:test → TEST phase
 ├── /sk:orchestrate → parallel agent team (dependency-aware)
+├── /sk:recap → reviewer-facing recap of the diff (before PR review)
 ├── /sk:retro → retrospective on completed work
 └── /sk:finish → review + commit + push + PR
 
@@ -105,7 +110,8 @@ Quality Gates
 ├── /sk:code-review
 ├── /sk:security-review
 ├── /sk:ui-review
-└── /sk:perf-review
+├── /sk:perf-review
+└── /sk:debt → harvest tech-debt markers into a ledger
 
 Git & Release
 ├── /sk:commit → conventional commit

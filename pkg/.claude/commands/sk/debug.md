@@ -54,6 +54,8 @@ If the bug cannot be reproduced:
 - Try variations of the reproduction steps
 - Check if it was already fixed on the current branch
 
+**Feedback-loop gate:** You need a tight, repeatable pass/fail signal — a failing test, a script, a `curl` command, a specific log line — *before* you start changing code. Build the right feedback loop and the bug is 90% fixed. If you genuinely cannot build one (no repro, no access, no observable signal), **halt and request the missing access or artifacts** rather than guessing at fixes blind.
+
 **Checkpoint:** State clearly: "Reproduced: [yes/no]. The bug manifests as [exact symptom] at [location]."
 
 ## Step 5: Isolate
@@ -67,10 +69,12 @@ Starting from the entry point (route handler, event handler, CLI command):
 2. Identify every function call in the chain
 3. Note where data transforms — what goes in vs what comes out
 
-### 5b: Form a Hypothesis
+### 5b: Form Hypotheses
 
-Based on the trace, state a specific hypothesis:
+Based on the trace, write **3–5 ranked, falsifiable hypotheses** — most likely first. Each must be specific enough that a single test or log line could prove it wrong:
 > "The bug occurs because [specific cause] in [specific location], which results in [specific symptom]."
+
+Ranking forces you past your first instinct; listing several stops you from committing prematurely to the wrong one.
 
 **Surface your assumptions.** Before investigating further, list what you're assuming:
 - What do you assume about the data flow?
@@ -79,8 +83,8 @@ Based on the trace, state a specific hypothesis:
 
 ### 5c: Verify the Hypothesis
 
-Test your hypothesis with minimal investigation — do not assume your hypothesis is correct:
-- Add a strategic log/breakpoint to confirm the data flow
+Test your top hypothesis with minimal investigation — do not assume it is correct:
+- Add a strategic log/breakpoint to confirm the data flow — tag temporary debug logs with a unique prefix like `[DEBUG-a4f2]` so every line is trivial to find and remove once the fix lands
 - Check the git log for recent changes to the suspect code: `git log --oneline -10 -- <file>`
 - Read the test coverage for the suspect code — is the failing case tested?
 
