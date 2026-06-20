@@ -25,6 +25,10 @@ recommendations from `docs/enhancement-report-external-skills.md` implemented.
 - **Simplicity ladder** — explicit YAGNI → stdlib → native → existing-dep ladder with non-negotiables carve-out in `coding-behavior.md`
 - **Skill invocation discipline** — `context-priming` marked `disable-model-invocation`; classification rule documented in `CLAUDE.md`
 
+### Fixes
+
+- **Update propagation** — `npx shipkit-cld update` now refreshes `docs/reference/` and `docs/commands-reference.md` (SK-shipped reference content), so `/sk:ui-review`'s reference corpus and the command list reach updated projects, not just fresh installs. User content (tasks, conventions, system, architecture, decisions, flows) remains preserved.
+
 ### Docs
 
 - Add `docs/enhancement-report-external-skills.md` (competitive analysis + recommendations)
