@@ -35,10 +35,20 @@
 | `/sk:refactor` | Safe refactoring — restructure without behavior change | Code improvement without feature changes |
 | `/sk:changelog` | Generate changelog from git history | Before release or version bump |
 | `/sk:deps` | Dependency health — outdated, vulnerabilities, licenses | Periodic audit or before release |
-| `/sk:legal-scan` | Legal & compliance scan — regulatory requirements, document generation | Starting a project, adding payments/health data, fundraising |
+| `/sk:legal-scan` | Legal & compliance expert — requirements, framework deep-dives, document drafting, contract review | Starting a project, adding payments/health data, fundraising |
 | `/sk:copywrite` | Write marketing copy — landing pages, emails, ads, CTAs, social posts | Any marketing copy task for SaaS/tech products |
 | `/sk:retro` | Run retrospective on completed work — capture lessons and improvements | After completing a task/epic, periodic reflection |
 | `/sk:migrate` | Handle breaking changes, dependency upgrades, and database migrations safely | Major version bumps, schema changes, runtime upgrades |
+| `/sk:recap` | Reviewer-facing recap of a diff — what changed and why | After implementation, before PR review |
+| `/sk:debt` | Harvest `sk-debt` markers into a ranked ledger | Periodic debt sweep, or feeding `/sk:refactor` |
+| `/sk:docs-audit` | Audit doc coherence — orphans, staleness, broken links, lifecycle | Periodic doc health check, before release |
+| `/sk:new-feature-doc` | Document a feature/subsystem, verified against code | A feature is worth a standalone explainer |
+| `/sk:new-user-guide` | Write a customer-facing, task-oriented user guide | Documenting how a user accomplishes a task |
+| `/sk:positioning` | Define product positioning & messaging (ICP, category, value prop) | Establishing GTM foundation |
+| `/sk:competitor` | Analyze competitors — profiles, positioning map, comparison | Competitive intelligence |
+| `/sk:pricing` | Design or evaluate pricing — value metric, model, tiers | Pricing decisions |
+| `/sk:new-business-doc` | Create a business doc (plan, model, cap table, update, memo) | Capturing a business artifact |
+| `/sk:ops` | Operations/SRE expert — incidents, runbooks, postmortems, SLOs, readiness | Running prod, on-call, reliability work |
 
 ## Command Prerequisites
 
@@ -51,9 +61,18 @@
 | /sk:copywrite | project-context.md populated (optional) |
 | /sk:council | project-context.md populated |
 | /sk:debug | Nothing (reads context as needed) |
+| /sk:debt | Nothing (scans for `sk-debt` markers) |
 | /sk:deps | Package manifest (package.json, pyproject.toml, etc.) |
 | /sk:dev | Build Commands filled in |
+| /sk:docs-audit | Nothing (read-only scan of docs/) |
 | /sk:finish | Build commands filled in, code-review prerequisites |
+| /sk:new-feature-doc | docs/features/ home (created by init-docs) |
+| /sk:new-user-guide | docs/user-guides/ home (created by init-docs) |
+| /sk:positioning | docs/business/ home (created by init-docs) |
+| /sk:competitor | docs/business/ home; positioning.md helps |
+| /sk:pricing | docs/business/ home; positioning.md helps |
+| /sk:new-business-doc | docs/business/ home (created by init-docs) |
+| /sk:ops | docs/operations/ home (created by init-docs) |
 | /sk:implement | project-context.md populated |
 | /sk:init-docs | Nothing (auto-scan for brownfield) |
 | /sk:kickoff | Nothing (guided setup for greenfield) |
@@ -67,6 +86,7 @@
 | /sk:orchestrate | PLAN phase complete, 3+ subtasks with file paths |
 | /sk:perf-review | tech-stack.md populated |
 | /sk:plan | project-context.md, tech-stack.md populated |
+| /sk:recap | A diff in scope (branch, staged, or commit range) |
 | /sk:refactor | code-style.md populated, test suite available |
 | /sk:resume | Nothing (reads task state automatically) |
 | /sk:retro | A completed task or recent commits to review |

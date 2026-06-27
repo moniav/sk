@@ -1,5 +1,5 @@
 ---
-description: Run a retrospective on completed work — capture lessons, patterns, and improvements
+description: Run a retrospective on completed work — capture lessons, patterns, and improvements (project)
 ---
 
 # /sk:retro — Retrospective

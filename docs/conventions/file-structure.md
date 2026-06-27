@@ -70,7 +70,7 @@ When editing commands, agents, or skills: **edit in BOTH** root `.claude/` AND `
 - **New skill:** Create `pkg/.claude/skills/{name}/SKILL.md` (and root copy)
 - **New agent:** Add `{name}.md` to `pkg/.claude/agents/` (and root copy)
 - **New template:** Add to `pkg/docs/templates/`
-- **New report:** Add to `docs/reports/` (SK-only, not shipped)
+- **New report:** Add to `dev-docs/reports/` (SK-only, not shipped)
 
 ### File Size Limits
 

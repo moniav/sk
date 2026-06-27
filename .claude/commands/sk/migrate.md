@@ -1,5 +1,5 @@
 ---
-description: Handle breaking changes, dependency upgrades, and database migrations safely
+description: Handle breaking changes, dependency upgrades, and database migrations safely (project)
 ---
 
 # /sk:migrate — Migration & Upgrade

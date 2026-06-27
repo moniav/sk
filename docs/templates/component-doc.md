@@ -1,6 +1,7 @@
 # Component: [Name]
 
 **Last updated:** YYYY-MM-DD  
+**Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
 **Location:** `src/path/to/component`  
 **Owner:** Team/Person  
 

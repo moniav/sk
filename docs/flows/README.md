@@ -8,7 +8,7 @@
 
 | Flow | Type | Description |
 |------|------|-------------|
-| [Install Flow](./install-flow.svg) | Flowchart (SVG) | CLI install process with backup and validation |
+| [Install Flow](./install-flow.svg) | Flowchart (SVG) | CLI install: backup existing docs, copy SK files, CLAUDE.md-safe (never overwritten), validate |
 
 ## Architecture Diagrams
 

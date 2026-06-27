@@ -150,6 +150,7 @@ When multiple sources provide the same command type, prefer in this order:
 Use **Bash** to create directories:
 ```bash
 mkdir -p docs/architecture docs/conventions docs/sop docs/tasks/examples docs/flows docs/decisions docs/system docs/templates
+mkdir -p docs/features docs/user-guides docs/business docs/legal docs/operations docs/_archive
 mkdir -p .claude/commands/sk
 ```
 
@@ -181,7 +182,7 @@ Based on the codebase scan, generate these files in order:
 
 ### 3d. Templates
 
-11. **`docs/templates/`** — Copy all templates (epic, task-prd, sop, adr, flow, component)
+11. **`docs/templates/`** — Copy all templates (epic, task-prd, sop, adr, flow, component, feature-doc, user-guide, postmortem, + business/GTM)
 
 ### 3e. Index Files
 
@@ -189,7 +190,14 @@ Based on the codebase scan, generate these files in order:
 13. **`docs/decisions/README.md`** — ADR index
 14. **`docs/flows/README.md`** — Flow diagram index with Mermaid cheat sheet
 15. **`docs/tasks/README.md`** — Task board
-16. **`docs/README.md`** — Master index linking everything
+16. **`docs/features/README.md`** — Feature docs index (stub)
+17. **`docs/user-guides/README.md`** — User guides index (stub)
+18. **`docs/business/README.md`** — Business / GTM index (stub)
+19. **`docs/legal/README.md`** — Legal & compliance index (stub; populated by `/sk:legal-scan`)
+20. **`docs/operations/README.md`** — Operations index (runbooks, incidents, postmortems)
+21. **`docs/_archive/README.md`** — Archive index (stub)
+20. **`docs/README.md`** — Master index linking everything (the **agent** front door)
+21. **`docs/START-HERE.md`** — Role-based **human** front door (router into the tree). Keep the generic role lanes (engineer / feature / end-user / business / compliance); prune any the project doesn't need.
 
 ### 3f. CLAUDE.md
 
@@ -242,7 +250,9 @@ Based on the project type, create relevant SOPs:
 - [ ] File structure matches actual project layout
 - [ ] Convention docs describe actual patterns (not aspirational)
 - [ ] CLAUDE.md Build Commands are filled in (not placeholder comments)
-- [ ] README.md links all sections correctly
+- [ ] README.md (agent index) links all sections correctly
+- [ ] START-HERE.md (human router) present with role lanes
+- [ ] Domain homes present: features/, user-guides/, business/, legal/, operations/, _archive/ (each with a stub index)
 - [ ] Templates are all present in docs/templates/
 ```
 

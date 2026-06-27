@@ -1,12 +1,17 @@
 ---
-description: "Legal & compliance scan — detect regulatory requirements, generate legal documents (project)"
+description: "Legal & compliance expert — detect regulatory requirements; deep-dive frameworks (HIPAA/GDPR/SOC2/PCI); draft agreements, policies & contracts; review contracts; entity guidance (project)"
 ---
 
-# Legal Scan — Codebase Compliance & Document Generation
+# Legal Scan — Legal & Compliance Expert
 
-Scan your codebase for legal and regulatory signals, then generate tailored compliance reports and legal document drafts.
+Your project's legal advisor. Far more than a scanner: detect what regulations apply, do
+framework compliance deep-dives, generate legal documents, review contracts, and advise on
+entity structure — all backed by the `legal-advisor` skill. (Drafts only — not legal advice;
+have an attorney review before relying on anything.)
 
-**Use this when:** You need to know what legal/compliance requirements apply to your project, or you need to generate legal documents (privacy policy, founders agreement, operating agreement, terms of service, etc.)
+**Use this when:** You need to know what legal/compliance requirements apply, generate legal
+documents (privacy policy, founders/operating agreement, ToS, IP assignment…), review a
+contract for red flags, or get a compliance deep-dive on a specific framework.
 
 ## Arguments
 
@@ -43,7 +48,7 @@ Based on the mode, also read the relevant reference:
 2. `docs/system/tech-stack.md` — Framework, language, dependencies
 3. `docs/system/api-reference.md` — API endpoints and data flows
 4. `docs/system/integrations.md` — External service connections
-5. `docs/system/schema.md` — Database schema and data models
+5. `docs/system/database-schema.md` — Database schema and data models
 6. `docs/system/env-variables.md` — Environment configuration
 
 These files give you a head start before scanning code.

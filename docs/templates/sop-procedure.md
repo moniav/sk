@@ -1,6 +1,7 @@
 # SOP: [Procedure Name]
 
 **Last updated:** YYYY-MM-DD  
+**Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
 **Criticality:** High | Medium | Low  
 
 ## Purpose

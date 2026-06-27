@@ -14,6 +14,7 @@
 | Git Workflow | [git-workflow.md](./git-workflow.md) | Conventional commits, version-number releases |
 | Testing | [testing.md](./testing.md) | Manual CLI testing, command testing in target projects |
 | Coding Behavior | [coding-behavior.md](./coding-behavior.md) | Implementation approach, thinking discipline |
+| Doc Lifecycle | [doc-lifecycle.md](./doc-lifecycle.md) | Freshness tracking — `Lifecycle` field, staleness, `/sk:docs-audit` |
 
 ## Universal Rules
 

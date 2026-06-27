@@ -40,6 +40,22 @@ function countFiles(dir) {
   return count;
 }
 
+// Install/refresh the project CLAUDE.md without clobbering the user's own.
+// - No CLAUDE.md in target -> write the SK template to CLAUDE.md (greenfield convenience).
+// - CLAUDE.md already there -> never overwrite; drop the SK template alongside as
+//   CLAUDE.sk.md so the user can merge new guidance manually.
+// The presence of CLAUDE.sk.md is also the signal that the live CLAUDE.md is
+// user-owned (see runRemove). Returns "created" or "sidecar".
+function syncClaudeMd(pkg, target) {
+  const live = join(target, "CLAUDE.md");
+  if (!existsSync(live)) {
+    cpSync(join(pkg, "CLAUDE.md"), live, { force: true });
+    return "created";
+  }
+  cpSync(join(pkg, "CLAUDE.md"), join(target, "CLAUDE.sk.md"), { force: true });
+  return "sidecar";
+}
+
 function isValidSource(dir) {
   return existsSync(join(dir, "pkg", "CLAUDE.md"))
       && existsSync(join(dir, "pkg", "docs"))
@@ -191,6 +207,12 @@ async function runInstall(target) {
     "docs/decisions",
     "docs/system",
     "docs/templates",
+    "docs/features",
+    "docs/user-guides",
+    "docs/business",
+    "docs/legal",
+    "docs/operations",
+    "docs/_archive",
     ".claude/commands/sk",
   ];
 
@@ -249,11 +271,15 @@ async function runInstall(target) {
     console.log(c.green("  [OK]") + " .claude/skills/ copied");
   }
 
-  cpSync(join(pkg, "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
+  const claudeResult = syncClaudeMd(pkg, target);
   if (existsSync(join(source, "GUIDE.md"))) {
     cpSync(join(source, "GUIDE.md"), join(target, "GUIDE.md"), { force: true });
   }
-  console.log(c.green("  [OK]") + " CLAUDE.md copied");
+  if (claudeResult === "created") {
+    console.log(c.green("  [OK]") + " CLAUDE.md created");
+  } else {
+    console.log(c.yellow("  [KEEP]") + " Existing CLAUDE.md preserved -- SK template written to CLAUDE.sk.md (merge manually)");
+  }
 
   // --- Step 3: Validate ---
 
@@ -484,12 +510,16 @@ async function runUpdate(target, fromOverride) {
 
   // --- Step 4: Update CLAUDE.md ---
 
-  console.log(c.blue("[4/5]") + " Updating CLAUDE.md...");
-  cpSync(join(pkg, "CLAUDE.md"), join(target, "CLAUDE.md"), { force: true });
+  console.log(c.blue("[4/5]") + " Refreshing CLAUDE.md reference...");
+  const claudeResult = syncClaudeMd(pkg, target);
   if (existsSync(join(source, "GUIDE.md"))) {
     cpSync(join(source, "GUIDE.md"), join(target, "GUIDE.md"), { force: true });
   }
-  console.log(c.green("  [OK]") + " CLAUDE.md updated");
+  if (claudeResult === "created") {
+    console.log(c.green("  [OK]") + " CLAUDE.md created (none existed)");
+  } else {
+    console.log(c.yellow("  [KEEP]") + " Your CLAUDE.md left untouched -- latest SK template in CLAUDE.sk.md");
+  }
 
   // --- Step 5: Update agents and skills ---
 
@@ -522,11 +552,12 @@ async function runUpdate(target, fromOverride) {
   console.log("    docs/commands-reference.md");
   console.log("    docs/README.md         (doc map)");
   console.log("    docs/conventions/coding-behavior.md");
-  console.log("    CLAUDE.md             (agent instructions)");
+  console.log("    CLAUDE.sk.md           (latest SK template; merge into your CLAUDE.md)");
   console.log("    .claude/agents/        (agent definitions)");
   console.log("    .claude/skills/        (active skills)");
   console.log();
   console.log(c.bold("  Preserved:"));
+  console.log("    CLAUDE.md             (your agent instructions -- never overwritten)");
   console.log("    docs/tasks/           (your tasks & epics)");
   console.log("    docs/conventions/     (your code style)");
   console.log("    docs/system/          (your tech stack)");
@@ -547,6 +578,7 @@ async function runRemove(target) {
 
   const skCommandsDir = join(target, ".claude", "commands", "sk");
   const claudeMd = join(target, "CLAUDE.md");
+  const claudeSk = join(target, "CLAUDE.sk.md");
   const guideMd = join(target, "GUIDE.md");
   const docsDir = join(target, "docs");
 
@@ -554,8 +586,12 @@ async function runRemove(target) {
 
   const hasCommands = existsSync(skCommandsDir);
   const hasClaudeMd = existsSync(claudeMd);
+  const hasClaudeSk = existsSync(claudeSk);
+  // The live CLAUDE.md is SK-managed only when there's no CLAUDE.sk.md sidecar.
+  // A sidecar means the user had their own CLAUDE.md, so we must not delete it.
+  const skManagedClaude = hasClaudeMd && !hasClaudeSk;
 
-  if (!hasCommands && !hasClaudeMd) {
+  if (!hasCommands && !hasClaudeMd && !hasClaudeSk) {
     console.log(c.yellow("[WARN]") + " SK does not appear to be installed here.");
     process.exit(1);
   }
@@ -575,14 +611,16 @@ async function runRemove(target) {
   if (existsSync(skillsDir)) {
     console.log(c.red(`    .claude/skills/         (skill definitions)`));
   }
-  if (hasClaudeMd) console.log(c.red("    CLAUDE.md"));
+  if (skManagedClaude) console.log(c.red("    CLAUDE.md"));
+  if (hasClaudeSk) console.log(c.red("    CLAUDE.sk.md            (SK template reference)"));
   if (existsSync(guideMd)) console.log(c.red("    GUIDE.md"));
   console.log();
 
-  if (existsSync(docsDir)) {
-    const docCount = countFiles(docsDir);
+  const docCount = existsSync(docsDir) ? countFiles(docsDir) : 0;
+  if (docCount > 0 || hasClaudeSk) {
     console.log(c.green(`  Will keep:`));
-    console.log(c.green(`    docs/                  (${docCount} files preserved)`));
+    if (hasClaudeSk) console.log(c.green(`    CLAUDE.md              (your own -- not SK's)`));
+    if (docCount > 0) console.log(c.green(`    docs/                  (${docCount} files preserved)`));
     console.log();
   }
 
@@ -618,9 +656,15 @@ async function runRemove(target) {
     removed++;
   }
 
-  if (hasClaudeMd) {
+  if (skManagedClaude) {
     unlinkSync(claudeMd);
     console.log(c.green("  [OK]") + " CLAUDE.md removed");
+    removed++;
+  }
+
+  if (hasClaudeSk) {
+    unlinkSync(claudeSk);
+    console.log(c.green("  [OK]") + " CLAUDE.sk.md removed (your CLAUDE.md kept)");
     removed++;
   }
 
