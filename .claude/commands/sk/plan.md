@@ -121,7 +121,7 @@ Record scan results and technical decisions in the task's "Phase Analysis" secti
 
 Before validating, attack your own plan. **Make no source edits during PLAN — stay read-only until the user approves the direction.**
 
-For high-stakes work — architecture, backend, data-model, migration, or multi-file changes — dispatch the **spec-reviewer** agent (`.claude/agents/spec-reviewer.md`) in plan-review mode, or run the pass yourself. Check the plan against four failure classes:
+For high-stakes work — architecture, backend, data-model, migration, or multi-file changes — dispatch the **spec-reviewer** agent (`.claude/agents/spec-reviewer.md`) in plan-review mode, or run the pass yourself. For architecturally significant or epic-level plans, also dispatch the **architecture-reviewer** agent (`.claude/agents/architecture-reviewer.md`) to pressure-test the design (boundaries, coupling, data flow, scalability) before DEV. Check the plan against four failure classes:
 
 1. **Hard-to-reverse decisions made implicitly (or not at all)** — wire format, public IDs, data-model shape, auth, ownership. These are expensive to undo once data or callers depend on them. Surface each one explicitly instead of letting it leak in during DEV.
 2. **Steps not anchored in real files or symbols** — every subtask must name actual files/functions verified in the codebase, not invented ones.

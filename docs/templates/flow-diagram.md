@@ -1,6 +1,7 @@
 # Flow: [Process Name]
 
 **Last updated:** YYYY-MM-DD
+**Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
 **Type:** Sequence | Flowchart | State | Entity Relationship
 **Format:** Mermaid | SVG
 

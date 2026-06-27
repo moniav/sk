@@ -9,63 +9,70 @@ SK solves two problems:
 1. **Procedural context** -- Conventions, file structure, testing patterns, and step-by-step workflows so the agent follows your project's rules instead of inventing its own.
 2. **Behavioral guardrails** -- Principles that govern *how* the agent thinks: surface assumptions before coding, do exactly what was asked, keep solutions simple, verify goals with evidence, and track deliberate shortcuts (see `docs/conventions/coding-behavior.md`).
 
+**Beyond engineering.** SK extends the same discipline to the whole software-company doc surface — dedicated homes and tooling for **end-user guides**, **business / GTM** (positioning, competitors, pricing), **legal & compliance**, and **operations** (runbooks, incidents, postmortems) — plus two domain experts (`/sk:legal-scan`, `/sk:ops`), document **lifecycle** tracking, a read-only coherence **audit** (`/sk:docs-audit`), and one-command **PDF export**.
+
 ## What Gets Installed
 
 ```
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 34 slash commands
+│   ├── commands/sk/             ← 42 slash commands
 │   ├── agents/                  ← 5 agents (implementer, reviewers, dependency-analyzer, architecture-reviewer)
-│   └── skills/                  ← 13 skills (TDD, diagrams, escalation, verification, copywriting, ...)
-└── docs/                        ← Documentation hub
-    ├── conventions/             Code style, structure, git, testing
-    ├── system/                  Tech stack, schema, APIs
-    ├── tasks/                   Task board + examples
-    ├── templates/               Starter templates
-    ├── commands-reference.md    Full command table (loaded on demand)
-    └── ...
+│   └── skills/                  ← 18 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
+└── docs/                        ← Documentation hub (multi-audience)
+    ├── START-HERE.md            Human front door (role-based router)
+    ├── README.md                Agent index
+    ├── architecture/ system/    Engineering: design + current state
+    ├── conventions/ sop/        How to work: standards + procedures
+    ├── features/                Per-feature / subsystem docs
+    ├── user-guides/             Customer-facing guides
+    ├── business/                Positioning, competitors, pricing
+    ├── legal/                   Agreements, policies, compliance scans
+    ├── operations/              Runbooks, incidents, postmortems
+    ├── tasks/ decisions/ flows/ reviews/ research/ reference/  + _archive/
+    ├── templates/               19 starter templates
+    └── commands-reference.md    Full command table (loaded on demand)
 ```
 
 ## How It Works
 
 ```mermaid
 graph TD
-    A["CLAUDE.md<br/><i>entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>34 slash commands</i>"]
-    A --> B2[".claude/skills/<br/><i>TDD, diagrams, escalation, verification, copywriting, technical-writing, ...</i>"]
-    B --> C["docs/README.md<br/><i>master index</i>"]
+    A["CLAUDE.md<br/><i>agent entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>42 slash commands</i>"]
+    A --> B2[".claude/skills/<br/><i>18 skills — TDD, legal, ops, PDF, ...</i>"]
+    SH["docs/START-HERE.md<br/><i>human front door (role router)</i>"] --> C
+    B --> C["docs/README.md<br/><i>agent index</i>"]
 
     C --> D["LIFECYCLE"]
     C --> E["WHAT"]
-    C --> F["WHY"]
     C --> G["HOW"]
+    C --> F["WHY"]
+    C --> H["AUDIENCES"]
 
-    D --> D1["tasks/"]
-    D1 --> D2["Plan > Dev > Test cycle"]
-
-    E --> E1["architecture/"]
-    E --> E2["system/"]
-    E --> E3["flows/"]
-
-    G --> G1["conventions/"]
-    G --> G2["sop/"]
-
+    D --> D1["tasks/ — Plan > Dev > Test"]
+    E --> E1["architecture/ · system/<br/>features/ · flows/"]
+    G --> G1["conventions/ · sop/<br/>operations/"]
     F --> F1["decisions/"]
+    H --> H1["user-guides/ (customers)<br/>business/ (GTM) · legal/ (compliance)"]
 
     style A fill:#2d6a4f,color:#fff
     style B fill:#40916c,color:#fff
     style B2 fill:#40916c,color:#fff
+    style SH fill:#52b788,color:#fff
     style C fill:#52b788,color:#fff
     style D fill:#264653,color:#fff
     style E fill:#264653,color:#fff
     style F fill:#264653,color:#fff
     style G fill:#264653,color:#fff
+    style H fill:#264653,color:#fff
 ```
 
 **LIFECYCLE** = How work flows from idea to done (plan > dev > test, task hierarchy)
-**WHAT** = What the system looks like (architecture, current state, diagrams)
-**HOW** = How to work in it (coding rules, procedures)
+**WHAT** = What the system looks like (architecture, current state, features, diagrams)
+**HOW** = How to work in and run it (coding rules, procedures, ops runbooks)
 **WHY** = Why things are the way they are (decision records)
+**AUDIENCES** = Who else the docs serve — customers, business/GTM, legal/compliance
 
 ## Task Lifecycle
 
@@ -165,7 +172,9 @@ npx shipkit-cld update . --from /path/to/sk
 npx shipkit-cld update .
 ```
 
-Updates overwrite SK system files (commands, agents, skills, templates, SOPs, CLAUDE.md) but **preserve your project content** (tasks, conventions, system docs, architecture, decisions, flows).
+Updates overwrite SK system files (commands, agents, skills, templates, SOPs) but **preserve your project content** (tasks, conventions, system docs, architecture, decisions, flows).
+
+Your `CLAUDE.md` is **never overwritten**. If you already have one when you install, SK leaves it untouched and drops its template alongside as `CLAUDE.sk.md` for you to merge. Only a greenfield install (no existing `CLAUDE.md`) creates one for you.
 
 The source path is saved to `.claude/.sk-source` during install, so subsequent updates find it automatically.
 
@@ -285,6 +294,8 @@ graph LR
         newsop["/sk:new-sop"]
         newadr["/sk:new-adr"]
         newflow["/sk:new-flow"]
+        newfeaturedoc["/sk:new-feature-doc"]
+        newuserguide["/sk:new-user-guide"]
     end
 
     subgraph "Quality"
@@ -306,8 +317,12 @@ graph LR
         debt["/sk:debt"]
     end
 
-    subgraph "Marketing & Legal"
+    subgraph "Marketing, GTM & Legal"
         copywrite["/sk:copywrite"]
+        positioning["/sk:positioning"]
+        competitor["/sk:competitor"]
+        pricing["/sk:pricing"]
+        newbusinessdoc["/sk:new-business-doc"]
         legalscan["/sk:legal-scan"]
     end
 
@@ -316,6 +331,8 @@ graph LR
         retro["/sk:retro"]
         status["/sk:task-status"]
         updatedocs["/sk:update-docs"]
+        docsaudit["/sk:docs-audit"]
+        ops["/sk:ops"]
         update["/sk:update"]
         commit["/sk:commit"]
         changelog["/sk:changelog"]
@@ -412,6 +429,8 @@ graph LR
 | `/sk:new-sop` | Create a standard operating procedure | `docs/sop/*.md` |
 | `/sk:new-adr` | Record an architecture decision | `docs/decisions/*.md` |
 | `/sk:new-flow` | Create a flow diagram (SVG or Mermaid) | `docs/flows/*.svg` or `*.md` |
+| `/sk:new-feature-doc` | Document a feature/subsystem, verified against code | `docs/features/*.md` |
+| `/sk:new-user-guide` | Write a customer-facing, task-oriented guide | `docs/user-guides/*.md` |
 
 ### Quality & Review
 
@@ -446,16 +465,22 @@ graph LR
 | `/sk:resume` | Session briefing + context restore | Starting a new session with active work |
 | `/sk:task-status` | Show task board overview | Check progress across all tasks |
 | `/sk:update-docs` | Sync docs with codebase | After changes, or periodic audit |
+| `/sk:docs-audit` | Audit doc coherence — orphans, staleness, broken links, lifecycle | Periodic doc health check, before release |
+| `/sk:ops` | Operations/SRE expert — incidents, runbooks, postmortems, SLOs, readiness | Running prod, on-call, reliability work |
 | `/sk:deps` | Dependency health check | Periodic audit or before release |
 | `/sk:retro` | Run a retrospective on completed work | Capture lessons, patterns, improvements |
 | `/sk:update` | Update SK commands & templates | Get latest version (npm or local) |
 
-### Marketing & Legal
+### Marketing, GTM & Legal
 
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
 | `/sk:copywrite` | Write marketing copy — landing pages, emails, ads, CTAs | Any SaaS/tech marketing copy task |
-| `/sk:legal-scan` | Legal & compliance scan + document generation | Starting a project, adding payments, fundraising |
+| `/sk:positioning` | Define positioning & messaging (ICP, category, value prop) | Establishing GTM foundation |
+| `/sk:competitor` | Analyze competitors — profiles, positioning map, comparison | Competitive intelligence |
+| `/sk:pricing` | Design or evaluate pricing — value metric, model, tiers | Pricing decisions |
+| `/sk:new-business-doc` | Create a business doc (plan, model, cap table, update, memo) | Capturing a business artifact |
+| `/sk:legal-scan` | Legal & compliance expert — requirements, framework deep-dives, document drafting, contract review | Starting a project, adding payments, fundraising |
 
 ## Package Structure
 
@@ -470,9 +495,9 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 34 slash commands
+│       ├── commands/sk/         ← 42 slash commands
 │       ├── agents/              ← Implementer, reviewers, dependency-analyzer, architecture-reviewer
-│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits
+│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
 └── .claude/                     ← Development copy (dogfooding, not shipped)
 ```
 

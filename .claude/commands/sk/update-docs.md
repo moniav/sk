@@ -16,15 +16,24 @@ Scan the codebase and update `docs/` to accurately reflect the current system st
 5. `docs/architecture/README.md` — Current recorded architecture
 6. `docs/conventions/` — All convention files
 7. `docs/decisions/README.md` — Decision log
+8. `docs/features/README.md` — Feature docs index (if it exists)
+9. `docs/user-guides/README.md` — User guides index (if it exists)
+10. `docs/business/README.md` — Business / GTM index (if it exists)
+11. `docs/legal/README.md` — Legal & compliance index (if it exists)
+12. `docs/operations/README.md` — Operations index (if it exists)
+13. `docs/START-HERE.md` — Human front door (keep in sync with README.md)
 
 **Skip files that are empty or contain only template placeholders.** Only update docs that have been populated — don't modify unfilled templates.
 
 ## Step 2: Ask Scope
 
 Ask the user:
-1. **Scope**: System docs | Architecture | Conventions | SOPs | Tasks | All
+1. **Scope**: System docs | Architecture | Conventions | SOPs | Tasks | Features | User Guides | Business | Legal | Operations | All
 2. **Focus**: What changed recently? New features? Refactors? Dependency updates?
 3. **Depth**: Quick sync (just update what's stale) | Deep analysis (full audit) | Initialize (build from scratch)
+
+> For a read-only coherence check (orphans, staleness, broken links) without rewriting
+> content, use `/sk:docs-audit` instead.
 
 ## Step 3: Analyze Codebase
 
@@ -134,6 +143,55 @@ Compare code vs. docs for each section:
 - [ ] Diagrams match actual code flow
 - [ ] New flows added for new features
 - [ ] Removed features' flows cleaned up
+```
+
+### Feature Docs (`docs/features/`)
+
+```markdown
+- [ ] Each feature doc still matches the code it describes
+- [ ] New significant features have a doc (create with /sk:new-feature-doc)
+- [ ] Status field accurate (shipped vs in-progress)
+- [ ] features/README.md index lists every feature doc
+```
+
+### User Guides (`docs/user-guides/`)
+
+```markdown
+- [ ] Each guide's steps still match current product behavior
+- [ ] No guide documents a removed/changed feature
+- [ ] New user-facing features have a guide (create with /sk:new-user-guide)
+- [ ] user-guides/README.md index is complete
+```
+
+### Business / GTM Docs (`docs/business/`)
+
+```markdown
+- [ ] Positioning still reflects the product and market
+- [ ] Competitor profiles current (intel rots fast — flag stale > 1 quarter)
+- [ ] Pricing strategy matches what's actually charged
+- [ ] Investor updates / memos dated and filed
+- [ ] business/README.md index complete
+```
+
+### Operations Docs (`docs/operations/`)
+
+```markdown
+- [ ] Runbooks match current deploy/rollback/recovery reality
+- [ ] Postmortems filed for recent incidents, action items tracked
+- [ ] No runbook references a removed system or stale command
+- [ ] operations/README.md index complete
+```
+
+### Lifecycle pass (all evergreen docs)
+
+For every evergreen doc touched, refresh `Last updated` and confirm its `Lifecycle`
+(`current` / `stale` / `deprecated` / `archived`) per `docs/conventions/doc-lifecycle.md`:
+
+```markdown
+- [ ] Last updated bumped on docs that changed
+- [ ] Docs whose code changed but content didn't downgraded to `Lifecycle: stale`
+- [ ] Retired docs moved to docs/_archive/ and set to `Lifecycle: archived`
+- [ ] Both front doors (README.md + START-HERE.md) reflect the current section set
 ```
 
 ## Step 5: Prioritize Updates

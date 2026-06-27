@@ -186,6 +186,14 @@ If the investigation was substantial (multiple hypotheses tested, complex root c
 
 If yes, save using `docs/templates/research-doc.md`: symptom, hypotheses tested, root cause found, fix applied.
 
+### Postmortem (if this was a production incident)
+
+If the bug was a **production incident** (user-facing impact, downtime, data issue), ask:
+**"Write a blameless postmortem to `docs/operations/postmortems/`?"**
+
+If yes, use `docs/templates/postmortem.md` (summary, impact, timeline, root cause,
+contributing factors, action items) and add a row to `docs/operations/README.md`.
+
 ### Follow-up (if any)
 - Related issues found during investigation
 - Broader patterns that might need attention

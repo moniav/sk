@@ -5,9 +5,9 @@
 ## What is SK
 
 SK is a documentation & lifecycle system for Claude Code. It ships as an npm package (`shipkit-cld`) that installs:
-- Slash commands (`.claude/commands/sk/`) — 34 lifecycle commands
+- Slash commands (`.claude/commands/sk/`) — 42 lifecycle commands
 - Agent definitions (`.claude/agents/`) — implementer, spec-reviewer, quality-reviewer, dependency-analyzer, architecture-reviewer
-- Skills (`.claude/skills/`) — test-driven-development, escalation-rules, legal-advisor, technical-diagrams, subagent-driven-development, verification-before-completion, git-worktrees, copywriting, error-recovery, context-priming, technical-writing
+- Skills (`.claude/skills/`) — test-driven-development, escalation-rules, legal-advisor, technical-diagrams, subagent-driven-development, verification-before-completion, git-worktrees, copywriting, error-recovery, context-priming, technical-writing, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
 - Doc templates and conventions (`pkg/docs/`) — structured documentation system
 - Template CLAUDE.md (`pkg/CLAUDE.md`) — bootstrap instructions for target projects
 
@@ -23,14 +23,18 @@ sk/
 │   ├── CLAUDE.md          ← Template CLAUDE.md for target projects
 │   ├── docs/              ← Template documentation tree
 │   └── .claude/           ← Commands, agents, skills
-│       ├── commands/sk/   ← 34 slash commands
+│       ├── commands/sk/   ← 42 slash commands
 │       ├── agents/        ← Agent definitions
 │       └── skills/        ← Skill definitions
 ├── .claude/               ← DEVELOPMENT copy (for dogfooding SK)
 │   ├── commands/sk/       ← Same commands, used during SK development
 │   ├── agents/            ← Same agents
 │   └── skills/            ← Same skills
-└── docs/                  ← SK's own documentation (not shipped)
+├── docs/                  ← Dogfood MIRROR of pkg/docs/ (not shipped) — SK uses its own doc system
+└── dev-docs/              ← Meta docs about building SK itself (not shipped, not a mirror)
+    ├── planning/          ← Enhancement plans, roadmaps
+    ├── reports/           ← Analyses, assessments
+    └── guides/            ← Contributor/authoring guides
 ```
 
 ## Key Separation: pkg/ vs root
@@ -43,6 +47,17 @@ sk/
 When editing commands/agents/skills, edit in BOTH root `.claude/` AND `pkg/.claude/`.
 Root is for testing locally, `pkg/` is what ships. Keep them in sync.
 When editing `pkg/docs/` or `pkg/CLAUDE.md`, you're editing what users get on install.
+
+### docs/ vs dev-docs/
+
+- **Root `docs/`** is SK's dogfood instance of the shipped doc system. It mirrors the
+  **structure** of `pkg/docs/` 1:1 (same directories / doc-types) but holds SK's own
+  **filled-in content** — `pkg/docs/` ships blank templates; `docs/` is them filled in.
+  So files differ in *content*, never in *which directories exist*. When you add a new
+  doc-home/section to `pkg/docs/`, add the matching empty home to `docs/` too (keep the
+  structure 1:1). Do NOT drop SK product-planning docs here — those go in `dev-docs/`.
+- **`dev-docs/`** is for everything about evolving SK the product (plans, analyses, contributor
+  guides). Not shipped, not part of the doc-system structure. See `dev-docs/README.md`.
 
 ## Build Commands
 

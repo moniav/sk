@@ -2,6 +2,7 @@
 
 > **Claude Code:** Always read this file first before planning any implementation.
 > After completing any feature, update the relevant docs to reflect current state.
+> (Humans: [START-HERE.md](./START-HERE.md) is a role-based router into the tree.)
 
 ## Quick Navigation
 
@@ -9,14 +10,21 @@
 |---------|---------|--------------|
 | [Tasks](./tasks/) | Task board, epics, PRDs & implementation plans | Before/during feature development |
 | [Architecture](./architecture/) | System design, component relationships, data flow | Before designing new features |
+| [Features](./features/) | Per-feature docs — what each does, how to extend | Building on or changing a feature |
 | [Conventions](./conventions/) | Code standards, naming, patterns, file organization | Before writing any code |
 | [SOP](./sop/) | Step-by-step procedures for common tasks | Before executing any recurring task |
 | [Flows](./flows/) | Visual diagrams (Mermaid) for key processes | When understanding system behavior |
 | [Decisions](./decisions/) | ADRs - why we made key technical choices | When questioning "why is it done this way?" |
 | [System](./system/) | Current state: stack, schema, integrations, APIs | For reference during development |
+| [Reference](./reference/) | Curated reference material (e.g. UI design standards) | Stable lookups; used by `/sk:ui-review` |
+| [User Guides](./user-guides/) | Customer-facing, task-oriented help | Writing/maintaining end-user docs |
+| [Business](./business/) | Positioning, competitors, pricing, business docs | GTM / business work |
+| [Legal](./legal/) | Agreements, policies, compliance scans | Legal/compliance work (`/sk:legal-scan`) |
+| [Operations](./operations/) | Runbooks, incidents, postmortems | Running prod, on-call, after an incident |
 | [Reviews](./reviews/) | Code, security, perf, UI review reports | After running review commands |
 | [Research](./research/) | Brainstorm findings, debug investigations | After brainstorm or complex debug |
 | [Templates](./templates/) | Starter templates for all doc types | When creating new documentation |
+| [Archive](./_archive/) | Retired docs kept for history | Looking up superseded decisions |
 
 ## Documentation Principles
 
@@ -24,13 +32,15 @@
 2. **Write for the AI pair** — Be explicit about conventions; don't assume tribal knowledge
 3. **Minimize, don't maximize** — Short, accurate docs beat long, stale ones
 4. **Link, don't duplicate** — Reference other docs instead of copying content
-5. **Date everything** — Every doc has a `last_updated` field
+5. **Date everything** — Every doc has a `Last updated` field
+6. **Track freshness** — Evergreen docs carry a `Lifecycle` field (`current`/`stale`/`deprecated`/`archived`); audit with `/sk:docs-audit` (see [conventions/doc-lifecycle.md](./conventions/doc-lifecycle.md))
 
 ## How This System Works
 
 ```
 docs/
-|-- README.md                  <- You are here (master index)
+|-- README.md                  <- You are here (master index, agent front door)
+|-- START-HERE.md              <- Human front door (role-based router)
 |-- tasks/
 |   |-- README.md              <- Task board (pipeline view)
 |   |-- EPIC-N-name.md         <- Epic: large feature with multiple tasks
@@ -40,6 +50,9 @@ docs/
 |   |-- README.md              <- Architecture overview + component map
 |   |-- system-overview.md     <- High-level system design
 |   +-- [component].md         <- Per-component deep dives
+|-- features/
+|   |-- README.md              <- Feature docs index
+|   +-- [feature].md           <- Per-feature docs (/sk:new-feature-doc)
 |-- conventions/
 |   |-- README.md              <- Conventions index
 |   |-- code-style.md          <- Naming, formatting, patterns
@@ -64,6 +77,9 @@ docs/
 |   |-- api-reference.md       <- API endpoints & contracts
 |   |-- integrations.md        <- External service connections
 |   +-- env-variables.md       <- Environment variables & secrets
+|-- reference/
+|   |-- README.md              <- Reference index
+|   +-- ui-design/             <- UI design standards (used by /sk:ui-review)
 |-- reviews/
 |   |-- README.md              <- Review report index
 |   |-- code/                  <- Code review reports
@@ -74,15 +90,26 @@ docs/
 |-- research/
 |   |-- README.md              <- Research index
 |   +-- YYYY-MM-DD-topic.md   <- Research artifacts
-+-- templates/
-    |-- epic.md                <- Epic template (multi-task feature)
-    |-- task-prd.md            <- Task template (with Plan/Dev/Test phases)
-    |-- sop-procedure.md       <- SOP template
-    |-- adr-decision.md        <- ADR template
-    |-- flow-diagram.md        <- Flow diagram template
-    |-- component-doc.md       <- Component documentation template
-    |-- review-report.md       <- Review report template
-    +-- research-doc.md        <- Research artifact template
+|-- user-guides/
+|   |-- README.md              <- User guides index
+|   +-- [task].md              <- Customer-facing guides (/sk:new-user-guide)
+|-- business/
+|   |-- README.md              <- Business / GTM index
+|   +-- [positioning|competitor-*|pricing-strategy|*].md  <- GTM + business docs
+|-- legal/
+|   |-- README.md              <- Legal & compliance index
+|   |-- agreements/            <- founders, operating, IP, contracts
+|   |-- policies/              <- privacy policy, ToS, DPA
+|   +-- scans/                 <- dated compliance scans (/sk:legal-scan)
+|-- operations/
+|   |-- README.md              <- Operations index
+|   |-- runbooks/              <- on-call, deploy, rollback, recovery
+|   |-- incidents/             <- active incident notes
+|   +-- postmortems/           <- blameless postmortems
+|-- _archive/
+|   |-- README.md              <- Archive index
+|   +-- [retired-doc].md       <- Superseded docs (Lifecycle: archived)
++-- templates/                 <- 19 doc templates — see templates/README.md for the full list + which command emits each
 ```
 
 ## Maintenance Rules
@@ -105,7 +132,7 @@ docs/
 
 ### Doc Quality Checklist
 
-- [ ] Has `last_updated` date
+- [ ] Has `Last updated` date
 - [ ] Linked from parent README index
 - [ ] No duplicated content (links instead)
 - [ ] Code examples are tested/current

@@ -47,8 +47,8 @@ sk/
 │   ├── docs/              ← Template documentation tree
 │   └── .claude/           ← Commands (32), agents (5), skills (11)
 ├── .claude/               ← Development copy (dogfooding)
-├── docs/                  ← SK's own documentation (not shipped)
-└── docs/reports/          ← Analysis reports and design docs
+├── docs/                  ← Dogfood mirror of pkg/docs/ (not shipped)
+└── dev-docs/              ← Meta docs about building SK (planning/reports/guides, not shipped)
 ```
 
 ## Shipped Content

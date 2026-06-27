@@ -37,7 +37,7 @@ If no sub-command is given, run `scan`.
 
 ## Phase 1: Codebase Scan
 
-Scan the project automatically to detect legal signals. Use Grep and Glob — do not ask the user to describe their stack when the code already tells you.
+Scan the project automatically to detect legal signals. Use Grep and Glob — do not ask the user to describe their stack when the code already tells you. See `references/detection-signals.md` for the full signal → framework lookup table (payment, health, EU, auth, AI, etc.).
 
 ### Data Type Detection
 
