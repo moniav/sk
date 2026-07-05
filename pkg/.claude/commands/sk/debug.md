@@ -89,11 +89,21 @@ Test your top hypothesis with minimal investigation — do not assume it is corr
 - Check the git log for recent changes to the suspect code: `git log --oneline -10 -- <file>`
 - Read the test coverage for the suspect code — is the failing case tested?
 
-### 5d: Escalation Check
+### 5d: When Hypotheses Run Dry — Search the Error
+
+If your ranked hypotheses are exhausted (or the error is from a third-party
+library), **WebSearch the exact error message** (quoted, minus project-specific
+paths) plus the library name and version. Known issues, fixed bugs, and version
+incompatibilities often surface immediately. Apply the source discipline from
+`.claude/skills/research/SKILL.md`: prefer the library's issue tracker/changelog
+over forum guesses, and verify any suggested fix against your reproduction before
+trusting it.
+
+### 5e: Escalation Check
 
 If your hypothesis is wrong 3 times, follow `.claude/skills/escalation-rules/SKILL.md`: stop fixing and question whether the architecture or design is the real problem.
 
-### 5e: Identify Root Cause vs Symptom
+### 5f: Identify Root Cause vs Symptom
 
 Ask yourself:
 - Is this the **root cause** or a **symptom** of a deeper issue?

@@ -4,7 +4,7 @@
 
 Full-system hardening and leverage release, driven by a four-wave review of every
 command, agent, skill, and the CLI (`dev-docs/reports/2026-07-05-full-system-review.md`).
-Three new commands (42 → 45), two new skills (18 → 20), three new agents (5 → 8) —
+Three new commands (42 → 45), three new skills (18 → 21), three new agents (5 → 8) —
 and the agents are now *real* Claude Code subagents.
 
 ### Features
@@ -14,6 +14,7 @@ and the agents are now *real* Claude Code subagents.
 - **`/sk:review`** — the "before I ship" command: fans out security + perf + quality reviewers as parallel subagents over the branch diff, merges into one report with a SHIP / FIX_FIRST / BLOCK verdict.
 - **`/sk:pr`** — standalone PR creation (gh preflight, auto-push, PR-template aware).
 - **`/sk:release`** — version bump (semver inferred from conventional commits or passed explicitly), changelog prepend, tag, optional GitHub release, registry publish only on explicit confirmation.
+- **`research` skill** — canonical web-research procedure shared by kickoff, brainstorm, plan, migrate, deps, and debug: checks `docs/research/` for reusable prior findings first (freshness windows per fact type), honest depth tiers (Quick inline vs Deep parallel-subagent fan-out that keeps raw search noise out of the main context), a source hierarchy with a primary-source rule (versions/API facts must come from fetched official pages, never model memory), and cited findings. The research-doc template gains a **Sources** section (URL, accessed date, supports) + validity horizon. `/sk:migrate` now *must* fetch the official migration guide for the exact version jump; `/sk:debug` searches the exact error message when hypotheses run dry; `/sk:plan` gains an optional targeted-research step.
 - **Doc-to-code freshness** — evergreen docs may declare the code they describe via `Source:` (feature docs' `Code:` / component docs' `Location:` count too); `/sk:docs-audit` flags **code-drift** when the code's last commit is newer than the doc, and `/sk:update-docs` uses drift as its priority queue.
 - **Minimal install profile** — `npx shipkit-cld --minimal` lays down core doc homes only (system, conventions, tasks, templates, sop); the profile is manifest-tracked, updates respect it, and every doc-creator command grows its home on demand. `/sk:init-docs` asks full vs minimal.
 - **Install manifest** — `.claude/.sk-manifest.json` records version, CLAUDE.md ownership, profile, and the exact files SK manages. Unlocks: updates prune files SK no longer ships, `remove` deletes only SK's files (user-added agents/skills survive), and version is shown on install/update.

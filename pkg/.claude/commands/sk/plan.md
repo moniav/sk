@@ -45,6 +45,13 @@ For the specific task, perform a thorough analysis:
 - Examine test coverage in this area
 ```
 
+### 3b². Targeted Research (only if needed)
+
+If the task involves a library, API, or pattern that's unfamiliar or absent from the
+codebase, offer targeted research before committing to an approach — follow
+`.claude/skills/research/SKILL.md` (Quick tier; check `docs/research/` for prior
+findings first). Record what changed the plan in **Technical Decisions**, with sources.
+
 ### 3c. Identify Technical Approach
 ```
 - What patterns does the codebase already use for similar features?

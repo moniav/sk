@@ -61,7 +61,9 @@ If the audit tool is not available, note it as a finding and continue with manua
 
 ### Manual CVE Check
 For the top 10 most critical dependencies (frameworks, auth, crypto, DB drivers):
-- Check if the installed version has known CVEs
+- Check if the installed version has known CVEs — when audit tooling is unavailable,
+  consult the registry/advisory pages directly (WebSearch + WebFetch, per the source
+  discipline in `.claude/skills/research/SKILL.md`); never assert CVE status from memory
 - Compare against the latest available version
 
 ## Step 4: Outdated Dependencies

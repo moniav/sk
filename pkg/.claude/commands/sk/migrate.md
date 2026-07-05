@@ -39,7 +39,11 @@ Before making any changes:
    - Map the dependency tree
 
 2. **Breaking changes** — What specifically breaks?
-   - Read changelogs, migration guides, release notes
+   - **Fetch the official migration guide and changelog for the exact version jump**
+     (WebSearch `"{package} migration guide v{X} to v{Y}"` / release notes, then
+     WebFetch the official pages). Follow the source discipline in
+     `.claude/skills/research/SKILL.md` — never work from memory of the API;
+     knowledge cutoffs make remembered breaking-change lists wrong.
    - List each breaking change with affected code locations
 
 3. **Rollback plan** — How do we undo this?

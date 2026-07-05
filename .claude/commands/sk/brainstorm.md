@@ -126,25 +126,23 @@ Let the user respond and adjust. Keep the conversation moving — if a thread is
 
 ## Step 4: Research (Ask First)
 
-Ask: **"Want me to research current best practices for this? (adds ~30 seconds)"**
+Follow `.claude/skills/research/SKILL.md`: check `docs/research/` for reusable prior
+research first, then ask the depth question (AskUserQuestion):
+**Quick** (~1–2 min, 2-3 inline searches) / **Deep** (~5–10 min, parallel subagent
+fan-out) / **Skip**.
 
-### If yes — run targeted research:
+Brainstorm-specific angles:
+- **Domain** — what similar features typically include: `{feature type}` features
+  checklist, UX patterns, accessibility considerations — surfaces features the user
+  hasn't thought of
+- **Technical** — how to build it with this project's stack: `{feature} {framework}`
+  implementation patterns, recommended libraries, known gotchas
 
-**Domain research** (what do similar features typically include):
-- Use **WebSearch**: `"{feature type} best practices UX {current year}"` (e.g., "invoice management best practices UX")
-- Use **WebSearch**: `"{feature type} common features checklist"` (e.g., "user authentication common features checklist")
-- Look for: features the user might not have thought of, common UX patterns, accessibility considerations
+Feed findings back as provocations, not dumps: "Research shows most {feature type}
+implementations also include {X} — relevant for us?" Every recommendation that could
+change the design needs a cited source (primary-source rule).
 
-**Technical research** (how to build it with the project's stack):
-- Use **WebSearch**: `"{feature} {framework} implementation {current year}"` (e.g., "file upload Next.js implementation")
-- Use **WebSearch**: `"{key library} {framework} guide {current year}"` if a specific library is likely needed
-- Look for: recommended libraries, proven patterns, known gotchas
-
-Use **WebFetch** on the most relevant results to extract specific recommendations.
-
-Feed research findings back into the conversation — don't just dump them. Use them to provoke: "Research shows most {feature type} implementations also include {X} — relevant for us?"
-
-### If no — skip to Step 5.
+### If skipped — go to Step 5.
 
 ## Step 5: Converge — Pick a Direction
 

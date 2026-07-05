@@ -57,31 +57,19 @@ Ask:
 
 ## Step 3: Research Current Best Practices
 
-Use **WebSearch** to research the chosen stack. Run these searches:
+Follow `.claude/skills/research/SKILL.md` — **Deep tier** (stack selection feeds every
+downstream decision; use the parallel subagent fan-out). Kickoff-specific angles:
 
-### Framework / Language
-- `"{framework} {latest version} recommended project structure {current year}"`
-- `"{framework} best practices {current year}"`
-- `"{framework} common mistakes to avoid"`
+1. **Structure & conventions** — `{framework}` recommended project structure, naming
+   conventions, testing practices (current year)
+2. **Ecosystem** — recommended libraries for auth/validation/testing with `{framework}`;
+   `{ORM}`/`{database}` patterns (if applicable)
+3. **Pitfalls** — `{framework}` common mistakes to avoid
+4. **Versions** — latest stable versions of every chosen dependency — **registry pages
+   or official release notes only** (primary-source rule; never from model memory)
 
-### Database / ORM (if applicable)
-- `"{ORM} {framework} recommended patterns {current year}"`
-- `"{database} with {framework} setup guide {current year}"`
-
-### Key Libraries
-- `"{framework} recommended libraries {current year}"` (auth, validation, testing, etc.)
-- Check latest stable versions of all chosen dependencies
-
-### Conventions
-- `"{language} naming conventions {framework}"`
-- `"{framework} testing best practices {current year}"`
-
-Use **WebFetch** on the most relevant results (official docs, reputable guides) to extract:
-- Recommended project structure (directory layout)
-- Naming conventions
-- Key patterns (e.g., server components, repository pattern, middleware)
-- Latest stable versions of all dependencies
-- Common pitfalls specific to this stack
+Extract: recommended directory layout, naming conventions, key patterns, exact
+dependency versions (with source links), and stack-specific pitfalls.
 
 ## Step 4: Generate Foundation Docs
 
