@@ -50,6 +50,11 @@ For each **evergreen** doc (`architecture/`, `conventions/`, `system/`, `flows/`
 - `Last updated` older than **180 days** (configurable — see below) **and** `Lifecycle`
   not explicitly `current` → flag **stale**.
 - `Lifecycle: stale` / `deprecated` → report under those groups regardless of date.
+- **Code-drift** (strongest signal): if the doc declares the code it describes via a
+  `Source:` / `Code:` / `Location:` field (see `docs/conventions/doc-lifecycle.md`),
+  get the last commit date of those paths — `git log -1 --format=%cs -- <paths>` —
+  and compare against `Last updated`. Code newer than the doc → flag **code-drift**
+  with both dates. Skip paths that no longer exist (report those as a note instead).
 - Evergreen doc **missing** a `Lifecycle` or `Last updated` field → flag **unstamped** —
   but only where the convention *requires* the field: feature/component docs, flows,
   SOPs, user guides, and the domain-home indexes (`features/`, `business/`, `legal/`,
@@ -78,6 +83,14 @@ unresolved link with its source `file:line`.
 Flag docs that live directly under `docs/` (not in a known section folder) and aren't one
 of the expected root files (`README.md`). These usually belong in a section.
 
+### 2e. Task hygiene
+
+- **Abandoned-in-flight:** tasks/epics with `status: in-progress`/`testing` whose
+  `updated` is older than 30 days → list them; suggest `status: abandoned` or
+  `cancelled` (via `/sk:task-status`).
+- **Board drift:** if `docs/tasks/README.md` tables disagree with task-file
+  frontmatter, note it and point to `/sk:task-status` Step 4 to regenerate.
+
 ## Step 3: Report
 
 Print a categorized report. Every finding cites `file:line`. Group as:
@@ -87,6 +100,9 @@ Print a categorized report. Every finding cites `file:line`. Group as:
 
 ### Orphans (N)
 - docs/path/to/file.md — linked from no index
+
+### Code-drift (N)
+- docs/features/auth.md — Source `src/auth/` last changed 2026-06-28, doc updated 2026-03-01
 
 ### Stale (N)
 - docs/architecture/foo.md — Last updated 2024-01-02 (540d), Lifecycle: current

@@ -46,6 +46,7 @@ Before writing any step, confirm the capability **actually exists** in the produ
 ## Step 5: Write the Guide
 
 Create `docs/user-guides/{task-name}.md` from `docs/templates/user-guide.md`.
+If `docs/user-guides/` doesn't exist yet (minimal install), create it with a stub README index first.
 
 - Fill `Last updated` (today), `Lifecycle: current`, and `Audience`.
 - Lead with the outcome; write numbered steps; include a *"what you'll see"* confirmation

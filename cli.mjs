@@ -2,6 +2,7 @@
 // cli.mjs — ShipKit Documentation CLI
 // Usage:
 //   npx shipkit-cld [target]                    Install into target (default: .)
+//   npx shipkit-cld [target] --minimal          Minimal docs profile (core homes only)
 //   npx shipkit-cld update [target]             Update from package source
 //   npx shipkit-cld update [target] --from PATH Update from local SK checkout
 //   npx shipkit-cld remove [target]             Remove SK system files (keeps docs/)
@@ -90,7 +91,7 @@ function sourceVersion(source) {
   }
 }
 
-function writeManifest(target, source, claudeMdOwner) {
+function writeManifest(target, source, claudeMdOwner, profile = "full") {
   const managed = {};
   for (const dir of MANAGED_DIRS) {
     managed[dir] = listFilesRel(join(source, "pkg", dir));
@@ -100,6 +101,8 @@ function writeManifest(target, source, claudeMdOwner) {
     updatedAt: new Date().toISOString(),
     // "sk" = SK created CLAUDE.md and may refresh/remove it; "user" = never touch it
     claudeMd: claudeMdOwner,
+    // "minimal" = core doc homes only; update skips laying down homes the target never had
+    profile,
     managed,
   };
   mkdirSync(join(target, ".claude"), { recursive: true });
@@ -236,29 +239,33 @@ function banner() {
 // --- Route command ---
 
 const args = process.argv.slice(2);
-const command = ["remove", "update"].includes(args[0]) ? args[0] : "install";
-const targetArg = command === "install" ? args[0] : args[1];
 
 // Parse --from flag for explicit source override
 const fromIdx = args.indexOf("--from");
 const fromArg = fromIdx !== -1 && args[fromIdx + 1] ? resolve(args[fromIdx + 1]) : null;
+const minimalFlag = args.includes("--minimal");
+
+// Positional args = everything that isn't a flag or the --from value
+const positional = args.filter((a, i) => !a.startsWith("--") && args[i - 1] !== "--from");
+const command = ["remove", "update"].includes(positional[0]) ? positional[0] : "install";
+const targetArg = command === "install" ? positional[0] : positional[1];
 
 if (command === "remove") {
   await runRemove(resolve(targetArg || "."));
 } else if (command === "update") {
   await runUpdate(resolve(targetArg || "."), fromArg);
 } else {
-  await runInstall(resolve(targetArg || "."));
+  await runInstall(resolve(targetArg || "."), minimalFlag);
 }
 
 // =============================================================================
 // INSTALL
 // =============================================================================
 
-async function runInstall(target) {
+async function runInstall(target, minimal = false) {
   banner();
 
-  console.log(c.blue("[INFO]") + ` Installing into: ${target}`);
+  console.log(c.blue("[INFO]") + ` Installing into: ${target}` + (minimal ? " (minimal profile)" : ""));
   console.log();
 
   // --- Pre-flight checks ---
@@ -335,8 +342,24 @@ async function runInstall(target) {
 
   console.log(c.blue("[2/4]") + " Copying documentation files...");
 
-  cpSync(join(pkg, "docs"), join(target, "docs"), { recursive: true, force: true });
-  console.log(c.green("  [OK]") + " docs/ content copied");
+  if (minimal) {
+    // Core homes only — the rest grow on demand (doc-creator commands create
+    // their home with a stub README when it's missing).
+    const MINIMAL_DOCS = [
+      "README.md", "START-HERE.md", "commands-reference.md",
+      "system", "conventions", "tasks", "templates", "sop", "_archive",
+    ];
+    for (const entry of MINIMAL_DOCS) {
+      const src = join(pkg, "docs", entry);
+      if (existsSync(src)) {
+        cpSync(src, join(target, "docs", entry), { recursive: true, force: true });
+      }
+    }
+    console.log(c.green("  [OK]") + " docs/ core copied (minimal — other homes are created on demand)");
+  } else {
+    cpSync(join(pkg, "docs"), join(target, "docs"), { recursive: true, force: true });
+    console.log(c.green("  [OK]") + " docs/ content copied");
+  }
 
   cpSync(
     join(pkg, ".claude", "commands", "sk"),
@@ -369,7 +392,7 @@ async function runInstall(target) {
   }
 
   // Record what SK installed: version, CLAUDE.md ownership, managed files
-  writeManifest(target, source, claudeResult === "created" ? "sk" : "user");
+  writeManifest(target, source, claudeResult === "created" ? "sk" : "user", minimal ? "minimal" : "full");
 
   // --- Step 3: Validate ---
 
@@ -568,9 +591,11 @@ async function runUpdate(target, fromOverride) {
   const tplCount = countFiles(join(target, "docs", "templates"));
   console.log(c.green("  [OK]") + ` docs/templates/ updated (${tplCount} files)`);
 
-  // SK-shipped reference content (safe to overwrite — not user-authored)
+  // SK-shipped reference content (safe to overwrite — not user-authored).
+  // Minimal-profile installs never had docs/reference — don't lay it down on update.
   const refSource = join(pkg, "docs", "reference");
-  if (existsSync(refSource)) {
+  const skipRef = oldManifest?.profile === "minimal" && !existsSync(join(target, "docs", "reference"));
+  if (existsSync(refSource) && !skipRef) {
     cpSync(refSource, join(target, "docs", "reference"), { recursive: true, force: true });
     console.log(c.green("  [OK]") + " docs/reference/ updated");
   }
@@ -652,7 +677,7 @@ async function runUpdate(target, fromOverride) {
   }
 
   const newOwner = claudeResult === "sidecar" ? "user" : "sk";
-  writeManifest(target, source, newOwner);
+  writeManifest(target, source, newOwner, oldManifest?.profile || "full");
 
   // --- Summary ---
 

@@ -39,6 +39,10 @@ updated: 2026-07-05 14:30
 - It is a **hint, not a lock** — commands must tolerate it being missing or stale;
   the task file's YAML frontmatter is the source of truth.
 
+> **Board tables below are derived** from each task file's YAML frontmatter (the
+> source of truth). Regenerate them with `/sk:task-status` (Step 4) rather than
+> hand-editing rows.
+
 ## Active Epics
 
 | Epic | Tasks | Progress | Priority | Link |

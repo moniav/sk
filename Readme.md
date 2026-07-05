@@ -155,6 +155,10 @@ npx shipkit-cld
 
 # Or targeting a specific directory:
 npx shipkit-cld /path/to/my-project
+
+# Minimal docs profile — core homes only (system, conventions, tasks, templates, sop);
+# other homes are created on demand by their doc-creator commands:
+npx shipkit-cld --minimal
 ```
 
 ## Updating

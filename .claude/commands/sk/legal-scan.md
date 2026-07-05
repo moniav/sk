@@ -42,6 +42,9 @@ Based on the mode, also read the relevant reference:
 - For `privacy-policy`, `terms-of-service`: read `references/compliance-frameworks.md` (for framework-specific requirements)
 - For `contract-review`: no extra references needed — the SKILL.md has the review checklist
 
+All document modes save under `docs/legal/`. If that home doesn't exist yet (minimal
+install), create it (with `agreements/`, `policies/`, `scans/` subdirs and a stub README) first.
+
 ## Step 2: Read Project Context
 
 **ALWAYS start by reading (if they exist):**

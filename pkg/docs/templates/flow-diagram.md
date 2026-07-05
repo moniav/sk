@@ -2,6 +2,7 @@
 
 **Last updated:** YYYY-MM-DD
 **Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
+**Source:** `src/path/to/flow-code`  <!-- code paths this flow describes — enables code-drift detection -->
 **Type:** Sequence | Flowchart | State | Entity Relationship
 **Format:** Mermaid | SVG
 

@@ -41,6 +41,7 @@ capability you intend to document against code** — if it isn't in the code, do
 ## Step 4: Write the Doc
 
 Create `docs/features/{feature-name}.md` from `docs/templates/feature-doc.md`.
+If `docs/features/` doesn't exist yet (minimal install), create it with a stub README index first.
 
 - Fill `Last updated` (today) and `Lifecycle: current`.
 - Set `Status` to `shipped` only for behavior verified in Step 3; mark partial work

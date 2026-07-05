@@ -4,7 +4,7 @@ type: task
 id: TASK-{N}
 title: "{Task Title}"
 phase: plan
-status: planning
+status: planning  # planning | ready | in-progress | testing | done | blocked | cancelled | abandoned
 priority: P1
 epic: E{N} | standalone
 created: YYYY-MM-DD

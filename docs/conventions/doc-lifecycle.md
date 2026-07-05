@@ -37,6 +37,25 @@ Transient, event-stamped docs (tasks, epics, research, reviews) do **not** take 
 `Lifecycle` — their existing date and `status` fields already express their state,
 and "staleness" is meaningless for a finished task.
 
+## Doc-to-code freshness (the `Source:` field)
+
+Evergreen docs may declare **which code they describe** so staleness can be detected
+from actual code changes, not just elapsed time:
+
+```
+**Source:** `src/auth/`, `src/middleware/session.ts`
+```
+
+Comma-separated paths or globs, relative to the repo root. Existing field names count
+as the same signal: feature docs use `**Code:**`, component docs use `**Location:**` —
+`/sk:docs-audit` reads any of the three.
+
+When the field is present, `/sk:docs-audit` compares the last commit date of those
+paths (`git log -1 --format=%cs -- <paths>`) against the doc's `Last updated`. Code
+newer than the doc → flagged **code-drift** — a much stronger signal than the 180-day
+timer. `/sk:update-docs` uses the same comparison to build its priority queue and
+sets/refreshes the field on docs it touches.
+
 ## Staleness threshold
 
 `/sk:docs-audit` flags an evergreen doc as stale when **`Last updated` is older than

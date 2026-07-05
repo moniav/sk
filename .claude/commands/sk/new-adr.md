@@ -52,6 +52,7 @@ For each option considered, document:
 ## Step 5: Create ADR
 
 Save to `docs/decisions/NNN-kebab-case-title.md` using `docs/templates/adr-decision.md`.
+If `docs/decisions/` doesn't exist yet (minimal install), create it with a stub README index first.
 
 **Key writing rules:**
 - Be specific to THIS project, not generic

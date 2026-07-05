@@ -146,14 +146,20 @@ When multiple sources provide the same command type, prefer in this order:
 3. CI workflow commands
 4. Stack defaults
 
-## Step 2: Create Directory Structure
+## Step 2: Choose Profile & Create Directory Structure
 
-Use **Bash** to create directories:
+Ask (use AskUserQuestion): **"Full doc system or minimal?"**
+- **Full** — all doc homes (engineering + features/user-guides/business/legal/operations)
+- **Minimal** — core only (`system`, `conventions`, `tasks`, `templates`, `sop`, `_archive`); the other homes are created on demand by their doc-creator commands
+
+Use **Bash** to create directories (full profile shown — for minimal, create only the core set):
 ```bash
 mkdir -p docs/architecture docs/conventions docs/sop docs/tasks/examples docs/flows docs/decisions docs/system docs/templates
 mkdir -p docs/features docs/user-guides docs/business docs/legal docs/operations docs/_archive
 mkdir -p .claude/commands/sk
 ```
+
+For minimal, skip the domain-home generation steps below (3b flows/decisions homes still apply if the codebase scan produces content for them; the stub-index steps 16–21 apply only to homes you created).
 
 ## Step 3: Generate Documentation
 

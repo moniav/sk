@@ -60,6 +60,8 @@ Use the **technical-diagrams** skill. Read `.claude/skills/technical-diagrams/SK
 **Architecture diagrams** → save to `docs/architecture/{name}.svg`
 **Flow diagrams** → save to `docs/flows/{name}.svg`
 
+If the target home doesn't exist yet (minimal install), create it with a stub README index first.
+
 SVG requirements:
 - Grid background (`#fafafa` with `#e5e5e5` grid pattern)
 - Monospace font for all text

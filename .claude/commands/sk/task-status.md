@@ -13,7 +13,7 @@ Scan all task files and present a complete status overview.
 2. Scan all `docs/tasks/EPIC-*.md` and `docs/tasks/TASK-*.md` files
 3. **Read YAML frontmatter** from each task/epic file to extract:
    - `phase` (plan, dev, test, done)
-   - `status` (planning, ready, in-progress, testing, done, blocked)
+   - `status` (planning, ready, in-progress, testing, done, blocked, cancelled, abandoned)
    - `priority` (P0, P1, P2, P3)
    - `epic` (parent epic reference or standalone)
    - `updated` date
@@ -34,6 +34,9 @@ Flag tasks that may need attention:
 - **Blocked**: Status is `blocked` — surface the blocker
 - **Stuck in DEV**: `in-progress` for >3 days
 - **Plan incomplete**: `planning` with unresolved open questions
+- **Possibly abandoned**: `in-progress`/`testing` untouched for >14 days — offer to
+  mark `status: abandoned` (resumable later) or `cancelled` (won't do), so dead work
+  doesn't sit on the board as active forever
 
 ## Step 3: Present Dashboard
 
@@ -73,10 +76,13 @@ BACKLOG
 
 ## Step 4: Sync README
 
-If the scan reveals `docs/tasks/README.md` is out of sync with actual task files:
+Task-file **frontmatter is the source of truth**; the board tables in
+`docs/tasks/README.md` are derived from it. If the scan reveals drift:
 1. Show the discrepancies
-2. Ask user: "Task board README is out of sync. Update it?"
-3. If yes, rewrite `docs/tasks/README.md` with accurate current state
+2. Ask user: "Task board README is out of sync. Regenerate it?"
+3. If yes, **regenerate the board tables wholesale** from the scanned frontmatter
+   (don't patch individual rows — rebuilding prevents drift accumulating). Preserve
+   the non-table sections (How to Use, `.current` contract, Examples).
 
 ## Step 5: Suggest Next Action
 

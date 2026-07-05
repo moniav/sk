@@ -49,5 +49,6 @@ Follow the skill's mode. Verify claims against the codebase/infra; flag assumpti
 ## Step 4: Save & Index
 
 Write the artifact under `docs/operations/<subdir>/` with `Lifecycle: current` + today's
-`Last updated`, and add/refresh the row in `docs/operations/README.md`. End with the
+`Last updated`, and add/refresh the row in `docs/operations/README.md`. If `docs/operations/`
+doesn't exist yet (minimal install), create it with a stub README index first. End with the
 one-line tally where the mode produces findings.

@@ -185,7 +185,12 @@ Compare code vs. docs for each section:
 ### Lifecycle pass (all evergreen docs)
 
 For every evergreen doc touched, refresh `Last updated` and confirm its `Lifecycle`
-(`current` / `stale` / `deprecated` / `archived`) per `docs/conventions/doc-lifecycle.md`:
+(`current` / `stale` / `deprecated` / `archived`) per `docs/conventions/doc-lifecycle.md`.
+
+**Doc-to-code linkage:** docs with a `Source:` / `Code:` / `Location:` field whose
+paths changed since their `Last updated` are the priority queue — update those first.
+When touching a doc that lacks the field but clearly describes specific code, add
+`**Source:** <paths>` so future audits can detect drift automatically.
 
 ```markdown
 - [ ] Last updated bumped on docs that changed

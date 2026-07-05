@@ -36,6 +36,9 @@ Scan `docs/tasks/TASK-*.md` and `docs/tasks/EPIC-*.md` for:
 - Tasks with `status: in-progress` or `status: testing`
 - Tasks with `phase: dev` or `phase: test`
 - Any tasks updated in the last 3 days
+- **Possibly abandoned:** active-status tasks untouched for >14 days — list them
+  separately and offer to mark `status: abandoned` or `cancelled` rather than
+  letting them read as active work
 
 ### 1d. Uncommitted Work
 Check for any uncommitted changes that represent in-progress work.

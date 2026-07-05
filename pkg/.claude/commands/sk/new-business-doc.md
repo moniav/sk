@@ -30,7 +30,8 @@ Ask the user which type, then use the matching template from `docs/templates/`:
 
 ## Step 3: Write the Doc
 
-Create `docs/business/<name>.md` from the chosen template. Fill `Lifecycle: current` +
+Create `docs/business/<name>.md` from the chosen template (if `docs/business/` doesn't
+exist yet — minimal install — create it with a stub README index first). Fill `Lifecycle: current` +
 today's `Last updated`. **Templates are lean scaffolds** — structure + prompts, not financial
 tooling. Numbers link out to the live source (spreadsheet, captable tool); don't embed or invent them.
 

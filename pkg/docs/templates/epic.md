@@ -4,7 +4,7 @@ type: epic
 id: EPIC-{N}
 title: "{Epic Title}"
 phase: plan
-status: planning
+status: planning  # planning | ready | in-progress | testing | done | blocked | cancelled | abandoned
 priority: P1
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
