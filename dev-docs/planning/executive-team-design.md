@@ -22,6 +22,20 @@ founder rather than resolving them silently. Weekly headless briefs (via
 founder sets direction → executives translate to plans → the fleet executes →
 executives report back.
 
+## Principle: altitude, not gateway
+
+The founder is **never gated** by the executive layer. Every SK command keeps
+working directly — the founder can implement, write copy, debug, or edit any file
+at any time, exactly as without the exec team. What makes mixing altitudes safe is
+that the doc system is the shared reality: direct founder work lands in git, on the
+board, and in the changelog, so the executives *observe* it in their next briefs
+rather than being bypassed by it. The one designed consequence: founder work that
+serves no stated goal gets named in the CEO's next review ("founder shipped X
+directly; serves nothing in goals.md — goal it or call it a detour") — overridable
+like everything else, on the record like everything else. Expected lifecycle: mostly
+hands-on early, drifting upward as the fleet earns trust, with the ladder always
+available in both directions.
+
 ## CEO conversation modes
 
 `/sk:ceo` is not one meeting type. The charter defines modes, selected by argument
