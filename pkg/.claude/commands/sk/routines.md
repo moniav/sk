@@ -30,6 +30,11 @@ Present the recommended set (use AskUserQuestion, multi-select):
 | Retro | Weekly | `/sk:retro` | `docs/reviews/` |
 | Security review | Monthly | `/sk:security-review` | `docs/reviews/security/` |
 | Ship review | Per PR (CI) | `/sk:review` | PR / `docs/reviews/` |
+| Social pack | Weekly | `/sk:copywrite` (social posts from recently shipped work) | `docs/business/copy/` |
+| Newsletter draft | Monthly | `/sk:copywrite` (email digest from the changelog) | `docs/business/copy/` |
+
+Marketing routines produce **drafts only** — publishing is outward-facing and stays
+behind human sign-off regardless of policy.
 
 ## Step 3: Choose the Scheduler
 

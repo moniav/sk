@@ -4,6 +4,9 @@ description: Write high-converting SaaS marketing copy — landing pages, headli
 disable-model-invocation: true
 ---
 
+> **Voice override:** if `docs/business/brand-voice.md` exists, its voice, tone-by-context,
+> vocabulary, and banned phrases override the defaults below. Read it first.
+
 # Copywriting
 
 > Turn features into outcomes. Turn outcomes into desire. Turn desire into action.

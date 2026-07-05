@@ -4,8 +4,8 @@
 
 Full-system hardening and leverage release, driven by a four-wave review of every
 command, agent, skill, and the CLI (`dev-docs/reports/2026-07-05-full-system-review.md`).
-Four new commands (42 → 46), four new skills (18 → 22), three new agents (5 → 8) —
-and the agents are now *real* Claude Code subagents.
+Six new commands (42 → 48), four new skills (18 → 22), three new agents (5 → 8),
+three new templates (19 → 22) — and the agents are now *real* Claude Code subagents.
 
 ### Features
 
@@ -14,6 +14,7 @@ and the agents are now *real* Claude Code subagents.
 - **`/sk:review`** — the "before I ship" command: fans out security + perf + quality reviewers as parallel subagents over the branch diff, merges into one report with a SHIP / FIX_FIRST / BLOCK verdict.
 - **`/sk:pr`** — standalone PR creation (gh preflight, auto-push, PR-template aware).
 - **`/sk:release`** — version bump (semver inferred from conventional commits or passed explicitly), changelog prepend, tag, optional GitHub release, registry publish only on explicit confirmation.
+- **Marketing engine** — a `brand-voice.md` template (tone by context, vocabulary, banned phrases, claims discipline) that **overrides the copywriting default** everywhere public words get written; a `campaign.md` template + **`/sk:campaign`** (plan/status/close — goal-linked objectives, asset checklists, results filled honestly at close with "we don't know" as a valid entry); **`/sk:announce`** turns a changelog entry into a tiered announcement pack (major/minor/patch → post/email/social) claiming only what shipped; `/sk:copywrite` gains a blog/long-form format with SEO structure; weekly social-pack and monthly newsletter rows join the routines table (drafts only — publishing is never autonomous).
 - **Fleet coordination** — tasks/epics gain `claimed_by`/`claimed_at` frontmatter with a documented claim convention (claim before working, respect fresh claims, >24h-stale claims are takeover-eligible, release on done) so multiple agents can pull from one board without collision; dev/implement/orchestrate claim, test/finish release, resume/task-status surface claim state. Blank fields = single-agent, zero overhead.
 - **Goals layer** — a `goals.md` template (via `/sk:new-business-doc` → `docs/business/goals.md`) defines goal IDs (`G{N}`) with outcomes, measures, and explicit anti-goals; epics link via a `goal:` frontmatter field (`/sk:new-epic` asks); `/sk:task-status` flags goal-orphaned epics and rolls up work per goal — so agents prioritize against strategy, not recency.
 - **Decision journal** — `docs/decisions/decision-log.md`: append-only one-line journal for the small decisions agents make (ADRs stay for the big ones); headless runs append every policy-covered decision with session provenance; `/sk:retro` gains an agent-performance dimension (escalations, first-pass review rate, auto-passed vs asked gates) sourced only from countable artifacts, feeding widen/tighten recommendations for the delegation policy.

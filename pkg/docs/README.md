@@ -97,7 +97,9 @@ docs/
 |   +-- [task].md              <- Customer-facing guides (/sk:new-user-guide)
 |-- business/
 |   |-- README.md              <- Business / GTM index
-|   +-- [positioning|competitor-*|pricing-strategy|*].md  <- GTM + business docs
+|   |-- campaigns/             <- Marketing campaigns (/sk:campaign)
+|   |-- copy/                  <- Marketing copy + announcement packs
+|   +-- [positioning|goals|brand-voice|competitor-*|*].md  <- GTM + business docs
 |-- legal/
 |   |-- README.md              <- Legal & compliance index
 |   |-- agreements/            <- founders, operating, IP, contracts
@@ -111,7 +113,7 @@ docs/
 |-- _archive/
 |   |-- README.md              <- Archive index
 |   +-- [retired-doc].md       <- Superseded docs (Lifecycle: archived)
-+-- templates/                 <- 20 doc templates — see templates/README.md for the full list + which command emits each
++-- templates/                 <- 22 doc templates — see templates/README.md for the full list + which command emits each
 ```
 
 ## Maintenance Rules

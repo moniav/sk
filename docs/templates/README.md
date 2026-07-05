@@ -38,6 +38,8 @@
 | `investor-update.md` | An investor update | `/sk:new-business-doc` |
 | `decision-memo.md` | A decision memo | `/sk:new-business-doc` |
 | `goals.md` | Company goals — the strategy layer epics link to via `goal:` | `/sk:new-business-doc` |
+| `brand-voice.md` | How the company sounds — overrides the copywriting default voice | `/sk:new-business-doc` |
+| `campaign.md` | A marketing campaign — goal-linked plan, assets, honest results | `/sk:campaign` |
 
 > Evergreen templates carry a `Lifecycle` field (see
 > [../conventions/doc-lifecycle.md](../conventions/doc-lifecycle.md)). Transient ones

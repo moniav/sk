@@ -17,7 +17,7 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 46 slash commands
+│   ├── commands/sk/             ← 48 slash commands
 │   ├── agents/                  ← 8 agents (implementer, reviewers, debugger, dependency-analyzer)
 │   └── skills/                  ← 22 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
@@ -31,7 +31,7 @@ your-project/
     ├── legal/                   Agreements, policies, compliance scans
     ├── operations/              Runbooks, incidents, postmortems
     ├── tasks/ decisions/ flows/ reviews/ research/ reference/  + _archive/
-    ├── templates/               19 starter templates
+    ├── templates/               22 starter templates
     └── commands-reference.md    Full command table (loaded on demand)
 ```
 
@@ -265,7 +265,9 @@ SK tracks your active work across sessions:
 
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
-| `/sk:copywrite` | Write marketing copy — landing pages, emails, ads, CTAs | Any SaaS/tech marketing copy task |
+| `/sk:copywrite` | Write marketing copy — landing pages, emails, ads, CTAs, blog posts | Any SaaS/tech marketing copy task |
+| `/sk:campaign` | Plan, track, and close marketing campaigns — goal-linked, honest results | Coordinated marketing work |
+| `/sk:announce` | Turn a release into an announcement pack (post, email, social) | After `/sk:release` |
 | `/sk:positioning` | Define positioning & messaging (ICP, category, value prop) | Establishing GTM foundation |
 | `/sk:competitor` | Analyze competitors — profiles, positioning map, comparison | Competitive intelligence |
 | `/sk:pricing` | Design or evaluate pricing — value metric, model, tiers | Pricing decisions |
@@ -285,7 +287,7 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 46 slash commands
+│       ├── commands/sk/         ← 48 slash commands
 │       ├── agents/              ← Implementer, reviewers, dependency-analyzer, architecture-reviewer
 │       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
 └── .claude/                     ← Development copy (dogfooding, not shipped)

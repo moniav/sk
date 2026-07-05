@@ -28,6 +28,7 @@ Ask the user which type, then use the matching template from `docs/templates/`:
 | Investor update | `investor-update.md` | Recurring update — metrics, highlights, lowlights, asks |
 | Decision memo | `decision-memo.md` | One reversible/irreversible decision, options, recommendation |
 | Company goals | `goals.md` | The strategy layer — goal IDs (`G{N}`) that epics link to via their `goal:` frontmatter; saved as `docs/business/goals.md` |
+| Brand voice | `brand-voice.md` | How the company sounds in public — overrides the copywriting default; saved as `docs/business/brand-voice.md` |
 
 ## Step 3: Write the Doc
 

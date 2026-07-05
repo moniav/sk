@@ -25,5 +25,7 @@ everything here rather than splitting across `marketing/` and `business/`.
 | Define positioning / messaging | `/sk:positioning` | `positioning.md` |
 | Profile a competitor | `/sk:competitor` | `competitor-*.md` |
 | Design or evaluate pricing | `/sk:pricing` | `pricing-strategy.md` |
-| Write a business doc (plan, investor update, memo…) | `/sk:new-business-doc` | `*.md` |
-| Write marketing copy | `/sk:copywrite` | (varies) |
+| Write a business doc (plan, goals, brand voice, memo…) | `/sk:new-business-doc` | `*.md` |
+| Write marketing copy | `/sk:copywrite` | `copy/*.md` |
+| Plan/track a marketing campaign | `/sk:campaign` | `campaigns/CAMPAIGN-*.md` |
+| Announce a release | `/sk:announce` | `copy/announce-v*.md` |

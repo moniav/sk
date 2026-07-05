@@ -16,6 +16,9 @@ Follow all instructions in the skill for voice, principles, and output format.
 ## Step 2: Gather Context
 
 Check if `docs/system/project-context.md` exists — read it for product context.
+Check if `docs/business/brand-voice.md` exists — **it overrides the skill's default
+voice** (tone by context, vocabulary, banned phrases). If it doesn't exist and this
+is a recurring-copy project, offer to create it from `docs/templates/brand-voice.md`.
 
 **Skip files that are empty or contain only template placeholders.**
 
@@ -34,6 +37,7 @@ Then confirm with the user:
 | **Product description** | Feature blocks framed as benefits |
 | **Social post** | LinkedIn or Twitter/X post |
 | **CTA options** | 5-10 CTA variants for a specific action |
+| **Blog post / long-form** | Full article: keyword-intent title (<60 chars), meta description, H2 outline, body, internal-link suggestions |
 | **Full page rewrite** | Rewrite existing copy (user provides current) |
 
 3. **Goal** — What action should the reader take? (sign up, buy, book demo, etc.)

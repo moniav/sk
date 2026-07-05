@@ -52,6 +52,8 @@
 | `/sk:competitor` | Analyze competitors — profiles, positioning map, comparison | Competitive intelligence |
 | `/sk:pricing` | Design or evaluate pricing — value metric, model, tiers | Pricing decisions |
 | `/sk:new-business-doc` | Create a business doc (plan, model, cap table, update, memo) | Capturing a business artifact |
+| `/sk:campaign` | Plan, track, and close a marketing campaign | Coordinated marketing work |
+| `/sk:announce` | Turn a release into an announcement pack | After `/sk:release` |
 | `/sk:ops` | Operations/SRE expert — incidents, runbooks, postmortems, SLOs, readiness | Running prod, on-call, reliability work |
 
 ## Command Prerequisites
@@ -75,6 +77,8 @@
 | /sk:competitor | docs/business/ home; positioning.md helps |
 | /sk:pricing | docs/business/ home; positioning.md helps |
 | /sk:new-business-doc | docs/business/ home (created by init-docs) |
+| /sk:campaign | docs/business/ home; positioning + goals help |
+| /sk:announce | A CHANGELOG.md entry to announce |
 | /sk:ops | docs/operations/ home (created by init-docs) |
 | /sk:finish | Build commands filled in, code-review prerequisites |
 | /sk:implement | project-context.md populated |
