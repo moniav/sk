@@ -10,6 +10,12 @@ The single source of truth for staging, committing, pushing, and creating a PR.
 `/sk:commit` runs this flow standalone; `/sk:finish` runs it as part of shipping.
 Follow `docs/conventions/git-workflow.md` where it exists; the rules below are the default.
 
+**Unattended runs:** where a step below says "ask the user", first consult
+`docs/conventions/delegation-policy.md` — if it grants the action (e.g. push feature
+branch: yes), proceed and log which policy row covered it; if it requires a human and
+none is available, stop after the last permitted step and record what's pending
+(see `headless-operation` skill).
+
 ## 1. Assess Working Tree
 
 ```bash

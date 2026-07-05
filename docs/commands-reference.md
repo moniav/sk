@@ -26,6 +26,7 @@
 | `/sk:task-status` | Show task board overview | Check progress across all tasks |
 | `/sk:update-docs` | Sync docs with codebase | After changes, or periodic audit |
 | `/sk:update` | Update SK commands & templates | Get latest version of shipkit-cld |
+| `/sk:routines` | Set up scheduled maintenance routines (headless, policy-governed) | Automating audits, retros, dep sweeps |
 | `/sk:init-docs` | Bootstrap docs from existing codebase | Brownfield project or full rebuild |
 | `/sk:new-sop` | Create a new SOP | Document a recurring procedure |
 | `/sk:new-adr` | Create an ADR | Record a significant tech decision |
@@ -92,6 +93,7 @@
 | /sk:pr | Git repo with remote, `gh` CLI authenticated |
 | /sk:release | Clean tree on default branch, tests pass |
 | /sk:review | A diff or path in scope (branch diff by default) |
+| /sk:routines | delegation-policy.md reviewed (routines run report-only without it) |
 | /sk:recap | A diff in scope (branch, staged, or commit range) |
 | /sk:refactor | code-style.md populated, test suite available |
 | /sk:resume | Nothing (reads task state automatically) |

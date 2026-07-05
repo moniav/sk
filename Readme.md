@@ -17,9 +17,9 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 45 slash commands
+│   ├── commands/sk/             ← 46 slash commands
 │   ├── agents/                  ← 8 agents (implementer, reviewers, debugger, dependency-analyzer)
-│   └── skills/                  ← 21 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
+│   └── skills/                  ← 22 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
     ├── START-HERE.md            Human front door (role-based router)
     ├── README.md                Agent index
@@ -243,6 +243,7 @@ SK tracks your active work across sessions:
 | `/sk:ops` | Operations/SRE expert — incidents, runbooks, postmortems, SLOs, readiness | Running prod, on-call, reliability work |
 | `/sk:deps` | Dependency health check | Periodic audit or before release |
 | `/sk:retro` | Run a retrospective on completed work | Capture lessons, patterns, improvements |
+| `/sk:routines` | Scheduled maintenance routines — headless, policy-governed | Automating audits, retros, dependency sweeps |
 | `/sk:update` | Update SK commands & templates | Get latest version (npm or local) |
 
 ### Marketing, GTM & Legal
@@ -269,7 +270,7 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 45 slash commands
+│       ├── commands/sk/         ← 46 slash commands
 │       ├── agents/              ← Implementer, reviewers, dependency-analyzer, architecture-reviewer
 │       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
 └── .claude/                     ← Development copy (dogfooding, not shipped)
