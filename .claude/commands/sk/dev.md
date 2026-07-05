@@ -36,6 +36,7 @@ Before writing any code, confirm:
 - [ ] All subtasks are defined with exact file paths
 - [ ] No open questions blocking implementation
 - [ ] Dependencies are met (prerequisite tasks done)
+- [ ] Task is unclaimed, claimed by this session, or its claim is stale (>24h since `updated` — see the claim convention in `docs/tasks/README.md`)
 ```
 
 If any check fails — go back to PLAN phase (`/sk:plan` command).
@@ -44,6 +45,7 @@ If any check fails — go back to PLAN phase (`/sk:plan` command).
 
 Update the task file frontmatter:
 - `status: in-progress`
+- Claim it: set `claimed_by` (this session's identifier) + `claimed_at` — skip if single-agent
 - Update `updated` date
 
 Progress Log: Add entry `DEV phase started`

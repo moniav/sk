@@ -32,7 +32,7 @@ Ask the user what to orchestrate:
 | **An epic file** | Orchestrate multiple tasks from the epic, each task's subtasks parallelized |
 | **A description** | Create a task first (via `/sk:plan` mentally), then orchestrate it |
 
-**Prerequisite:** The task must have completed PLAN phase — subtasks defined with file paths, acceptance criteria testable, no open questions.
+**Prerequisite:** The task must have completed PLAN phase — subtasks defined with file paths, acceptance criteria testable, no open questions. Check the claim: if `claimed_by` names another agent and the claim is fresh (<24h), pick different work; otherwise claim it (see `docs/tasks/README.md`).
 
 If PLAN is not done, run `/sk:plan` first and return here after.
 

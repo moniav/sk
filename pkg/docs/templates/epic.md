@@ -6,6 +6,9 @@ title: "{Epic Title}"
 phase: plan
 status: planning  # planning | ready | in-progress | testing | done | blocked | cancelled | abandoned
 priority: P1
+goal:         # G{N} from docs/business/goals.md (blank if no goals doc) — what strategy this serves
+claimed_by:   # agent/session working this epic (blank = unclaimed); see tasks/README.md claim convention
+claimed_at:   # YYYY-MM-DD HH:MM
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---

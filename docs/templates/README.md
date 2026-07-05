@@ -37,6 +37,7 @@
 | `cap-table.md` | A cap-table snapshot | `/sk:new-business-doc` |
 | `investor-update.md` | An investor update | `/sk:new-business-doc` |
 | `decision-memo.md` | A decision memo | `/sk:new-business-doc` |
+| `goals.md` | Company goals — the strategy layer epics link to via `goal:` | `/sk:new-business-doc` |
 
 > Evergreen templates carry a `Lifecycle` field (see
 > [../conventions/doc-lifecycle.md](../conventions/doc-lifecycle.md)). Transient ones

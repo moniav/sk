@@ -37,6 +37,7 @@ Review the work and assess:
 | **Testing coverage** | Did tests catch issues? Any gaps? Any flaky tests introduced? |
 | **Documentation** | Were docs updated? Any tribal knowledge that should be written down? |
 | **Tool/process** | Did SK commands help? Any friction points? Any missing commands/skills? |
+| **Agent performance** (if agents ran autonomously) | How many escalations / blocked items? Review pass rate on first attempt vs rework? Gates auto-passed under policy vs asked? Should the delegation policy widen or tighten? |
 
 ## Step 4: Extract Learnings
 
@@ -89,3 +90,4 @@ Output a concise retrospective report:
 - Keep the retro short (5-10 minutes of Claude time, not an hour)
 - If the user doesn't specify scope, default to the most recently completed task
 - **Never fabricate metrics.** Velocity, time saved, "% faster", coverage deltas — only state a number if you measured it against a real baseline (git log counts, test output, benchmark runs). If you don't have the baseline, say so or omit the number. A plausible-sounding invented metric erodes trust in every report.
+- Agent-performance numbers come from countable sources only: `docs/decisions/decision-log.md` rows, `status: blocked` items on the board, review verdicts in `docs/reviews/`, Progress Log escalation entries. The retro's delegation-policy recommendation (widen/tighten) must cite them.

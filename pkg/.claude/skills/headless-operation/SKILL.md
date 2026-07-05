@@ -44,6 +44,9 @@ if a policy row is (mis)edited to allow them.
 
 - Stamp every report and Progress Log entry with the run date and trigger
   (e.g. `routine: nightly-docs-audit`).
+- Every policy-covered decision gets one line in `docs/decisions/decision-log.md`
+  (if it exists — full-profile installs ship it): date, decision, why, which
+  agent/session, link. Fall back to the task's Progress Log otherwise.
 - Follow `stay-within-limits` — bounded work per run; leave a resume note rather
   than exhausting the budget mid-task.
 

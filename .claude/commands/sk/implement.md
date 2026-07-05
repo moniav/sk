@@ -69,7 +69,8 @@ updated: {ISO date}
 
 ## Step 4: [DEV] Phase
 
-Update frontmatter: `phase: dev`, `status: in-progress`
+Update frontmatter: `phase: dev`, `status: in-progress`; claim the task
+(`claimed_by` + `claimed_at` — skip if single-agent, see `docs/tasks/README.md`)
 Update `docs/tasks/.current`: set `phase: dev`
 
 Follow `.claude/skills/subtask-execution/SKILL.md` — the canonical loop: load

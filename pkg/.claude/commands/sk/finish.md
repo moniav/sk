@@ -57,7 +57,7 @@ stage → conventional commit → push (optional) → PR (optional).
 
 If a task file was identified in Step 2:
 
-1. Update task YAML frontmatter: `phase: done`, `status: done`, update `updated` date
+1. Update task YAML frontmatter: `phase: done`, `status: done`, update `updated` date, clear `claimed_by`/`claimed_at`
 2. Update `docs/tasks/README.md`: move task to "Recently Completed"
 3. Add final Progress Log entry:
 

@@ -27,6 +27,7 @@ Ask the user which type, then use the matching template from `docs/templates/`:
 | Cap table | `cap-table.md` | Ownership snapshot; links to the source of record |
 | Investor update | `investor-update.md` | Recurring update — metrics, highlights, lowlights, asks |
 | Decision memo | `decision-memo.md` | One reversible/irreversible decision, options, recommendation |
+| Company goals | `goals.md` | The strategy layer — goal IDs (`G{N}`) that epics link to via their `goal:` frontmatter; saved as `docs/business/goals.md` |
 
 ## Step 3: Write the Doc
 

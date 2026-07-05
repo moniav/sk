@@ -172,7 +172,7 @@ Verify the existing system still works:
 ### If ALL criteria pass:
 
 1. Delete `docs/tasks/.current` (work is complete)
-2. Update YAML frontmatter: set `phase: done`, `status: done`, update `updated` date
+2. Update YAML frontmatter: set `phase: done`, `status: done`, update `updated` date, clear `claimed_by`/`claimed_at`
 3. Update the Verification section with results
 4. Update Progress Log:
 

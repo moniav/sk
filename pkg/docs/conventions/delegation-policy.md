@@ -37,5 +37,7 @@ dated report in `docs/operations/`, then continue with other in-policy work.
 
 ## Provenance
 
-Every autonomous decision taken under this policy gets a Progress Log line or report
-entry: what was decided, which policy row covered it, and the run date.
+Every autonomous decision taken under this policy gets one line in
+`docs/decisions/decision-log.md` (or the task's Progress Log if the log doesn't
+exist): what was decided, which policy row covered it, who (session/agent), and the
+run date. "Why is the system like this?" must stay answerable without archaeology.

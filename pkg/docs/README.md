@@ -109,7 +109,7 @@ docs/
 |-- _archive/
 |   |-- README.md              <- Archive index
 |   +-- [retired-doc].md       <- Superseded docs (Lifecycle: archived)
-+-- templates/                 <- 19 doc templates — see templates/README.md for the full list + which command emits each
++-- templates/                 <- 20 doc templates — see templates/README.md for the full list + which command emits each
 ```
 
 ## Maintenance Rules

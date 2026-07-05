@@ -16,6 +16,8 @@ Scan all task files and present a complete status overview.
    - `status` (planning, ready, in-progress, testing, done, blocked, cancelled, abandoned)
    - `priority` (P0, P1, P2, P3)
    - `epic` (parent epic reference or standalone)
+   - `goal` (on epics — which company goal this serves, if `docs/business/goals.md` exists)
+   - `claimed_by` / `claimed_at` (multi-agent claim state)
    - `updated` date
 4. **Parse filename components** using the naming convention:
    - Epics: `EPIC-{N}-{kebab-name}.md` — extract counter N
@@ -37,6 +39,10 @@ Flag tasks that may need attention:
 - **Possibly abandoned**: `in-progress`/`testing` untouched for >14 days — offer to
   mark `status: abandoned` (resumable later) or `cancelled` (won't do), so dead work
   doesn't sit on the board as active forever
+- **Stale claim**: `claimed_by` set but `updated` >24h old — the claim is takeover-eligible
+- **Goal orphans**: if `docs/business/goals.md` exists, epics with no `goal:` link —
+  work that serves no stated strategy deserves a question, and a "work per goal"
+  rollup belongs in the dashboard
 
 ## Step 3: Present Dashboard
 

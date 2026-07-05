@@ -39,6 +39,22 @@ updated: 2026-07-05 14:30
 - It is a **hint, not a lock** — commands must tolerate it being missing or stale;
   the task file's YAML frontmatter is the source of truth.
 
+## Claiming — Multiple Agents, One Board
+
+When more than one agent/session works this repo, tasks are **claimed** before work
+starts so two agents never implement the same task:
+
+- **Claim** = set `claimed_by:` (an agent/session identifier) + `claimed_at:` in the
+  task's frontmatter — and commit that change if agents work from separate clones.
+- **Respect claims:** before starting a task, check `claimed_by`. Claimed by someone
+  else and fresh → pick a different task (or ask the user).
+- **Stale claim:** the claim holder proves liveness through the `updated` field. If a
+  claimed task's `updated` is **>24h old** and it isn't `done`, the claim may be taken
+  over — note the takeover in the Progress Log.
+- **Release:** clear `claimed_by`/`claimed_at` when the task reaches `done`,
+  `abandoned`, or `cancelled`, or when you stop working it.
+- Single-agent projects can ignore this entirely — blank claim fields are the default.
+
 > **Board tables below are derived** from each task file's YAML frontmatter (the
 > source of truth). Regenerate them with `/sk:task-status` (Step 4) rather than
 > hand-editing rows.

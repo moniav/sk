@@ -78,7 +78,7 @@ Update any docs that changed: `docs/system/` (schema, APIs, tech stack, project 
 
 ### Creating New Docs
 
-Use templates from `docs/templates/`: `epic.md`, `task-prd.md`, `sop-procedure.md`, `adr-decision.md`, `flow-diagram.md`, `component-doc.md`, `feature-doc.md`, `user-guide.md`, `postmortem.md`. Business/GTM: `positioning.md`, `competitor-profile.md`, `pricing-strategy.md`, `business-plan.md`, `financial-model.md`, `cap-table.md`, `investor-update.md`, `decision-memo.md`.
+Use templates from `docs/templates/`: `epic.md`, `task-prd.md`, `sop-procedure.md`, `adr-decision.md`, `flow-diagram.md`, `component-doc.md`, `feature-doc.md`, `user-guide.md`, `postmortem.md`. Business/GTM: `positioning.md`, `competitor-profile.md`, `pricing-strategy.md`, `business-plan.md`, `financial-model.md`, `cap-table.md`, `investor-update.md`, `decision-memo.md`, `goals.md`.
 
 ## Build Commands
 

@@ -7,6 +7,8 @@ phase: plan
 status: planning  # planning | ready | in-progress | testing | done | blocked | cancelled | abandoned
 priority: P1
 epic: E{N} | standalone
+claimed_by:   # agent/session working this task (blank = unclaimed); see tasks/README.md claim convention
+claimed_at:   # YYYY-MM-DD HH:MM — claim goes stale when `updated` is >24h old
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---

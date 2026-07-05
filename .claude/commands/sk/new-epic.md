@@ -132,6 +132,11 @@ Show the user:
 - Key risks
 - Recommended starting task
 
+If `docs/business/goals.md` exists, ask which goal this epic serves (AskUserQuestion,
+listing the goal IDs) and set the epic's `goal:` frontmatter + add the epic link under
+that goal's "Epics serving this goal". An epic serving no goal is worth a follow-up
+question — but "none" is an allowed answer.
+
 Write `docs/tasks/.current` pointing at the epic (`task: EPIC-{N}`, `phase: plan` — format in `docs/tasks/README.md`).
 
 Ask: **"Epic and all task files created. Want me to start planning Task 1 (`/sk:plan`)?"**

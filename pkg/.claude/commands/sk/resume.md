@@ -39,6 +39,8 @@ Scan `docs/tasks/TASK-*.md` and `docs/tasks/EPIC-*.md` for:
 - **Possibly abandoned:** active-status tasks untouched for >14 days — list them
   separately and offer to mark `status: abandoned` or `cancelled` rather than
   letting them read as active work
+- **Claims:** note `claimed_by` on active tasks — flag tasks claimed by another
+  agent (skip them) and stale claims (>24h since `updated` — eligible for takeover)
 
 ### 1d. Uncommitted Work
 Check for any uncommitted changes that represent in-progress work.
