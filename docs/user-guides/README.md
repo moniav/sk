@@ -18,3 +18,4 @@ guides cover the workflows that span multiple files/commands.
 | [Set up autonomous maintenance routines](./set-up-autonomous-routines.md) | Developers automating audits/retros/dep sweeps | current |
 | [Run multiple agents on one project](./run-multiple-agents.md) | Developers running 2+ agents on one repo | current |
 | [Run your marketing with SK](./run-your-marketing.md) | Developers/founders producing goal-linked marketing | current |
+| [Install SK as a Claude Code plugin](./install-as-plugin.md) | Developers preferring native plugin install (experimental) | current |

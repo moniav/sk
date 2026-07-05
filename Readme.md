@@ -84,7 +84,7 @@ Commands keep their exact `/sk:*` names, and updates arrive natively. **Preview
 caveats:** the `docs/` scaffold still requires `npx shipkit-cld` (plugins don't
 scaffold project files), and some in-command references to `.claude/` files assume a
 project install — the npm channel above remains the recommended path until this note
-disappears.
+disappears. Full walkthrough: [plugin install guide](https://github.com/moniav/sk/blob/main/docs/user-guides/install-as-plugin.md).
 
 ## Updating
 

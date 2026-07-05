@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- **Experimental Claude Code plugin channel** — SK installs natively via
+  `/plugin marketplace add moniav/sk` → `/plugin install sk@shipkit`. The plugin is
+  named `sk`, preserving every `/sk:*` invocation; `plugin.json` points at
+  `pkg/.claude/*` directly (no build step); the repo is its own marketplace;
+  commit-SHA versioning during the preview. The npm channel remains primary — the
+  docs scaffold still requires `npx shipkit-cld`, and some in-command `.claude/`
+  path references assume a project install (fix plan:
+  `dev-docs/planning/plugin-split-plan.md`, decision: ADR-002). New user guide:
+  `docs/user-guides/install-as-plugin.md`.
+
 ## 1.9.0 (2026-07-05)
 
 Full-system hardening and leverage release, driven by a four-wave review of every
