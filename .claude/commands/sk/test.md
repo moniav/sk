@@ -1,5 +1,6 @@
 ---
 description: Execute the TEST phase — verify acceptance criteria and run all tests (project)
+argument-hint: "[TASK-N (optional — defaults to .current)]"
 ---
 
 # Test — Verify Implementation

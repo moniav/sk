@@ -1,5 +1,6 @@
 ---
 description: Initialize or rebuild the documentation system from codebase scan (project)
+disable-model-invocation: true
 ---
 
 # Initialize Documentation
@@ -19,7 +20,7 @@ If `docs/system/project-context.md` exists, read it first for existing context.
 Use **Glob** to detect project type:
 - `package.json`, `pyproject.toml`, `requirements.txt`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`, `build.gradle`
 
-Use **Read** to examine the manifest file (e.g., `package.json` first 20 lines).
+Use **Read** to examine the manifest file (e.g., `package.json` first 20 lines). If multiple package manifests exist (workspaces / monorepo), ask the user which package to target — or cover the workspace root — before proceeding.
 
 ### Project Structure
 

@@ -1,5 +1,6 @@
 ---
 description: Harvest deliberate tech-debt markers into a ranked ledger (project)
+allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*)
 ---
 
 # /sk:debt — Tech-Debt Ledger

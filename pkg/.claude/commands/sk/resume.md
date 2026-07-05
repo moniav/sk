@@ -13,7 +13,7 @@ Quickly restore context from a previous session and present a briefing.
 Run all of these in parallel to build a complete picture:
 
 ### 1a. Current Work File
-Read `docs/tasks/.current` if it exists. It contains:
+Read `docs/tasks/.current` if it exists (canonical format defined in `docs/tasks/README.md`). It contains:
 - Active task ID and name
 - Current phase (plan/dev/test)
 - Last completed subtask
@@ -28,6 +28,8 @@ git status
 git branch --show-current
 git diff --stat
 ```
+
+If this isn't a git repository or has no commits yet, skip the git-based steps and note that in the output — don't error out.
 
 ### 1c. Task Board
 Scan `docs/tasks/TASK-*.md` and `docs/tasks/EPIC-*.md` for:

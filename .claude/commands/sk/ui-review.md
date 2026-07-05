@@ -1,5 +1,6 @@
 ---
 description: UI quality review — accessibility, responsive design, consistency, UX (project)
+allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*)
 ---
 
 # UI Review — Quality Analysis

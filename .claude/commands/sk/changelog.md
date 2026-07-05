@@ -30,6 +30,8 @@ Ask the user what to include:
 | **Last N commits** | `git log -N --oneline` | Quick recent changes |
 | **All history** | `git log --oneline` | First changelog or full rebuild |
 
+If this isn't a git repository or has no commits yet, skip the git-based steps and note that in the output — don't error out.
+
 Also gather:
 - **Version number** — what version is this changelog for? (check `package.json`, `pyproject.toml`, `Cargo.toml`, or ask user)
 - **Release date** — today's date unless specified otherwise

@@ -1,5 +1,6 @@
 ---
 description: Systematic debugging — reproduce, isolate, fix, verify with regression test (project)
+argument-hint: "[bug description or error message]"
 ---
 
 # Debug — Systematic Bug Investigation

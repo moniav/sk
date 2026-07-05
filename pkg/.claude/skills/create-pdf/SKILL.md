@@ -1,12 +1,10 @@
 ---
 name: create-pdf
 description: >
-  Turn a Markdown or HTML file into a clean, paginated, publication-quality PDF — proper
-  margins, page numbers, running headers, table of contents, optional cover page and DRAFT
-  watermark. Use whenever the user asks to make/create/export/generate a PDF, turn a doc,
-  markdown, report, guide, or memo into a PDF, or produce a printable/shareable document.
-  Cross-platform with automatic engine detection (pandoc, weasyprint, wkhtmltopdf, or
-  headless Chrome/Edge). Pairs with SK doc homes (business/, legal/, operations/, user-guides/).
+  Turn a Markdown or HTML file into a clean, paginated, publication-quality PDF —
+  margins, page numbers, running headers, TOC, optional cover page and watermark.
+  Use whenever the user asks to make/create/export/generate a PDF or produce a
+  printable/shareable document. Cross-platform with automatic engine detection.
 ---
 
 # Create PDF

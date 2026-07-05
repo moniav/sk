@@ -1,5 +1,6 @@
 ---
 description: Orchestrate parallel agent team for a task or epic — dependency-aware Plan > Dev > Test (project)
+disable-model-invocation: true
 ---
 
 # Orchestrate — Parallel Agent Team
@@ -226,7 +227,7 @@ After all subtasks in a wave complete and pass review:
 After a wave completes and merges cleanly:
 
 1. Update task file — check off completed subtasks
-2. Update `docs/tasks/.current` — update subtask progress
+2. Update `docs/tasks/.current` — update subtask progress (create it if missing — format in `docs/tasks/README.md`)
 3. Proceed to next wave (repeat Steps 6-8)
 
 Continue until all waves are complete.

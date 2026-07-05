@@ -1,5 +1,6 @@
 ---
 description: Security scan — OWASP Top 10, secrets detection, dependency audit (project)
+allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*)
 ---
 
 # Security Review — Vulnerability Analysis

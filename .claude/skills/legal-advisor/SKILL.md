@@ -1,14 +1,7 @@
 ---
 name: legal-advisor
-description: >
-  Scans your codebase and business context to surface legal, compliance, and
-  regulatory requirements — then generates tailored document drafts. Use this skill
-  when the user asks about legal requirements, compliance needs, privacy policy,
-  terms of service, founders agreement, operating agreement, HIPAA, GDPR, PCI,
-  SOC 2, or any legal/regulatory question related to their project. Also triggers
-  when starting a new project and legal foundations haven't been established, when
-  preparing for fundraising, when adding payment processing or health data, or when
-  the user says "what legal stuff do I need" or "am I compliant".
+description: Legal & compliance advisor — scans codebase and business context for regulatory requirements (HIPAA, GDPR, PCI, SOC 2) and drafts tailored agreements and policies. Invoked via /sk:legal-scan.
+disable-model-invocation: true
 ---
 
 # Legal Advisor

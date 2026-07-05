@@ -15,6 +15,30 @@
 **File naming:** `TASK-{N}-{E{epicN}|S}-{kebab-name}.md` or `EPIC-{N}-{kebab-name}.md`
 **Phase tracking:** Phase and status tracked in YAML frontmatter inside each file (not in the filename).
 
+## `.current` — Session Pointer
+
+`docs/tasks/.current` is a plain-text pointer at the active work item so `/sk:resume`
+can restore context instantly. Format (one `key: value` per line):
+
+```
+task: TASK-3                        # or EPIC-2 — ID of the active work item
+name: User Authentication
+phase: plan                         # plan | dev | test
+subtask: 4/7                        # done/total (0/N during PLAN)
+last: Implemented JWT middleware    # one line — last completed step
+updated: 2026-07-05 14:30
+```
+
+**Contract:**
+- **Created** by whichever command starts work — `/sk:new-task`, `/sk:new-epic`,
+  `/sk:brainstorm`, `/sk:plan`, `/sk:dev`, `/sk:implement`, `/sk:orchestrate` all
+  create it if missing.
+- **Updated** on every phase change and after every completed subtask.
+- **Deleted** when work ships — by `/sk:test` (all criteria pass), `/sk:finish`,
+  or `/sk:implement`/`/sk:orchestrate` close-out.
+- It is a **hint, not a lock** — commands must tolerate it being missing or stale;
+  the task file's YAML frontmatter is the source of truth.
+
 ## Active Epics
 
 | Epic | Tasks | Progress | Priority | Link |

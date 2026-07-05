@@ -1,5 +1,6 @@
 ---
 description: Implement a feature end-to-end — Plan > Dev > Test in one flow (project)
+argument-hint: "[feature description]"
 ---
 
 # Implement Feature
@@ -56,12 +57,13 @@ Determine scope:
 **Checkpoint:** Present plan summary to user. Wait for approval before proceeding.
 
 ### Update Current Work Tracker
-Write `docs/tasks/.current` with:
+Write `docs/tasks/.current` (canonical format in `docs/tasks/README.md`):
 ```
 task: TASK-{N}
 name: {task name}
 phase: plan
 subtask: 0/{total}
+last: Plan approved
 updated: {ISO date}
 ```
 

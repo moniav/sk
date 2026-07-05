@@ -1,5 +1,6 @@
 ---
 description: Create a flow diagram — Mermaid markdown or SVG with consistent design system (project)
+argument-hint: "[flow name]"
 ---
 
 # New Flow Diagram

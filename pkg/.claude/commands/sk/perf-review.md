@@ -1,5 +1,6 @@
 ---
 description: Performance analysis — queries, memory, rendering, bundle size, caching (project)
+allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*)
 ---
 
 # Performance Review — Bottleneck Analysis

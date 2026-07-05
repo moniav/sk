@@ -1,5 +1,6 @@
 ---
 description: Brainstorm a feature — explore an idea and produce an epic with tasks (project)
+argument-hint: "[feature description]"
 ---
 
 # Brainstorm
@@ -200,6 +201,8 @@ If web research was performed in Step 4, ask: **"Save research findings to `docs
 If yes, save using the template from `docs/templates/research-doc.md`. Include search queries used, key findings, comparison tables, and decision reasoning.
 
 ## Step 7: Summary
+
+Write `docs/tasks/.current` pointing at the new epic (`task: EPIC-{N}`, `phase: plan` — format in `docs/tasks/README.md`) so `/sk:resume` picks up the freshly scoped work.
 
 Present the result:
 

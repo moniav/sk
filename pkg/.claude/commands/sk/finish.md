@@ -1,5 +1,6 @@
 ---
 description: Finish feature work — review, commit, push, PR, update task board (project)
+argument-hint: "[TASK-N (optional — defaults to .current)]"
 ---
 
 # Finish — Ship Completed Work
@@ -20,6 +21,8 @@ Chain code review + commit + push + PR + task board update into one flow.
 
 ## Step 2: Identify What to Finish
 
+If this isn't a git repository or has no commits yet, skip the git-based steps and note that in the output — don't error out.
+
 1. Check current branch: `git branch --show-current`
 2. Find the associated task file:
    - Search `docs/tasks/TASK-*.md` for tasks with `status: done` or `status: testing`
@@ -33,8 +36,8 @@ Chain code review + commit + push + PR + task board update into one flow.
 
 Run `/sk:code-review` analysis on the branch diff:
 
-1. Determine base branch (usually `main`)
-2. Get the diff: `git diff main...HEAD`
+1. Determine the base branch: detect the default branch with `git symbolic-ref --short refs/remotes/origin/HEAD` (fall back to `main`, then `master`)
+2. Get the diff: `git diff {base}...HEAD`
 3. Read all changed files with full context
 4. Analyze across all 5 categories (correctness, conventions, performance, maintainability, testing)
 5. Present findings with verdict

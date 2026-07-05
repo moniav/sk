@@ -1,5 +1,6 @@
 ---
 description: Analyze code for bugs, conventions, performance, and maintainability (project)
+allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*)
 ---
 
 # Code Review — Quality Analysis
@@ -25,10 +26,14 @@ Ask the user what to review:
 |-------|---------|-------------------|
 | **Staged changes** | `git diff --cached` | Files about to be committed |
 | **Unstaged changes** | `git diff` | Modified files not yet staged |
-| **Branch diff** | `git diff main...HEAD` | All changes on this branch vs main |
+| **Branch diff** | `git diff {base}...HEAD` | All changes on this branch vs the default branch |
 | **Last N commits** | `git diff HEAD~N..HEAD` | Recent commit range |
 | **Specific files** | User provides paths | Named files only |
 | **PR number** | `gh pr diff <N>` | Pull request changes |
+
+For branch diffs, detect the default branch with `git symbolic-ref --short refs/remotes/origin/HEAD` (fall back to `main`, then `master`) and use it as `{base}`.
+
+If this isn't a git repository or has no commits yet, skip the git-based steps and note that in the output — don't error out.
 
 ## Step 3: Read Full Context
 

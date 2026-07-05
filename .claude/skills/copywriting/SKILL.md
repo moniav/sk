@@ -1,13 +1,7 @@
 ---
 name: copywriting
-description: >
-  Write high-converting marketing copy for SaaS and tech products — landing pages, headlines,
-  emails, ad copy, CTAs, product descriptions, and social posts. Use this skill whenever the user
-  asks to write, rewrite, or improve any marketing copy, website text, email campaigns, ad
-  headlines, taglines, value propositions, or product messaging. Also triggers when users mention
-  "conversion", "landing page copy", "hero section", "email sequence", "ad creative", or want to
-  make existing copy more compelling. Even if the user just says "write the homepage text" or
-  "make this sound better" for marketing content, this skill applies.
+description: Write high-converting SaaS marketing copy — landing pages, headlines, emails, ad copy, CTAs, product descriptions, social posts. Invoked via /sk:copywrite.
+disable-model-invocation: true
 ---
 
 # Copywriting

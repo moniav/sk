@@ -1,5 +1,6 @@
 ---
 description: Dependency health check — outdated, vulnerabilities, unused, licenses (project)
+allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*), Bash(npm:*), Bash(pip:*), Bash(safety:*), Bash(cargo:*), Bash(go:*), Bash(govulncheck:*), Bash(poetry:*)
 ---
 
 # Deps — Dependency Health Check
@@ -30,7 +31,7 @@ Scan for manifest files to determine the ecosystem:
 | `pom.xml` | Java (maven) | — |
 | `build.gradle` | Java/Kotlin (gradle) | `gradle.lockfile` |
 
-Read the detected manifest file(s) to understand the dependency tree.
+Read the detected manifest file(s) to understand the dependency tree. If multiple package manifests exist (workspaces / monorepo), ask the user which package to target — or cover the workspace root — before proceeding.
 
 ## Step 3: Security Vulnerabilities
 

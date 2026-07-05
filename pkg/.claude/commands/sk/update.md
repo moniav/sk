@@ -1,5 +1,6 @@
 ---
 description: Update SK commands and templates to latest version (project)
+disable-model-invocation: true
 ---
 
 # Update SK

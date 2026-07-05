@@ -1,5 +1,6 @@
 ---
 description: Complete the PLAN phase for a task — analyze, break down, define criteria (project)
+argument-hint: "[TASK-N (optional — defaults to .current)]"
 ---
 
 # Plan Task
@@ -151,7 +152,8 @@ Run the PLAN exit gate checklist:
 
 1. Update YAML frontmatter: set `phase: dev`, `status: ready`, update `updated` date
 2. Update `docs/tasks/README.md` — move from Planning to "ready for dev"
-3. Add entry to task's Progress Log:
+3. Write `docs/tasks/.current` pointing at this task (`phase: dev`, `subtask: 0/{total}` — format in `docs/tasks/README.md`) so `/sk:resume` sees the freshly planned work
+4. Add entry to task's Progress Log:
 
 ```markdown
 | Date | Phase | Note |

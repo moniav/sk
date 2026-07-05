@@ -1,5 +1,6 @@
 ---
 description: "Legal & compliance expert — detect regulatory requirements; deep-dive frameworks (HIPAA/GDPR/SOC2/PCI); draft agreements, policies & contracts; review contracts; entity guidance (project)"
+argument-hint: "[scan|compliance <framework>|privacy-policy|terms-of-service|founders-agreement|operating-agreement|contract-review <file>|entity-guide|ip-assignment]"
 ---
 
 # Legal Scan — Legal & Compliance Expert

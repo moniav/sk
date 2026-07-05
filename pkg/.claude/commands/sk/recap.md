@@ -1,5 +1,6 @@
 ---
 description: Post-implementation review recap from a diff — what changed and why (project)
+allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*)
 ---
 
 # /sk:recap — Implementation Recap
@@ -20,10 +21,14 @@ Turn a completed change into a structured, reviewer-facing recap so a human (or 
 
 | Scope | Command | What gets recapped |
 |-------|---------|--------------------|
-| **Branch diff** | `git diff main...HEAD` | All changes on this branch (most common) |
+| **Branch diff** | `git diff {base}...HEAD` | All changes on this branch (most common) |
 | **Staged changes** | `git diff --cached` | About-to-commit changes |
 | **Last N commits** | `git diff HEAD~N..HEAD` | A recent commit range |
 | **PR number** | `gh pr diff <N>` | A pull request |
+
+For branch diffs, detect the default branch with `git symbolic-ref --short refs/remotes/origin/HEAD` (fall back to `main`, then `master`) and use it as `{base}`.
+
+If this isn't a git repository or has no commits yet, skip the git-based steps and note that in the output — don't error out.
 
 ## Step 3: Gather the Whole Work Unit
 

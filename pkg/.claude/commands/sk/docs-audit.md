@@ -1,5 +1,6 @@
 ---
 description: Audit documentation coherence — orphans, staleness, broken links, lifecycle (project)
+allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*)
 ---
 
 # Audit Documentation

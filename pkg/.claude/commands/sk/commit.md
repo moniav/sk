@@ -26,6 +26,8 @@ git log --oneline -5
 git branch --show-current
 ```
 
+If this isn't a git repository or has no commits yet, skip the git-based steps and note that in the output — don't error out.
+
 Present a summary:
 - **Branch:** current branch name
 - **Staged changes:** files in the index (if any)
@@ -90,8 +92,8 @@ If push fails (e.g., diverged history), inform the user and suggest options — 
 Ask the user: **Create a pull request?**
 
 If yes:
-1. Determine the base branch (usually `main`)
-2. Run `git log main..HEAD --oneline` to gather all commits on this branch
+1. Determine the base branch: `git symbolic-ref --short refs/remotes/origin/HEAD` (fall back to `main`, then `master`)
+2. Run `git log {base}..HEAD --oneline` to gather all commits on this branch
 3. Generate a PR title (under 70 chars) and body from the commits
 4. Present for approval, then create:
 

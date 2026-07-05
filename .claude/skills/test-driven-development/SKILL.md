@@ -1,12 +1,10 @@
 ---
 name: test-driven-development
 description: >
-  Enforces the RED-GREEN-REFACTOR TDD cycle for all code implementation.
-  Use this skill whenever implementing features, writing new code, fixing bugs,
-  or when the user mentions TDD, "test first", "write tests", or "test-driven".
-  Also activates during /sk:dev and /sk:implement subtask execution. Every piece
-  of production code should have a failing test written before the implementation.
-  If you're about to write code without a test, this skill applies.
+  Enforces the RED-GREEN-REFACTOR cycle: every piece of production code gets a
+  failing test written first. Use when implementing features, fixing bugs, or when
+  the user mentions TDD or "test first". Activates during /sk:dev and /sk:implement
+  subtask execution.
 ---
 
 # Test-Driven Development

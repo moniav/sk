@@ -1,12 +1,9 @@
 ---
 name: verification-before-completion
 description: >
-  Enforces evidence-based verification before claiming any task is complete.
-  Use this skill whenever you are about to say "done", "complete", "finished",
-  "verified", or "all tests pass" — for ANY development task, not just SK commands.
-  Also triggers during exit gates in /sk:dev, /sk:test, /sk:implement, /sk:refactor,
-  and /sk:debug. If you're about to claim completion without showing actual command
-  output, this skill applies to you.
+  Never claim "done", "complete", or "all tests pass" without showing actual command
+  output as evidence. Applies to ANY development task, and at the exit gates of
+  /sk:dev, /sk:test, /sk:implement, /sk:refactor, and /sk:debug.
 ---
 
 # Verification Before Completion

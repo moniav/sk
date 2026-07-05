@@ -1,5 +1,6 @@
 ---
 description: Create a new implementation task with Plan>Dev>Test lifecycle (project)
+argument-hint: "[feature description]"
 ---
 
 # Create New Task
@@ -94,7 +95,7 @@ Follow this standard decomposition pattern, adapted to the specific task:
 
 ## Step 6: Update Task Board
 
-Add the new task to `docs/tasks/README.md` in the **Planning** section:
+Add the new task to `docs/tasks/README.md` in the **Planning** section (if `docs/tasks/README.md` doesn't exist, create it with the standard board structure first):
 
 ```markdown
 ### [PLAN] Planning
@@ -104,7 +105,9 @@ Add the new task to `docs/tasks/README.md` in the **Planning** section:
 | Title | Epic name | P1 | [Link](./TASK-N-EN-title.md) |
 ```
 
-## Step 7: Present Summary
+## Step 7: Update Pointer & Present Summary
+
+Write `docs/tasks/.current` pointing at the new task (`phase: plan`, `subtask: 0/{total}` — format in `docs/tasks/README.md`).
 
 Show the user:
 - Task ID and filename

@@ -14,6 +14,8 @@ Read these files to understand the current state:
 - `docs/tasks/README.md` — task board for recent completions
 - Git log for the relevant commits
 
+If this isn't a git repository or has no commits yet, skip the git-based steps and note that in the output — don't error out.
+
 **Skip files that are empty or contain only template placeholders.**
 
 ## Step 2: Identify Scope

@@ -1,5 +1,6 @@
 ---
 description: Show task board — status of all epics, tasks, and progress overview (project)
+allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*)
 ---
 
 # Task Status

@@ -1,5 +1,6 @@
 ---
 description: Execute the DEV phase — implement subtasks for a task (project)
+argument-hint: "[TASK-N (optional — defaults to .current)]"
 ---
 
 # Dev — Execute Implementation
@@ -47,7 +48,7 @@ Update the task file frontmatter:
 
 Progress Log: Add entry `DEV phase started`
 
-Update `docs/tasks/.current`: set `phase: dev`, update subtask count.
+Update `docs/tasks/.current`: set `phase: dev`, update subtask count (create it if missing — format in `docs/tasks/README.md`).
 
 ## Step 4: Execute Subtasks
 

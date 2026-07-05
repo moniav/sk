@@ -1,5 +1,6 @@
 ---
 description: Create an Architecture Decision Record for a significant technical decision (project)
+argument-hint: "[decision topic]"
 ---
 
 # New ADR

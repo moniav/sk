@@ -1,12 +1,11 @@
 ---
 name: subagent-driven-development
 description: >
-  Orchestrates implementation using isolated subagents — one per subtask — with
-  two-stage review (spec compliance + code quality). Use this skill when implementing
-  large features with 5+ subtasks, when context pollution is a concern in long sessions,
-  or when the user asks about "subagent mode", "parallel agents", or "fresh context per task".
-  Activates during /sk:dev and /sk:implement when subagent mode is chosen. This pattern
-  prevents context drift and ensures each subtask gets focused, clean execution.
+  Orchestrates implementation with isolated subagents — one per subtask — plus
+  two-stage review (spec compliance, then code quality). Use for features with 5+
+  subtasks, when context pollution is a concern, or when the user asks for "subagent
+  mode" or "fresh context per task". Activates during /sk:dev and /sk:implement.
+  Sequential by design — /sk:orchestrate is the parallel path.
 ---
 
 # Subagent-Driven Development

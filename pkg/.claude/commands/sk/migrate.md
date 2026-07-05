@@ -1,5 +1,6 @@
 ---
 description: Handle breaking changes, dependency upgrades, and database migrations safely (project)
+disable-model-invocation: true
 ---
 
 # /sk:migrate — Migration & Upgrade

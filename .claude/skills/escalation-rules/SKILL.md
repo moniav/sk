@@ -1,12 +1,9 @@
 ---
 name: escalation-rules
 description: >
-  Prevents wasted effort by stopping after 3 failed attempts and presenting
-  structured options to the user. Use this skill whenever you find yourself
-  stuck on the same problem, retrying the same fix, going in circles on a bug,
-  or when a subtask keeps failing. Also activates during /sk:dev, /sk:implement,
-  /sk:refactor, and /sk:debug execution. If you've tried multiple approaches and
-  none worked, this skill tells you when and how to stop and escalate.
+  Stop after 3 failed attempts on the same problem and present structured options
+  instead of retrying in circles. Use when stuck on a bug or a repeatedly failing
+  subtask; also activates during /sk:dev, /sk:implement, /sk:refactor, and /sk:debug.
 ---
 
 # Escalation Rules

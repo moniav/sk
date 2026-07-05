@@ -1,5 +1,6 @@
 ---
 description: Create a new epic — large feature broken into self-contained tasks (project)
+argument-hint: "[feature description]"
 ---
 
 # Create New Epic
@@ -111,7 +112,7 @@ For **each task** identified in Step 5, create a separate task file:
 
 ## Step 9: Update Task Board
 
-Add the epic to `docs/tasks/README.md`:
+Add the epic to `docs/tasks/README.md` (if `docs/tasks/README.md` doesn't exist, create it with the standard board structure first):
 
 ```markdown
 ## Active Epics
@@ -130,6 +131,8 @@ Show the user:
 - Dependency graph (Mermaid)
 - Key risks
 - Recommended starting task
+
+Write `docs/tasks/.current` pointing at the epic (`task: EPIC-{N}`, `phase: plan` — format in `docs/tasks/README.md`).
 
 Ask: **"Epic and all task files created. Want me to start planning Task 1 (`/sk:plan`)?"**
 

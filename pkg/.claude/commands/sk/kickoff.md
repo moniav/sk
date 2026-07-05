@@ -1,5 +1,6 @@
 ---
 description: Bootstrap a new project — guided setup with best-practice research (project)
+disable-model-invocation: true
 ---
 
 # Project Kickoff
@@ -15,7 +16,7 @@ Check what already exists:
 1. If `docs/system/project-context.md` exists, read it
 2. If `docs/system/tech-stack.md` exists, read it
 3. Use **Glob** to check for: `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`
-4. If a manifest file exists, read it — the project isn't fully greenfield, pre-fill answers from it
+4. If a manifest file exists, read it — the project isn't fully greenfield, pre-fill answers from it. If multiple package manifests exist (workspaces / monorepo), ask the user which package to target — or cover the workspace root — before proceeding.
 
 ## Step 2: Guided Conversation
 
