@@ -1,3 +1,10 @@
+---
+name: spec-reviewer
+description: Verifies an implementation matches its subtask spec by reading the actual code — or, in plan-review mode, attacks a plan before any code exists. Use after an implementer reports done, or during /sk:plan review. Returns a binary PASS/FAIL verdict.
+tools: Read, Grep, Glob
+model: haiku
+---
+
 # Agent: Spec Compliance Reviewer
 
 ## Role

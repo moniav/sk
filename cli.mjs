@@ -26,13 +26,14 @@ function ask(question) {
   });
 }
 
-function countFiles(dir) {
+function countFiles(dir, excludeDirs = []) {
   let count = 0;
   if (!existsSync(dir)) return 0;
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
-      count += countFiles(full);
+      if (excludeDirs.includes(entry.name)) continue;
+      count += countFiles(full, excludeDirs);
     } else {
       count++;
     }
@@ -40,17 +41,118 @@ function countFiles(dir) {
   return count;
 }
 
+// Recursive list of files under dir, as /-separated paths relative to dir.
+function listFilesRel(dir, base = dir) {
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...listFilesRel(full, base));
+    } else {
+      out.push(full.slice(base.length + 1).replace(/\\/g, "/"));
+    }
+  }
+  return out;
+}
+
+// --- Manifest (.claude/.sk-manifest.json) ---
+// Records the installed version, CLAUDE.md ownership, and the exact files SK
+// manages — so update can prune files SK no longer ships, and remove can
+// delete only SK's files without clobbering user-added ones.
+
+const MANAGED_DIRS = [
+  ".claude/commands/sk",
+  ".claude/agents",
+  ".claude/skills",
+  "docs/templates",
+  "docs/sop",
+  "docs/reference",
+];
+
+function manifestPath(target) {
+  return join(target, ".claude", ".sk-manifest.json");
+}
+
+function readManifest(target) {
+  try {
+    return JSON.parse(readFileSync(manifestPath(target), "utf-8"));
+  } catch {
+    return null;
+  }
+}
+
+function sourceVersion(source) {
+  try {
+    return JSON.parse(readFileSync(join(source, "package.json"), "utf-8")).version || "unknown";
+  } catch {
+    return "unknown";
+  }
+}
+
+function writeManifest(target, source, claudeMdOwner) {
+  const managed = {};
+  for (const dir of MANAGED_DIRS) {
+    managed[dir] = listFilesRel(join(source, "pkg", dir));
+  }
+  const manifest = {
+    version: sourceVersion(source),
+    updatedAt: new Date().toISOString(),
+    // "sk" = SK created CLAUDE.md and may refresh/remove it; "user" = never touch it
+    claudeMd: claudeMdOwner,
+    managed,
+  };
+  mkdirSync(join(target, ".claude"), { recursive: true });
+  writeFileSync(manifestPath(target), JSON.stringify(manifest, null, 2) + "\n");
+  return manifest;
+}
+
+// Delete files SK shipped previously but no longer ships. Only files recorded
+// in the previous manifest are candidates — user-added files are never touched.
+function pruneRemoved(target, oldManifest, source) {
+  if (!oldManifest || !oldManifest.managed) return [];
+  const pruned = [];
+  for (const dir of MANAGED_DIRS) {
+    const before = oldManifest.managed[dir] || [];
+    const shipped = new Set(listFilesRel(join(source, "pkg", dir)));
+    for (const rel of before) {
+      if (shipped.has(rel)) continue;
+      const full = join(target, dir, rel);
+      if (existsSync(full)) {
+        unlinkSync(full);
+        pruned.push(`${dir}/${rel}`);
+      }
+    }
+  }
+  return pruned;
+}
+
+// Remove directories that became empty after selective file deletion.
+function removeEmptyDirs(dir) {
+  if (!existsSync(dir)) return;
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) removeEmptyDirs(join(dir, entry.name));
+  }
+  if (readdirSync(dir).length === 0) rmSync(dir, { recursive: true });
+}
+
+function isYes(answer) {
+  return ["y", "yes"].includes(answer.trim().toLowerCase());
+}
+
 // Install/refresh the project CLAUDE.md without clobbering the user's own.
-// - No CLAUDE.md in target -> write the SK template to CLAUDE.md (greenfield convenience).
-// - CLAUDE.md already there -> never overwrite; drop the SK template alongside as
-//   CLAUDE.sk.md so the user can merge new guidance manually.
-// The presence of CLAUDE.sk.md is also the signal that the live CLAUDE.md is
-// user-owned (see runRemove). Returns "created" or "sidecar".
-function syncClaudeMd(pkg, target) {
+// ownership: "sk" -> SK created it, refresh in place; "user"/unknown -> never
+// overwrite; drop the SK template alongside as CLAUDE.sk.md to merge manually.
+// Returns "created" | "refreshed" | "sidecar".
+function syncClaudeMd(pkg, target, ownership) {
   const live = join(target, "CLAUDE.md");
   if (!existsSync(live)) {
     cpSync(join(pkg, "CLAUDE.md"), live, { force: true });
     return "created";
+  }
+  if (ownership === "sk") {
+    cpSync(join(pkg, "CLAUDE.md"), live, { force: true });
+    return "refreshed";
   }
   cpSync(join(pkg, "CLAUDE.md"), join(target, "CLAUDE.sk.md"), { force: true });
   return "sidecar";
@@ -71,7 +173,12 @@ function findSource(target, fromOverride) {
     process.exit(1);
   }
 
-  // 2. Saved source path from previous install
+  // 2. The package being executed. On `npx shipkit-cld@latest` this is the
+  //    freshly-fetched version — it must win over any saved path, which may
+  //    point at a stale npx cache from a previous run.
+  if (isValidSource(__dirname)) return __dirname;
+
+  // 3. Saved source path from a previous --from install/update
   const skSourceFile = join(target, ".claude", ".sk-source");
   if (existsSync(skSourceFile)) {
     const saved = readFileSync(skSourceFile, "utf-8").trim();
@@ -89,15 +196,15 @@ function findSource(target, fromOverride) {
     }
   }
 
-  // 3. Package location (__dirname)
-  if (isValidSource(__dirname)) return __dirname;
-
   // 4. Current working directory
   if (isValidSource(process.cwd())) return process.cwd();
 
   return null;
 }
 
+// Persist only explicit --from paths. Never persist the running package's
+// __dirname: under npx that is an ephemeral cache path, and pinning it would
+// make future updates reuse a stale version instead of @latest.
 function saveSourcePath(target, source) {
   const skSourceFile = join(target, ".claude", ".sk-source");
   mkdirSync(dirname(skSourceFile), { recursive: true });
@@ -160,13 +267,36 @@ async function runInstall(target) {
     const answer = await ask(
       c.yellow("[WARN]") + " Target directory does not exist. Create it? (y/n) "
     );
-    if (answer.toLowerCase() === "y") {
+    if (isYes(answer)) {
       mkdirSync(target, { recursive: true });
     } else {
       console.log("Aborted.");
       process.exit(1);
     }
   }
+
+  // Already installed? Re-running install would displace live docs into
+  // docs/old/ and re-lay blank templates — what the user wants here is update.
+  if (existsSync(join(target, ".claude", "commands", "sk"))) {
+    console.log(c.yellow("[WARN]") + " SK is already installed here -- running update instead.");
+    console.log(c.yellow("       ") + " (A fresh install would move your live docs/ into docs/old/.)");
+    console.log();
+    return runUpdate(target, null);
+  }
+
+  // --- Find source before touching anything ---
+
+  const source = findSource(target, null);
+  if (!source) {
+    console.log(
+      c.yellow("[WARN]") +
+        " Cannot find SK source files.\n" +
+        "  Make sure you run this from the extracted sk/ folder.\n" +
+        "  Expected: pkg/CLAUDE.md, pkg/docs/, .claude/ in the same directory"
+    );
+    process.exit(1);
+  }
+  const pkg = join(source, "pkg");
 
   // Back up existing docs/ into docs/old before installing
   const docsDir = join(target, "docs");
@@ -198,52 +328,12 @@ async function runInstall(target) {
 
   console.log(c.blue("[1/4]") + " Creating directory structure...");
 
-  const dirs = [
-    "docs/architecture",
-    "docs/conventions",
-    "docs/sop",
-    "docs/tasks/examples",
-    "docs/flows",
-    "docs/decisions",
-    "docs/system",
-    "docs/templates",
-    "docs/features",
-    "docs/user-guides",
-    "docs/business",
-    "docs/legal",
-    "docs/operations",
-    "docs/_archive",
-    ".claude/commands/sk",
-  ];
-
-  for (const dir of dirs) {
-    mkdirSync(join(target, dir), { recursive: true });
-  }
-
-  console.log(c.green("  [OK]") + " docs/ tree created");
+  mkdirSync(join(target, ".claude", "commands", "sk"), { recursive: true });
   console.log(c.green("  [OK]") + " .claude/commands/sk/ created");
-
-  // --- Find source ---
-
-  const source = findSource(target, null);
-  if (!source) {
-    console.log(
-      c.yellow("[WARN]") +
-        " Cannot find SK source files.\n" +
-        "  Make sure you run this from the extracted sk/ folder.\n" +
-        "  Expected: pkg/CLAUDE.md, pkg/docs/, .claude/ in the same directory"
-    );
-    process.exit(1);
-  }
-
-  // Save source path for future updates
-  saveSourcePath(target, source);
 
   // --- Step 2: Copy files ---
 
   console.log(c.blue("[2/4]") + " Copying documentation files...");
-
-  const pkg = join(source, "pkg");
 
   cpSync(join(pkg, "docs"), join(target, "docs"), { recursive: true, force: true });
   console.log(c.green("  [OK]") + " docs/ content copied");
@@ -271,15 +361,15 @@ async function runInstall(target) {
     console.log(c.green("  [OK]") + " .claude/skills/ copied");
   }
 
-  const claudeResult = syncClaudeMd(pkg, target);
-  if (existsSync(join(source, "GUIDE.md"))) {
-    cpSync(join(source, "GUIDE.md"), join(target, "GUIDE.md"), { force: true });
-  }
+  const claudeResult = syncClaudeMd(pkg, target, null);
   if (claudeResult === "created") {
     console.log(c.green("  [OK]") + " CLAUDE.md created");
   } else {
     console.log(c.yellow("  [KEEP]") + " Existing CLAUDE.md preserved -- SK template written to CLAUDE.sk.md (merge manually)");
   }
+
+  // Record what SK installed: version, CLAUDE.md ownership, managed files
+  writeManifest(target, source, claudeResult === "created" ? "sk" : "user");
 
   // --- Step 3: Validate ---
 
@@ -330,9 +420,9 @@ async function runInstall(target) {
   console.log();
 
   const cmdCount = countFiles(join(target, ".claude", "commands", "sk"));
-  const fileCount = countFiles(join(target, "docs")) + cmdCount;
+  const fileCount = countFiles(join(target, "docs"), ["old"]) + cmdCount;
 
-  console.log(c.bold(c.green(`  [SUCCESS] SK installed -- ${fileCount} files`)));
+  console.log(c.bold(c.green(`  [SUCCESS] SK v${sourceVersion(source)} installed -- ${fileCount} files`)));
   if (backedUp) {
     console.log(c.yellow("  [NOTE]") + " Previous docs preserved in docs/old/");
   }
@@ -408,10 +498,19 @@ async function runUpdate(target, fromOverride) {
     process.exit(1);
   }
 
-  // Save source path for future updates
-  saveSourcePath(target, source);
+  // Persist only explicit --from overrides (see saveSourcePath)
+  if (fromOverride) saveSourcePath(target, fromOverride);
+
+  const oldManifest = readManifest(target);
+  const newVersion = sourceVersion(source);
+  const oldVersion = oldManifest?.version;
 
   console.log(c.blue("[INFO]") + ` Source: ${source}`);
+  console.log(
+    c.blue("[INFO]") +
+      ` Updating to v${newVersion}` +
+      (oldVersion ? ` (installed: v${oldVersion})` : "")
+  );
   console.log();
 
   // --- What gets updated vs preserved ---
@@ -438,7 +537,7 @@ async function runUpdate(target, fromOverride) {
   console.log();
 
   const answer = await ask("  Proceed with update? (y/n) ");
-  if (answer.toLowerCase() !== "y") {
+  if (!isYes(answer)) {
     console.log("  Aborted.");
     process.exit(0);
   }
@@ -511,12 +610,14 @@ async function runUpdate(target, fromOverride) {
   // --- Step 4: Update CLAUDE.md ---
 
   console.log(c.blue("[4/5]") + " Refreshing CLAUDE.md reference...");
-  const claudeResult = syncClaudeMd(pkg, target);
-  if (existsSync(join(source, "GUIDE.md"))) {
-    cpSync(join(source, "GUIDE.md"), join(target, "GUIDE.md"), { force: true });
-  }
+  // Ownership comes from the manifest. Legacy installs (no manifest) can't
+  // prove SK authored the live CLAUDE.md, so treat it as user-owned (safe).
+  const claudeOwner = oldManifest?.claudeMd || "user";
+  const claudeResult = syncClaudeMd(pkg, target, claudeOwner);
   if (claudeResult === "created") {
     console.log(c.green("  [OK]") + " CLAUDE.md created (none existed)");
+  } else if (claudeResult === "refreshed") {
+    console.log(c.green("  [OK]") + " CLAUDE.md refreshed (SK-managed)");
   } else {
     console.log(c.yellow("  [KEEP]") + " Your CLAUDE.md left untouched -- latest SK template in CLAUDE.sk.md");
   }
@@ -539,10 +640,24 @@ async function runUpdate(target, fromOverride) {
     console.log(c.green("  [OK]") + " .claude/skills/ updated");
   }
 
+  // --- Prune files SK no longer ships, record the new state ---
+
+  const pruned = pruneRemoved(target, oldManifest, source);
+  if (pruned.length > 0) {
+    console.log();
+    console.log(c.blue("[INFO]") + ` Removed ${pruned.length} file(s) no longer shipped by SK:`);
+    for (const p of pruned) console.log(c.yellow("  [RM]") + ` ${p}`);
+    removeEmptyDirs(join(target, ".claude", "skills"));
+    removeEmptyDirs(join(target, ".claude", "agents"));
+  }
+
+  const newOwner = claudeResult === "sidecar" ? "user" : "sk";
+  writeManifest(target, source, newOwner);
+
   // --- Summary ---
 
   console.log();
-  console.log(c.bold(c.green("  [SUCCESS] SK updated")));
+  console.log(c.bold(c.green(`  [SUCCESS] SK updated to v${newVersion}`)));
   console.log();
   console.log(c.bold("  Updated:"));
   console.log("    .claude/commands/sk/   (slash commands)");
@@ -552,12 +667,18 @@ async function runUpdate(target, fromOverride) {
   console.log("    docs/commands-reference.md");
   console.log("    docs/README.md         (doc map)");
   console.log("    docs/conventions/coding-behavior.md");
-  console.log("    CLAUDE.sk.md           (latest SK template; merge into your CLAUDE.md)");
+  if (claudeResult === "sidecar") {
+    console.log("    CLAUDE.sk.md           (latest SK template; merge into your CLAUDE.md)");
+  } else {
+    console.log("    CLAUDE.md              (SK-managed agent instructions)");
+  }
   console.log("    .claude/agents/        (agent definitions)");
   console.log("    .claude/skills/        (active skills)");
   console.log();
   console.log(c.bold("  Preserved:"));
-  console.log("    CLAUDE.md             (your agent instructions -- never overwritten)");
+  if (claudeResult === "sidecar") {
+    console.log("    CLAUDE.md             (your agent instructions -- never overwritten)");
+  }
   console.log("    docs/tasks/           (your tasks & epics)");
   console.log("    docs/conventions/     (your code style)");
   console.log("    docs/system/          (your tech stack)");
@@ -579,17 +700,18 @@ async function runRemove(target) {
   const skCommandsDir = join(target, ".claude", "commands", "sk");
   const claudeMd = join(target, "CLAUDE.md");
   const claudeSk = join(target, "CLAUDE.sk.md");
-  const guideMd = join(target, "GUIDE.md");
   const docsDir = join(target, "docs");
+  const manifest = readManifest(target);
 
   // --- Check if SK is installed ---
 
   const hasCommands = existsSync(skCommandsDir);
   const hasClaudeMd = existsSync(claudeMd);
   const hasClaudeSk = existsSync(claudeSk);
-  // The live CLAUDE.md is SK-managed only when there's no CLAUDE.sk.md sidecar.
-  // A sidecar means the user had their own CLAUDE.md, so we must not delete it.
-  const skManagedClaude = hasClaudeMd && !hasClaudeSk;
+  // Ownership: trust the manifest when present. Legacy installs (no manifest)
+  // fall back to the sidecar heuristic: a CLAUDE.sk.md sidecar means the user
+  // had their own CLAUDE.md, so we must not delete it.
+  const skManagedClaude = hasClaudeMd && (manifest ? manifest.claudeMd === "sk" : !hasClaudeSk);
 
   if (!hasCommands && !hasClaudeMd && !hasClaudeSk) {
     console.log(c.yellow("[WARN]") + " SK does not appear to be installed here.");
@@ -604,16 +726,18 @@ async function runRemove(target) {
     console.log(c.red(`    .claude/commands/sk/    (${cmdCount} command files)`));
   }
   const agentsDir = join(target, ".claude", "agents");
-  if (existsSync(agentsDir)) {
-    console.log(c.red(`    .claude/agents/         (agent definitions)`));
-  }
   const skillsDir = join(target, ".claude", "skills");
+  // With a manifest we delete only the files SK shipped; user-added agents
+  // and skills in the same directories survive. Legacy: whole directories.
+  const scopeNote = manifest ? "SK-shipped files only" : "whole directory";
+  if (existsSync(agentsDir)) {
+    console.log(c.red(`    .claude/agents/         (${scopeNote})`));
+  }
   if (existsSync(skillsDir)) {
-    console.log(c.red(`    .claude/skills/         (skill definitions)`));
+    console.log(c.red(`    .claude/skills/         (${scopeNote})`));
   }
   if (skManagedClaude) console.log(c.red("    CLAUDE.md"));
   if (hasClaudeSk) console.log(c.red("    CLAUDE.sk.md            (SK template reference)"));
-  if (existsSync(guideMd)) console.log(c.red("    GUIDE.md"));
   console.log();
 
   const docCount = existsSync(docsDir) ? countFiles(docsDir) : 0;
@@ -627,7 +751,7 @@ async function runRemove(target) {
   // --- Confirm ---
 
   const answer = await ask("  Proceed? (y/n) ");
-  if (answer.toLowerCase() !== "y") {
+  if (!isYes(answer)) {
     console.log("  Aborted.");
     process.exit(0);
   }
@@ -644,17 +768,28 @@ async function runRemove(target) {
     removed++;
   }
 
-  if (existsSync(agentsDir)) {
-    rmSync(agentsDir, { recursive: true, force: true });
-    console.log(c.green("  [OK]") + " .claude/agents/ removed");
+  // Agents/skills: with a manifest, delete only SK-shipped files and keep
+  // anything the user added alongside them; legacy removes the whole dir.
+  function removeManaged(dirAbs, dirRel, label) {
+    if (!existsSync(dirAbs)) return;
+    const listed = manifest?.managed?.[dirRel];
+    if (listed) {
+      for (const rel of listed) {
+        const f = join(dirAbs, rel);
+        if (existsSync(f)) unlinkSync(f);
+      }
+      removeEmptyDirs(dirAbs);
+      const kept = existsSync(dirAbs);
+      console.log(c.green("  [OK]") + ` ${label} SK files removed` + (kept ? " (your own files kept)" : ""));
+    } else {
+      rmSync(dirAbs, { recursive: true, force: true });
+      console.log(c.green("  [OK]") + ` ${label} removed`);
+    }
     removed++;
   }
 
-  if (existsSync(skillsDir)) {
-    rmSync(skillsDir, { recursive: true, force: true });
-    console.log(c.green("  [OK]") + " .claude/skills/ removed");
-    removed++;
-  }
+  removeManaged(agentsDir, ".claude/agents", ".claude/agents/");
+  removeManaged(skillsDir, ".claude/skills", ".claude/skills/");
 
   if (skManagedClaude) {
     unlinkSync(claudeMd);
@@ -668,10 +803,9 @@ async function runRemove(target) {
     removed++;
   }
 
-  if (existsSync(guideMd)) {
-    unlinkSync(guideMd);
-    console.log(c.green("  [OK]") + " GUIDE.md removed");
-    removed++;
+  // SK bookkeeping files
+  for (const f of [manifestPath(target), join(target, ".claude", ".sk-source")]) {
+    if (existsSync(f)) unlinkSync(f);
   }
 
   // Clean up empty .claude/commands/ if sk was the only namespace

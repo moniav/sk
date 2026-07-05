@@ -19,7 +19,7 @@ Read `docs/tasks/.current` if it exists. It contains:
 - Last completed subtask
 - Timestamp
 
-If the file doesn't exist, skip to Step 1b.
+If the file doesn't exist, that's fine — the other checks below still run either way (`.current` is a hint, not a gate).
 
 ### 1b. Recent Git Activity
 ```bash

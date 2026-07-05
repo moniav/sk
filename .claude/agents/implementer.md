@@ -1,3 +1,10 @@
+---
+name: implementer
+description: Implements a single subtask in isolation following TDD. Use to execute one subtask from a task file during /sk:dev, /sk:implement, or /sk:orchestrate — give it the subtask spec, exact file paths, and the relevant acceptance criteria.
+tools: Read, Write, Edit, Bash, Grep, Glob
+model: sonnet
+---
+
 # Agent: Implementer
 
 ## Role

@@ -72,6 +72,7 @@ If the user wants changes:
 
 ## Step 6: Save Output (Optional)
 
-Ask: **"Save this copy to `docs/marketing/{format}-{topic}.md`?"**
+Ask: **"Save this copy to `docs/business/copy/{format}-{topic}.md`?"**
 
-If yes, save with a brief header noting the product, audience, and date.
+If yes, save with a brief header noting the product, audience, and date, and add a
+link to it in the `docs/business/README.md` index so it doesn't become an orphan.

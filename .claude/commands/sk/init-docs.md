@@ -17,7 +17,7 @@ If `docs/system/project-context.md` exists, read it first for existing context.
 ### Project Identity
 
 Use **Glob** to detect project type:
-- `package.json`, `pyproject.toml`, `requirements.txt`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`, `build.gradle`, `pom.xml`
+- `package.json`, `pyproject.toml`, `requirements.txt`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`, `build.gradle`
 
 Use **Read** to examine the manifest file (e.g., `package.json` first 20 lines).
 
@@ -196,12 +196,14 @@ Based on the codebase scan, generate these files in order:
 19. **`docs/legal/README.md`** — Legal & compliance index (stub; populated by `/sk:legal-scan`)
 20. **`docs/operations/README.md`** — Operations index (runbooks, incidents, postmortems)
 21. **`docs/_archive/README.md`** — Archive index (stub)
-20. **`docs/README.md`** — Master index linking everything (the **agent** front door)
-21. **`docs/START-HERE.md`** — Role-based **human** front door (router into the tree). Keep the generic role lanes (engineer / feature / end-user / business / compliance); prune any the project doesn't need.
+22. **`docs/README.md`** — Master index linking everything (the **agent** front door)
+23. **`docs/START-HERE.md`** — Role-based **human** front door (router into the tree). Keep the generic role lanes (engineer / feature / end-user / business / compliance); prune any the project doesn't need.
+
+**Stamp dates:** in every index file you create or keep, replace the `Last updated: YYYY-MM-DD` placeholder with today's date — otherwise `/sk:docs-audit` reports the fresh scaffold as unfilled stubs.
 
 ### 3f. CLAUDE.md
 
-17. **`CLAUDE.md`** — Agent instructions with:
+24. **`CLAUDE.md`** — Agent instructions with:
     - **Build Commands filled in** from Step 1 detection (not placeholders)
     - Project-specific constraints (discovered from linter configs, tsconfig, etc.)
     - Links to all doc sections
@@ -252,6 +254,7 @@ Based on the project type, create relevant SOPs:
 - [ ] CLAUDE.md Build Commands are filled in (not placeholder comments)
 - [ ] README.md (agent index) links all sections correctly
 - [ ] START-HERE.md (human router) present with role lanes
+- [ ] Index files carry today's date, not the `YYYY-MM-DD` placeholder
 - [ ] Domain homes present: features/, user-guides/, business/, legal/, operations/, _archive/ (each with a stub index)
 - [ ] Templates are all present in docs/templates/
 ```

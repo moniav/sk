@@ -22,11 +22,13 @@ Use **Read** on the index files that define the intended structure:
 
 **Skip** files that are empty or contain only unfilled template placeholders
 (`YYYY-MM-DD`, `[Name]`, `{Topic}`) — report them separately as "unfilled stubs", not
-as real docs.
+as real docs. Untouched SK-shipped scaffold indexes are normal for a young project:
+report those as a single count line, not as itemized findings demanding action.
 
 ## Step 2: Run the four checks
 
-Today's date is needed for staleness — get it with **Bash**: `date +%F`.
+Today's date is needed for staleness — get it with **Bash**: `date +%F`
+(PowerShell: `Get-Date -Format yyyy-MM-dd`).
 
 ### 2a. Orphans (reachability)
 
@@ -47,7 +49,13 @@ For each **evergreen** doc (`architecture/`, `conventions/`, `system/`, `flows/`
 - `Last updated` older than **180 days** (configurable — see below) **and** `Lifecycle`
   not explicitly `current` → flag **stale**.
 - `Lifecycle: stale` / `deprecated` → report under those groups regardless of date.
-- Evergreen doc **missing** a `Lifecycle` or `Last updated` field → flag **unstamped**.
+- Evergreen doc **missing** a `Lifecycle` or `Last updated` field → flag **unstamped** —
+  but only where the convention *requires* the field: feature/component docs, flows,
+  SOPs, user guides, and the domain-home indexes (`features/`, `business/`, `legal/`,
+  `operations/`, `user-guides/`, `reference/`, `_archive/`). Section indexes
+  (`architecture/`, `system/`, `conventions/`, `decisions/` READMEs) **may** adopt
+  `Lifecycle` per `docs/conventions/doc-lifecycle.md` but are NOT flagged when they
+  haven't — don't report a fresh scaffold against its own convention.
 
 Do **not** apply staleness to transient docs (`tasks/`, `reviews/`, `research/`) — their
 `status`/`date` fields govern them, not freshness.

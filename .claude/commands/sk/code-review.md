@@ -79,6 +79,15 @@ Reference `docs/conventions/code-style.md` and `docs/conventions/file-structure.
 - Complexity — deeply nested logic, long method chains
 - Naming clarity — can you understand the code without comments?
 
+### 4e: Testing
+
+- Coverage gaps — new logic paths without corresponding tests
+- AAA pattern — tests follow Arrange, Act, Assert structure
+- Test isolation — tests don't depend on each other or external state
+- Mock appropriateness — mocking too much (testing mocks) or too little
+- Edge case coverage — tests for error paths, not just happy paths
+- Assertion quality — specific assertions, not just "no error thrown"
+
 ### 4f: Scope & Simplicity
 
 Reference `docs/conventions/coding-behavior.md`:
@@ -89,15 +98,6 @@ Reference `docs/conventions/coding-behavior.md`:
 - Drive-by changes — refactoring or "cleanup" outside the task's scope
 - Gold plating — extra configuration, logging, or error handling beyond what's needed
 - Premature abstraction — generic utilities where simple inline code would suffice
-
-### 4e: Testing
-
-- Coverage gaps — new logic paths without corresponding tests
-- AAA pattern — tests follow Arrange, Act, Assert structure
-- Test isolation — tests don't depend on each other or external state
-- Mock appropriateness — mocking too much (testing mocks) or too little
-- Edge case coverage — tests for error paths, not just happy paths
-- Assertion quality — specific assertions, not just "no error thrown"
 
 ## Step 5: Present Report
 

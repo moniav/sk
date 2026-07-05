@@ -1,3 +1,10 @@
+---
+name: quality-reviewer
+description: Reviews code quality, convention compliance, and test adequacy against the project's own conventions. Use as the second review stage — only after spec-reviewer has passed — during /sk:dev, /sk:implement, or /sk:orchestrate.
+tools: Read, Grep, Glob
+model: sonnet
+---
+
 # Agent: Code Quality Reviewer
 
 ## Role
