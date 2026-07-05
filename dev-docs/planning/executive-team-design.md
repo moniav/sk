@@ -22,6 +22,36 @@ founder rather than resolving them silently. Weekly headless briefs (via
 founder sets direction → executives translate to plans → the fleet executes →
 executives report back.
 
+## CEO conversation modes
+
+`/sk:ceo` is not one meeting type. The charter defines modes, selected by argument
+or inferred from what the founder opens with
+(`argument-hint: "[meeting | grill <topic> | product <feature> | review]"`):
+
+| Mode | What it is | Ends with |
+|------|-----------|-----------|
+| **meeting** (default) | The weekly 1:1 — briefing, agenda, decisions | Decisions logged, STATE.md rewritten |
+| **grill** | Adversarial stress-test of an idea, plan, or direction. Forcing questions — who desperately needs this, what's the demand evidence, smallest wedge, what kills it, why now — but **grounded**: every challenge cites goals.md, positioning, board state, or past decisions. "You said G1 was the priority; this serves nothing on the goals doc — convince me." | The founder's answers recorded; unanswered questions become open threads in STATE.md — **and get re-asked next time** ("last month you couldn't say who pays. Can you now?") |
+| **product** | Product/feature sparring — the founder brings a feature idea and gets structured CEO feedback through the CEO lens: goal fit, ICP fit (from positioning), wedge size, opportunity cost (*what it displaces on the board*), anti-goal check, riskiest assumption | A position, not a survey: **proceed / park / kill**, with what evidence would change the verdict. "Proceed" hands off to `/sk:brainstorm` with the CEO's framing attached |
+| **review** | The operating review, on demand (same artifact the weekly routine produces) | Dated review + proposed plan |
+
+Two disciplines make these modes worth having:
+
+- **The CEO judges "should we"; the CTO judges "can we/how."** Product mode
+  deliberately does not discuss implementation — if the founder asks "how hard is
+  it," the CEO's answer is "that's a CTO meeting; my question is whether it deserves
+  the fleet's next slot."
+- **Feedback always takes a position.** No option surveys. Recommendation + cited
+  reasoning + riskiest assumption + the evidence that would flip it. The dissent
+  duty applies: if the founder is in love with a feature that serves no goal, the
+  grill/product modes are where that gets said — once, clearly, on the record.
+
+Grill mode's memory is the killer feature: `STATE.md` accumulates the open
+interrogation threads, so founder accountability compounds across sessions instead
+of resetting. (The CTO and CMO charters get lighter versions of the same pattern —
+`/sk:cto grill` for an architecture direction, `/sk:cmo product` for "will this
+feature market itself" — same protocol, their lens.)
+
 ---
 
 ## Journey 1 — Greenfield: idea to launch
@@ -204,7 +234,7 @@ ledger, authority ramp. Brownfield differences that persist:
 |-------|------|-------|
 | `executive-meeting` skill | M | protocol, STATE.md read/rewrite, dissent duty, founding-mode detection |
 | `executive-charter` template | S | makes CEO/CTO/CMO instances + future COO/GC cheap; user-definable executives |
-| ⊕ `/sk:ceo`, `/sk:cto`, `/sk:cmo` | S each | mostly charter content over the shared skill |
+| ⊕ `/sk:ceo`, `/sk:cto`, `/sk:cmo` | S–M each | charter + conversation modes (meeting/grill/product/review) over the shared skill |
 | ⊕ `/sk:founder` | M | Monday packet assembler; decisions ranked by reversibility |
 | `docs/business/exec/` home + asks ledger | S | STATE + meetings + asks.md |
 | Delegation policy: per-role section | S | CTO S/M grant; CEO/CMO propose-only defaults |
