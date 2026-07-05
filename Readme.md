@@ -73,6 +73,19 @@ npx shipkit-cld /path/to/my-project
 npx shipkit-cld --minimal
 ```
 
+### Experimental: install as a Claude Code plugin
+
+```
+/plugin marketplace add moniav/sk
+/plugin install sk@shipkit
+```
+
+Commands keep their exact `/sk:*` names, and updates arrive natively. **Preview
+caveats:** the `docs/` scaffold still requires `npx shipkit-cld` (plugins don't
+scaffold project files), and some in-command references to `.claude/` files assume a
+project install — the npm channel above remains the recommended path until this note
+disappears.
+
 ## Updating
 
 Three ways to update after SK has been changed:

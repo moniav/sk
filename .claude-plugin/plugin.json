@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "sk",
+  "displayName": "SK — ShipKit",
+  "description": "Documentation & lifecycle system for Claude Code — Plan/Dev/Test lifecycle with 48 commands, 22 skills, and 8 agents. EXPERIMENTAL plugin channel: the docs/ scaffold still requires 'npx shipkit-cld', and some in-command file references assume a project install. The npm channel remains primary.",
+  "author": {
+    "name": "moniav",
+    "url": "https://github.com/moniav"
+  },
+  "homepage": "https://github.com/moniav/sk#readme",
+  "repository": "https://github.com/moniav/sk",
+  "license": "MIT",
+  "keywords": [
+    "documentation",
+    "lifecycle",
+    "plan-dev-test",
+    "code-review",
+    "agents",
+    "autonomy"
+  ],
+  "commands": "./pkg/.claude/commands/sk",
+  "agents": "./pkg/.claude/agents",
+  "skills": "./pkg/.claude/skills"
+}

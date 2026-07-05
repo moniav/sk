@@ -1,6 +1,7 @@
 # ADR-002: Hybrid Distribution — Claude Code Plugin + npx Init Scaffold
 
-**Status:** Accepted (implementation deferred to a dedicated release)
+**Status:** Accepted — experimental plugin channel shipped 2026-07-05 (format verified
+against official docs; see `dev-docs/planning/plugin-split-plan.md` for remaining work)
 **Date:** 2026-07-05
 **Note:** Dogfood copy — records an SK product decision; not shipped to target projects.
 
