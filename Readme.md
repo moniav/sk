@@ -152,6 +152,21 @@ SK works with both new projects and existing codebases. The setup path differs.
 
 **Tip:** Run `/sk:update-docs` periodically to keep docs in sync as your codebase evolves.
 
+### Autonomous & Multi-Agent Operation
+
+SK works unattended and at fleet scale, governed by files you control:
+
+- **`docs/conventions/delegation-policy.md`** — a decision-rights matrix defining what
+  agents may do alone (commit, push, PR) vs ask (merge) vs never (deploy, publish,
+  spend). Agents cannot widen their own authority.
+- **`/sk:routines`** — schedule maintenance (doc audits, dependency sweeps, retros,
+  security reviews) that runs headless: no questions, dated reports, escalation via
+  the task board. See the [autonomous routines guide](https://github.com/moniav/sk/blob/main/docs/user-guides/set-up-autonomous-routines.md).
+- **Task claiming + goals** — multiple agents pull from one board without collision
+  (`claimed_by` frontmatter), prioritized against stated goals (`docs/business/goals.md`),
+  with every autonomous decision journaled in `docs/decisions/decision-log.md`.
+  See the [multi-agent guide](https://github.com/moniav/sk/blob/main/docs/user-guides/run-multiple-agents.md).
+
 ### Session Continuity
 
 SK tracks your active work across sessions:

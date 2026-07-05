@@ -1,25 +1,22 @@
-# SK Documentation Index
+# Project Documentation Index
 
 > **Claude Code:** Always read this file first before planning any implementation.
 > After completing any feature, update the relevant docs to reflect current state.
 > (Humans: [START-HERE.md](./START-HERE.md) is a role-based router into the tree.)
->
-> This `docs/` tree mirrors the **structure** of the shipped template (`pkg/docs/`);
-> the content here is SK's own filled-in dogfood. SK product-dev docs live in `dev-docs/`.
 
 ## Quick Navigation
 
 | Section | Purpose | When to Read |
 |---------|---------|--------------|
 | [Tasks](./tasks/) | Task board, epics, PRDs & implementation plans | Before/during feature development |
-| [Architecture](./architecture/) | System design, component relationships | Before designing new features |
+| [Architecture](./architecture/) | System design, component relationships, data flow | Before designing new features |
 | [Features](./features/) | Per-feature docs — what each does, how to extend | Building on or changing a feature |
 | [Conventions](./conventions/) | Code standards, naming, patterns, file organization | Before writing any code |
 | [SOP](./sop/) | Step-by-step procedures for common tasks | Before executing any recurring task |
 | [Flows](./flows/) | Visual diagrams (Mermaid) for key processes | When understanding system behavior |
 | [Decisions](./decisions/) | ADRs - why we made key technical choices | When questioning "why is it done this way?" |
 | [System](./system/) | Current state: stack, schema, integrations, APIs | For reference during development |
-| [Reference](./reference/) | Curated reference material (e.g. UI design) | When you need a stable lookup |
+| [Reference](./reference/) | Curated reference material (e.g. UI design standards) | Stable lookups; used by `/sk:ui-review` |
 | [User Guides](./user-guides/) | Customer-facing, task-oriented help | Writing/maintaining end-user docs |
 | [Business](./business/) | Positioning, competitors, pricing, business docs | GTM / business work |
 | [Legal](./legal/) | Agreements, policies, compliance scans | Legal/compliance work (`/sk:legal-scan`) |
@@ -27,7 +24,7 @@
 | [Reviews](./reviews/) | Code, security, perf, UI review reports | After running review commands |
 | [Research](./research/) | Brainstorm findings, debug investigations | After brainstorm or complex debug |
 | [Templates](./templates/) | Starter templates for all doc types | When creating new documentation |
-| [Archive](./_archive/) | Retired docs kept for history | Looking up superseded docs |
+| [Archive](./_archive/) | Retired docs kept for history | Looking up superseded decisions |
 
 ## Documentation Principles
 
@@ -42,58 +39,80 @@
 
 ```
 docs/
-|-- README.md                  <- You are here (master index)
+|-- README.md                  <- You are here (master index, agent front door)
+|-- START-HERE.md              <- Human front door (role-based router)
 |-- tasks/
 |   |-- README.md              <- Task board (pipeline view)
 |   |-- EPIC-N-name.md         <- Epic: large feature with multiple tasks
 |   |-- TASK-N-EN-name.md      <- Task: self-contained deliverable
 |   +-- examples/              <- Worked examples of completed tasks
 |-- architecture/
-|   +-- README.md              <- Architecture overview + component map
+|   |-- README.md              <- Architecture overview + component map
+|   |-- system-overview.md     <- High-level system design
+|   +-- [component].md         <- Per-component deep dives
+|-- features/
+|   |-- README.md              <- Feature docs index
+|   +-- [feature].md           <- Per-feature docs (/sk:new-feature-doc)
 |-- conventions/
 |   |-- README.md              <- Conventions index
-|   |-- code-style.md          <- JS/ES modules, ANSI colors, ASCII output
-|   |-- file-structure.md      <- pkg/ vs root, dual-edit rule
-|   |-- git-workflow.md        <- Conventional commits, version releases
-|   |-- testing.md             <- Manual CLI + command testing
-|   +-- coding-behavior.md     <- Implementation thinking discipline
+|   |-- code-style.md          <- Naming, formatting, patterns
+|   |-- file-structure.md      <- Project organization rules
+|   |-- git-workflow.md        <- Branching, commits, PRs
+|   |-- delegation-policy.md   <- What agents may decide alone vs escalate
+|   +-- testing.md             <- Testing standards & patterns
 |-- sop/
 |   |-- README.md              <- SOP index
 |   |-- creating-a-task.md     <- How to create & manage tasks
-|   +-- database-migration.md  <- DB migration procedure (template)
+|   +-- [procedure].md         <- Step-by-step procedures
 |-- flows/
-|   +-- README.md              <- Flow diagrams index
+|   |-- README.md              <- Flow diagrams index
+|   +-- [flow-name].md         <- Mermaid diagrams + explanations
 |-- decisions/
-|   +-- README.md              <- ADR index
+|   |-- README.md              <- ADR index
+|   |-- decision-log.md        <- One-line journal of small (agent) decisions
+|   +-- [NNN]-[title].md       <- Architecture Decision Records
 |-- system/
 |   |-- README.md              <- System state index
 |   |-- project-context.md     <- Dense project summary (read first)
-|   |-- tech-stack.md          <- Node.js, zero deps, npm
-|   |-- database-schema.md     <- N/A (stateless CLI)
-|   |-- api-reference.md       <- N/A (CLI interface)
-|   |-- integrations.md        <- N/A (no external services)
-|   +-- env-variables.md       <- N/A (zero config)
+|   |-- tech-stack.md          <- Technologies & versions
+|   |-- database-schema.md     <- DB schema + relationships
+|   |-- api-reference.md       <- API endpoints & contracts
+|   |-- integrations.md        <- External service connections
+|   +-- env-variables.md       <- Environment variables & secrets
 |-- reference/
 |   |-- README.md              <- Reference index
 |   +-- ui-design/             <- UI design standards (used by /sk:ui-review)
 |-- reviews/
-|   +-- README.md              <- Review report index
+|   |-- README.md              <- Review report index
+|   |-- code/                  <- Code review reports
+|   |-- security/              <- Security audit reports
+|   |-- performance/           <- Performance analysis reports
+|   |-- ui/                    <- UI/a11y audit reports
+|   +-- deps/                  <- Dependency health reports
 |-- research/
-|   +-- README.md              <- Research index
+|   |-- README.md              <- Research index
+|   +-- YYYY-MM-DD-topic.md   <- Research artifacts
 |-- user-guides/
-|   +-- README.md              <- User guides index
+|   |-- README.md              <- User guides index
+|   +-- [task].md              <- Customer-facing guides (/sk:new-user-guide)
 |-- business/
-|   +-- README.md              <- Business / GTM index
+|   |-- README.md              <- Business / GTM index
+|   +-- [positioning|competitor-*|pricing-strategy|*].md  <- GTM + business docs
 |-- legal/
-|   +-- README.md              <- Legal & compliance index
+|   |-- README.md              <- Legal & compliance index
+|   |-- agreements/            <- founders, operating, IP, contracts
+|   |-- policies/              <- privacy policy, ToS, DPA
+|   +-- scans/                 <- dated compliance scans (/sk:legal-scan)
 |-- operations/
-|   +-- README.md              <- Operations index
+|   |-- README.md              <- Operations index
+|   |-- runbooks/              <- on-call, deploy, rollback, recovery
+|   |-- incidents/             <- active incident notes
+|   +-- postmortems/           <- blameless postmortems
 |-- _archive/
-|   +-- README.md              <- Archive index
-+-- templates/                 <- 19 doc templates — see templates/README.md for the full list
+|   |-- README.md              <- Archive index
+|   +-- [retired-doc].md       <- Superseded docs (Lifecycle: archived)
++-- templates/                 <- 20 doc templates — see templates/README.md for the full list + which command emits each
 ```
-
-> SK product-development docs (plans, analyses, contributor guides) live in `dev-docs/`, not here.
 
 ## Maintenance Rules
 
@@ -102,15 +121,23 @@ docs/
 | Event | Action |
 |-------|--------|
 | **New work starting** | Follow [Creating a Task SOP](./sop/creating-a-task.md) |
-| New command/skill/agent added | Update architecture, file-structure, and project-context |
-| CLI logic changed | Update architecture and project-context |
+| New feature planned | Create epic/task in `tasks/` using template |
+| Task enters DEV phase | Update task frontmatter, start checking subtasks |
+| Task enters TEST phase | Verify acceptance criteria in the task doc |
+| Feature implemented | Update `system/`, `architecture/`, relevant `flows/` |
 | New pattern established | Add to `conventions/` |
 | Tech decision made | Create ADR in `decisions/` |
-| Version released | Update project-context current state |
+| Small decision on an autonomous run | Append one line to `decisions/decision-log.md` |
+| Company goals set or changed | Update `business/goals.md`; link epics via `goal:` |
+| New recurring process | Create SOP in `sop/` |
+| Dependency added/upgraded | Update `system/tech-stack.md` |
+| Schema changed | Update `system/database-schema.md` |
+| API changed | Update `system/api-reference.md` |
 
 ### Doc Quality Checklist
 
 - [ ] Has `Last updated` date
 - [ ] Linked from parent README index
 - [ ] No duplicated content (links instead)
-- [ ] Reflects actual SK state (not generic templates)
+- [ ] Code examples are tested/current
+- [ ] Mermaid diagrams render correctly

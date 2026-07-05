@@ -1,18 +1,19 @@
 # User Guides
 
 > Customer-facing documentation — task-oriented guides for the people who *use* the
-> product, written for a non-engineer audience.
+> product. SK's users are developers, so these are written for a developer audience.
 
-**Last updated:** YYYY-MM-DD
+**Last updated:** 2026-07-05
 **Lifecycle:** current
 
 Created by `/sk:new-user-guide` and kept in sync with `/sk:update-docs` (scope:
 `user-guides`). Each guide uses the [`user-guide`](../templates/user-guide.md) template.
+Installation and the command catalog live in the repo [Readme](../../Readme.md) — these
+guides cover the workflows that span multiple files/commands.
 
 ## Index
 
-<!-- Add a row per guide. /sk:new-user-guide updates this automatically. -->
-
 | Guide | Audience | Lifecycle |
 |-------|----------|-----------|
-| _none yet_ | — | — |
+| [Set up autonomous maintenance routines](./set-up-autonomous-routines.md) | Developers automating audits/retros/dep sweeps | current |
+| [Run multiple agents on one project](./run-multiple-agents.md) | Developers running 2+ agents on one repo | current |

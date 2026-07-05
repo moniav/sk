@@ -58,6 +58,7 @@ docs/
 |   |-- code-style.md          <- Naming, formatting, patterns
 |   |-- file-structure.md      <- Project organization rules
 |   |-- git-workflow.md        <- Branching, commits, PRs
+|   |-- delegation-policy.md   <- What agents may decide alone vs escalate
 |   +-- testing.md             <- Testing standards & patterns
 |-- sop/
 |   |-- README.md              <- SOP index
@@ -68,6 +69,7 @@ docs/
 |   +-- [flow-name].md         <- Mermaid diagrams + explanations
 |-- decisions/
 |   |-- README.md              <- ADR index
+|   |-- decision-log.md        <- One-line journal of small (agent) decisions
 |   +-- [NNN]-[title].md       <- Architecture Decision Records
 |-- system/
 |   |-- README.md              <- System state index
@@ -125,6 +127,8 @@ docs/
 | Feature implemented | Update `system/`, `architecture/`, relevant `flows/` |
 | New pattern established | Add to `conventions/` |
 | Tech decision made | Create ADR in `decisions/` |
+| Small decision on an autonomous run | Append one line to `decisions/decision-log.md` |
+| Company goals set or changed | Update `business/goals.md`; link epics via `goal:` |
 | New recurring process | Create SOP in `sop/` |
 | Dependency added/upgraded | Update `system/tech-stack.md` |
 | Schema changed | Update `system/database-schema.md` |
