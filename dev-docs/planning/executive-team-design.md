@@ -256,6 +256,78 @@ ledger, authority ramp. Brownfield differences that persist:
 | Metrics dictionary template | S | prerequisite pulled forward from earlier backlog |
 | kickoff/init-docs exec on-ramp | S | closing offer in both commands |
 
-Open decisions (from the discussion, still unsettled): `/sk:founder` standalone vs
-folded into `/sk:resume`; meeting notes for every conversation vs decisions-only;
-third-party executive seats (COO) at launch vs later.
+## Settled decisions (2026-07-05)
+
+1. **Meeting notes: every conversation.** Every executive session writes a note —
+   even "no decisions" meetings — because grill threads, positions, and dissent all
+   carry value beyond formal decisions, and a gap in the record is indistinguishable
+   from a meeting that never happened. Notes stay short by protocol (the
+   executive-meeting skill caps them: decisions, disagreements, threads, actions —
+   not transcripts). `STATE.md` remains the rolling synthesis so note volume never
+   burdens context.
+
+2. **COO at launch — four seats.** The COO owns what already exists but has no
+   owner: routines (the schedules and their reports), incidents/postmortems,
+   reliability/SLOs, the delegation policy's *operational* health (are headless runs
+   escalating properly? are blocked items rotting?), and — when the support pack
+   lands — customer support operations. Charter framework: "the company must run the
+   same on a day nobody is watching"; boring excellence; every incident becomes a
+   runbook. Wields: `/sk:ops`, `/sk:routines`, docs-audit/deps reports, the
+   operations home. Brownfield due-diligence mode: routine coverage audit + "what
+   breaks if the founder disappears for two weeks?" Greenfield founding mode: stands
+   up the initial routine set. Day-one authority: may tune routine cadences and
+   file/triage incidents autonomously; may not change the delegation policy or
+   deploy anything.
+
+## The remaining decision, expanded: `/sk:founder` — standalone, folded, or bridged
+
+The Monday packet needs a home. Three options:
+
+### Option A — Fold into `/sk:resume`
+
+One morning ritual: resume detects the exec home and prepends the packet to the
+session briefing.
+
+- **For:** single habit, no new command; the founder can't forget to check.
+- **Against — and these are structural:** it violates the altitude principle. Resume
+  is *session*-scoped ("what was I doing?") and runs every session; the packet is
+  *company*-scoped ("what does the company need from me?") and is weekly. A founder
+  dropping in for a hands-on coding hour would open with a board meeting — exactly
+  the gating the design forbids. It also bloats every session's context with content
+  that's stale six days out of seven, and it leaves no room for the packet to grow
+  into an approval console (below) without making resume enormous.
+
+### Option B — Standalone `/sk:founder`
+
+- **For:** clean altitude separation — you *choose* the founder hat, matching how
+  every other executive works; cadence matches the weekly briefs; resume stays lean.
+  Most importantly it gives the packet room to become what it wants to be: not a
+  report but an **approval console** — the decisions queue (approve / adjust / defer
+  each item, ranked by reversibility, one-way doors first), asks awaiting
+  resolution, policy-widening proposals to ratify, and on approval the dispatch
+  happens right there (items land on the board, epics go to brainstorm, policy edits
+  apply). Founder decisions write to the decision log like everyone else's.
+- **Against:** 49th command; discoverability — a founder who never learns the
+  command never sees the packet, and the exec layer silently degrades into reports
+  nobody reads.
+
+### Option C — Standalone + a bridge (recommended)
+
+Option B, plus one line: when `/sk:resume` runs and an **unread packet** exists (a
+brief newer than the last `/sk:founder` session), the session briefing ends with:
+`Your executive team's Monday packet is waiting — /sk:founder (3 decisions queued,
+1 one-way door).` One sentence, session-scoped resume stays session-scoped, the
+company-scoped work is signposted not imposed — the same hint-not-gate pattern as
+`.current`. Discoverability solved, altitude preserved, and the teaser line
+("1 one-way door") does the marketing.
+
+**Recommendation: C.** It is strictly B plus the discoverability fix, at the cost of
+three lines in resume.md.
+
+## Build plan additions from these decisions
+
+| Piece | Size | Notes |
+|-------|------|-------|
+| ⊕ `/sk:coo` | S–M | fourth charter over the shared skill; owns routines/incidents/reliability |
+| resume.md bridge | XS | unread-packet pointer (if Option C confirmed) |
+| Note-brevity protocol | — | folded into the executive-meeting skill (decisions/disagreements/threads/actions caps) |
