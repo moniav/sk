@@ -19,3 +19,4 @@ guides cover the workflows that span multiple files/commands.
 | [Run multiple agents on one project](./run-multiple-agents.md) | Developers running 2+ agents on one repo | current |
 | [Run your marketing with SK](./run-your-marketing.md) | Developers/founders producing goal-linked marketing | current |
 | [Install SK as a Claude Code plugin](./install-as-plugin.md) | Developers preferring native plugin install (experimental) | current |
+| [Meet your executive team](./meet-your-executive-team.md) | Founders running the company with CEO/CTO/CMO/COO seats | current |

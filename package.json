@@ -1,6 +1,6 @@
 {
   "name": "shipkit-cld",
-  "version": "1.9.0",
+  "version": "2.0.0",
   "description": "Documentation & lifecycle system for Claude Code — Plan, Dev, Test workflow with 53 slash commands, 23 skills, and 8 agents for code review, security, debugging, refactoring, copywriting, diagrams, and git workflow",
   "type": "module",
   "bin": {

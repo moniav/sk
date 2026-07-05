@@ -37,7 +37,7 @@ your-project/
 
 ## How It Works
 
-![How It Works](https://raw.githubusercontent.com/moniav/sk/main/assets/how-it-works.svg)
+![How It Works](https://raw.githubusercontent.com/moniav/sk/main/assets/how-it-works.png)
 
 **LIFECYCLE** = How work flows from idea to done (plan > dev > test, task hierarchy)
 **WHAT** = What the system looks like (architecture, current state, features, diagrams)
@@ -49,7 +49,7 @@ your-project/
 
 Every piece of work flows through three phases with explicit exit gates:
 
-![Task Lifecycle](https://raw.githubusercontent.com/moniav/sk/main/assets/task-lifecycle.svg)
+![Task Lifecycle](https://raw.githubusercontent.com/moniav/sk/main/assets/task-lifecycle.png)
 
 **Quick Path (XS/S complexity):** Most work doesn't need task files. Just describe what you want — Claude Code follows Plan > Dev > Test mentally and commits when done.
 
@@ -57,7 +57,7 @@ Every piece of work flows through three phases with explicit exit gates:
 
 ### Task Hierarchy
 
-![Task Hierarchy](https://raw.githubusercontent.com/moniav/sk/main/assets/task-hierarchy.svg)
+![Task Hierarchy](https://raw.githubusercontent.com/moniav/sk/main/assets/task-hierarchy.png)
 
 ## Installation
 
@@ -116,7 +116,7 @@ npx shipkit-cld remove .
 
 SK works with both new projects and existing codebases. The setup path differs.
 
-![Getting Started](https://raw.githubusercontent.com/moniav/sk/main/assets/getting-started.svg)
+![Getting Started](https://raw.githubusercontent.com/moniav/sk/main/assets/getting-started.png)
 
 ### Greenfield Project (starting from scratch)
 
@@ -190,7 +190,7 @@ SK tracks your active work across sessions:
 
 ## Command Map
 
-![Command Map](https://raw.githubusercontent.com/moniav/sk/main/assets/command-map.svg)
+![Command Map](https://raw.githubusercontent.com/moniav/sk/main/assets/command-map.png)
 
 ## Command Reference
 
@@ -307,7 +307,7 @@ approving it.
 
 Weekly headless briefs via `/sk:routines`; per-seat decision rights live in your
 `docs/conventions/delegation-policy.md`. Custom seats via the `executive-charter`
-template.
+template. Full walkthrough: [Meet your executive team](https://github.com/moniav/sk/blob/main/docs/user-guides/meet-your-executive-team.md).
 
 ## Package Structure
 

@@ -1,6 +1,12 @@
 # Changelog
 
-## Unreleased
+## 2.0.0 (2026-07-05)
+
+SK grows from a doc & lifecycle system into a company operating system: a
+persistent executive team (CEO/CTO/CMO/COO + the founder's approval console) over
+the v1.9.0 autonomy stack, plus an experimental native plugin channel. Five new
+commands (48 → 53), one new skill (22 → 23), two new templates (22 → 24). No
+breaking changes — the major version marks the product milestone.
 
 - **Executive team** — run the company with persistent 1:1 partners: `/sk:ceo`
   (strategy/goals; `grill` mode stress-tests you against your own docs and re-asks
@@ -16,7 +22,11 @@
   custom seats; `metrics.md` dictionary template (numbers need definitions + sources);
   kickoff/init-docs offer the team on-ramp; `/sk:resume` points at unread packets.
   The founder is never gated — direct work is always allowed and observed, not
-  approved. Design + founder journeys: `dev-docs/planning/executive-team-design.md`.
+  approved. Design + founder journeys: `dev-docs/planning/executive-team-design.md`;
+  user guide: `docs/user-guides/meet-your-executive-team.md`.
+- **README diagrams switched to PNG** — Mermaid-rendered SVGs use `foreignObject`
+  labels that GitHub's image proxy doesn't render; all five diagrams are now PNGs
+  (sources kept in `assets/src/*.mmd`).
 - **Experimental Claude Code plugin channel** — SK installs natively via
   `/plugin marketplace add moniav/sk` → `/plugin install sk@shipkit`. The plugin is
   named `sk`, preserving every `/sk:*` invocation; `plugin.json` points at
