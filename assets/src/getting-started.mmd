@@ -1,0 +1,24 @@
+flowchart TD
+    Start(["npx shipkit-cld"]) --> Q{"New or existing<br/>codebase?"}
+
+    Q -->|"Greenfield<br/>(no code yet)"| GF1["/sk:kickoff<br/><i>guided setup + research</i>"]
+    GF1 --> GF2["/sk:brainstorm<br/><i>define first feature</i>"]
+    GF2 --> Impl
+
+    Q -->|"Brownfield<br/>(existing code)"| BF1["/sk:init-docs<br/><i>auto-scan codebase<br/>+ detect build commands</i>"]
+    BF1 --> BF2["Review generated docs"]
+    BF2 --> BF3["/sk:new-task"]
+    BF3 --> Impl
+
+    Impl["/sk:implement<br/><i>build it</i>"]
+    Impl --> Ship(["Ship it"])
+
+    style Start fill:#2d6a4f,color:#fff
+    style Ship fill:#2d6a4f,color:#fff
+    style Q fill:#264653,color:#fff
+    style Impl fill:#e76f51,color:#fff
+    style GF1 fill:#2a9d8f,color:#fff
+    style GF2 fill:#2a9d8f,color:#fff
+    style BF1 fill:#e9c46a,color:#000
+    style BF2 fill:#e9c46a,color:#000
+    style BF3 fill:#e9c46a,color:#000

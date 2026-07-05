@@ -1,0 +1,20 @@
+graph TD
+    Epic["Epic<br/><i>L/XL — large feature, cross-cutting</i>"]
+    Epic --> T1["Task<br/><i>M — self-contained deliverable</i>"]
+    Epic --> T2["Task<br/><i>M — self-contained deliverable</i>"]
+
+    T1 --> S1["Subtask S<br/>[DEV]"]
+    T1 --> S2["Subtask S<br/>[TEST]"]
+    T1 --> S3["Subtask S<br/>[DOCS]"]
+
+    T2 --> S4["Subtask S"]
+    T2 --> S5["Subtask S"]
+
+    style Epic fill:#264653,color:#fff
+    style T1 fill:#2a9d8f,color:#fff
+    style T2 fill:#2a9d8f,color:#fff
+    style S1 fill:#e9c46a,color:#000
+    style S2 fill:#e9c46a,color:#000
+    style S3 fill:#e9c46a,color:#000
+    style S4 fill:#e9c46a,color:#000
+    style S5 fill:#e9c46a,color:#000

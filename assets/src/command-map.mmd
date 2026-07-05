@@ -1,0 +1,136 @@
+graph LR
+    subgraph "Getting Started"
+        kickoff["/sk:kickoff"]
+        brainstorm["/sk:brainstorm"]
+        initdocs["/sk:init-docs"]
+    end
+
+    subgraph "Lifecycle"
+        implement["/sk:implement"]
+        plan["/sk:plan"]
+        dev["/sk:dev"]
+        test["/sk:test"]
+        orchestrate["/sk:orchestrate"]
+        finish["/sk:finish"]
+    end
+
+    subgraph "Creation"
+        newtask["/sk:new-task"]
+        newepic["/sk:new-epic"]
+        newsop["/sk:new-sop"]
+        newadr["/sk:new-adr"]
+        newflow["/sk:new-flow"]
+        newfeaturedoc["/sk:new-feature-doc"]
+        newuserguide["/sk:new-user-guide"]
+    end
+
+    subgraph "Quality"
+        review["/sk:review"]
+        codereview["/sk:code-review"]
+        secreview["/sk:security-review"]
+        uireview["/sk:ui-review"]
+        perfreview["/sk:perf-review"]
+        recap["/sk:recap"]
+    end
+
+    subgraph "Decision Making"
+        council["/sk:council"]
+    end
+
+    subgraph "Debugging & Refactoring"
+        debug["/sk:debug"]
+        refactor["/sk:refactor"]
+        migrate["/sk:migrate"]
+        debt["/sk:debt"]
+    end
+
+    subgraph "Marketing, GTM & Legal"
+        copywrite["/sk:copywrite"]
+        campaign["/sk:campaign"]
+        announce["/sk:announce"]
+        positioning["/sk:positioning"]
+        competitor["/sk:competitor"]
+        pricing["/sk:pricing"]
+        newbusinessdoc["/sk:new-business-doc"]
+        legalscan["/sk:legal-scan"]
+    end
+
+    subgraph "Management"
+        resume["/sk:resume"]
+        retro["/sk:retro"]
+        status["/sk:task-status"]
+        updatedocs["/sk:update-docs"]
+        docsaudit["/sk:docs-audit"]
+        ops["/sk:ops"]
+        update["/sk:update"]
+        routines["/sk:routines"]
+        commit["/sk:commit"]
+        pr["/sk:pr"]
+        changelog["/sk:changelog"]
+        release["/sk:release"]
+        deps["/sk:deps"]
+    end
+
+    kickoff -->|"generates docs"| brainstorm
+    brainstorm -->|"creates tasks"| implement
+    initdocs -->|"populates docs"| newtask
+
+    implement --> plan
+    plan --> dev
+    plan --> orchestrate
+    dev --> test
+    orchestrate --> test
+    test --> finish
+
+    newepic -->|"creates tasks"| newtask
+
+    dev -->|"done"| codereview
+    codereview --> secreview
+    codereview --> perfreview
+    secreview --> commit
+    perfreview --> commit
+
+    council -->|"decision"| newadr
+    debug -->|"fixed"| codereview
+    refactor -->|"restructured"| codereview
+    migrate -->|"migrated"| test
+    test -->|"shipped"| retro
+    test -->|"recap diff"| recap
+    recap -->|"before PR"| commit
+    debt -.->|"feeds backlog"| refactor
+
+    deps -.->|"updates needed"| commit
+    changelog -.->|"commit changelog"| commit
+
+    review -->|"ship verdict"| finish
+    commit --> pr
+    changelog -.->|"release notes"| release
+    release -->|"announce it"| announce
+    announce -.->|"major launch"| campaign
+    routines -.->|"schedules"| docsaudit
+
+    style kickoff fill:#2d6a4f,color:#fff
+    style brainstorm fill:#2d6a4f,color:#fff
+    style initdocs fill:#2d6a4f,color:#fff
+    style implement fill:#e76f51,color:#fff
+    style plan fill:#2a9d8f,color:#fff
+    style dev fill:#2a9d8f,color:#fff
+    style test fill:#2a9d8f,color:#fff
+    style orchestrate fill:#e76f51,color:#fff
+    style council fill:#9b59b6,color:#fff
+    style finish fill:#2a9d8f,color:#fff
+    style perfreview fill:#e9c46a,color:#000
+    style debug fill:#e76f51,color:#fff
+    style refactor fill:#e76f51,color:#fff
+    style migrate fill:#e76f51,color:#fff
+    style retro fill:#264653,color:#fff
+    style changelog fill:#264653,color:#fff
+    style deps fill:#264653,color:#fff
+    style recap fill:#e9c46a,color:#000
+    style debt fill:#264653,color:#fff
+    style commit fill:#e9c46a,color:#000
+    style resume fill:#264653,color:#fff
+    style pr fill:#e9c46a,color:#000
+    style release fill:#e9c46a,color:#000
+    style routines fill:#264653,color:#fff
+    style review fill:#e9c46a,color:#000

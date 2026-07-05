@@ -1,0 +1,37 @@
+stateDiagram-v2
+    direction LR
+
+    [*] --> Plan
+    Plan --> Dev : Questions resolved, subtasks defined, criteria testable
+    Dev --> Test : Subtasks done, code reviewed, docs updated
+    Test --> Done : All criteria verified, all tests pass
+    Done --> [*]
+
+    state Plan {
+        direction TB
+        p1: Write problem statement
+        p2: Define acceptance criteria
+        p3: Break into subtasks
+        p4: Resolve open questions
+        p1 --> p2
+        p2 --> p3
+        p3 --> p4
+    }
+
+    state Dev {
+        direction TB
+        d1: Execute subtasks
+        d2: Follow conventions
+        d3: Update docs with code
+        d1 --> d2
+        d2 --> d3
+    }
+
+    state Test {
+        direction TB
+        t1: Verify each criterion
+        t2: Test error paths
+        t3: Confirm no regressions
+        t1 --> t2
+        t2 --> t3
+    }

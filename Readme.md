@@ -274,6 +274,8 @@ SK tracks your active work across sessions:
 | `/sk:new-business-doc` | Create a business doc (plan, model, cap table, update, memo) | Capturing a business artifact |
 | `/sk:legal-scan` | Legal & compliance expert — requirements, framework deep-dives, document drafting, contract review | Starting a project, adding payments, fundraising |
 
+Full marketing walkthrough (brand voice → copy → campaigns → announcements → routines): [Run your marketing with SK](https://github.com/moniav/sk/blob/main/docs/user-guides/run-your-marketing.md).
+
 ## Package Structure
 
 SK separates the **product** (what gets installed) from **project files** (for developing SK itself):
