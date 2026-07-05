@@ -294,4 +294,9 @@ Recommendations:
 Next step: Run /sk:new-task to create your first task
 ```
 
-Ask: **"Documentation initialized. Want me to create an initial task for any of the gaps I found?"**
+Ask (AskUserQuestion): **"Stand up your executive team?"** — if yes, suggest the
+due-diligence order for brownfield: `/sk:cto` first ("here's what you actually
+own"), then `/sk:ceo` (goals retrofit + zombie sweep), then `/sk:cmo` (audit the
+existing public surface).
+
+Then ask: **"Documentation initialized. Want me to create an initial task for any of the gaps I found?"**

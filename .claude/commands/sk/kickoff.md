@@ -175,4 +175,9 @@ Research applied:
 Next step: Run /sk:brainstorm to define your first feature
 ```
 
-Ask: **"Want to brainstorm your first feature now? (/sk:brainstorm)"**
+Ask (AskUserQuestion): **"Stand up your executive team?"** — if yes, suggest the
+founding order for greenfield: `/sk:ceo` first (mission, goals, anti-goals), then
+`/sk:cto` (ratify the stack research, confirm the autonomy grant). The CMO joins
+pre-launch.
+
+Then ask: **"Want to brainstorm your first feature now? (/sk:brainstorm)"**

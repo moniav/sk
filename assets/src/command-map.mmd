@@ -55,6 +55,14 @@ graph LR
         legalscan["/sk:legal-scan"]
     end
 
+    subgraph "Executive Team"
+        ceo["/sk:ceo"]
+        cto["/sk:cto"]
+        cmo["/sk:cmo"]
+        coo["/sk:coo"]
+        founder["/sk:founder"]
+    end
+
     subgraph "Management"
         resume["/sk:resume"]
         retro["/sk:retro"]
@@ -108,6 +116,15 @@ graph LR
     release -->|"announce it"| announce
     announce -.->|"major launch"| campaign
     routines -.->|"schedules"| docsaudit
+    routines -.->|"weekly briefs"| founder
+    ceo -->|"proceed"| brainstorm
+    founder -->|"approvals"| newtask
+
+    style ceo fill:#9b59b6,color:#fff
+    style cto fill:#9b59b6,color:#fff
+    style cmo fill:#9b59b6,color:#fff
+    style coo fill:#9b59b6,color:#fff
+    style founder fill:#2d6a4f,color:#fff
 
     style kickoff fill:#2d6a4f,color:#fff
     style brainstorm fill:#2d6a4f,color:#fff

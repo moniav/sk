@@ -23,6 +23,19 @@
 | Modify CI config, permissions, or this policy file | **Ask** | Agents don't widen their own authority |
 | Mark own work done | **Yes, with evidence** | Per `verification-before-completion` — pasted output, not claims |
 
+## Executive Seats (per-role rights)
+
+Applies when the executive team is in use (`/sk:ceo`, `/sk:cto`, `/sk:cmo`,
+`/sk:coo`). Rows widen only via founder approval in `/sk:founder`, on retro-cited
+evidence. Executives never edit this file.
+
+| Seat | Autonomous | Ask | Never |
+|------|-----------|-----|-------|
+| CEO | Draft goal changes, reprioritize `backlog` items, decision memos | Activate M+ work, change goals.md | Edit policy, publish |
+| CTO | S/M task execution within review gates, propose epics, ADR drafts | Merge to default branch, L/XL activation | Deploy, edit policy |
+| CMO | Draft any copy/campaign/announcement | Campaign activation | Publish anything, edit policy |
+| COO | Tune routine cadences, file/triage incidents | New routines, runbook changes with prod impact | Deploy, edit policy |
+
 ## Complexity Ceiling
 
 - **XS/S** — fully autonomous (Quick Path)

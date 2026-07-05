@@ -29,6 +29,7 @@ Ask the user which type, then use the matching template from `docs/templates/`:
 | Decision memo | `decision-memo.md` | One reversible/irreversible decision, options, recommendation |
 | Company goals | `goals.md` | The strategy layer — goal IDs (`G{N}`) that epics link to via their `goal:` frontmatter; saved as `docs/business/goals.md` |
 | Brand voice | `brand-voice.md` | How the company sounds in public — overrides the copywriting default; saved as `docs/business/brand-voice.md` |
+| Metrics dictionary | `metrics.md` | What each number means + source of truth; goal measures and reviews may only cite defined metrics; saved as `docs/business/metrics.md` |
 
 ## Step 3: Write the Doc
 

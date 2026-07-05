@@ -324,6 +324,8 @@ company-scoped work is signposted not imposed — the same hint-not-gate pattern
 **Recommendation: C.** It is strictly B plus the discoverability fix, at the cost of
 three lines in resume.md.
 
+**DECIDED 2026-07-05: Option C.** All design decisions closed — build approved.
+
 ## Build plan additions from these decisions
 
 | Piece | Size | Notes |

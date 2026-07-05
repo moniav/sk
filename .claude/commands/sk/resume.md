@@ -73,6 +73,14 @@ No active work found. Recent activity:
 **Suggested:** Run `/sk:task-status` for full board, or start new work with `/sk:new-task`.
 ```
 
+## Step 2.5: Founder Packet Pointer (hint, not gate)
+
+If `docs/business/exec/` exists and any `<role>/briefs/` file is newer than the
+last `/sk:founder` session (see its last-read marker), end the briefing with one
+line — e.g. **"Your executive team's Monday packet is waiting — `/sk:founder`
+({N} decisions queued{, incl. a one-way door if any})."** Nothing more; the
+session briefing stays session-scoped.
+
 ## Step 3: Offer Next Action
 
 Based on the state, suggest the most logical next step:

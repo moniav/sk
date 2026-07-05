@@ -29,3 +29,4 @@ everything here rather than splitting across `marketing/` and `business/`.
 | Write marketing copy | `/sk:copywrite` | `copy/*.md` |
 | Plan/track a marketing campaign | `/sk:campaign` | `campaigns/CAMPAIGN-*.md` |
 | Announce a release | `/sk:announce` | `copy/announce-v*.md` |
+| Meet your executive team | `/sk:ceo` `/sk:cto` `/sk:cmo` `/sk:coo` `/sk:founder` | `exec/<role>/` (offices) |

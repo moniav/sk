@@ -54,6 +54,11 @@
 | `/sk:new-business-doc` | Create a business doc (plan, model, cap table, update, memo) | Capturing a business artifact |
 | `/sk:campaign` | Plan, track, and close a marketing campaign | Coordinated marketing work |
 | `/sk:announce` | Turn a release into an announcement pack | After `/sk:release` |
+| `/sk:ceo` | 1:1 with your CEO — strategy, goals, grill mode, product feedback | Strategy sessions, feature verdicts |
+| `/sk:cto` | 1:1 with your CTO — architecture, quality, debt, feasibility | Technical direction, tech health |
+| `/sk:cmo` | 1:1 with your CMO — positioning, brand, campaigns, launches | Marketing direction |
+| `/sk:coo` | 1:1 with your COO — routines, incidents, reliability | Operational health |
+| `/sk:founder` | Monday packet — executive briefs merged into an approval console | Weekly founder review |
 | `/sk:ops` | Operations/SRE expert — incidents, runbooks, postmortems, SLOs, readiness | Running prod, on-call, reliability work |
 
 ## Command Prerequisites
@@ -79,6 +84,8 @@
 | /sk:new-business-doc | docs/business/ home (created by init-docs) |
 | /sk:campaign | docs/business/ home; positioning + goals help |
 | /sk:announce | A CHANGELOG.md entry to announce |
+| /sk:ceo, /sk:cto, /sk:cmo, /sk:coo | Nothing (founding mode bootstraps the office); goals + delegation-policy enrich |
+| /sk:founder | Executive briefs (schedule via /sk:routines) |
 | /sk:ops | docs/operations/ home (created by init-docs) |
 | /sk:finish | Build commands filled in, code-review prerequisites |
 | /sk:implement | project-context.md populated |

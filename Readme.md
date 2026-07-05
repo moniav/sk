@@ -17,9 +17,9 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 48 slash commands
+│   ├── commands/sk/             ← 53 slash commands
 │   ├── agents/                  ← 8 agents (implementer, reviewers, debugger, dependency-analyzer)
-│   └── skills/                  ← 22 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
+│   └── skills/                  ← 23 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
     ├── START-HERE.md            Human front door (role-based router)
     ├── README.md                Agent index
@@ -31,7 +31,7 @@ your-project/
     ├── legal/                   Agreements, policies, compliance scans
     ├── operations/              Runbooks, incidents, postmortems
     ├── tasks/ decisions/ flows/ reviews/ research/ reference/  + _archive/
-    ├── templates/               22 starter templates
+    ├── templates/               24 starter templates
     └── commands-reference.md    Full command table (loaded on demand)
 ```
 
@@ -289,6 +289,26 @@ SK tracks your active work across sessions:
 
 Full marketing walkthrough (brand voice → copy → campaigns → announcements → routines): [Run your marketing with SK](https://github.com/moniav/sk/blob/main/docs/user-guides/run-your-marketing.md).
 
+### Executive Team
+
+Run the company with an executive team — persistent 1:1 partners with portfolios,
+memory (each seat keeps a `STATE.md` + meeting notes in its office), a dissent duty,
+and authority that widens only on cited evidence. The founder is **never gated**:
+every command keeps working directly, and executives observe your work rather than
+approving it.
+
+| Command | Purpose | When to Use |
+|---------|---------|-------------|
+| `/sk:ceo` | Strategy, goals, roadmap — plus `grill` (stress-test with memory) and `product` (proceed/park/kill verdicts) | Strategy sessions, feature decisions |
+| `/sk:cto` | Architecture, quality, velocity, debt — feasibility lens | Technical direction, tech health |
+| `/sk:cmo` | Positioning, brand, campaigns, launches — marketability lens | Marketing direction |
+| `/sk:coo` | Routines, incidents, reliability — "runs the same when nobody watches" | Operational health |
+| `/sk:founder` | The Monday packet: briefs merged into an approval console, decisions ranked one-way-doors-first | Weekly founder review |
+
+Weekly headless briefs via `/sk:routines`; per-seat decision rights live in your
+`docs/conventions/delegation-policy.md`. Custom seats via the `executive-charter`
+template.
+
 ## Package Structure
 
 SK separates the **product** (what gets installed) from **project files** (for developing SK itself):
@@ -302,7 +322,7 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 48 slash commands
+│       ├── commands/sk/         ← 53 slash commands
 │       ├── agents/              ← Implementer, reviewers, dependency-analyzer, architecture-reviewer
 │       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
 └── .claude/                     ← Development copy (dogfooding, not shipped)

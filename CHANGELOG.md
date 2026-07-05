@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+- **Executive team** — run the company with persistent 1:1 partners: `/sk:ceo`
+  (strategy/goals; `grill` mode stress-tests you against your own docs and re-asks
+  what you couldn't answer; `product` mode ends in proceed/park/kill verdicts),
+  `/sk:cto` (reversibility-first tech direction; brownfield due-diligence sweep),
+  `/sk:cmo` (brand voice is law; publishes nothing), `/sk:coo` ("runs the same on a
+  day nobody is watching"), and `/sk:founder` — the Monday packet as an approval
+  console with decisions ranked one-way-doors-first (the only path delegation-policy
+  edits happen). Shared `executive-meeting` skill: office memory (`STATE.md` rewritten
+  every meeting + capped notes), founding/due-diligence modes, dissent duty with
+  recorded disagreements, citation discipline, asks ledger, headless weekly briefs.
+  Per-seat decision rights in the delegation policy; `executive-charter` template for
+  custom seats; `metrics.md` dictionary template (numbers need definitions + sources);
+  kickoff/init-docs offer the team on-ramp; `/sk:resume` points at unread packets.
+  The founder is never gated — direct work is always allowed and observed, not
+  approved. Design + founder journeys: `dev-docs/planning/executive-team-design.md`.
 - **Experimental Claude Code plugin channel** — SK installs natively via
   `/plugin marketplace add moniav/sk` → `/plugin install sk@shipkit`. The plugin is
   named `sk`, preserving every `/sk:*` invocation; `plugin.json` points at

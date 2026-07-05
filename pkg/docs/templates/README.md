@@ -40,6 +40,8 @@
 | `goals.md` | Company goals — the strategy layer epics link to via `goal:` | `/sk:new-business-doc` |
 | `brand-voice.md` | How the company sounds — overrides the copywriting default voice | `/sk:new-business-doc` |
 | `campaign.md` | A marketing campaign — goal-linked plan, assets, honest results | `/sk:campaign` |
+| `metrics.md` | Metrics dictionary — what each number means + its source of truth | `/sk:new-business-doc` |
+| `executive-charter.md` | A custom executive seat over the executive-meeting skill | manual |
 
 > Evergreen templates carry a `Lifecycle` field (see
 > [../conventions/doc-lifecycle.md](../conventions/doc-lifecycle.md)). Transient ones

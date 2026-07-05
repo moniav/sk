@@ -32,6 +32,7 @@ Present the recommended set (use AskUserQuestion, multi-select):
 | Ship review | Per PR (CI) | `/sk:review` | PR / `docs/reviews/` |
 | Social pack | Weekly | `/sk:copywrite` (social posts from recently shipped work) | `docs/business/copy/` |
 | Newsletter draft | Monthly | `/sk:copywrite` (email digest from the changelog) | `docs/business/copy/` |
+| Executive briefs | Weekly | `/sk:ceo review`, `/sk:cto review`, `/sk:cmo review`, `/sk:coo review` (headless brief mode) | `docs/business/exec/<role>/briefs/` — consumed by `/sk:founder` |
 
 Marketing routines produce **drafts only** — publishing is outward-facing and stays
 behind human sign-off regardless of policy.
