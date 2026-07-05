@@ -17,9 +17,9 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 42 slash commands
-│   ├── agents/                  ← 5 agents (implementer, reviewers, dependency-analyzer, architecture-reviewer)
-│   └── skills/                  ← 18 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
+│   ├── commands/sk/             ← 45 slash commands
+│   ├── agents/                  ← 8 agents (implementer, reviewers, debugger, dependency-analyzer)
+│   └── skills/                  ← 20 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
     ├── START-HERE.md            Human front door (role-based router)
     ├── README.md                Agent index
@@ -39,8 +39,8 @@ your-project/
 
 ```mermaid
 graph TD
-    A["CLAUDE.md<br/><i>agent entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>42 slash commands</i>"]
-    A --> B2[".claude/skills/<br/><i>18 skills — TDD, legal, ops, PDF, ...</i>"]
+    A["CLAUDE.md<br/><i>agent entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>45 slash commands</i>"]
+    A --> B2[".claude/skills/<br/><i>20 skills — TDD, legal, ops, PDF, ...</i>"]
     SH["docs/START-HERE.md<br/><i>human front door (role router)</i>"] --> C
     B --> C["docs/README.md<br/><i>agent index</i>"]
 
@@ -436,6 +436,7 @@ graph LR
 
 | Command | Purpose | Output |
 |---------|---------|--------|
+| `/sk:review` | Parallel multi-dimension review — security, perf, quality subagents | Merged report with ship/no-ship verdict |
 | `/sk:code-review` | Analyze code for bugs, conventions, quality | Report (conversation) |
 | `/sk:security-review` | OWASP Top 10, secrets, dependency audit | Report (conversation) |
 | `/sk:ui-review` | Accessibility, responsive design, UX | Report (conversation) |
@@ -456,7 +457,9 @@ graph LR
 | Command | Purpose | Output |
 |---------|---------|--------|
 | `/sk:commit` | Smart git commit + push + PR | Git commit |
+| `/sk:pr` | Create a pull request from the current branch | PR URL |
 | `/sk:changelog` | Generate changelog from git history | `CHANGELOG.md` |
+| `/sk:release` | Version bump + changelog + tag + GitHub release | Tagged release |
 
 ### Session & Management
 
@@ -495,7 +498,7 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 42 slash commands
+│       ├── commands/sk/         ← 45 slash commands
 │       ├── agents/              ← Implementer, reviewers, dependency-analyzer, architecture-reviewer
 │       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
 └── .claude/                     ← Development copy (dogfooding, not shipped)

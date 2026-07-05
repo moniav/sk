@@ -72,43 +72,11 @@ updated: {ISO date}
 Update frontmatter: `phase: dev`, `status: in-progress`
 Update `docs/tasks/.current`: set `phase: dev`
 
-### Load Conventions and Skills
+Follow `.claude/skills/subtask-execution/SKILL.md` — the canonical loop: load
+conventions and skills, TDD ordering (`[TEST]` before `[DEV]`), per-type checklists,
+self-review, compliance pass, and the evidence-based **DEV Exit Gate**.
 
-Read these now (not earlier — save context for when they're needed):
-- `docs/conventions/code-style.md`, `file-structure.md`, `testing.md`
-- `.claude/skills/test-driven-development/SKILL.md` and `anti-patterns.md`
-- `.claude/skills/escalation-rules/SKILL.md`
-- `.claude/skills/verification-before-completion/SKILL.md`
-
-**Skills active:** `test-driven-development` (subtask execution), `escalation-rules` (failure handling), `verification-before-completion` (exit gate).
-
-Execute `[TEST]`+`[DEV]` subtask pairs using the TDD cycle: RED → GREEN → REFACTOR. If a subtask fails 3+ times, follow the escalation-rules skill.
-
-**Subagent mode (optional):** If 5+ subtasks, ask: "Use subagent mode?" If yes, read `.claude/skills/subagent-driven-development/SKILL.md`.
-
-### Execute Subtasks (top-to-bottom)
-
-For each `[DEV]` subtask:
-1. Implement following `docs/conventions/code-style.md`
-2. Self-review (naming, structure, error handling)
-3. Check off in task file
-
-For each `[TEST]` subtask:
-1. Write tests following `docs/conventions/testing.md`
-2. Run and verify they pass
-3. Check off in task file
-
-For each `[DOCS]` subtask:
-1. Update the specified documentation
-2. Check off in task file
-
-### DEV Exit Gate
-```markdown
-- [ ] All subtasks checked off
-- [ ] Convention compliance verified
-- [ ] Existing tests still pass
-- [ ] Docs updated
-```
+**Subagent mode (optional):** If 5+ subtasks, ask "Use subagent mode?" (use AskUserQuestion). If yes, read `.claude/skills/subagent-driven-development/SKILL.md`.
 
 ## Step 5: [TEST] Phase
 

@@ -192,6 +192,13 @@ Use Agent tool:
     Review for conventions, test quality, and simplicity.
 ```
 
+### Stage 3 — Architecture (conditional)
+
+When a subtask spans modules or adds a new dependency between them, also dispatch
+the `architecture-reviewer` agent (`.claude/agents/architecture-reviewer.md`) →
+FITS / CONCERNS / REDESIGN. Single-file subtasks skip this stage. Treat REDESIGN
+like a Spec FAIL (re-dispatch with the recommended approach).
+
 ### Handle Review Results
 
 | Result | Action |

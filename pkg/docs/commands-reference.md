@@ -16,6 +16,9 @@
 | `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
 | `/sk:test` | Execute TEST phase | Verify acceptance criteria |
 | `/sk:finish` | Review + commit + push + PR + task update | After work is done, ready to ship |
+| `/sk:review` | Parallel multi-dimension review — security, perf, quality subagents | Before shipping a branch or feature |
+| `/sk:pr` | Create a pull request from the current branch | Branch committed, just want the PR |
+| `/sk:release` | Version bump + changelog + tag + GitHub release | Cutting a release |
 | `/sk:orchestrate` | Parallel agent team for task/epic | 3+ independent subtasks, want speed |
 | `/sk:council` | Multi-persona advisory council | Architecture decisions, strategy, trade-offs |
 | `/sk:commit` | Smart git commit + push + PR | After changes, ready to commit |
@@ -86,6 +89,9 @@
 | /sk:orchestrate | PLAN phase complete, 3+ subtasks with file paths |
 | /sk:perf-review | tech-stack.md populated |
 | /sk:plan | project-context.md, tech-stack.md populated |
+| /sk:pr | Git repo with remote, `gh` CLI authenticated |
+| /sk:release | Clean tree on default branch, tests pass |
+| /sk:review | A diff or path in scope (branch diff by default) |
 | /sk:recap | A diff in scope (branch, staged, or commit range) |
 | /sk:refactor | code-style.md populated, test suite available |
 | /sk:resume | Nothing (reads task state automatically) |

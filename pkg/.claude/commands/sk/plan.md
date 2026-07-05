@@ -120,7 +120,7 @@ Record scan results and technical decisions in the task's "Phase Analysis" secti
 
 ## Step 5: Adversarial Self-Review (high-stakes plans)
 
-Before validating, attack your own plan. **Make no source edits during PLAN — stay read-only until the user approves the direction.**
+Before validating, attack your own plan. **Make no source edits during PLAN — stay read-only until the user approves the direction.** If the session supports plan mode, use it for this phase — the harness then enforces read-only and provides the approval gate natively.
 
 For high-stakes work — architecture, backend, data-model, migration, or multi-file changes — dispatch the **spec-reviewer** agent (`.claude/agents/spec-reviewer.md`) in plan-review mode, or run the pass yourself. For architecturally significant or epic-level plans, also dispatch the **architecture-reviewer** agent (`.claude/agents/architecture-reviewer.md`) to pressure-test the design (boundaries, coupling, data flow, scalability) before DEV. Check the plan against four failure classes:
 

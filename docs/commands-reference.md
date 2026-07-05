@@ -16,6 +16,9 @@
 | `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
 | `/sk:test` | Execute TEST phase | Verify acceptance criteria |
 | `/sk:finish` | Review + commit + push + PR + task update | After work is done, ready to ship |
+| `/sk:review` | Parallel multi-dimension review — security, perf, quality subagents | Before shipping a branch or feature |
+| `/sk:pr` | Create a pull request from the current branch | Branch committed, just want the PR |
+| `/sk:release` | Version bump + changelog + tag + GitHub release | Cutting a release |
 | `/sk:orchestrate` | Parallel agent team for task/epic | 3+ independent subtasks, want speed |
 | `/sk:council` | Multi-persona advisory council | Architecture decisions, strategy, trade-offs |
 | `/sk:commit` | Smart git commit + push + PR | After changes, ready to commit |
@@ -60,12 +63,11 @@
 | /sk:commit | git-workflow.md populated (optional) |
 | /sk:copywrite | project-context.md populated (optional) |
 | /sk:council | project-context.md populated |
-| /sk:debug | Nothing (reads context as needed) |
 | /sk:debt | Nothing (scans for `sk-debt` markers) |
+| /sk:debug | Nothing (reads context as needed) |
 | /sk:deps | Package manifest (package.json, pyproject.toml, etc.) |
 | /sk:dev | Build Commands filled in |
 | /sk:docs-audit | Nothing (read-only scan of docs/) |
-| /sk:finish | Build commands filled in, code-review prerequisites |
 | /sk:new-feature-doc | docs/features/ home (created by init-docs) |
 | /sk:new-user-guide | docs/user-guides/ home (created by init-docs) |
 | /sk:positioning | docs/business/ home (created by init-docs) |
@@ -73,6 +75,7 @@
 | /sk:pricing | docs/business/ home; positioning.md helps |
 | /sk:new-business-doc | docs/business/ home (created by init-docs) |
 | /sk:ops | docs/operations/ home (created by init-docs) |
+| /sk:finish | Build commands filled in, code-review prerequisites |
 | /sk:implement | project-context.md populated |
 | /sk:init-docs | Nothing (auto-scan for brownfield) |
 | /sk:kickoff | Nothing (guided setup for greenfield) |
@@ -86,6 +89,9 @@
 | /sk:orchestrate | PLAN phase complete, 3+ subtasks with file paths |
 | /sk:perf-review | tech-stack.md populated |
 | /sk:plan | project-context.md, tech-stack.md populated |
+| /sk:pr | Git repo with remote, `gh` CLI authenticated |
+| /sk:release | Clean tree on default branch, tests pass |
+| /sk:review | A diff or path in scope (branch diff by default) |
 | /sk:recap | A diff in scope (branch, staged, or commit range) |
 | /sk:refactor | code-style.md populated, test suite available |
 | /sk:resume | Nothing (reads task state automatically) |
@@ -111,6 +117,7 @@ Lifecycle
 ├── /sk:dev → DEV phase
 ├── /sk:test → TEST phase
 ├── /sk:orchestrate → parallel agent team (dependency-aware)
+├── /sk:recap → reviewer-facing recap of the diff (before PR review)
 ├── /sk:retro → retrospective on completed work
 └── /sk:finish → review + commit + push + PR
 
@@ -125,7 +132,8 @@ Quality Gates
 ├── /sk:code-review
 ├── /sk:security-review
 ├── /sk:ui-review
-└── /sk:perf-review
+├── /sk:perf-review
+└── /sk:debt → harvest tech-debt markers into a ledger
 
 Git & Release
 ├── /sk:commit → conventional commit

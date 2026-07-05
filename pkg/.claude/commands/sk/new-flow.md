@@ -18,7 +18,7 @@ Create a visual diagram in `docs/flows/` or `docs/architecture/` by analyzing ac
 
 ## Step 2: Determine Output Format
 
-Ask the user what to diagram, then choose the output format:
+Ask the user what to diagram, then choose the output format (present the choice via AskUserQuestion):
 
 | Format | Best For | Output |
 |--------|----------|--------|

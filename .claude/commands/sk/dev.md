@@ -17,7 +17,7 @@ Read conventions and skills when you start executing subtasks (Step 4), not now.
 
 ## Step 1.5: Choose Execution Mode (Optional)
 
-If the task has 5+ subtasks, ask: **"This task has N subtasks. Use subagent mode? Each subtask gets a fresh agent with clean context. (Recommended for large tasks.)"**
+If the task has 5+ subtasks, ask (use AskUserQuestion): **"This task has N subtasks. Use subagent mode? Each subtask gets a fresh agent with clean context. (Recommended for large tasks.)"**
 
 If yes: read `.claude/skills/subagent-driven-development/SKILL.md` and follow SDD pattern for subtask execution.
 If no: continue with direct execution (standard mode).
@@ -52,86 +52,16 @@ Update `docs/tasks/.current`: set `phase: dev`, update subtask count (create it 
 
 ## Step 4: Execute Subtasks
 
-### Load Conventions and Skills
-
-Before executing the first subtask, read:
-- `docs/conventions/code-style.md`, `file-structure.md`, `testing.md`
-- `.claude/skills/test-driven-development/SKILL.md` and `anti-patterns.md`
-- `.claude/skills/escalation-rules/SKILL.md`
-
-**Skip convention files that are empty or contain only template placeholders.** If conventions aren't configured, match patterns found in the existing codebase.
-
-Process subtasks **top-to-bottom, one at a time**.
+Follow `.claude/skills/subtask-execution/SKILL.md` — the canonical loop: load
+conventions first, TDD ordering (`[TEST]` before `[DEV]`), per-type checklists,
+self-review, and escalation after 3 failed attempts.
 
 Update `docs/tasks/.current` subtask progress after each subtask.
 
-### Subtask Execution Order (TDD)
-
-Follow the `test-driven-development` skill. For each feature unit, execute the `[TEST]` subtask BEFORE its paired `[DEV]` subtask:
-
-1. `[TEST]` Write failing test → run → confirm RED (paste output)
-2. `[DEV]` Implement to pass → run → confirm GREEN (paste output)
-3. Refactor → run → confirm still GREEN (paste output)
-
-If a subtask fails 3+ times, follow the `escalation-rules` skill: STOP, evaluate options, ask the user.
-
-### For Each `[DEV]` Subtask:
-
-1. **Read the subtask** — Understand exactly what to implement
-2. **Check conventions** — Reference `docs/conventions/code-style.md` for patterns
-3. **Implement** — Write the code following project conventions
-   - Implement exactly what the subtask describes — no more, no less
-   - Choose the simplest approach that satisfies the requirement
-4. **Self-review** — Before checking the box:
-   - Follows naming conventions?
-   - File in correct location per `docs/conventions/file-structure.md`?
-   - Error handling in place?
-   - No hardcoded values, magic numbers, or leftover TODOs?
-   - No unused imports?
-   - No drive-by changes outside this subtask's scope?
-   - Is this the simplest solution, or did you over-engineer it?
-5. **Check the box** — Mark subtask complete in the task file
-
-### For Each `[TEST]` Subtask:
-
-1. **Read** `docs/conventions/testing.md` for test patterns
-2. **Write tests** following AAA pattern (Arrange, Act, Assert)
-3. **Run tests** — Confirm they pass
-4. **Check the box**
-
-### For Each `[DOCS]` Subtask:
-
-1. **Identify what changed** — Schema? APIs? Architecture? Components?
-2. **Update the specific docs** listed in the subtask
-3. **Verify links** — Make sure cross-references still work
-4. **Check the box**
-
 ## Step 5: Convention Compliance Check
 
-After all subtasks are done, do a final pass:
-
-```markdown
-### Code Conventions (docs/conventions/code-style.md)
-- [ ] Naming follows project conventions (camelCase, PascalCase, etc.)
-- [ ] Import order is correct (external > internal > relative)
-- [ ] Boolean variables use is/has/can/should prefix
-- [ ] Early returns used instead of deep nesting
-- [ ] Comments explain WHY, not WHAT
-- [ ] No magic numbers — constants extracted and named
-
-### File Structure (docs/conventions/file-structure.md)
-- [ ] New files placed in correct directories
-- [ ] Co-location principle followed (related files together)
-- [ ] Public API exports updated if applicable
-- [ ] No file exceeds soft size limits
-
-### Git Workflow (docs/conventions/git-workflow.md)
-- [ ] Commit messages follow format: type(scope): description
-- [ ] Commits are atomic (one logical change each)
-- [ ] No temporary or debug code committed
-```
-
-**Tip:** For a deeper analysis of code quality, run `/sk:code-review` on your changes before moving to the TEST phase.
+After all subtasks are done, run the **Convention Compliance Pass** from the
+subtask-execution skill (code style, file structure, git workflow).
 
 ## Step 6: Documentation Pass
 
@@ -152,19 +82,9 @@ Record key decisions and implementation notes in the task's "Phase Analysis > De
 
 ## Step 8: DEV Exit Gate
 
-Read `.claude/skills/verification-before-completion/SKILL.md` before claiming done.
-You MUST run the actual test suite and paste the output below. "Tests pass" is not evidence.
-
-All conditions must be true:
-
-```markdown
-- [ ] All `[DEV]` subtasks checked off
-- [ ] All `[TEST]` subtasks checked off
-- [ ] All `[DOCS]` subtasks checked off
-- [ ] Code self-reviewed against conventions
-- [ ] All existing tests still pass (no regressions)
-- [ ] Documentation updated in same commit as code
-```
+Run the **DEV Exit Gate** from the subtask-execution skill: read
+`verification-before-completion`, run the actual test suite, and paste the output —
+"tests pass" is not evidence. Every gate box must be checked.
 
 ## Step 9: Update Status
 

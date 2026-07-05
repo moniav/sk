@@ -27,7 +27,7 @@ Scan the codebase and update `docs/` to accurately reflect the current system st
 
 ## Step 2: Ask Scope
 
-Ask the user:
+Ask the user (use AskUserQuestion — one question per dimension):
 1. **Scope**: System docs | Architecture | Conventions | SOPs | Tasks | Features | User Guides | Business | Legal | Operations | All
 2. **Focus**: What changed recently? New features? Refactors? Dependency updates?
 3. **Depth**: Quick sync (just update what's stale) | Deep analysis (full audit) | Initialize (build from scratch)

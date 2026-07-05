@@ -41,6 +41,8 @@ Use the Agent tool to dispatch `.claude/agents/implementer.md`. The implementer 
 
 **Stage 2 — Code Quality** (only if Stage 1 passes): Dispatch `.claude/agents/quality-reviewer.md`. Checks conventions, test quality, simplicity → Critical / Important / Suggestions.
 
+**Stage 3 — Architecture** (conditional): when a subtask spans modules or adds a new dependency between them, also dispatch `.claude/agents/architecture-reviewer.md` → FITS / CONCERNS / REDESIGN. Single-file subtasks skip this stage.
+
 ### 4. Handle Results
 
 - Both pass → check off subtask, move to next

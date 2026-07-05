@@ -50,17 +50,8 @@ Optionally save review: ask **"Save review report to `docs/reviews/code/`?"**
 
 ## Step 4: Commit and Ship
 
-Follow the `/sk:commit` flow:
-
-1. Run `git status` and `git diff --cached --stat` to assess working tree
-2. Stage changes (ask user what to stage if nothing is staged)
-3. Generate conventional commit message from diff
-4. Present message for approval
-5. Commit
-6. Ask: **"Push to remote?"**
-7. If yes: push with upstream tracking
-8. Ask: **"Create pull request?"**
-9. If yes: generate PR title + body from commits, create via `gh pr create`
+Follow `.claude/skills/git-commit-flow/SKILL.md` end-to-end: assess working tree →
+stage → conventional commit → push (optional) → PR (optional).
 
 ## Step 5: Update Task Board
 

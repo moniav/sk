@@ -20,7 +20,7 @@ Check what already exists:
 
 ## Step 2: Guided Conversation
 
-Ask the user these questions. Adapt based on answers — skip what's obvious, dig deeper where it matters.
+Ask the user these questions. Adapt based on answers — skip what's obvious, dig deeper where it matters. For the multiple-choice decisions (platform, stack options), present them via AskUserQuestion; keep open-ended questions conversational.
 
 ### Round 1: The Basics
 
