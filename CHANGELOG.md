@@ -1,5 +1,48 @@
 # Changelog
 
+## 1.9.0 (2026-07-05)
+
+Full-system hardening and leverage release, driven by a four-wave review of every
+command, agent, skill, and the CLI (`dev-docs/reports/2026-07-05-full-system-review.md`).
+Three new commands (42 → 45), two new skills (18 → 20), three new agents (5 → 8) —
+and the agents are now *real* Claude Code subagents.
+
+### Features
+
+- **Real subagents** — all agent definitions now carry YAML frontmatter (`name`, `description`, `tools`, `model`): they register natively, auto-delegate, and reviewers are tool-restricted to read-only (`Read`/`Grep`/`Glob`). The haiku/sonnet role split is enforced in the agent files.
+- **New agents** — `debugger` (root-cause loop: reproduce → isolate → hypothesize → verify; reports the mechanism + minimal fix, cannot edit), `security-reviewer` and `perf-reviewer` (severity/impact-ranked findings, honest "clean" verdicts). `architecture-reviewer` now also runs as a conditional stage 3 in the dev review loop (SDD + orchestrate) for cross-module subtasks.
+- **`/sk:review`** — the "before I ship" command: fans out security + perf + quality reviewers as parallel subagents over the branch diff, merges into one report with a SHIP / FIX_FIRST / BLOCK verdict.
+- **`/sk:pr`** — standalone PR creation (gh preflight, auto-push, PR-template aware).
+- **`/sk:release`** — version bump (semver inferred from conventional commits or passed explicitly), changelog prepend, tag, optional GitHub release, registry publish only on explicit confirmation.
+- **Doc-to-code freshness** — evergreen docs may declare the code they describe via `Source:` (feature docs' `Code:` / component docs' `Location:` count too); `/sk:docs-audit` flags **code-drift** when the code's last commit is newer than the doc, and `/sk:update-docs` uses drift as its priority queue.
+- **Minimal install profile** — `npx shipkit-cld --minimal` lays down core doc homes only (system, conventions, tasks, templates, sop); the profile is manifest-tracked, updates respect it, and every doc-creator command grows its home on demand. `/sk:init-docs` asks full vs minimal.
+- **Install manifest** — `.claude/.sk-manifest.json` records version, CLAUDE.md ownership, profile, and the exact files SK manages. Unlocks: updates prune files SK no longer ships, `remove` deletes only SK's files (user-added agents/skills survive), and version is shown on install/update.
+
+### Improvements
+
+- **Shared-skill dedupe** — new `git-commit-flow` and `subtask-execution` skills are the single source of truth for the commit flow and the DEV loop; `dev`, `implement`, `commit`, and `finish` defer to them instead of maintaining ~250 lines of parallel prose. Both are command-loaded (no per-turn context cost).
+- **`.current` contract** — canonical format + create/update/delete lifecycle documented in `docs/tasks/README.md`; now written from the moment work is scoped (`new-task`, `new-epic`, `brainstorm`, `plan`), so `/sk:resume` sees freshly planned work.
+- **Command frontmatter pass** — `argument-hint` on the 15 argument-taking commands, read-only `allowed-tools` pre-approval on the 9 analyzers, and `disable-model-invocation` on the 6 expensive/multi-agent flows (kickoff, init-docs, migrate, update, orchestrate, council).
+- **Robustness preflight** — git-dependent commands degrade gracefully outside a repo; the base branch is detected (`git symbolic-ref`) instead of hardcoding `main`; monorepos prompt for a target package; `new-task`/`new-epic` create the task board if missing.
+- **Task lifecycle states** — status enum gains `blocked` / `cancelled` / `abandoned`; `/sk:resume`, `/sk:task-status`, and `/sk:docs-audit` surface possibly-abandoned in-flight work. Board tables are now derived from frontmatter and regenerated wholesale by `/sk:task-status`.
+- **Skill hygiene** — `legal-advisor` and `copywriting` are command-gated (no auto-fire, one-line descriptions); six core skills' descriptions trimmed 30–40% — a permanent per-turn context saving in every project.
+- **Native-feature adoption** — structured choices go through AskUserQuestion; `plan` leans on plan mode for its read-only gate.
+
+### Fixes
+
+- **CLAUDE.md update dead-end** — a greenfield-installed CLAUDE.md now refreshes in place on update (ownership tracked in the manifest) and is removed on uninstall; previously the first update silently diverted all future updates to the `CLAUDE.sk.md` sidecar forever and `remove` orphaned the file.
+- **Stale npx source** — updates no longer pin to a cached npx path; `@latest` actually updates to latest. `--from` paths are still remembered.
+- **Re-install footgun** — running install over an existing installation redirects to update instead of displacing live docs into `docs/old/`.
+- **Day-one audit false positives** — a fresh install's own scaffold is no longer flagged as "unstamped"/"unfilled stubs"; `/sk:init-docs` stamps dates on the indexes it creates.
+- **`/sk:copywrite`** saves under `docs/business/copy/` (indexed) instead of the never-scaffolded `docs/marketing/`.
+- Assorted: `code-review` section order, `init-docs` list numbering + duplicate `pom.xml`, GUIDE.md dead code removed from the CLI, partial-install residue on missing source, PowerShell date fallback in `docs-audit`.
+
+### Docs
+
+- README Mermaid diagrams replaced with pre-rendered SVGs (`assets/`) — npm can't render Mermaid.
+- `package.json` repository/homepage/bugs/author filled in.
+- Add `docs/decisions/ADR-002-plugin-distribution.md` (SK-internal: hybrid plugin + npx-init distribution; implementation planned in `dev-docs/planning/plugin-split-plan.md`).
+
 ## 1.8.0 (2026-06-27)
 
 Documentation-system enhancement: coherence enforcement + a multi-audience doc surface

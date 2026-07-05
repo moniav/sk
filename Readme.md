@@ -37,36 +37,7 @@ your-project/
 
 ## How It Works
 
-```mermaid
-graph TD
-    A["CLAUDE.md<br/><i>agent entry point — read automatically</i>"] --> B[".claude/commands/sk/<br/><i>45 slash commands</i>"]
-    A --> B2[".claude/skills/<br/><i>20 skills — TDD, legal, ops, PDF, ...</i>"]
-    SH["docs/START-HERE.md<br/><i>human front door (role router)</i>"] --> C
-    B --> C["docs/README.md<br/><i>agent index</i>"]
-
-    C --> D["LIFECYCLE"]
-    C --> E["WHAT"]
-    C --> G["HOW"]
-    C --> F["WHY"]
-    C --> H["AUDIENCES"]
-
-    D --> D1["tasks/ — Plan > Dev > Test"]
-    E --> E1["architecture/ · system/<br/>features/ · flows/"]
-    G --> G1["conventions/ · sop/<br/>operations/"]
-    F --> F1["decisions/"]
-    H --> H1["user-guides/ (customers)<br/>business/ (GTM) · legal/ (compliance)"]
-
-    style A fill:#2d6a4f,color:#fff
-    style B fill:#40916c,color:#fff
-    style B2 fill:#40916c,color:#fff
-    style SH fill:#52b788,color:#fff
-    style C fill:#52b788,color:#fff
-    style D fill:#264653,color:#fff
-    style E fill:#264653,color:#fff
-    style F fill:#264653,color:#fff
-    style G fill:#264653,color:#fff
-    style H fill:#264653,color:#fff
-```
+![How It Works](https://raw.githubusercontent.com/moniav/sk/main/assets/how-it-works.svg)
 
 **LIFECYCLE** = How work flows from idea to done (plan > dev > test, task hierarchy)
 **WHAT** = What the system looks like (architecture, current state, features, diagrams)
@@ -78,45 +49,7 @@ graph TD
 
 Every piece of work flows through three phases with explicit exit gates:
 
-```mermaid
-stateDiagram-v2
-    direction LR
-
-    [*] --> Plan
-    Plan --> Dev : Questions resolved, subtasks defined, criteria testable
-    Dev --> Test : Subtasks done, code reviewed, docs updated
-    Test --> Done : All criteria verified, all tests pass
-    Done --> [*]
-
-    state Plan {
-        direction TB
-        p1: Write problem statement
-        p2: Define acceptance criteria
-        p3: Break into subtasks
-        p4: Resolve open questions
-        p1 --> p2
-        p2 --> p3
-        p3 --> p4
-    }
-
-    state Dev {
-        direction TB
-        d1: Execute subtasks
-        d2: Follow conventions
-        d3: Update docs with code
-        d1 --> d2
-        d2 --> d3
-    }
-
-    state Test {
-        direction TB
-        t1: Verify each criterion
-        t2: Test error paths
-        t3: Confirm no regressions
-        t1 --> t2
-        t2 --> t3
-    }
-```
+![Task Lifecycle](https://raw.githubusercontent.com/moniav/sk/main/assets/task-lifecycle.svg)
 
 **Quick Path (XS/S complexity):** Most work doesn't need task files. Just describe what you want — Claude Code follows Plan > Dev > Test mentally and commits when done.
 
@@ -124,28 +57,7 @@ stateDiagram-v2
 
 ### Task Hierarchy
 
-```mermaid
-graph TD
-    Epic["Epic<br/><i>L/XL — large feature, cross-cutting</i>"]
-    Epic --> T1["Task<br/><i>M — self-contained deliverable</i>"]
-    Epic --> T2["Task<br/><i>M — self-contained deliverable</i>"]
-
-    T1 --> S1["Subtask S<br/>[DEV]"]
-    T1 --> S2["Subtask S<br/>[TEST]"]
-    T1 --> S3["Subtask S<br/>[DOCS]"]
-
-    T2 --> S4["Subtask S"]
-    T2 --> S5["Subtask S"]
-
-    style Epic fill:#264653,color:#fff
-    style T1 fill:#2a9d8f,color:#fff
-    style T2 fill:#2a9d8f,color:#fff
-    style S1 fill:#e9c46a,color:#000
-    style S2 fill:#e9c46a,color:#000
-    style S3 fill:#e9c46a,color:#000
-    style S4 fill:#e9c46a,color:#000
-    style S5 fill:#e9c46a,color:#000
-```
+![Task Hierarchy](https://raw.githubusercontent.com/moniav/sk/main/assets/task-hierarchy.svg)
 
 ## Installation
 
@@ -191,32 +103,7 @@ npx shipkit-cld remove .
 
 SK works with both new projects and existing codebases. The setup path differs.
 
-```mermaid
-flowchart TD
-    Start(["npx shipkit-cld"]) --> Q{"New or existing<br/>codebase?"}
-
-    Q -->|"Greenfield<br/>(no code yet)"| GF1["/sk:kickoff<br/><i>guided setup + research</i>"]
-    GF1 --> GF2["/sk:brainstorm<br/><i>define first feature</i>"]
-    GF2 --> Impl
-
-    Q -->|"Brownfield<br/>(existing code)"| BF1["/sk:init-docs<br/><i>auto-scan codebase<br/>+ detect build commands</i>"]
-    BF1 --> BF2["Review generated docs"]
-    BF2 --> BF3["/sk:new-task"]
-    BF3 --> Impl
-
-    Impl["/sk:implement<br/><i>build it</i>"]
-    Impl --> Ship(["Ship it"])
-
-    style Start fill:#2d6a4f,color:#fff
-    style Ship fill:#2d6a4f,color:#fff
-    style Q fill:#264653,color:#fff
-    style Impl fill:#e76f51,color:#fff
-    style GF1 fill:#2a9d8f,color:#fff
-    style GF2 fill:#2a9d8f,color:#fff
-    style BF1 fill:#e9c46a,color:#000
-    style BF2 fill:#e9c46a,color:#000
-    style BF3 fill:#e9c46a,color:#000
-```
+![Getting Started](https://raw.githubusercontent.com/moniav/sk/main/assets/getting-started.svg)
 
 ### Greenfield Project (starting from scratch)
 
@@ -275,127 +162,7 @@ SK tracks your active work across sessions:
 
 ## Command Map
 
-```mermaid
-graph LR
-    subgraph "Getting Started"
-        kickoff["/sk:kickoff"]
-        brainstorm["/sk:brainstorm"]
-        initdocs["/sk:init-docs"]
-    end
-
-    subgraph "Lifecycle"
-        implement["/sk:implement"]
-        plan["/sk:plan"]
-        dev["/sk:dev"]
-        test["/sk:test"]
-        orchestrate["/sk:orchestrate"]
-        finish["/sk:finish"]
-    end
-
-    subgraph "Creation"
-        newtask["/sk:new-task"]
-        newepic["/sk:new-epic"]
-        newsop["/sk:new-sop"]
-        newadr["/sk:new-adr"]
-        newflow["/sk:new-flow"]
-        newfeaturedoc["/sk:new-feature-doc"]
-        newuserguide["/sk:new-user-guide"]
-    end
-
-    subgraph "Quality"
-        codereview["/sk:code-review"]
-        secreview["/sk:security-review"]
-        uireview["/sk:ui-review"]
-        perfreview["/sk:perf-review"]
-        recap["/sk:recap"]
-    end
-
-    subgraph "Decision Making"
-        council["/sk:council"]
-    end
-
-    subgraph "Debugging & Refactoring"
-        debug["/sk:debug"]
-        refactor["/sk:refactor"]
-        migrate["/sk:migrate"]
-        debt["/sk:debt"]
-    end
-
-    subgraph "Marketing, GTM & Legal"
-        copywrite["/sk:copywrite"]
-        positioning["/sk:positioning"]
-        competitor["/sk:competitor"]
-        pricing["/sk:pricing"]
-        newbusinessdoc["/sk:new-business-doc"]
-        legalscan["/sk:legal-scan"]
-    end
-
-    subgraph "Management"
-        resume["/sk:resume"]
-        retro["/sk:retro"]
-        status["/sk:task-status"]
-        updatedocs["/sk:update-docs"]
-        docsaudit["/sk:docs-audit"]
-        ops["/sk:ops"]
-        update["/sk:update"]
-        commit["/sk:commit"]
-        changelog["/sk:changelog"]
-        deps["/sk:deps"]
-    end
-
-    kickoff -->|"generates docs"| brainstorm
-    brainstorm -->|"creates tasks"| implement
-    initdocs -->|"populates docs"| newtask
-
-    implement --> plan
-    plan --> dev
-    plan --> orchestrate
-    dev --> test
-    orchestrate --> test
-    test --> finish
-
-    newepic -->|"creates tasks"| newtask
-
-    dev -->|"done"| codereview
-    codereview --> secreview
-    codereview --> perfreview
-    secreview --> commit
-    perfreview --> commit
-
-    council -->|"decision"| newadr
-    debug -->|"fixed"| codereview
-    refactor -->|"restructured"| codereview
-    migrate -->|"migrated"| test
-    test -->|"shipped"| retro
-    test -->|"recap diff"| recap
-    recap -->|"before PR"| commit
-    debt -.->|"feeds backlog"| refactor
-
-    deps -.->|"updates needed"| commit
-    changelog -.->|"commit changelog"| commit
-
-    style kickoff fill:#2d6a4f,color:#fff
-    style brainstorm fill:#2d6a4f,color:#fff
-    style initdocs fill:#2d6a4f,color:#fff
-    style implement fill:#e76f51,color:#fff
-    style plan fill:#2a9d8f,color:#fff
-    style dev fill:#2a9d8f,color:#fff
-    style test fill:#2a9d8f,color:#fff
-    style orchestrate fill:#e76f51,color:#fff
-    style council fill:#9b59b6,color:#fff
-    style finish fill:#2a9d8f,color:#fff
-    style perfreview fill:#e9c46a,color:#000
-    style debug fill:#e76f51,color:#fff
-    style refactor fill:#e76f51,color:#fff
-    style migrate fill:#e76f51,color:#fff
-    style retro fill:#264653,color:#fff
-    style changelog fill:#264653,color:#fff
-    style deps fill:#264653,color:#fff
-    style recap fill:#e9c46a,color:#000
-    style debt fill:#264653,color:#fff
-    style commit fill:#e9c46a,color:#000
-    style resume fill:#264653,color:#fff
-```
+![Command Map](https://raw.githubusercontent.com/moniav/sk/main/assets/command-map.svg)
 
 ## Command Reference
 
