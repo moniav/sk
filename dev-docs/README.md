@@ -21,6 +21,7 @@ made the mirror impure and confusing. Everything about *evolving SK the product*
 - `enhancement-plan-doc-system.md` — doc-system & multi-audience enhancement plan (target v1.8.0)
 - `IMPLEMENTATION-PLAN.md` — unified-system implementation plan
 - `plugin-split-plan.md` — hybrid plugin + npx-init distribution migration (post-v1.9.0; see ADR-002)
+- `2026-10-best-practices-enhancement-plan.md` - four-wave plan from the Anthropic best-practices and external-repo review (post-v2.0.0)
 
 ### reports/
 - `enhancement-report-external-skills.md` — external-skills review findings
