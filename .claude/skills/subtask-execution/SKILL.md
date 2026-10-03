@@ -53,7 +53,8 @@ If a subtask fails 3+ times, follow the `escalation-rules` skill: STOP, evaluate
 
 1. **Read** `docs/conventions/testing.md` for test patterns
 2. **Write tests** following AAA pattern (Arrange, Act, Assert)
-3. **Run tests** — confirm they pass
+3. **Run tests** and confirm they fail for the right reason (RED): the behavior is missing, not a typo or a broken import. They go GREEN in the paired `[DEV]` subtask.
+   A `[TEST]` subtask with no paired `[DEV]` (coverage for code that already exists) should pass instead.
 4. **Check the box**
 
 ### For each `[DOCS]` subtask:
@@ -67,12 +68,10 @@ If a subtask fails 3+ times, follow the `escalation-rules` skill: STOP, evaluate
 
 ```markdown
 ### Code Conventions (docs/conventions/code-style.md)
-- [ ] Naming follows project conventions (camelCase, PascalCase, etc.)
-- [ ] Import order is correct (external > internal > relative)
-- [ ] Boolean variables use is/has/can/should prefix
-- [ ] Early returns used instead of deep nesting
+- [ ] Naming, import order, and structure follow `code-style.md`
+      (if it is empty, they match the surrounding code)
 - [ ] Comments explain WHY, not WHAT
-- [ ] No magic numbers — constants extracted and named
+- [ ] No magic numbers: constants extracted and named
 
 ### File Structure (docs/conventions/file-structure.md)
 - [ ] New files placed in correct directories
