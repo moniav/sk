@@ -1,5 +1,5 @@
 ---
-description: Handle breaking changes, dependency upgrades, and database migrations safely (project)
+description: Handle breaking changes, dependency upgrades, and database migrations safely
 disable-model-invocation: true
 ---
 

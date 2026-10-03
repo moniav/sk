@@ -1,7 +1,8 @@
 ---
-description: UI quality review — accessibility, responsive design, consistency, UX (project)
+description: UI quality review — accessibility, responsive design, consistency, UX
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *)
 disallowed-tools: Edit, NotebookEdit
+disable-model-invocation: true
 ---
 
 # UI Review — Quality Analysis

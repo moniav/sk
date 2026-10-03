@@ -1,5 +1,5 @@
 ---
-description: Initialize or rebuild the documentation system from codebase scan (project)
+description: Initialize or rebuild the documentation system from codebase scan
 disable-model-invocation: true
 ---
 

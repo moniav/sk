@@ -1,6 +1,7 @@
 ---
-description: Create an Architecture Decision Record for a significant technical decision (project)
+description: Create an Architecture Decision Record for a significant technical decision
 argument-hint: "[decision topic]"
+disable-model-invocation: true
 ---
 
 # New ADR

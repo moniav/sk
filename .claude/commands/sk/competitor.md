@@ -1,5 +1,6 @@
 ---
-description: Analyze competitors — profiles, positioning map, honest comparison (project)
+description: Analyze competitors — profiles, positioning map, honest comparison
+disable-model-invocation: true
 ---
 
 # Competitor Analysis

@@ -16,7 +16,7 @@ Use Claude Code memory for cross-session context:
 
 ## Development Lifecycle: Plan > Dev > Test
 
-Most work is XS/S complexity — just describe what you want and go. No task file needed; follow Plan > Dev > Test mentally; use `/sk:commit` when done.
+Most work is XS/S complexity — just describe what you want and go. No task file needed; follow Plan > Dev > Test mentally; when done, tell the user to run `/sk:commit`.
 
 **For M+ complexity, use the formal lifecycle:**
 

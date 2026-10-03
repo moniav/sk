@@ -1,5 +1,5 @@
 ---
-description: Cut a release — version bump, changelog, tag, GitHub release (project)
+description: Cut a release — version bump, changelog, tag, GitHub release
 argument-hint: "[major|minor|patch|X.Y.Z (optional — inferred from commits)]"
 disable-model-invocation: true
 ---

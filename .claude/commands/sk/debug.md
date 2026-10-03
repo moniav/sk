@@ -1,5 +1,5 @@
 ---
-description: Systematic debugging — reproduce, isolate, fix, verify with regression test (project)
+description: "Systematic debugging: reproduce, isolate, fix, verify with a regression test. Use when the user reports a bug, an error, a failing test or unexpected behaviour and wants it diagnosed and fixed."
 argument-hint: "[bug description or error message]"
 ---
 

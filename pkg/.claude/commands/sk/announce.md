@@ -1,5 +1,5 @@
 ---
-description: Turn a release into an announcement pack — post, email, social from the changelog (project)
+description: Turn a release into an announcement pack — post, email, social from the changelog
 argument-hint: "[version (optional — defaults to latest changelog entry)]"
 disable-model-invocation: true
 ---

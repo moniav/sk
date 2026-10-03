@@ -1,5 +1,6 @@
 ---
-description: Create a new Standard Operating Procedure for a recurring task (project)
+description: Create a new Standard Operating Procedure for a recurring task
+disable-model-invocation: true
 ---
 
 # New SOP

@@ -1,5 +1,5 @@
 ---
-description: Resume work from previous session — briefing + context restore (project)
+description: "Resume work from a previous session: reads the active task and restores context. Use when the user asks where they left off, what was in progress, or to pick up earlier work."
 ---
 
 # Resume — Session Continuity

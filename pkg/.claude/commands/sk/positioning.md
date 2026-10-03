@@ -1,5 +1,6 @@
 ---
-description: Define product positioning & messaging — ICP, category, value prop (project)
+description: Define product positioning & messaging — ICP, category, value prop
+disable-model-invocation: true
 ---
 
 # Positioning

@@ -1,6 +1,7 @@
 ---
-description: 1:1 with your CMO — positioning, brand, campaigns, launches; grill mode; market feedback (project)
+description: 1:1 with your CMO — positioning, brand, campaigns, launches; grill mode; market feedback
 argument-hint: "[meeting | grill <topic> | product <feature> | review]"
+disable-model-invocation: true
 ---
 
 # CMO — Positioning & Marketing

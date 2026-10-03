@@ -1,6 +1,7 @@
 ---
-description: Operations / SRE expert — incidents, runbooks, postmortems, SLOs, readiness (project)
+description: Operations / SRE expert — incidents, runbooks, postmortems, SLOs, readiness
 argument-hint: "[scan|incident|postmortem|runbook|reliability|slo|readiness]"
+disable-model-invocation: true
 ---
 
 # Ops — Operations / SRE Expert

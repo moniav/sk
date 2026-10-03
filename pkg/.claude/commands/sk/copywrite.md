@@ -1,6 +1,7 @@
 ---
-description: Write marketing copy — landing pages, emails, ads, CTAs, social posts (project)
+description: Write marketing copy — landing pages, emails, ads, CTAs, social posts
 argument-hint: "[format + topic/brief]"
+disable-model-invocation: true
 ---
 
 # Copywriting — SaaS Marketing Copy

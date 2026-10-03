@@ -1,6 +1,7 @@
 ---
-description: Execute the DEV phase — implement subtasks for a task (project)
+description: Execute the DEV phase — implement subtasks for a task
 argument-hint: "[TASK-N (optional — defaults to .current)]"
+disable-model-invocation: true
 ---
 
 # Dev — Execute Implementation

@@ -1,5 +1,5 @@
 ---
-description: Your Monday packet — executive briefs merged into an approval console (project)
+description: Your Monday packet — executive briefs merged into an approval console
 argument-hint: "[packet | approve <item> | asks]"
 disable-model-invocation: true
 ---
@@ -58,7 +58,7 @@ version. No batch approval of one-way doors — those are confirmed one at a tim
 ## Step 4: Dispatch Approvals
 
 - Board items → created goal-linked on the task board
-- Epics → hand off to `/sk:brainstorm` with the proposing seat's framing attached
+- Epics → give the founder the proposing seat's framing to start `/sk:brainstorm` with (only the founder can run it)
 - Policy-widening proposals → apply the edit to
   `docs/conventions/delegation-policy.md` — **this console is the ONLY path a policy
   edit ever happens**, because here the founder is the one approving

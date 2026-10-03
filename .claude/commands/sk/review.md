@@ -1,5 +1,5 @@
 ---
-description: Umbrella review — fan out security, performance, and quality reviewers in parallel (project)
+description: "Umbrella review: runs security, performance and quality reviewers in parallel and gives a ship or no-ship verdict. Use when the user asks for a full review of a branch or feature before shipping."
 argument-hint: "[scope: branch | module path (optional — defaults to branch diff)]"
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *)
 disallowed-tools: Edit, NotebookEdit
@@ -45,7 +45,7 @@ Use Agent tool (one message, three calls):
 ```
 
 **Optional fourth dimension:** if the scope touches UI files and the user wants it,
-also run `/sk:ui-review` inline afterwards (it needs its reference docs).
+also apply `.claude/commands/sk/ui-review.md` inline afterwards (read the file; it needs its reference docs).
 
 ## Step 3: Merge Report
 

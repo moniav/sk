@@ -1,5 +1,6 @@
 ---
-description: Design or evaluate pricing — value metric, model, tiers, packaging (project)
+description: Design or evaluate pricing — value metric, model, tiers, packaging
+disable-model-invocation: true
 ---
 
 # Pricing Strategy

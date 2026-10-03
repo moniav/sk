@@ -1,6 +1,7 @@
 ---
-description: Create a flow diagram — Mermaid markdown or SVG with consistent design system (project)
+description: Create a flow diagram — Mermaid markdown or SVG with consistent design system
 argument-hint: "[flow name]"
+disable-model-invocation: true
 ---
 
 # New Flow Diagram

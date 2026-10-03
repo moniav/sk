@@ -1,5 +1,6 @@
 ---
-description: Deep scan codebase and sync documentation to reflect current state (project)
+description: Deep scan codebase and sync documentation to reflect current state
+disable-model-invocation: true
 ---
 
 # Update Documentation

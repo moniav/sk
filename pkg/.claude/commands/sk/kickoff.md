@@ -1,5 +1,5 @@
 ---
-description: Bootstrap a new project — guided setup with best-practice research (project)
+description: Bootstrap a new project — guided setup with best-practice research
 disable-model-invocation: true
 ---
 

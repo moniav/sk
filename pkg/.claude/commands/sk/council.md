@@ -1,5 +1,5 @@
 ---
-description: Convene an advisory council — multiple personas debate a question and produce a decision report (project)
+description: Convene an advisory council — multiple personas debate a question and produce a decision report
 argument-hint: "[question to deliberate]"
 disable-model-invocation: true
 ---

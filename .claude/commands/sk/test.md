@@ -1,6 +1,7 @@
 ---
-description: Execute the TEST phase — verify acceptance criteria and run all tests (project)
+description: Execute the TEST phase — verify acceptance criteria and run all tests
 argument-hint: "[TASK-N (optional — defaults to .current)]"
+disable-model-invocation: true
 ---
 
 # Test — Verify Implementation

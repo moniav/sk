@@ -1,6 +1,7 @@
 ---
-description: 1:1 with your CTO — architecture, quality, velocity, debt; grill mode; feasibility feedback (project)
+description: 1:1 with your CTO — architecture, quality, velocity, debt; grill mode; feasibility feedback
 argument-hint: "[meeting | grill <topic> | product <feature> | review]"
+disable-model-invocation: true
 ---
 
 # CTO — Architecture & Engineering

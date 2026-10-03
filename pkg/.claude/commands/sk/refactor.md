@@ -1,5 +1,6 @@
 ---
-description: Refactor code safely — identify smells, restructure, verify behavior unchanged (project)
+description: Refactor code safely — identify smells, restructure, verify behavior unchanged
+disable-model-invocation: true
 ---
 
 # Refactor — Safe Structural Improvement

@@ -1,5 +1,6 @@
 ---
-description: Generate changelog from git history using conventional commits (project)
+description: Generate changelog from git history using conventional commits
+disable-model-invocation: true
 ---
 
 # Changelog — Release Notes Generator

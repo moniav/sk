@@ -1,5 +1,5 @@
 ---
-description: Smart git commit with conventional format, optional push and PR (project)
+description: Smart git commit with conventional format, optional push and PR
 disable-model-invocation: true
 ---
 

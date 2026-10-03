@@ -1,7 +1,8 @@
 ---
-description: Post-implementation review recap from a diff — what changed and why (project)
+description: Post-implementation review recap from a diff — what changed and why
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *), Bash(gh pr diff *), Bash(gh pr view *)
 disallowed-tools: Edit, NotebookEdit
+disable-model-invocation: true
 ---
 
 # /sk:recap — Implementation Recap

@@ -1,5 +1,5 @@
 ---
-description: Finish feature work — review, commit, push, PR, update task board (project)
+description: Finish feature work — review, commit, push, PR, update task board
 argument-hint: "[TASK-N (optional — defaults to .current)]"
 disable-model-invocation: true
 ---
@@ -35,7 +35,7 @@ If this isn't a git repository or has no commits yet, skip the git-based steps a
 
 ## Step 3: Final Code Review
 
-Run `/sk:code-review` analysis on the branch diff:
+Apply the analysis in `.claude/commands/sk/code-review.md` to the branch diff (read the file; it cannot be invoked as a command from here):
 
 1. Determine the base branch: detect the default branch with `git symbolic-ref --short refs/remotes/origin/HEAD` (fall back to `main`, then `master`)
 2. Get the diff: `git diff {base}...HEAD`

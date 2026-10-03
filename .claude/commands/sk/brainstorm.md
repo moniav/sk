@@ -1,6 +1,7 @@
 ---
-description: Brainstorm a feature — explore an idea and produce an epic with tasks (project)
+description: Brainstorm a feature — explore an idea and produce an epic with tasks
 argument-hint: "[feature description]"
+disable-model-invocation: true
 ---
 
 # Brainstorm

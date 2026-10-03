@@ -1,5 +1,6 @@
 ---
-description: Create a business doc — plan, model summary, cap table, investor update, memo (project)
+description: Create a business doc — plan, model summary, cap table, investor update, memo
+disable-model-invocation: true
 ---
 
 # New Business Doc

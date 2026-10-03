@@ -1,5 +1,5 @@
 ---
-description: Set up scheduled maintenance routines — nightly audit, weekly retro/debt/deps, per-PR review (project)
+description: Set up scheduled maintenance routines — nightly audit, weekly retro/debt/deps, per-PR review
 argument-hint: "[list | setup (optional)]"
 disable-model-invocation: true
 ---
@@ -53,11 +53,14 @@ Ask which scheduler to target (AskUserQuestion):
 **Routine prompt template** — every scheduled invocation uses this shape:
 
 ```
-Run /sk:{command} headless: follow .claude/skills/headless-operation/SKILL.md and
-docs/conventions/delegation-policy.md. No questions — write the dated report to
+/sk:{command} Headless run: follow .claude/skills/headless-operation/SKILL.md and
+docs/conventions/delegation-policy.md. No questions. Write the dated report to
 {report home}, escalate findings needing human judgment via the report's
 "Needs human review" section, and stamp the report `routine: {routine-name}`.
 ```
+
+The prompt must **start with the slash command**. SK commands run only when typed,
+so a prompt that asks the model to "run /sk:{command}" is refused.
 
 ## Step 4: Write the Runbook
 

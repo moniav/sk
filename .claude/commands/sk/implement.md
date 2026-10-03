@@ -1,6 +1,7 @@
 ---
-description: Implement a feature end-to-end — Plan > Dev > Test in one flow (project)
+description: Implement a feature end-to-end — Plan > Dev > Test in one flow
 argument-hint: "[feature description]"
+disable-model-invocation: true
 ---
 
 # Implement Feature

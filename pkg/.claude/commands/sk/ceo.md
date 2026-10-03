@@ -1,6 +1,7 @@
 ---
-description: 1:1 with your CEO — strategy, goals, roadmap; grill mode; product feedback (project)
+description: 1:1 with your CEO — strategy, goals, roadmap; grill mode; product feedback
 argument-hint: "[meeting | grill <topic> | product <idea> | review]"
+disable-model-invocation: true
 ---
 
 # CEO — Strategy & Product

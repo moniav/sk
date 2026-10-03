@@ -1,5 +1,6 @@
 ---
-description: Write a customer-facing user guide — task-oriented, verified against code (project)
+description: Write a customer-facing user guide — task-oriented, verified against code
+disable-model-invocation: true
 ---
 
 # New User Guide

@@ -1,5 +1,6 @@
 ---
-description: Document a feature/subsystem — verified against code, into docs/features/ (project)
+description: Document a feature/subsystem — verified against code, into docs/features/
+disable-model-invocation: true
 ---
 
 # New Feature Doc

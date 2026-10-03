@@ -1,6 +1,7 @@
 ---
-description: 1:1 with your COO — routines, incidents, reliability, operational health (project)
+description: 1:1 with your COO — routines, incidents, reliability, operational health
 argument-hint: "[meeting | grill <topic> | product <feature> | review]"
+disable-model-invocation: true
 ---
 
 # COO — Operations & Reliability

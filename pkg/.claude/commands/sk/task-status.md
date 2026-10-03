@@ -1,5 +1,5 @@
 ---
-description: Show task board — status of all epics, tasks, and progress overview (project)
+description: "Show the task board: status of every epic and task. Use when the user asks what is in progress, what is next, or for a status overview."
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *)
 disallowed-tools: Edit, Write, NotebookEdit
 ---

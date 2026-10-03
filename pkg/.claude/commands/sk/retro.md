@@ -1,5 +1,6 @@
 ---
-description: Run a retrospective on completed work — capture lessons, patterns, and improvements (project)
+description: Run a retrospective on completed work — capture lessons, patterns, and improvements
+disable-model-invocation: true
 ---
 
 # /sk:retro — Retrospective

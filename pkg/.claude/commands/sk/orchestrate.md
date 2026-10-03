@@ -1,5 +1,5 @@
 ---
-description: Orchestrate parallel agent team for a task or epic — dependency-aware Plan > Dev > Test (project)
+description: Orchestrate parallel agent team for a task or epic — dependency-aware Plan > Dev > Test
 disable-model-invocation: true
 ---
 
@@ -85,7 +85,7 @@ Each parallel agent gets:
 
 If the user says the cost is too high, offer:
 - Run the largest wave in parallel, rest sequential
-- Run fully sequential (fall back to `/sk:dev`)
+- Run fully sequential (stop here; the user runs `/sk:dev` instead)
 - Reduce team size (cap at 2 parallel agents)
 
 ## Step 5: Prepare Context Packages

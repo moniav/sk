@@ -1,5 +1,5 @@
 ---
-description: Complete the PLAN phase for a task — analyze, break down, define criteria (project)
+description: "Complete the PLAN phase for a task: analyze, break it into subtasks, define acceptance criteria. Use when a task exists and needs planning before implementation, or the user asks to plan a task."
 argument-hint: "[TASK-N (optional — defaults to .current)]"
 ---
 

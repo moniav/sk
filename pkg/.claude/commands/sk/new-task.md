@@ -1,5 +1,5 @@
 ---
-description: Create a new implementation task with Plan>Dev>Test lifecycle (project)
+description: "Create an implementation task with the Plan > Dev > Test lifecycle. Use when the user wants to start a feature, fix or change that should be tracked as a task."
 argument-hint: "[feature description]"
 ---
 

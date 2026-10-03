@@ -1,5 +1,5 @@
 ---
-description: Plan, track, and close a marketing campaign — goal-linked, asset checklist, honest results (project)
+description: Plan, track, and close a marketing campaign — goal-linked, asset checklist, honest results
 argument-hint: "[new <name> | status | close CAMPAIGN-N]"
 disable-model-invocation: true
 ---

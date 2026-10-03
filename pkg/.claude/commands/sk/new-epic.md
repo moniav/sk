@@ -1,6 +1,7 @@
 ---
-description: Create a new epic — large feature broken into self-contained tasks (project)
+description: Create a new epic — large feature broken into self-contained tasks
 argument-hint: "[feature description]"
+disable-model-invocation: true
 ---
 
 # Create New Epic
