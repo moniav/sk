@@ -9,7 +9,8 @@
   "scripts": {
     "test": "node scripts/check.mjs",
     "sync": "node scripts/sync.mjs",
-    "baselines": "node scripts/baselines.mjs"
+    "baselines": "node scripts/baselines.mjs",
+    "evals": "node scripts/evals.mjs"
   },
   "files": [
     "cli.mjs",

@@ -34,3 +34,4 @@ made the mirror impure and confusing. Everything about *evolving SK the product*
 
 ### guides/
 - `skill-authoring-guide.md` — how to author SK skills
+- `skill-evals.md` - how to measure a skill or description change with `npm run evals`

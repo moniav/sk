@@ -183,14 +183,28 @@ function checkAllowedTools(label, value) {
 for (const file of commandFiles) checkAllowedTools(`commands/sk/${file}`, frontmatter(read(join(commandsDir, file)))?.fields["allowed-tools"]);
 for (const name of skillNames) checkAllowedTools(`skills/${name}`, frontmatter(read(join(skillsDir, name, "SKILL.md")))?.fields["allowed-tools"]);
 
-// --- 5. Invocation control (plan items 1.3, 1.4, 1.5) ---
+// --- 5. Invocation control (plan items 1.3, 1.4, 1.5, 2.2) ---
 
-// Commands that commit, push, publish, schedule or approve: user-invoked only.
-const MUST_GATE = ["commit", "pr", "finish", "routines", "founder", "announce", "campaign", "release", "update", "migrate", "orchestrate", "kickoff", "init-docs", "council"];
-for (const name of MUST_GATE) {
-  const path = join(commandsDir, `${name}.md`);
-  if (!existsSync(path)) continue;
-  if (frontmatter(read(path))?.fields["disable-model-invocation"] !== "true") err("gating", `commands/sk/${name}.md has side effects but is model-invocable`);
+// The only commands the model may invoke on its own (decision D1). Every other
+// command runs when typed, which also keeps its description out of the per-turn listing.
+const MODEL_INVOCABLE = ["debug", "resume", "task-status", "new-task", "plan", "review"];
+for (const file of commandFiles) {
+  const name = file.replace(/\.md$/, "");
+  const text = read(join(commandsDir, file));
+  const f = frontmatter(text)?.fields || {};
+  const gated = f["disable-model-invocation"] === "true";
+  if (MODEL_INVOCABLE.includes(name)) {
+    if (gated) err("gating", `commands/sk/${file} should be model-invocable (decision D1)`);
+    if (!/\bUse when\b/.test(f.description || "")) err("gating", `commands/sk/${file} is model-invocable but its description has no "Use when" trigger`);
+  } else if (!gated) {
+    err("gating", `commands/sk/${file} must set disable-model-invocation: true (decision D1)`);
+  }
+  if (/\(project\)\s*$/.test(f.description || "")) err("frontmatter", `commands/sk/${file}: drop the "(project)" suffix from the description`);
+
+  // The Skill tool cannot reach a gated command, so one command must not tell the model to run another.
+  for (const m of text.slice(text.indexOf("\n---", 4)).matchAll(/^(?!\s*[-|>*]).*\b[Rr]un `\/sk:([a-z-]+)`[^?\n]*$/gm)) {
+    if (!MODEL_INVOCABLE.includes(m[1])) err("gating", `commands/sk/${file} tells the model to run gated /sk:${m[1]}: "${m[0].trim().slice(0, 70)}"`);
+  }
 }
 
 // Report-only commands: must not be able to edit the project.
