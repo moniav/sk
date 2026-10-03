@@ -1,6 +1,7 @@
 ---
 description: Turn a release into an announcement pack — post, email, social from the changelog (project)
 argument-hint: "[version (optional — defaults to latest changelog entry)]"
+disable-model-invocation: true
 ---
 
 # Announce — Release → Announcement Pack

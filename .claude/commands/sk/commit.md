@@ -1,5 +1,6 @@
 ---
 description: Smart git commit with conventional format, optional push and PR (project)
+disable-model-invocation: true
 ---
 
 # Commit — Smart Git Workflow

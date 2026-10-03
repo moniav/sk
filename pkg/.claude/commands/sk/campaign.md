@@ -1,6 +1,7 @@
 ---
 description: Plan, track, and close a marketing campaign — goal-linked, asset checklist, honest results (project)
 argument-hint: "[new <name> | status | close CAMPAIGN-N]"
+disable-model-invocation: true
 ---
 
 # Campaign — Marketing Campaigns as Units of Work

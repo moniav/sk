@@ -1,6 +1,7 @@
 ---
 description: Your Monday packet — executive briefs merged into an approval console (project)
 argument-hint: "[packet | approve <item> | asks]"
+disable-model-invocation: true
 ---
 
 # Founder — The Monday Packet

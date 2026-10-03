@@ -1,6 +1,7 @@
 ---
 description: Finish feature work — review, commit, push, PR, update task board (project)
 argument-hint: "[TASK-N (optional — defaults to .current)]"
+disable-model-invocation: true
 ---
 
 # Finish — Ship Completed Work

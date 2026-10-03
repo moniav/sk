@@ -1,6 +1,7 @@
 ---
 description: Set up scheduled maintenance routines — nightly audit, weekly retro/debt/deps, per-PR review (project)
 argument-hint: "[list | setup (optional)]"
+disable-model-invocation: true
 ---
 
 # Routines — Scheduled Maintenance
