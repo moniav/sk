@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased
+
+Correctness and safety fixes from the 2026-10 best-practices review
+(Wave 1 of the enhancement plan).
+
+**Upgrade notes:**
+Updates no longer overwrite files you edited: your version is kept and the new one is written beside it as `<name>.sk-new`.
+Seven commands that commit, push, publish or schedule (`commit`, `pr`, `finish`, `routines`, `founder`, `announce`, `campaign`) now run only when you type them.
+Review commands pre-approve fewer shell commands, so `git push` in `/sk:pr` and package-manager commands outside audit and listing in `/sk:deps` now ask for permission.
+
+- **Safe update** - `npx shipkit-cld update` works file by file. A managed file with local edits is kept and SK's version goes to a `.sk-new` sidecar; a file of yours that shares a name with an SK file is never overwritten, on install or update; an SK-created `CLAUDE.md` is refreshed only until you edit it; a file SK stops shipping is removed only if untouched. New flags: `--dry-run`, `--yes`, `--force`. The manifest records a hash per file, and `pkg/.sk-baselines.json` (generated from the release tags) lets installs from before this change upgrade without false positives.
+- **Permissions** - `allowed-tools` grants list read-only subcommands instead of whole binaries (`Bash(git:*)` covered `git push --force`; `Bash(gh:*)` covered `gh repo delete`; `/sk:deps` covered `npm publish`). Nine report-only commands set `disallowed-tools` so they cannot edit project files in the turn they run.
+- **Invocation control** - commands with side effects are user-invoked only; the five skills that commands load internally are hidden from the `/` menu.
+- **`git-worktrees` skill** - the setup sequence created a branch and then failed to attach a worktree to it. It now uses one `git worktree add -b` command, defers to harness-managed worktrees, handles cleanup after squash merges, and warns about shared ports, databases and lockfiles.
+- **Plugin channel** - `plugin.json` lists each agent file; it pointed at a directory, which failed validation and loaded no agents.
+- **`subtask-execution` skill** - a `[TEST]` subtask is confirmed failing, not passing, before its paired `[DEV]` subtask; the compliance pass defers to the project's conventions instead of hard-coding naming and import rules.
+- **Counts** - plugin manifest, marketplace entry and plugin install guide corrected to 53 commands and 23 skills.
+- **Development** - `npm test` (`scripts/check.mjs`) checks the dogfood copy, counts, frontmatter limits, permissions, the plugin manifest, and install, update and remove behaviour in scratch projects; `npm run sync` mirrors `pkg/.claude/` into the dogfood copy.
+
 ## 2.0.0 (2026-07-05)
 
 SK grows from a doc & lifecycle system into a company operating system: a
