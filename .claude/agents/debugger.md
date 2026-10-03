@@ -2,7 +2,7 @@
 name: debugger
 description: Root-cause investigation agent — reproduce, isolate, hypothesize, verify. Use when a bug needs systematic diagnosis, or when a subtask keeps failing during /sk:dev, /sk:implement, or /sk:orchestrate after escalation-rules triggers. Reports the root cause and a proposed minimal fix; it does not apply fixes.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: inherit
 ---
 
 # Agent: Debugger

@@ -45,7 +45,6 @@ Dispatch the **dependency-analyzer** agent:
 ```
 Use Agent tool:
   subagent_type: dependency-analyzer
-  model: haiku
   prompt: Read the task file at {path}.
           Analyze all subtasks and produce the dependency analysis with execution waves.
 ```
@@ -129,7 +128,6 @@ For each subtask in wave:
   Use Agent tool:
     description: "Implement ST-{N}: {short description}"
     subagent_type: implementer
-    model: sonnet
     isolation: worktree
     prompt: |
       {context package from Step 5}
@@ -139,6 +137,8 @@ For each subtask in wave:
 ```
 
 **All agents in a wave launch in a single message** (parallel tool calls).
+
+Do not pass `model` at dispatch: each agent's definition sets it. The two exceptions are in the `escalation-rules` skill (one tier up after repeated failure, and `haiku` for the subtasks of an XS or S task).
 
 ### Handle Agent Results
 
@@ -161,7 +161,6 @@ After each agent completes, run both review stages. Reviews for different subtas
 Use Agent tool:
   description: "Spec review ST-{N}"
   subagent_type: spec-reviewer
-  model: haiku
   prompt: |
     Subtask spec: {spec}
     Acceptance criteria: {relevant ACs}
@@ -176,7 +175,6 @@ Use Agent tool:
 Use Agent tool:
   description: "Quality review ST-{N}"
   subagent_type: quality-reviewer
-  model: sonnet
   prompt: |
     Files changed: {list}
     Read docs/conventions/code-style.md, file-structure.md, testing.md

@@ -18,7 +18,7 @@ your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
 │   ├── commands/sk/             ← 53 slash commands
-│   ├── agents/                  ← 8 agents (implementer, reviewers, debugger, dependency-analyzer)
+│   ├── agents/                  ← 9 agents (implementer, reviewers, debugger, dependency-analyzer)
 │   └── skills/                  ← 23 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
     ├── START-HERE.md            Human front door (role-based router)
@@ -122,6 +122,27 @@ The source path is saved to `.claude/.sk-source` during install, so subsequent u
 # Remove SK (keeps your docs/):
 npx shipkit-cld remove .
 ```
+
+## Models and cost
+
+Commands and skills run in your session, on whatever model you chose. SK never switches it.
+
+Subagents are set by role:
+
+| Role | Agents | Model |
+|------|--------|-------|
+| Judgement-heavy | `debugger`, `architecture-reviewer`, `plan-reviewer` | your session's model |
+| Bounded | `implementer`, `quality-reviewer`, `security-reviewer`, `perf-reviewer` | `sonnet` |
+| Mechanical | `spec-reviewer`, `dependency-analyzer` | `haiku` |
+
+A subtask that fails review twice is retried one tier up, and the subtasks of a small task may start on `haiku`.
+
+To change this:
+
+- **One model for every SK agent:** set `CLAUDE_CODE_SUBAGENT_MODEL=sonnet` and `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1`. Without the second variable, an agent's own setting wins.
+- **A cheaper session with a stronger model on call:** use Claude Code's advisor setting.
+
+The names are aliases. On Amazon Bedrock, Google Cloud and Microsoft Foundry they resolve to older models than on the Anthropic API unless you pin them.
 
 ## Getting Started
 

@@ -257,6 +257,29 @@ for (const name of INTERNAL_SKILLS) {
   if (f["user-invocable"] !== "false") err("internal-skill", `skills/${name} must set user-invocable: false`);
 }
 
+// --- 5b. Model policy (plan item 2.6) ---
+
+// An agent's definition is the single place its model is chosen, by alias.
+// Judgement-heavy agents inherit so they are never weaker than the session.
+const MODEL_ALIASES = ["inherit", "haiku", "sonnet", "opus"];
+const MUST_INHERIT = ["debugger", "architecture-reviewer", "plan-reviewer"];
+for (const file of agentFiles) {
+  const name = file.replace(/\.md$/, "");
+  const model = frontmatter(read(join(agentsDir, file)))?.fields.model;
+  if (!MODEL_ALIASES.includes(model)) err("models", `agents/${file}: model must be one of ${MODEL_ALIASES.join(", ")} (found ${model || "none"})`);
+  if (MUST_INHERIT.includes(name) && model !== "inherit") err("models", `agents/${file}: judgement-heavy agents use model: inherit`);
+}
+// Commands and skills run in the user's session on the user's model.
+for (const file of commandFiles) {
+  const text = read(join(commandsDir, file));
+  if (frontmatter(text)?.fields.model) err("models", `commands/sk/${file}: commands must not set a model`);
+  // council's seats are the one place a model is passed at dispatch (decision D3).
+  if (file !== "council.md" && /^\s+model:\s*\w+/m.test(text.slice(text.indexOf("\n---", 4)))) err("models", `commands/sk/${file}: passes a model at dispatch; the agent definition sets it`);
+}
+for (const name of skillNames) {
+  if (frontmatter(read(join(skillsDir, name, "SKILL.md")))?.fields.model) err("models", `skills/${name}: skills must not set a model`);
+}
+
 // --- 6. Plugin manifest lists exactly the shipped agents (plan item 1.9) ---
 
 {

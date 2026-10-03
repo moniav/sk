@@ -2,6 +2,8 @@
 name: architecture-reviewer
 description: Reviews a plan or change for architectural fitness — module boundaries, pattern consistency, coupling, layering. Use during /sk:plan for M+ work or whenever a change spans modules. Returns FITS / CONCERNS / REDESIGN.
 tools: Read, Grep, Glob
+model: inherit
+maxTurns: 30
 ---
 
 # Agent: Architecture Reviewer

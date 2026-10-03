@@ -6,7 +6,7 @@
 
 ## What you'll accomplish
 
-SK's 53 commands, 23 skills, and 8 agents installed once at the user level, updating
+SK's 53 commands, 23 skills, and 9 agents installed once at the user level, updating
 natively with `/plugin update` — while your project keeps owning its `docs/` tree.
 
 > **Experimental.** The npm channel (`npx shipkit-cld`) remains the recommended path.

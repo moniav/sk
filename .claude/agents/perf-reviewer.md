@@ -3,6 +3,7 @@ name: perf-reviewer
 description: Performance review of changed files — N+1 queries, work inside loops, missing caching or indexes, over-fetching, blocking I/O in async paths. Use during /sk:review fan-out or when a change touches data access or hot paths. Returns findings with estimated impact.
 tools: Read, Grep, Glob
 model: sonnet
+maxTurns: 30
 ---
 
 # Agent: Performance Reviewer

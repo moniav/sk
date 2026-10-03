@@ -44,3 +44,12 @@ In legacy codebases, also consider:
 | **(f) Map dependencies** | Hidden coupling? Trace the dependency chain |
 | **(g) Refactor first** | Code too tangled? `/sk:refactor` as prerequisite |
 | **(h) Adjust prerequisites** | Codebase worse than assumed? Add prerequisite subtasks |
+
+## Model Tier for Dispatched Subtasks
+
+Agents run on the model their definition names. Override it at dispatch only in these two cases:
+
+- **Start cheaper:** a subtask of an XS or S task that names exact file paths may start the `implementer` on `haiku`.
+- **Escalate on failure:** when a dispatched subtask fails review twice, or returns `NEEDS_CONTEXT` after the missing context was supplied, re-dispatch it one tier up: `haiku` → `sonnet` → `opus`. Say that you escalated and why.
+
+A subtask that still fails on the top tier is a failed attempt under The Rule above: stop and present the options.

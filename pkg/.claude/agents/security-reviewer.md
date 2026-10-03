@@ -3,6 +3,7 @@ name: security-reviewer
 description: Security review of changed files or a module — injection, authn/authz, secrets exposure, unsafe deserialization, dependency risks. Use during /sk:review fan-out or whenever a change touches auth, input handling, file/network access, or sensitive data. Returns severity-ranked findings.
 tools: Read, Grep, Glob
 model: sonnet
+maxTurns: 30
 ---
 
 # Agent: Security Reviewer

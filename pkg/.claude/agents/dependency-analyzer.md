@@ -2,6 +2,8 @@
 name: dependency-analyzer
 description: Builds a dependency graph over a task's subtasks and groups them into parallel execution waves based on file conflicts and ordering constraints. Use during /sk:orchestrate before dispatching implementers.
 tools: Read, Grep, Glob
+model: haiku
+maxTurns: 30
 ---
 
 # Agent: Dependency Analyzer

@@ -48,10 +48,8 @@ Use the Agent tool to dispatch the `implementer` agent. The implementer reports:
 
 ## Model Selection
 
-Use the cheapest model that fits each role:
-- **Implementer:** `sonnet` (standard) or `haiku` (simple/well-defined)
-- **Spec reviewer:** `haiku` (binary pass/fail)
-- **Quality reviewer:** `sonnet` (nuanced judgment)
+Do not pass `model` at dispatch: each agent's definition sets it.
+The two exceptions are in the `escalation-rules` skill: one tier up after repeated failure, and `haiku` for the subtasks of an XS or S task.
 
 ## Rules
 
