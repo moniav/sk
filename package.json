@@ -6,6 +6,9 @@
   "bin": {
     "shipkit-cld": "./cli.mjs"
   },
+  "scripts": {
+    "test": "node scripts/check.mjs"
+  },
   "files": [
     "cli.mjs",
     "pkg/"

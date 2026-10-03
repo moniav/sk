@@ -64,7 +64,8 @@ When editing `pkg/docs/` or `pkg/CLAUDE.md`, you're editing what users get on in
 ```yaml
 dev:       # No dev server — SK is a CLI tool
 build:     # No build step — plain ES modules
-test:      node cli.mjs /tmp/sk-test   # Test install into temp dir
+test:      npm test                    # scripts/check.mjs: sync, counts, frontmatter, install + update regression
+           node cli.mjs /tmp/sk-test   # Manual install into a temp dir
 lint:      # No linter configured
 typecheck: # No TypeScript — plain JavaScript
 ```
