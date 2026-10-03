@@ -39,23 +39,27 @@ Ask the user which source to use if `.sk-source` doesn't exist:
 
 ## Step 2: Run the Update
 
-Run the appropriate command from Step 1.
+Preview first, then run for real. The CLI prompts for confirmation, which cannot be answered from here, so pass `--yes` on the real run:
 
-This updates **only** the SK system files:
-- `.claude/commands/sk/` — all slash commands
-- `.claude/agents/` — agent definitions
-- `.claude/skills/` — active skills
-- `docs/templates/` — document templates
-- `docs/sop/` — standard operating procedures
-- `CLAUDE.md` — agent instructions
+```bash
+<command from Step 1> --dry-run    # shows what would change, writes nothing
+<command from Step 1> --yes
+```
 
-It **preserves** all user content:
-- `docs/tasks/` — your task and epic files
-- `docs/conventions/` — your code style and patterns
-- `docs/system/` — your tech stack, schema, APIs
-- `docs/architecture/` — your architecture docs
-- `docs/decisions/` — your ADRs
-- `docs/flows/` — your flow diagrams
+Show the user the dry-run summary before the real run.
+
+The update touches **only** SK-managed files, one file at a time:
+- `.claude/commands/sk/`, `.claude/agents/`, `.claude/skills/`
+- `docs/templates/`, `docs/sop/`, `docs/reference/`
+- `docs/commands-reference.md`, `docs/README.md`, `docs/conventions/coding-behavior.md`
+- `CLAUDE.md`, only if SK created it and it has not been edited since
+
+It **never overwrites the user's work**:
+- A managed file with local edits is kept, and SK's new version is written beside it as `<name>.sk-new`
+- The user's own files are left alone, including one that shares a name with an SK file
+- `docs/tasks/`, `docs/system/`, `docs/architecture/`, `docs/decisions/`, `docs/flows/`, and the rest of `docs/conventions/` are not touched
+
+Never pass `--force` unless the user asks for it: it replaces every managed file with SK's version and discards local edits.
 
 ## Step 3: Verify
 
@@ -64,6 +68,8 @@ After the update completes:
 1. Confirm the command ran successfully (check output for `[SUCCESS]`)
 2. Run `git diff --stat` to show what changed
 3. Present a summary of updated files to the user
+4. For every `[KEEP] ... has local changes` line: show the difference between the file and its `.sk-new` sidecar, and ask whether to merge, take SK's version (rename the sidecar over the file), or keep the local version (delete the sidecar)
+5. Relay any upgrade notes the CLI printed
 
 ## Step 4: Ask About Commit
 

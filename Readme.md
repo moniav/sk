@@ -101,9 +101,20 @@ npx shipkit-cld update . --from /path/to/sk
 npx shipkit-cld update .
 ```
 
-Updates overwrite SK system files (commands, agents, skills, templates, SOPs) but **preserve your project content** (tasks, conventions, system docs, architecture, decisions, flows).
+Updates refresh SK system files (commands, agents, skills, templates, SOPs) one file at a time and **never overwrite your work**:
 
-Your `CLAUDE.md` is **never overwritten**. If you already have one when you install, SK leaves it untouched and drops its template alongside as `CLAUDE.sk.md` for you to merge. Only a greenfield install (no existing `CLAUDE.md`) creates one for you.
+- **Project content is not touched:** tasks, conventions, system docs, architecture, decisions, flows.
+- **A managed file you edited is kept.** SK's new version is written beside it as `<name>.sk-new`. Merge what you want and delete the sidecar, or rename the sidecar over the file to take SK's version.
+- **Your own files are left alone**, including an agent or skill that happens to share a name with one SK ships.
+- **`CLAUDE.md` is yours.** If you already have one when you install, SK drops its template alongside as `CLAUDE.sk.md` for you to merge. If SK created it, updates refresh it only until you edit it.
+
+```bash
+npx shipkit-cld@latest update . --dry-run   # show what would change, write nothing
+npx shipkit-cld@latest update . --yes       # no prompt, for scripts and CI
+npx shipkit-cld@latest update . --force     # take SK's version of every managed file (discards local edits)
+```
+
+To customise SK without creating update work, put project-specific rules in files SK never manages (`docs/conventions/`, `docs/business/brand-voice.md`, and your own skills and agents under their own names) rather than editing shipped files.
 
 The source path is saved to `.claude/.sk-source` during install, so subsequent updates find it automatically.
 

@@ -8,11 +8,13 @@
   },
   "scripts": {
     "test": "node scripts/check.mjs",
-    "sync": "node scripts/sync.mjs"
+    "sync": "node scripts/sync.mjs",
+    "baselines": "node scripts/baselines.mjs"
   },
   "files": [
     "cli.mjs",
-    "pkg/"
+    "pkg/",
+    "CHANGELOG.md"
   ],
   "keywords": [
     "claude-code",

@@ -7,7 +7,8 @@
 // Errors fail the run. Warnings are known gaps scheduled in
 // dev-docs/planning/2026-10-best-practices-enhancement-plan.md; each names its item.
 
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, appendFileSync } from "fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, appendFileSync } from "fs";
+import { createHash } from "crypto";
 import { dirname, join, resolve } from "path";
 import { fileURLToPath } from "url";
 import { spawnSync } from "child_process";
@@ -226,29 +227,51 @@ for (const name of INTERNAL_SKILLS) {
 
 {
   let emDashes = 0;
-  for (const rel of listFilesRel(PKG)) if (rel.endsWith(".md")) emDashes += (read(join(PKG, rel)).match(/—/g) || []).length;
+  for (const rel of listFilesRel(PKG)) if (rel.endsWith(".md")) emDashes += (read(join(PKG, rel)).match(/\u2014/g) || []).length;
   if (emDashes > 0) warn("em-dashes (3.7)", `${emDashes} in pkg/ markdown`);
   warn("listing (2.2, 2.3)", `${listingChars} characters of always-loaded command and skill descriptions`);
 }
 
 // --- 8. Dynamic checks: install, update, plugin validation ---
 
+// stdin is empty on purpose: every run passes --yes or --dry-run, so a prompt would hang the test.
 function runCli(args, cwd) {
-  return spawnSync(process.execPath, [join(ROOT, "cli.mjs"), ...args], { cwd, input: "y\ny\n", encoding: "utf-8" });
+  return spawnSync(process.execPath, [join(ROOT, "cli.mjs"), ...args], { cwd, input: "", encoding: "utf-8", timeout: 120000 });
 }
 
-if (!staticOnly) {
-  const tmp = mkdtempSync(join(tmpdir(), "sk-check-"));
+function scratch(fn) {
+  const dir = mkdtempSync(join(tmpdir(), "sk-check-"));
   try {
-    const install = runCli(["."], tmp);
-    if (install.status !== 0) err("install", `cli.mjs install exited ${install.status}: ${install.stderr.trim()}`);
+    fn(dir);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
 
+function snapshot(dir) {
+  const out = {};
+  for (const rel of listFilesRel(dir)) out[rel] = readFileSync(join(dir, rel), "latin1");
+  return out;
+}
+
+const SIDECAR = ".sk-new";
+const readManifest = (dir) => JSON.parse(read(join(dir, ".claude", ".sk-manifest.json")));
+const writeManifest = (dir, m) => writeFileSync(join(dir, ".claude", ".sk-manifest.json"), JSON.stringify(m, null, 2) + "\n");
+
+if (!staticOnly) {
+  // Install lays down every shipped file and records a hash for each.
+  scratch((tmp) => {
+    const install = runCli([".", "--yes"], tmp);
+    if (install.status !== 0) return err("install", `cli.mjs install exited ${install.status}: ${install.stderr.trim()}`);
     for (const sub of [".claude/commands/sk", ".claude/agents", ".claude/skills"]) {
       for (const rel of listFilesRel(join(PKG, sub))) {
         if (!existsSync(join(tmp, sub, rel))) err("install", `${sub}/${rel} was not installed`);
       }
     }
-    if (!existsSync(join(tmp, ".claude", ".sk-manifest.json"))) err("install", "no manifest written");
+    if (!existsSync(join(tmp, ".claude", ".sk-manifest.json"))) return err("install", "no manifest written");
+    const manifest = readManifest(tmp);
+    if (!manifest.files || !manifest.files[".claude/commands/sk/plan.md"]) err("install", "manifest has no per-file hashes");
+    if (existsSync(join(tmp, ".claude-plugin")) || existsSync(join(tmp, ".sk-baselines.json"))) err("install", "packaging files leaked into the project");
 
     // Safe update (plan item 1.8): user work must survive an update.
     const editedSkill = join(tmp, ".claude", "skills", "git-worktrees", "SKILL.md");
@@ -260,37 +283,108 @@ if (!staticOnly) {
     writeFileSync(ownTask, "user task\n");
     appendFileSync(sharedDoc, "\nUSER ROW\n");
 
-    const update = runCli(["update", ".", "--from", ROOT], tmp);
+    // CLAUDE.md is created by SK on a greenfield install, then filled in by the user.
+    const claudeMd = join(tmp, "CLAUDE.md");
+    appendFileSync(claudeMd, "\nUSER BUILD COMMANDS\n");
+
+    // --dry-run reports the same outcome and writes nothing.
+    const before = snapshot(tmp);
+    const dry = runCli(["update", ".", "--from", ROOT, "--dry-run"], tmp);
+    if (dry.status !== 0) err("update", `--dry-run exited ${dry.status}: ${dry.stderr.trim()}`);
+    if (JSON.stringify(snapshot(tmp)) !== JSON.stringify(before)) err("update", "--dry-run changed files");
+    if (!/git-worktrees\/SKILL\.md has local changes/.test(dry.stdout)) err("update", "--dry-run did not report the edited skill");
+
+    const update = runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
     if (update.status !== 0) err("update", `cli.mjs update exited ${update.status}: ${update.stderr.trim()}`);
 
     if (!existsSync(ownAgent)) err("update", "a user-added agent was deleted");
     if (!existsSync(ownTask) || read(ownTask) !== "user task\n") err("update", "a user task file was changed");
     if (!read(editedSkill).includes("USER EDIT")) err("update", "a locally edited shipped skill was overwritten");
-    else if (!existsSync(editedSkill + ".sk-new")) err("update", "an edited shipped skill was kept but no .sk-new sidecar was written");
+    else if (!existsSync(editedSkill + SIDECAR)) err("update", "an edited shipped skill was kept but no sidecar was written");
+    else if (read(editedSkill + SIDECAR) !== read(join(PKG, ".claude", "skills", "git-worktrees", "SKILL.md"))) err("update", "the sidecar is not SK's current version");
     if (!read(sharedDoc).includes("USER ROW")) err("update", "a user edit to docs/README.md was overwritten");
-  } finally {
-    rmSync(tmp, { recursive: true, force: true });
-  }
+    else if (!existsSync(sharedDoc + SIDECAR)) err("update", "docs/README.md was kept but no sidecar was written");
+    if (!read(claudeMd).includes("USER BUILD COMMANDS")) err("update", "a user edit to an SK-created CLAUDE.md was overwritten");
+    else if (!existsSync(join(tmp, "CLAUDE.sk.md"))) err("update", "an edited CLAUDE.md was kept but no CLAUDE.sk.md was written");
+    if (listFilesRel(tmp).filter((f) => f.endsWith(SIDECAR)).length !== 2) err("update", "sidecars were written for files the user did not edit");
 
-  // A file that shares a name with a shipped one but predates the install is the user's.
-  const tmp2 = mkdtempSync(join(tmpdir(), "sk-check-"));
-  try {
-    runCli(["."], tmp2);
-    const manifestPath = join(tmp2, ".claude", ".sk-manifest.json");
-    const collide = join(tmp2, ".claude", "agents", "debugger.md");
-    if (existsSync(manifestPath)) {
-      // Simulate a pre-existing user agent: drop it from the manifest, replace its content.
-      const manifest = JSON.parse(read(manifestPath));
-      const agents = manifest.managed?.[".claude/agents"];
-      if (Array.isArray(agents)) manifest.managed[".claude/agents"] = agents.filter((f) => f !== "debugger.md");
-      else if (manifest.files) delete manifest.files[".claude/agents/debugger.md"];
-      writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
-      writeFileSync(collide, "mine\n");
-      runCli(["update", ".", "--from", ROOT], tmp2);
-      if (read(collide) !== "mine\n") err("update", "a user agent sharing a name with a shipped agent was overwritten");
-    }
-  } finally {
-    rmSync(tmp2, { recursive: true, force: true });
+    // Accepting a sidecar makes the file pristine again: the next update clears nothing and writes no sidecar.
+    writeFileSync(editedSkill, readFileSync(editedSkill + SIDECAR));
+    rmSync(editedSkill + SIDECAR);
+    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
+    if (existsSync(editedSkill + SIDECAR)) err("update", "a sidecar reappeared after the user accepted SK's version");
+
+    // --force takes SK's version of an edited file and removes its sidecar.
+    runCli(["update", ".", "--from", ROOT, "--yes", "--force"], tmp);
+    if (read(sharedDoc).includes("USER ROW")) err("update", "--force did not replace an edited file");
+    if (existsSync(sharedDoc + SIDECAR)) err("update", "--force left a stale sidecar behind");
+
+    // A managed file SK stops shipping: removed when untouched, kept when edited.
+    const manifest2 = readManifest(tmp);
+    const gone = join(tmp, ".claude", "commands", "sk", "retired.md");
+    const goneEdited = join(tmp, ".claude", "commands", "sk", "retired-edited.md");
+    writeFileSync(gone, "old command\n");
+    writeFileSync(goneEdited, "old command, edited by the user\n");
+    manifest2.files[".claude/commands/sk/retired.md"] = createHash("sha256").update("old command\n", "latin1").digest("hex").slice(0, 16);
+    manifest2.files[".claude/commands/sk/retired-edited.md"] = "0000000000000000";
+    writeManifest(tmp, manifest2);
+    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
+    if (existsSync(gone)) err("update", "an untouched file SK no longer ships was not removed");
+    if (!existsSync(goneEdited)) err("update", "an edited file SK no longer ships was deleted");
+
+    // remove deletes SK's files and sidecars, keeps the user's.
+    appendFileSync(editedSkill, "\nUSER EDIT\n");
+    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
+    const removed = runCli(["remove", ".", "--yes"], tmp);
+    if (removed.status !== 0) err("remove", `cli.mjs remove exited ${removed.status}: ${removed.stderr.trim()}`);
+    if (existsSync(editedSkill + SIDECAR)) err("remove", "a sidecar was left behind");
+    if (!existsSync(ownAgent)) err("remove", "a user-added agent was deleted");
+    if (!existsSync(ownTask)) err("remove", "docs/ was not preserved");
+  });
+
+  // A project's own file that shares a name with a shipped one is never overwritten:
+  // not on install, not on update, and it stays out of the manifest.
+  scratch((tmp) => {
+    const collide = join(tmp, ".claude", "agents", "debugger.md");
+    mkdirSync(dirname(collide), { recursive: true });
+    writeFileSync(collide, "mine\n");
+    runCli([".", "--yes"], tmp);
+    if (read(collide) !== "mine\n") err("install", "a pre-existing user agent sharing a name with a shipped agent was overwritten");
+    if (".claude/agents/debugger.md" in (readManifest(tmp).files || {})) err("install", "a user file was recorded as SK-managed");
+    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
+    if (read(collide) !== "mine\n") err("update", "a user agent sharing a name with a shipped agent was overwritten");
+    runCli(["remove", ".", "--yes"], tmp);
+    if (!existsSync(collide)) err("remove", "a user agent sharing a name with a shipped agent was deleted");
+  });
+
+  // An install from before per-file hashes: an untouched older release of a file is
+  // recognised through pkg/.sk-baselines.json and updated; an edited one is kept.
+  scratch((tmp) => {
+    const tag = spawnSync("git", ["tag", "--list", "v*", "--sort=-version:refname"], { cwd: ROOT, encoding: "utf-8" }).stdout.split("\n")[0];
+    const rel = ".claude/skills/git-worktrees/SKILL.md";
+    const released = tag ? spawnSync("git", ["show", `${tag}:pkg/${rel}`], { cwd: ROOT, encoding: "utf-8" }) : null;
+    if (!released || released.status !== 0) return console.log("[INFO] no release tag with pkg/ -- skipped the pre-hash upgrade check");
+    if (released.stdout.replace(/\r\n/g, "\n") === read(join(PKG, rel))) return console.log("[INFO] probe file unchanged since the last release -- skipped the pre-hash upgrade check");
+
+    runCli([".", "--yes"], tmp);
+    const manifest = readManifest(tmp);
+    delete manifest.files;
+    writeManifest(tmp, manifest);
+    writeFileSync(join(tmp, rel), released.stdout);
+    const edited = join(tmp, ".claude", "commands", "sk", "plan.md");
+    appendFileSync(edited, "\nUSER EDIT\n");
+
+    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
+    if (read(join(tmp, rel)) !== read(join(PKG, rel))) err("update", "an untouched file from an older release was not updated on a pre-hash install");
+    if (existsSync(join(tmp, rel) + SIDECAR)) err("update", "an untouched file from an older release got a sidecar");
+    if (!read(edited).includes("USER EDIT")) err("update", "an edited file on a pre-hash install was overwritten");
+    if (!readManifest(tmp).files) err("update", "the manifest was not upgraded with per-file hashes");
+  });
+
+  // The release baselines are generated; they must match the tags.
+  {
+    const baselines = spawnSync(process.execPath, [join(ROOT, "scripts", "baselines.mjs"), "--check"], { cwd: ROOT, encoding: "utf-8" });
+    if (baselines.status !== 0) err("baselines", "pkg/.sk-baselines.json is out of date -- run: npm run baselines");
   }
 
   // The git-worktrees skill's setup command must actually work (plan item 1.1):
@@ -326,7 +420,7 @@ if (!staticOnly) {
     }
   }
 
-  const claude = spawnSync("claude", ["plugin", "validate", "."], { cwd: ROOT, encoding: "utf-8", shell: true });
+  const claude = spawnSync("claude plugin validate .", { cwd: ROOT, encoding: "utf-8", shell: true });
   if (claude.error || /not recognized|not found/i.test(claude.stderr || "")) {
     console.log("[INFO] claude CLI not on PATH -- skipped plugin validation");
   } else if (claude.status !== 0) {

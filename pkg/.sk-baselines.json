@@ -1,0 +1,562 @@
+{
+ "_generated": "by scripts/baselines.mjs from the release tags; do not edit by hand",
+ "tags": [
+  "v1.1.0",
+  "v1.1.1",
+  "v1.1.2",
+  "v1.2.0",
+  "v1.3.0",
+  "v1.4.0",
+  "v1.4.1",
+  "v1.5.0",
+  "v1.7.0",
+  "v1.8.0",
+  "v1.9.0",
+  "v2.0.0"
+ ],
+ "files": {
+  ".claude/agents/architecture-reviewer.md": [
+   "63dcc71c0f3ee7a4",
+   "86236d8a69956161",
+   "ae5e7925c6b3f880"
+  ],
+  ".claude/agents/debugger.md": [
+   "4d4917726eb3cb9f"
+  ],
+  ".claude/agents/dependency-analyzer.md": [
+   "2c12ef760d437fd4",
+   "e45e1576321b9974"
+  ],
+  ".claude/agents/implementer.md": [
+   "6a4c95531ca68a03",
+   "835b50959955caa6"
+  ],
+  ".claude/agents/perf-reviewer.md": [
+   "d850d0d07914b5d3"
+  ],
+  ".claude/agents/quality-reviewer.md": [
+   "76a41291fb47fc3b",
+   "e598a68da9f216ad"
+  ],
+  ".claude/agents/security-reviewer.md": [
+   "563a3bd47c4adeef"
+  ],
+  ".claude/agents/spec-reviewer.md": [
+   "6bbc296c606db33d",
+   "6c056ff7a990588f",
+   "7de6b39946fd4959"
+  ],
+  ".claude/commands/sk/announce.md": [
+   "025af2549ca23586"
+  ],
+  ".claude/commands/sk/brainstorm.md": [
+   "3913d3776279c5a1",
+   "6ff4473598643e27",
+   "d302d62ae245df02",
+   "deb36a5a4e805794"
+  ],
+  ".claude/commands/sk/campaign.md": [
+   "83674e6067bd6d1e"
+  ],
+  ".claude/commands/sk/ceo.md": [
+   "c36b1a9b26e725b2"
+  ],
+  ".claude/commands/sk/changelog.md": [
+   "3645eb7e1efe29f9",
+   "46817beeefa8cfbb",
+   "d660e39050948147"
+  ],
+  ".claude/commands/sk/cmo.md": [
+   "08d6c53dabbb53a4"
+  ],
+  ".claude/commands/sk/code-review.md": [
+   "2c22e6536aed0626",
+   "3de478fd8b92edb9",
+   "51d457d1de45b2ed",
+   "c9645517b99eb46e",
+   "e68dafa2aa8b2fbf",
+   "ea2c051ea0b18560"
+  ],
+  ".claude/commands/sk/commit.md": [
+   "7d1069232dcc1983",
+   "aee14e7c92a834d5",
+   "bde6835bae0c07dc",
+   "e352e559910fcc69"
+  ],
+  ".claude/commands/sk/competitor.md": [
+   "dda445113870a99d"
+  ],
+  ".claude/commands/sk/coo.md": [
+   "44aea344c96d944b"
+  ],
+  ".claude/commands/sk/copywrite.md": [
+   "3850f5dc5ca03f5e",
+   "719e14841c70d86f"
+  ],
+  ".claude/commands/sk/council.md": [
+   "157942297b55b2f3",
+   "62ecbb3d37f60a3a",
+   "fe8a7953b8b1030f"
+  ],
+  ".claude/commands/sk/cto.md": [
+   "669df5643bfbde16"
+  ],
+  ".claude/commands/sk/debt.md": [
+   "035fcc165e8a8bfb",
+   "5acfd66ef4762aed"
+  ],
+  ".claude/commands/sk/debug.md": [
+   "0a2713f21fb8a0c3",
+   "59e3d67fa4ceae4f",
+   "5fa3121c487eb75a",
+   "77e74d60ec7108f6",
+   "c2c028b28f173cbc",
+   "d623aec66125f6de"
+  ],
+  ".claude/commands/sk/deps.md": [
+   "1404347ef225e611",
+   "5f1b725cf36a4ab4",
+   "a6f930b4c09bb97d",
+   "ed0d355ad4393e1c"
+  ],
+  ".claude/commands/sk/dev.md": [
+   "04c50e339b359dfa",
+   "356c7cda82e9d4ac",
+   "3c313980c063ce22",
+   "4335c8d998f44855",
+   "ad7e94de698d0982",
+   "bbe8f50512d462e8",
+   "f46163f10d5d5016"
+  ],
+  ".claude/commands/sk/docs-audit.md": [
+   "67469e40ccab8164",
+   "ae428f9fed86689b"
+  ],
+  ".claude/commands/sk/finish.md": [
+   "0927d622f00172d7",
+   "2855fac1ae4db700",
+   "b9012e1c18372a69"
+  ],
+  ".claude/commands/sk/founder.md": [
+   "4c0b24017f0b07be"
+  ],
+  ".claude/commands/sk/implement.md": [
+   "3ed214302e8874a7",
+   "422931aa879ab50b",
+   "7dd2b695947f3d27",
+   "ac31e2038c40c9d0",
+   "bd76b33538c0f71b",
+   "d4a1cbc4a1cfd6c1"
+  ],
+  ".claude/commands/sk/init-docs.md": [
+   "010f781b32913241",
+   "0fc262f2649c9d6a",
+   "27b5fa2f2599be0c",
+   "346598b7df92d5f9",
+   "663136467bd0779f"
+  ],
+  ".claude/commands/sk/kickoff.md": [
+   "027918c5f6b6a7b1",
+   "27d425727640eedb",
+   "7cc9565eb4fb0930"
+  ],
+  ".claude/commands/sk/legal-scan.md": [
+   "a61ce23272eec006",
+   "cd1cea832865f997",
+   "e622289850d7d784"
+  ],
+  ".claude/commands/sk/migrate.md": [
+   "1ad34e4d53848a3b",
+   "5f7e0a0c68712064",
+   "abe0e70e941bf6ea"
+  ],
+  ".claude/commands/sk/new-adr.md": [
+   "816d00999fa16c4e",
+   "cba52d0d81d5f6a9",
+   "d6cf88efc9ef5c69",
+   "e32908a81127cd8d"
+  ],
+  ".claude/commands/sk/new-business-doc.md": [
+   "4420afe269cb1e33",
+   "5e8d056c1a89d906",
+   "71348518cc4d7ad3"
+  ],
+  ".claude/commands/sk/new-epic.md": [
+   "6417dc1d7fc9b99e",
+   "803c0836eed8978d",
+   "8a7d636dd4da4672",
+   "f694200d94ba0b95"
+  ],
+  ".claude/commands/sk/new-feature-doc.md": [
+   "4f83fd82fd5d245d",
+   "eab53f00423a3b51"
+  ],
+  ".claude/commands/sk/new-flow.md": [
+   "33a161ac74756193",
+   "47e9d110eded8778",
+   "7a3c6efaa96cc81e",
+   "a703304728a06f30",
+   "ce693af7f871d019"
+  ],
+  ".claude/commands/sk/new-sop.md": [
+   "16e68dbdcf33712c",
+   "37dd26587e79b196",
+   "59e811e220c56467"
+  ],
+  ".claude/commands/sk/new-task.md": [
+   "06e19451001241f9",
+   "d5abb4d91a337790",
+   "d791752987209999",
+   "e321d8ae48a73525"
+  ],
+  ".claude/commands/sk/new-user-guide.md": [
+   "3e5a6cd6cd6692fc",
+   "4e9e4c00851d358c"
+  ],
+  ".claude/commands/sk/ops.md": [
+   "b387832c53c9986b",
+   "b8a1540bf6eff44d"
+  ],
+  ".claude/commands/sk/orchestrate.md": [
+   "2e037e74200655b4",
+   "7ea96eb6c21cc00f",
+   "fe46bf8d8d690235"
+  ],
+  ".claude/commands/sk/perf-review.md": [
+   "843683d68645344e",
+   "880a33d1406c314b",
+   "b443fdc18584c50a",
+   "f1b39554429c1da9"
+  ],
+  ".claude/commands/sk/plan.md": [
+   "09aa661da3f37abc",
+   "6d03ce10f1510651",
+   "8b80b4ccd563b696",
+   "aec205e776dc845a",
+   "bf5d63128745bc41",
+   "d57676a6c311dfc9",
+   "ec13c569704dbbf9"
+  ],
+  ".claude/commands/sk/positioning.md": [
+   "02f61a2eda1a8bd0"
+  ],
+  ".claude/commands/sk/pr.md": [
+   "73b8215b6e491fac"
+  ],
+  ".claude/commands/sk/pricing.md": [
+   "07b619c118df7bd5"
+  ],
+  ".claude/commands/sk/recap.md": [
+   "09eb2d8e4868d3bc",
+   "6a0cf5926ff9984a"
+  ],
+  ".claude/commands/sk/refactor.md": [
+   "470829a1a2933156",
+   "7258a0f41bfb1b86",
+   "9b24a53796ca7e36",
+   "d0bdc53d1595fd72"
+  ],
+  ".claude/commands/sk/release.md": [
+   "42b28b8f86d793ed"
+  ],
+  ".claude/commands/sk/resume.md": [
+   "aad909b462944ac2",
+   "bbb3637fa1d76dc8",
+   "ed8d77194e2f370a"
+  ],
+  ".claude/commands/sk/retro.md": [
+   "46123c7804051e9e",
+   "de414121088723de",
+   "f3b60836d8bb891b"
+  ],
+  ".claude/commands/sk/review.md": [
+   "67b8744f1d963bae"
+  ],
+  ".claude/commands/sk/routines.md": [
+   "9878d144ede3cf8d",
+   "afedd159fa8229dd"
+  ],
+  ".claude/commands/sk/security-review.md": [
+   "256bffb33a5f97d7",
+   "57b67513b32e3cee",
+   "5ab37233de2a0411",
+   "d81084307ce319f0",
+   "e62da0fde202fde0"
+  ],
+  ".claude/commands/sk/task-status.md": [
+   "5d0ee0de681cfaea",
+   "85bf8d78e9d3b79e",
+   "88fc5355172a4f2b"
+  ],
+  ".claude/commands/sk/test.md": [
+   "2b12283262c9af75",
+   "5d05dc5a13e266cc",
+   "72eff39a3718463a",
+   "7939e8034ef0e7cc",
+   "b303f483dc501906",
+   "e3eca38822a9fb7e",
+   "f666e29d1e9493d1"
+  ],
+  ".claude/commands/sk/ui-review.md": [
+   "45f099e48ef17945",
+   "525c116d2b982e36",
+   "5662263161914731",
+   "6fa2ee7e15464c7a",
+   "e1c962d2ad0c4d6c"
+  ],
+  ".claude/commands/sk/update-docs.md": [
+   "368bf28b61aabe0a",
+   "38c500bc35b64b4d",
+   "7a99978369d67060",
+   "91062717da956ceb",
+   "bfd9de13848f8e32",
+   "c44ede17ab6fd13e"
+  ],
+  ".claude/commands/sk/update.md": [
+   "4e88802934d4a023",
+   "63654ef8df33c8dd",
+   "ae3a837e85fde0e5",
+   "b1a68f309182c6c5"
+  ],
+  ".claude/skills/competitor-analysis/SKILL.md": [
+   "08d5f82d1d2b56f6"
+  ],
+  ".claude/skills/context-priming/SKILL.md": [
+   "ae96bf37bb4b53ad"
+  ],
+  ".claude/skills/copywriting/SKILL.md": [
+   "490e7389c7bae8e4",
+   "d3e83bd927c0dd6a"
+  ],
+  ".claude/skills/copywriting/references/frameworks.md": [
+   "4d742bc88bd49fe4"
+  ],
+  ".claude/skills/create-pdf/SKILL.md": [
+   "70025ad53839a616",
+   "e15a63bb9d050708"
+  ],
+  ".claude/skills/create-pdf/references/print.css": [
+   "6fc4084c2b410c3a"
+  ],
+  ".claude/skills/error-recovery/SKILL.md": [
+   "cf0b69507297cc5c",
+   "f41bec9c5dd6ee3f"
+  ],
+  ".claude/skills/escalation-rules/SKILL.md": [
+   "31b9fbf65b0bd46a",
+   "ce306c6e49a3a0c4"
+  ],
+  ".claude/skills/executive-meeting/SKILL.md": [
+   "a6aacb2b744b6bc8"
+  ],
+  ".claude/skills/git-commit-flow/SKILL.md": [
+   "56dbaad2e7be3918"
+  ],
+  ".claude/skills/git-worktrees/SKILL.md": [
+   "aa97cf758bd6d549"
+  ],
+  ".claude/skills/headless-operation/SKILL.md": [
+   "1697bc3d367aaf8b"
+  ],
+  ".claude/skills/legal-advisor/SKILL.md": [
+   "724d8e2c2f47887d",
+   "7ce27b955c6c8507",
+   "b675d14e0a01fc68"
+  ],
+  ".claude/skills/legal-advisor/references/compliance-frameworks.md": [
+   "fc661cba96abad28"
+  ],
+  ".claude/skills/legal-advisor/references/detection-signals.md": [
+   "88a86da84db3891d"
+  ],
+  ".claude/skills/legal-advisor/references/entity-formation.md": [
+   "bfc5a5ca6fdb7ae7"
+  ],
+  ".claude/skills/operations-advisor/SKILL.md": [
+   "b4e0b352cfbd0352"
+  ],
+  ".claude/skills/plow-ahead/SKILL.md": [
+   "ac4d0f5b426ae48b"
+  ],
+  ".claude/skills/pricing-strategy/SKILL.md": [
+   "69edbb0fb48649ca"
+  ],
+  ".claude/skills/product-marketing-context/SKILL.md": [
+   "0b0e9700aef210fb"
+  ],
+  ".claude/skills/research/SKILL.md": [
+   "72dbd6dc14d667c9"
+  ],
+  ".claude/skills/stay-within-limits/SKILL.md": [
+   "495ed1cd4493dd3c"
+  ],
+  ".claude/skills/subagent-driven-development/SKILL.md": [
+   "42cd89fdab366da0",
+   "9ee33a56acde188d"
+  ],
+  ".claude/skills/subtask-execution/SKILL.md": [
+   "75a728922bfca588"
+  ],
+  ".claude/skills/technical-diagrams/SKILL.md": [
+   "55416478900c6f26"
+  ],
+  ".claude/skills/technical-diagrams/references/svg-elements.md": [
+   "c3bbfea57e0809de"
+  ],
+  ".claude/skills/technical-writing/SKILL.md": [
+   "7e2f5a4eeff9df8c"
+  ],
+  ".claude/skills/test-driven-development/SKILL.md": [
+   "3878c2fc2dda22ad",
+   "7f3e2d9a7fd016c0"
+  ],
+  ".claude/skills/test-driven-development/anti-patterns.md": [
+   "2a0a8505329421ff"
+  ],
+  ".claude/skills/verification-before-completion/SKILL.md": [
+   "1dc92742e8ba38bc",
+   "566415ef18e81a5a",
+   "ded05885ceba806e"
+  ],
+  "CLAUDE.md": [
+   "0787349b7a1eb451",
+   "26835af8880ba521",
+   "2d2a76bf615e737a",
+   "417a94f681e9afb1",
+   "4c00d8941e427b4f",
+   "903572151e489d88",
+   "b4370cf096c0536b",
+   "d6376a1b50528272",
+   "e478543dd18d8915"
+  ],
+  "docs/README.md": [
+   "148b742980c9193f",
+   "211922e988e1b730",
+   "23152c447aba73bc",
+   "6fc512e8d0daafdb",
+   "efc3232c533bf873",
+   "fc4060bd450381af"
+  ],
+  "docs/commands-reference.md": [
+   "2b5cc6572cc8e67b",
+   "9ac24be3df0fbca3",
+   "ad42a7248304de52",
+   "d9c9b6ab80da1494",
+   "edcb4bd58b275316"
+  ],
+  "docs/conventions/coding-behavior.md": [
+   "4f6528a4679e5872",
+   "6752370bfe9db33b"
+  ],
+  "docs/reference/README.md": [
+   "b930904837886230"
+  ],
+  "docs/reference/ui-design/anti-patterns.md": [
+   "38be9407b1496c0c"
+  ],
+  "docs/reference/ui-design/visual-design.md": [
+   "616ea27c9ea5ec3b"
+  ],
+  "docs/sop/README.md": [
+   "604bd1f269f7e602",
+   "9997e0db6f86c19e"
+  ],
+  "docs/sop/creating-a-task.md": [
+   "8aad9f5d1c2ae0bd",
+   "b8d33511b65a49c9"
+  ],
+  "docs/sop/database-migration.md": [
+   "2da8db68d926dc78",
+   "c5863d3c666ae16a"
+  ],
+  "docs/templates/README.md": [
+   "0e248431cde17be9",
+   "7e5e33a13832e911",
+   "84727c86bbed0a6a"
+  ],
+  "docs/templates/adr-decision.md": [
+   "906ad09e8532f38c",
+   "e29d7e35846faaf9"
+  ],
+  "docs/templates/brand-voice.md": [
+   "6a3794f748f61db8"
+  ],
+  "docs/templates/business-plan.md": [
+   "91d6ab1fbe619235"
+  ],
+  "docs/templates/campaign.md": [
+   "b224f06d67b2b635"
+  ],
+  "docs/templates/cap-table.md": [
+   "10ab4d1a679751ab"
+  ],
+  "docs/templates/competitor-profile.md": [
+   "c4c92970218d81ea"
+  ],
+  "docs/templates/component-doc.md": [
+   "0388743b91e5777b",
+   "839d3f77aa9fd058"
+  ],
+  "docs/templates/decision-memo.md": [
+   "4113e90e45996352"
+  ],
+  "docs/templates/epic.md": [
+   "1e13c953a1c8e202",
+   "829a76ac6c4cee18",
+   "eb2651151e0d34e5"
+  ],
+  "docs/templates/executive-charter.md": [
+   "8ee5362e0789dbd9"
+  ],
+  "docs/templates/feature-doc.md": [
+   "18ef88112ea53ae1"
+  ],
+  "docs/templates/financial-model.md": [
+   "74baa0cf795ee35d"
+  ],
+  "docs/templates/flow-diagram.md": [
+   "38be318da3c1390f",
+   "3fbe11baee4a13e6",
+   "a709327abd486825",
+   "d01cf26fefc88448"
+  ],
+  "docs/templates/goals.md": [
+   "c89f8b0f303c89fe"
+  ],
+  "docs/templates/investor-update.md": [
+   "582643cc1ca22be7"
+  ],
+  "docs/templates/metrics.md": [
+   "2b7fa1b09290583c"
+  ],
+  "docs/templates/positioning.md": [
+   "f012636fa99a41c5"
+  ],
+  "docs/templates/postmortem.md": [
+   "f790f73db8d8d05a"
+  ],
+  "docs/templates/pricing-strategy.md": [
+   "af124895eaf08823"
+  ],
+  "docs/templates/research-doc.md": [
+   "70aba92d16322fda",
+   "858e86788bad2a77"
+  ],
+  "docs/templates/review-report.md": [
+   "30ed3251d97a70a8"
+  ],
+  "docs/templates/sop-procedure.md": [
+   "296ae54ccfb3196c",
+   "e25e29f39e66d661",
+   "fa69bd535dd4de4b"
+  ],
+  "docs/templates/task-prd.md": [
+   "2a7fa663de452e58",
+   "6d9a62242f19077d",
+   "7683fa0af25d6fc9"
+  ],
+  "docs/templates/user-guide.md": [
+   "3624289847b56d24"
+  ]
+ }
+}
