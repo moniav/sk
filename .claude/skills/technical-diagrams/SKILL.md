@@ -1,11 +1,6 @@
 ---
 name: technical-diagrams
-description: >
-  Generate clean, minimal technical SVG diagrams for documentation.
-  Use when creating architecture diagrams, flow diagrams, or component diagrams
-  for docs/architecture/ or docs/flows/. Activates during /sk:new-flow when SVG
-  output is chosen. Provides a consistent visual design system with grid backgrounds,
-  monospace fonts, and semantic color accents.
+description: Generates SVG architecture, flow and component diagrams in one consistent visual style. Use when the user asks for a diagram of a system, process or component, or when documentation needs an SVG figure.
 ---
 
 # Technical SVG Diagrams

@@ -1,10 +1,6 @@
 ---
 name: test-driven-development
-description: >
-  Enforces the RED-GREEN-REFACTOR cycle: every piece of production code gets a
-  failing test written first. Use when implementing features, fixing bugs, or when
-  the user mentions TDD or "test first". Activates during /sk:dev and /sk:implement
-  subtask execution.
+description: Enforces red-green-refactor, where a failing test is written and run before the production code. Use when implementing a feature, fixing a bug, or when the user mentions TDD or test first.
 ---
 
 # Test-Driven Development

@@ -1,10 +1,6 @@
 ---
 name: create-pdf
-description: >
-  Turn a Markdown or HTML file into a clean, paginated, publication-quality PDF —
-  margins, page numbers, running headers, TOC, optional cover page and watermark.
-  Use whenever the user asks to make/create/export/generate a PDF or produce a
-  printable/shareable document. Cross-platform with automatic engine detection.
+description: Converts a Markdown or HTML file into a paginated PDF with margins, page numbers, optional table of contents, cover page and watermark. Use when the user asks to make, export or generate a PDF, or wants a printable or shareable document.
 ---
 
 # Create PDF

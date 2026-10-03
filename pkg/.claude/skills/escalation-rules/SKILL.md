@@ -1,9 +1,6 @@
 ---
 name: escalation-rules
-description: >
-  Stop after 3 failed attempts on the same problem and present structured options
-  instead of retrying in circles. Use when stuck on a bug or a repeatedly failing
-  subtask; also activates during /sk:dev, /sk:implement, /sk:refactor, and /sk:debug.
+description: Stops retrying after three failed attempts at the same problem and presents structured options to the user. Use when a fix, test or subtask has failed repeatedly, or the work is going in circles.
 ---
 
 # Escalation Rules

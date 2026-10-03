@@ -1,10 +1,6 @@
 ---
 name: error-recovery
-description: >
-  Structured recovery from broken states — merge conflicts, failed deploys, broken
-  builds, corrupted git state, lock-file conflicts. Use when something breaks and
-  you're tempted to try quick fixes: diagnose first, then follow a systematic path
-  back to working.
+description: Guides recovery from a broken state, such as merge or rebase conflicts, a corrupted git state, a build that broke after a dependency change, lockfile conflicts or a failed deploy. Use when something is broken and needs diagnosing before any fix is tried.
 ---
 
 # Error Recovery

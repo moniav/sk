@@ -1,11 +1,6 @@
 ---
 name: git-worktrees
-description: >
-  Manages isolated git worktree workspaces for feature branch development.
-  Use this skill when the user wants to work on a feature in isolation, asks about
-  "worktrees", "isolated branch", "separate workspace", or when starting M+ complexity
-  work during /sk:dev or /sk:implement. Also handles worktree cleanup during /sk:finish.
-  Ensures clean setup with dependency install and baseline tests, plus safe teardown.
+description: Sets up and tears down an isolated git worktree and branch for a task. Use when the user wants to work in isolation, mentions worktrees or a separate workspace, or needs to work on two branches at once.
 ---
 
 # Git Worktrees

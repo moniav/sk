@@ -1,9 +1,6 @@
 ---
 name: technical-writing
-description: >
-  Write clear, accurate technical documentation — READMEs, API docs, guides, onboarding docs,
-  architecture overviews, and changelogs. Use when creating or significantly rewriting technical
-  documentation. Not for marketing copy (use copywriting skill) or code comments.
+description: Writes technical documentation, such as READMEs, API docs, guides, onboarding and architecture overviews, checked against the code. Use when creating or substantially rewriting developer documentation. Not for marketing copy.
 ---
 
 # Technical Writing

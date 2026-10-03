@@ -1,9 +1,6 @@
 ---
 name: verification-before-completion
-description: >
-  Never claim "done", "complete", or "all tests pass" without showing actual command
-  output as evidence. Applies to ANY development task, and at the exit gates of
-  /sk:dev, /sk:test, /sk:implement, /sk:refactor, and /sk:debug.
+description: Requires fresh command output as evidence before any claim that work is done, complete or passing, and checks the result against the original request. Use before reporting a task finished or confirming that something works.
 ---
 
 # Verification Before Completion

@@ -1,11 +1,6 @@
 ---
 name: plow-ahead
-description: >
-  Grants autonomy to proceed through minor ambiguity by stating an assumption and
-  continuing, stopping only for genuine blockers. Use this skill when the user signals
-  "just do it", "don't keep asking", "use your judgment", "proceed", or "keep going" —
-  or when small clarifications would interrupt flow without changing the outcome. The
-  complement to escalation-rules (which says when to STOP).
+description: Grants autonomy to proceed through minor ambiguity by stating an assumption and continuing, stopping only for real blockers, with a decision log at the end. Use when the user says to just do it, stop asking, use your judgment, or keep going.
 ---
 
 # Plow Ahead — Autonomy Contract

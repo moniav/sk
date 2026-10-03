@@ -1,10 +1,6 @@
 ---
 name: stay-within-limits
-description: >
-  Governs long or parallel agent runs so they don't exhaust the usage window mid-task.
-  Use during /sk:orchestrate, subagent-driven development, or any run that fans out many
-  subagents or spans a long session. Caps fan-out into bounded waves, checks usage between
-  waves, and emits a self-contained resume prompt before pausing.
+description: Keeps long or parallel agent runs from exhausting the usage limit mid-task, using bounded waves of subagents, a check between waves, and a resume prompt before pausing. Use when fanning out many subagents or starting a run that will last hours.
 ---
 
 # Stay Within Limits — Budget Governance
