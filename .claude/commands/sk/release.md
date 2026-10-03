@@ -9,6 +9,9 @@ disable-model-invocation: true
 Close the loop `/sk:changelog` opens: bump the version, update the changelog, tag,
 and (optionally) create a GitHub release and publish.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 ## Step 1: Preflight
 
 All must pass before anything is modified:

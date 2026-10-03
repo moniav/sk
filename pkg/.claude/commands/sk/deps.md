@@ -1,5 +1,6 @@
 ---
 description: Dependency health check — outdated, vulnerabilities, unused, licenses
+argument-hint: "[manifest path (optional, for monorepos)]"
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *), Bash(npm audit *), Bash(npm outdated *), Bash(npm ls *), Bash(npm ci --dry-run *), Bash(pip list *), Bash(pip audit *), Bash(pip-audit *), Bash(safety check *), Bash(cargo audit *), Bash(cargo outdated *), Bash(cargo tree *), Bash(go list *), Bash(govulncheck *), Bash(poetry check *), Bash(poetry show *)
 disable-model-invocation: true
 ---
@@ -7,6 +8,9 @@ disable-model-invocation: true
 # Deps — Dependency Health Check
 
 Audit project dependencies for security vulnerabilities, outdated packages, unused dependencies, and license compliance.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 ## Step 1: Read Context
 

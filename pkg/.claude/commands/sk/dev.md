@@ -8,6 +8,9 @@ disable-model-invocation: true
 
 Execute the [DEV] phase for a task, implementing subtasks top-to-bottom.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 ## Step 1: Read Context
 
 **Read only what's needed now** (conventions and skills are loaded later, at Step 4):

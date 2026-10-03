@@ -225,6 +225,7 @@ for (const file of commandFiles) {
     err("gating", `commands/sk/${file} must set disable-model-invocation: true (decision D1)`);
   }
   if (/\(project\)\s*$/.test(f.description || "")) err("frontmatter", `commands/sk/${file}: drop the "(project)" suffix from the description`);
+  if (f["argument-hint"] && !text.includes("$ARGUMENTS")) err("frontmatter", `commands/sk/${file} takes arguments but never places $ARGUMENTS`);
 
   // The Skill tool cannot reach a gated command, so one command must not tell the model to run another.
   for (const m of text.slice(text.indexOf("\n---", 4)).matchAll(/^(?!\s*[-|>*]).*\b[Rr]un `\/sk:([a-z-]+)`[^?\n]*$/gm)) {

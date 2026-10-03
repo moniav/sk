@@ -8,6 +8,9 @@ disable-model-invocation: true
 
 Record a significant technical decision in `docs/decisions/`.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 ## When to Use
 
 Create an ADR when:

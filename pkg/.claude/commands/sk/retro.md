@@ -1,11 +1,15 @@
 ---
 description: Run a retrospective on completed work — capture lessons, patterns, and improvements
+argument-hint: "[TASK-N | EPIC-N | time period (optional)]"
 disable-model-invocation: true
 ---
 
 # /sk:retro — Retrospective
 
 Review completed work to extract learnings and improve future sessions.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 ## Step 1: Read Context
 

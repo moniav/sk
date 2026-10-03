@@ -1,5 +1,6 @@
 ---
 description: Create a business doc — plan, model summary, cap table, investor update, memo
+argument-hint: "[doc type (optional)]"
 disable-model-invocation: true
 ---
 
@@ -7,6 +8,9 @@ disable-model-invocation: true
 
 Create a structured business document in `docs/business/`, the same way `/sk:new-sop` creates
 SOPs. The command enforces structure + freshness; the content stays human-authored.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 **Use when:** Capturing a business artifact with discipline. For positioning/competitor/pricing
 use the dedicated GTM commands; for marketing copy use `/sk:copywrite`.

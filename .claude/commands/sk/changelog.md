@@ -1,11 +1,15 @@
 ---
 description: Generate changelog from git history using conventional commits
+argument-hint: "[range: since last tag | vX.Y.Z..HEAD | last N commits (optional)]"
 disable-model-invocation: true
 ---
 
 # Changelog — Release Notes Generator
 
 Generate a structured changelog from git commit history. Works best with conventional commits (as produced by `/sk:commit`).
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 ## Step 1: Read Context
 

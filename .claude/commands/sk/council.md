@@ -8,6 +8,9 @@ disable-model-invocation: true
 
 Convene a council of AI personas with genuinely different perspectives to debate a strategic or architectural question. Produces a structured decision report with recommendation, dissent, and conditions.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 **Use when:** Architecture decisions, technology choices, strategy questions, trade-off analysis, risk assessment, or any decision that benefits from adversarial thinking.
 
 **Do NOT use for:** Implementation details (use `/sk:plan`), brainstorming features (use `/sk:brainstorm`), or debugging (use `/sk:debug`).

@@ -1,11 +1,15 @@
 ---
 description: Create a new Standard Operating Procedure for a recurring task
+argument-hint: "[procedure name]"
 disable-model-invocation: true
 ---
 
 # New SOP
 
 Create a step-by-step procedure in `docs/sop/` for a recurring development task.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 ## When to Use
 

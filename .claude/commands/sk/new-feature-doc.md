@@ -1,5 +1,6 @@
 ---
 description: Document a feature/subsystem — verified against code, into docs/features/
+argument-hint: "[feature or subsystem name]"
 disable-model-invocation: true
 ---
 
@@ -8,6 +9,9 @@ disable-model-invocation: true
 Create per-feature documentation in `docs/features/` by reading the actual code — the same
 discipline as `/sk:new-flow` and `/sk:new-adr`. Documents what *ships today*, not
 aspirations.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 **Use when:** A feature or subsystem is worth a standalone explainer (what it does, how it
 works, how to extend it). For system-level design use `docs/architecture/`; for diagrams

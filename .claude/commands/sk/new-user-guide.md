@@ -1,5 +1,6 @@
 ---
 description: Write a customer-facing user guide — task-oriented, verified against code
+argument-hint: "[task or feature the guide covers]"
 disable-model-invocation: true
 ---
 
@@ -8,6 +9,9 @@ disable-model-invocation: true
 Create an end-user guide in `docs/user-guides/` for the people who *use* the product
 (non-engineers). A thin front door over the **technical-writing** skill with a
 customer-audience framing.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 **Use when:** Documenting how a customer accomplishes a task with the product. For
 developer/feature docs use `/sk:new-feature-doc`; for marketing copy use `/sk:copywrite`.

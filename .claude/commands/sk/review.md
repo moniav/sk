@@ -10,6 +10,9 @@ disallowed-tools: Edit, NotebookEdit
 Run security, performance, and quality reviews **in parallel subagents** and merge
 the results into one report with a ship/no-ship verdict. The "before I ship" command.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 **Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/`.
 
 **Use when:** A branch or feature is about to ship and you want full coverage in one pass.

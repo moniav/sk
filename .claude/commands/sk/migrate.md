@@ -1,11 +1,15 @@
 ---
 description: Handle breaking changes, dependency upgrades, and database migrations safely
+argument-hint: "[what to migrate: dependency and version | breaking change | schema change]"
 disable-model-invocation: true
 ---
 
 # /sk:migrate — Migration & Upgrade
 
 Structured approach to handling breaking changes, major version upgrades, and database migrations.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 ## Step 1: Read Context
 

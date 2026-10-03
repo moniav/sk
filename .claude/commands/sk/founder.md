@@ -11,6 +11,9 @@ rules. This is **not an executive** — it is the founder's console: every brief
 team wrote, merged into one page, with a decisions queue you walk and dispatch.
 The founder is never gated by this layer; the packet is a summons you choose to open.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 **Empty state:** if no `docs/business/exec/*/briefs/` exist (or the exec home itself
 doesn't), say so plainly — "No executive briefs yet." — and point to `/sk:routines`
 to schedule the weekly headless briefs (and to `/sk:ceo` / `/sk:cto` / `/sk:cmo` /

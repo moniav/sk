@@ -7,6 +7,9 @@ argument-hint: "[bug description or error message]"
 
 Find and fix bugs using a structured workflow: reproduce, isolate, fix, verify. Unlike feature work, the goal is to change as little as possible while eliminating the defect.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**

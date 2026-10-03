@@ -1,5 +1,6 @@
 ---
 description: Security scan — OWASP Top 10, secrets detection, dependency audit
+argument-hint: "[scope: branch | file or directory | all (optional)]"
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *)
 disallowed-tools: Edit, NotebookEdit
 disable-model-invocation: true
@@ -8,6 +9,9 @@ disable-model-invocation: true
 # Security Review — Vulnerability Analysis
 
 Analyze the codebase for security vulnerabilities covering OWASP Top 10, hardcoded secrets, and dependency risks.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 **Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/security/`.
 

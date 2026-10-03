@@ -7,6 +7,9 @@ argument-hint: "[feature description]"
 
 Create a self-contained task file in `docs/tasks/` following the development lifecycle.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 ## Step 1: Read Context
 
 **ALWAYS start by reading these files for context:**

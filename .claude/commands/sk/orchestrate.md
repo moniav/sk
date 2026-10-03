@@ -1,11 +1,15 @@
 ---
 description: Orchestrate parallel agent team for a task or epic — dependency-aware Plan > Dev > Test
+argument-hint: "[TASK-N or EPIC-N (optional, defaults to .current)]"
 disable-model-invocation: true
 ---
 
 # Orchestrate — Parallel Agent Team
 
 Analyze subtask dependencies, dispatch parallel subagents with worktree isolation, and coordinate the full Plan > Dev > Test lifecycle with two-stage review.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 **Use this when:** A task has 3+ independent subtasks that can run concurrently.
 **Use `/sk:dev` instead when:** Subtasks are sequential or the task is simple.

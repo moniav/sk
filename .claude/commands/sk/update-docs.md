@@ -1,11 +1,15 @@
 ---
 description: Deep scan codebase and sync documentation to reflect current state
+argument-hint: "[scope: system | architecture | conventions | sops | tasks | features | all (optional)]"
 disable-model-invocation: true
 ---
 
 # Update Documentation
 
 Scan the codebase and update `docs/` to accurately reflect the current system state.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 ## Step 1: Read Current Documentation
 

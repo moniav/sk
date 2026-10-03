@@ -8,6 +8,9 @@ disable-model-invocation: true
 
 Chain code review + commit + push + PR + task board update into one flow.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 **Use when:** Feature work is done (all tests pass, all ACs verified), ready to ship.
 **Use `/sk:commit` instead when:** You just want the git part without review or task board updates.
 

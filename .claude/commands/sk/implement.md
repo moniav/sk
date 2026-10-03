@@ -8,6 +8,9 @@ disable-model-invocation: true
 
 Run the complete development lifecycle for a feature in a single session.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 **Use this when:** You want to go from idea to done without stopping between phases.
 **Use separate `/sk:plan`, `/sk:dev`, `/sk:test` when:** You want to review between phases.
 

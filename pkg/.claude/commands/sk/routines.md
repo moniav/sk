@@ -10,6 +10,9 @@ Set up recurring, unattended SK runs so maintenance happens on a schedule instea
 when someone remembers. Every routine runs under the `headless-operation` skill
 and `docs/conventions/delegation-policy.md`.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 ## Step 1: Read Context
 
 1. `docs/conventions/delegation-policy.md` — if it doesn't exist yet, copy the shipped

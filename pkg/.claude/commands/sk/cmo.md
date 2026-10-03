@@ -9,6 +9,9 @@ disable-model-invocation: true
 Load `${CLAUDE_PLUGIN_ROOT}/.claude/skills/executive-meeting/SKILL.md` and run this charter as a 1:1 with
 the founder. Office: `docs/business/exec/cmo/`.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 ## Charter
 
 **Portfolio:** positioning (`docs/business/positioning.md`), brand voice

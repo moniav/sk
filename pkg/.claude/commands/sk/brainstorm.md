@@ -8,6 +8,9 @@ disable-model-invocation: true
 
 A sharp thinking partner for product and feature ideation. Explore ideas through conversation — challenge assumptions, push past the obvious, then produce a structured epic with tasks ready for `/sk:implement`.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 **Use when:** You have an idea, a problem, a vague instinct, or a strategic question that needs exploring before building.
 
 ## Step 1: Read Project Context

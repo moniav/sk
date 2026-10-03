@@ -7,6 +7,9 @@ argument-hint: "[TASK-N (optional — defaults to .current)]"
 
 Complete the [PLAN] phase for a task, taking it from `backlog`/`planning` to `ready`.
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**

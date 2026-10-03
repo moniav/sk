@@ -1,11 +1,15 @@
 ---
 description: Smart git commit with conventional format, optional push and PR
+argument-hint: "[what the commit is about (optional)]"
 disable-model-invocation: true
 ---
 
 # Commit — Smart Git Workflow
 
 Stage, commit with conventional format, optionally push and create a PR.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 ## Step 1: Read Context
 

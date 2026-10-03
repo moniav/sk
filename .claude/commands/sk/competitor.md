@@ -1,5 +1,6 @@
 ---
 description: Analyze competitors — profiles, positioning map, honest comparison
+argument-hint: "[competitor names, or 'find them' (optional)]"
 disable-model-invocation: true
 ---
 
@@ -7,6 +8,9 @@ disable-model-invocation: true
 
 Front door to the **competitor-analysis** skill. Produces decision-useful competitive
 intelligence into `docs/business/`.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 ## Step 1: Load the Skill
 

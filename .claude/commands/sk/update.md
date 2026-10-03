@@ -1,11 +1,15 @@
 ---
 description: Update SK commands and templates to latest version
+argument-hint: "[--from <path to an SK checkout> (optional)]"
 disable-model-invocation: true
 ---
 
 # Update SK
 
 Update the ShipKit slash commands, templates, agents, skills, and SOPs to the latest version — without touching your project-specific content.
+
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
 ## Step 1: Determine Source
 

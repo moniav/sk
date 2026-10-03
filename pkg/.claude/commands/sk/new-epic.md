@@ -8,6 +8,9 @@ disable-model-invocation: true
 
 Create an epic file in `docs/tasks/` for features that span multiple tasks (L/XL complexity).
 
+**Arguments:** `$ARGUMENTS`
+If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
+
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
