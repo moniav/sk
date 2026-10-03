@@ -1,7 +1,7 @@
 ---
 description: Umbrella review — fan out security, performance, and quality reviewers in parallel (project)
 argument-hint: "[scope: branch | module path (optional — defaults to branch diff)]"
-allowed-tools: Read, Grep, Glob, Bash(git:*), Bash(date:*)
+allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *)
 ---
 
 # Review — Parallel Multi-Dimension Review
