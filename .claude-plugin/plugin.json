@@ -19,6 +19,15 @@
     "autonomy"
   ],
   "commands": "./pkg/.claude/commands/sk",
-  "agents": "./pkg/.claude/agents",
+  "agents": [
+    "./pkg/.claude/agents/architecture-reviewer.md",
+    "./pkg/.claude/agents/debugger.md",
+    "./pkg/.claude/agents/dependency-analyzer.md",
+    "./pkg/.claude/agents/implementer.md",
+    "./pkg/.claude/agents/perf-reviewer.md",
+    "./pkg/.claude/agents/quality-reviewer.md",
+    "./pkg/.claude/agents/security-reviewer.md",
+    "./pkg/.claude/agents/spec-reviewer.md"
+  ],
   "skills": "./pkg/.claude/skills"
 }
