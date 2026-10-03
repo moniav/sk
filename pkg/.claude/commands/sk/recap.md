@@ -1,11 +1,14 @@
 ---
 description: Post-implementation review recap from a diff — what changed and why (project)
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *), Bash(gh pr diff *), Bash(gh pr view *)
+disallowed-tools: Edit, NotebookEdit
 ---
 
 # /sk:recap — Implementation Recap
 
 Turn a completed change into a structured, reviewer-facing recap so a human (or a fresh agent) can grok what changed and why **without reading raw diffs**. Sits between "implementation done" and PR review.
+
+**Report-only.** This command does not modify project files. The only file it may write is its recap under `docs/reviews/recap/`.
 
 **Distinct from:** `/sk:changelog` (user-facing release notes) and `/sk:retro` (lessons learned). This is a reviewer's map of a single unit of work.
 

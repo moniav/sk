@@ -2,12 +2,15 @@
 description: Umbrella review — fan out security, performance, and quality reviewers in parallel (project)
 argument-hint: "[scope: branch | module path (optional — defaults to branch diff)]"
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *)
+disallowed-tools: Edit, NotebookEdit
 ---
 
 # Review — Parallel Multi-Dimension Review
 
 Run security, performance, and quality reviews **in parallel subagents** and merge
 the results into one report with a ship/no-ship verdict. The "before I ship" command.
+
+**Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/`.
 
 **Use when:** A branch or feature is about to ship and you want full coverage in one pass.
 **Use `/sk:code-review`, `/sk:security-review`, `/sk:perf-review` individually when:** You want one deep dimension inline instead of the parallel sweep.

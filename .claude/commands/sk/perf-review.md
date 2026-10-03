@@ -1,11 +1,14 @@
 ---
 description: Performance analysis — queries, memory, rendering, bundle size, caching (project)
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *)
+disallowed-tools: Edit, NotebookEdit
 ---
 
 # Performance Review — Bottleneck Analysis
 
 Analyze code for performance issues across database queries, memory usage, rendering, async patterns, bundle size, and caching opportunities.
+
+**Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/performance/`.
 
 ## Step 1: Read Context
 

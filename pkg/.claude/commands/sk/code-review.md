@@ -1,11 +1,14 @@
 ---
 description: Analyze code for bugs, conventions, performance, and maintainability (project)
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *), Bash(gh pr diff *), Bash(gh pr view *)
+disallowed-tools: Edit, NotebookEdit
 ---
 
 # Code Review — Quality Analysis
 
 Perform a thorough code review across correctness, conventions, performance, maintainability, and testing.
+
+**Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/code/`.
 
 ## Step 1: Read Context
 

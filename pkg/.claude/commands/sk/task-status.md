@@ -1,11 +1,14 @@
 ---
 description: Show task board — status of all epics, tasks, and progress overview (project)
 allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *)
+disallowed-tools: Edit, Write, NotebookEdit
 ---
 
 # Task Status
 
 Scan all task files and present a complete status overview.
+
+**Report-only.** This command does not modify project files. It writes nothing; regenerating the board happens only in a later turn, after you confirm.
 
 ## Step 1: Scan Task Files
 
