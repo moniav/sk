@@ -171,7 +171,7 @@ for (const file of agentFiles) {
 // --- 4. allowed-tools must not pre-approve a whole binary (plan item 1.2) ---
 
 // Binaries whose every invocation is read-only.
-const HARMLESS = new Set(["date"]);
+const HARMLESS = new Set(["date", "govulncheck", "pip-audit"]);
 function checkAllowedTools(label, value) {
   if (!value) return;
   for (const m of value.matchAll(/Bash\(([^)]*)\)/g)) {

@@ -44,7 +44,7 @@ sk/
 - **Root `CLAUDE.md`** — SK-specific (this file). NOT shipped.
 - **`pkg/CLAUDE.md`** — Template for target projects. Shipped.
 
-When editing commands/agents/skills, edit in BOTH root `.claude/` AND `pkg/.claude/`.
+When editing commands/agents/skills, edit in `pkg/.claude/` and run `npm run sync` to mirror the change into root `.claude/`.
 Root is for testing locally, `pkg/` is what ships. Keep them in sync.
 When editing `pkg/docs/` or `pkg/CLAUDE.md`, you're editing what users get on install.
 
