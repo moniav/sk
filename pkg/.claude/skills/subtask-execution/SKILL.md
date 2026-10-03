@@ -15,8 +15,10 @@ to implementer subagents instead.
 
 Before the first subtask, read:
 - `docs/conventions/code-style.md`, `file-structure.md`, `testing.md`
-- `.claude/skills/test-driven-development/SKILL.md` (and its `anti-patterns.md`)
-- `.claude/skills/escalation-rules/SKILL.md`
+- `../test-driven-development/SKILL.md` (and its `anti-patterns.md`)
+- `../escalation-rules/SKILL.md`
+
+Skill paths in this file are relative to the directory this file is in.
 
 **Skip convention files that are empty or contain only template placeholders.**
 If conventions aren't configured, match patterns found in the existing codebase.
@@ -89,7 +91,7 @@ If a subtask fails 3+ times, follow the `escalation-rules` skill: STOP, evaluate
 
 ## DEV Exit Gate (evidence required)
 
-Read `.claude/skills/verification-before-completion/SKILL.md` before claiming done.
+Read `../verification-before-completion/SKILL.md` before claiming done.
 You MUST run the actual test suite and paste the output. "Tests pass" is not evidence.
 
 All conditions must be true:

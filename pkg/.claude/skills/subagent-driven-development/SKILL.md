@@ -19,12 +19,13 @@ Assemble for the implementer:
 - Subtask spec (description, file paths, expected outcome)
 - Relevant acceptance criteria
 - Code style and testing conventions from `docs/conventions/`
-- TDD skill reference
 - For brownfield: full existing files, related tests, 2-3 pattern examples
 
 ### 2. Dispatch Implementer
 
-Use the Agent tool to dispatch `.claude/agents/implementer.md`. The implementer reports:
+Agent types below are the names SK registers. When SK is installed as a plugin they carry the `sk:` prefix (for example `sk:implementer`).
+
+Use the Agent tool to dispatch the `implementer` agent. The implementer reports:
 - **DONE** — Complete, all checks pass
 - **DONE_WITH_CONCERNS** — Complete but flagging issues
 - **NEEDS_CONTEXT** — Missing info, orchestrator provides and re-dispatches
@@ -32,11 +33,11 @@ Use the Agent tool to dispatch `.claude/agents/implementer.md`. The implementer 
 
 ### 3. Two-Stage Review
 
-**Stage 1 — Spec Compliance:** Dispatch `.claude/agents/spec-reviewer.md`. Does code match what the subtask asked for? → PASS or FAIL.
+**Stage 1 — Spec Compliance:** Dispatch the `spec-reviewer` agent. Does code match what the subtask asked for? → PASS or FAIL.
 
-**Stage 2 — Code Quality** (only if Stage 1 passes): Dispatch `.claude/agents/quality-reviewer.md`. Checks conventions, test quality, simplicity → Critical / Important / Suggestions.
+**Stage 2 — Code Quality** (only if Stage 1 passes): Dispatch the `quality-reviewer` agent. Checks conventions, test quality, simplicity → Critical / Important / Suggestions.
 
-**Stage 3 — Architecture** (conditional): when a subtask spans modules or adds a new dependency between them, also dispatch `.claude/agents/architecture-reviewer.md` → FITS / CONCERNS / REDESIGN. Single-file subtasks skip this stage.
+**Stage 3 — Architecture** (conditional): when a subtask spans modules or adds a new dependency between them, also dispatch the `architecture-reviewer` agent → FITS / CONCERNS / REDESIGN. Single-file subtasks skip this stage.
 
 ### 4. Handle Results
 

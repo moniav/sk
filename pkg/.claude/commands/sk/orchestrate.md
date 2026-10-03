@@ -16,9 +16,9 @@ Analyze subtask dependencies, dispatch parallel subagents with worktree isolatio
 **Read these first:**
 1. `docs/system/project-context.md` — Project summary
 2. The task or epic file to orchestrate
-3. `.claude/skills/subagent-driven-development/SKILL.md` — Existing SDD pattern
-4. `.claude/skills/escalation-rules/SKILL.md` — Failure handling
-5. `.claude/skills/stay-within-limits/SKILL.md` — Bounded waves and budget governance (dispatch in waves of ~3, check usage between waves)
+3. `${CLAUDE_PLUGIN_ROOT}/.claude/skills/subagent-driven-development/SKILL.md` — Existing SDD pattern
+4. `${CLAUDE_PLUGIN_ROOT}/.claude/skills/escalation-rules/SKILL.md` — Failure handling
+5. `${CLAUDE_PLUGIN_ROOT}/.claude/skills/stay-within-limits/SKILL.md` — Bounded waves and budget governance (dispatch in waves of ~3, check usage between waves)
 
 **Skip convention files that are empty or contain only template placeholders.** Agents should infer patterns from the existing codebase if conventions aren't configured.
 
@@ -38,13 +38,15 @@ If PLAN is not done, run `/sk:plan` first and return here after.
 
 ## Step 3: Analyze Dependencies
 
-Dispatch the **dependency-analyzer** agent (`.claude/agents/dependency-analyzer.md`):
+Agent types below are the names SK registers. When SK is installed as a plugin they carry the `sk:` prefix (for example `sk:implementer`).
+
+Dispatch the **dependency-analyzer** agent:
 
 ```
 Use Agent tool:
-  subagent_type: general-purpose
+  subagent_type: dependency-analyzer
   model: haiku
-  prompt: Read the task file at {path}. Follow the instructions in .claude/agents/dependency-analyzer.md.
+  prompt: Read the task file at {path}.
           Analyze all subtasks and produce the dependency analysis with execution waves.
 ```
 
@@ -106,9 +108,6 @@ For each subtask in the current wave, assemble a context package:
 - Read docs/conventions/testing.md
 - Read docs/conventions/file-structure.md
 
-**TDD instructions:**
-- Read .claude/skills/test-driven-development/SKILL.md
-
 **Existing code (brownfield):**
 {list files to read for existing patterns}
 
@@ -129,12 +128,10 @@ For each wave, dispatch all subtasks in that wave **simultaneously** using the A
 For each subtask in wave:
   Use Agent tool:
     description: "Implement ST-{N}: {short description}"
-    subagent_type: general-purpose
+    subagent_type: implementer
     model: sonnet
     isolation: worktree
     prompt: |
-      You are an implementer agent. Follow .claude/agents/implementer.md.
-
       {context package from Step 5}
 
       Implement this subtask using TDD (RED > GREEN > REFACTOR).
@@ -163,11 +160,9 @@ After each agent completes, run both review stages. Reviews for different subtas
 ```
 Use Agent tool:
   description: "Spec review ST-{N}"
-  subagent_type: general-purpose
+  subagent_type: spec-reviewer
   model: haiku
   prompt: |
-    You are a spec compliance reviewer. Follow .claude/agents/spec-reviewer.md.
-
     Subtask spec: {spec}
     Acceptance criteria: {relevant ACs}
     Files changed: {list from implementer report}
@@ -180,11 +175,9 @@ Use Agent tool:
 ```
 Use Agent tool:
   description: "Quality review ST-{N}"
-  subagent_type: general-purpose
+  subagent_type: quality-reviewer
   model: sonnet
   prompt: |
-    You are a code quality reviewer. Follow .claude/agents/quality-reviewer.md.
-
     Files changed: {list}
     Read docs/conventions/code-style.md, file-structure.md, testing.md
     Read docs/system/project-context.md
@@ -195,7 +188,7 @@ Use Agent tool:
 ### Stage 3 — Architecture (conditional)
 
 When a subtask spans modules or adds a new dependency between them, also dispatch
-the `architecture-reviewer` agent (`.claude/agents/architecture-reviewer.md`) →
+the `architecture-reviewer` agent →
 FITS / CONCERNS / REDESIGN. Single-file subtasks skip this stage. Treat REDESIGN
 like a Spec FAIL (re-dispatch with the recommended approach).
 

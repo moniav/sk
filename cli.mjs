@@ -11,7 +11,7 @@
 //   --force     (update) Accept SK's version of every file, discarding local edits
 //   --yes       Answer yes to every prompt (unattended runs)
 
-import { existsSync, mkdirSync, cpSync, copyFileSync, renameSync, readdirSync, rmSync, unlinkSync, writeFileSync, readFileSync } from "fs";
+import { existsSync, mkdirSync, cpSync, renameSync, readdirSync, rmSync, unlinkSync, writeFileSync, readFileSync } from "fs";
 import { resolve, dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { createInterface } from "readline";
@@ -91,9 +91,25 @@ const SHIPPED_DOCS = [
 const SIDECAR = ".sk-new";
 
 // Line endings are normalized so a checkout with autocrlf does not look like a user edit.
-function hashFile(path) {
-  const text = readFileSync(path, "latin1").replace(/\r\n/g, "\n");
+function hashData(buffer) {
+  const text = buffer.toString("latin1").replace(/\r\n/g, "\n");
   return createHash("sha256").update(text, "latin1").digest("hex").slice(0, 16);
+}
+
+function hashFile(path) {
+  return hashData(readFileSync(path));
+}
+
+// Commands and skills point at each other through the plugin root, which
+// Claude Code resolves when SK runs as a plugin. In a project install the same
+// files sit under .claude/, so that prefix is rewritten as each file is copied.
+const PLUGIN_PREFIX = "${CLAUDE_PLUGIN_ROOT}/.claude/";
+
+// The bytes SK puts in a project for one shipped file.
+function renderForProject(pkg, rel) {
+  const data = readFileSync(join(pkg, rel));
+  if (!rel.startsWith(".claude/") || !rel.endsWith(".md")) return data;
+  return Buffer.from(data.toString("utf-8").split(PLUGIN_PREFIX).join(".claude/"), "utf-8");
 }
 
 // Every path SK manages in a target, relative to both pkg/ and the target.
@@ -143,12 +159,12 @@ function isPristine(ctx, rel, currentHash) {
 // Outcomes: created | unchanged | updated | kept (user-edited; new version
 // written to a sidecar) | skipped (the user's own file that shares a name).
 function syncFile(ctx, rel) {
-  const src = join(ctx.pkg, rel);
+  const rendered = renderForProject(ctx.pkg, rel);
   const dest = join(ctx.target, rel);
   const write = (to) => {
     if (ctx.dryRun) return;
     mkdirSync(dirname(to), { recursive: true });
-    copyFileSync(src, to);
+    writeFileSync(to, rendered);
   };
   const dropSidecar = () => {
     if (!ctx.dryRun && existsSync(dest + SIDECAR)) unlinkSync(dest + SIDECAR);
@@ -159,7 +175,7 @@ function syncFile(ctx, rel) {
     return ctx.results.created.push(rel);
   }
   const current = hashFile(dest);
-  if (current === hashFile(src)) {
+  if (current === hashData(rendered)) {
     dropSidecar();
     return ctx.results.unchanged.push(rel);
   }
@@ -222,7 +238,7 @@ function writeManifest(target, source, claudeMdOwner, profile = "full", skipped 
       const full = `${dir}/${rel}`;
       if (mine.has(full) || !existsSync(join(target, full))) continue;
       managed[dir].push(rel);
-      files[full] = hashFile(join(pkg, full));
+      files[full] = hashData(renderForProject(pkg, full));
     }
   }
   for (const rel of SHIPPED_DOCS) {

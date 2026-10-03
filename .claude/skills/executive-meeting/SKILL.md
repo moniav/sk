@@ -85,7 +85,7 @@ Selected by argument or inferred from the founder's opening:
 
 ## Headless Brief Mode (weekly routines)
 
-When run unattended (per `headless-operation`): no conversation — produce the
+When run unattended (per the `headless-operation` skill): no conversation — produce the
 role's weekly brief at `docs/business/exec/<role>/briefs/YYYY-MM-DD.md`: standing-
 agenda scorecard (cited), portfolio deltas, ask responses, and a **Proposed plan**
 section (never self-approved). `/sk:founder` consumes these into the Monday packet.

@@ -10,7 +10,7 @@ other GTM artifact inherits from.
 
 ## Step 1: Load the Skill
 
-Read `.claude/skills/product-marketing-context/SKILL.md` and follow it.
+Read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/product-marketing-context/SKILL.md` and follow it.
 
 ## Step 2: Gather Context
 

@@ -35,9 +35,11 @@ contract for red flags, or get a compliance deep-dive on a specific framework.
 
 ## Step 1: Load Skill
 
-Read `.claude/skills/legal-advisor/SKILL.md` — this is the core skill with the full framework.
+Read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/legal-advisor/SKILL.md` — this is the core skill with the full framework.
 
 Based on the mode, also read the relevant reference:
+The `references/` files named in this command are in that skill's directory, next to its `SKILL.md`.
+
 - For `scan`, `compliance`, `entity-guide`: read `references/detection-signals.md` and `references/compliance-frameworks.md`
 - For `founders-agreement`, `operating-agreement`, `ip-assignment`: read `references/entity-formation.md`
 - For `privacy-policy`, `terms-of-service`: read `references/compliance-frameworks.md` (for framework-specific requirements)

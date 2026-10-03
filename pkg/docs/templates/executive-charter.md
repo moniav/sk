@@ -6,7 +6,7 @@
 > Defines a seat on the executive team. The shipped seats (CEO, CTO, CMO, COO) are
 > built into their commands; use this template to add a custom seat (e.g. a Head of
 > Support) as a project command that loads
-> `.claude/skills/executive-meeting/SKILL.md` and supplies this charter.
+> SK's `executive-meeting` skill and supplies this charter.
 
 ## Portfolio (owns)
 

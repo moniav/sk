@@ -10,7 +10,7 @@ Write high-converting marketing copy for SaaS and tech products. Produces ready-
 
 ## Step 1: Load the Skill
 
-Read the copywriting skill: `.claude/skills/copywriting/SKILL.md`
+Read the copywriting skill: `${CLAUDE_PLUGIN_ROOT}/.claude/skills/copywriting/SKILL.md`
 
 Follow all instructions in the skill for voice, principles, and output format.
 
@@ -49,7 +49,7 @@ If the user provided $ARGUMENTS, use that as the brief and only ask what's missi
 ## Step 3: Load Frameworks (if needed)
 
 For landing pages, email sequences, or full rewrites, also read:
-`.claude/skills/copywriting/references/frameworks.md`
+`${CLAUDE_PLUGIN_ROOT}/.claude/skills/copywriting/references/frameworks.md`
 
 Use the relevant headline formulas, page structures, and persuasion frameworks — don't use them all, pick what fits.
 

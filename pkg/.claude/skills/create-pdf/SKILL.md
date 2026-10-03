@@ -53,16 +53,16 @@ Drop `--toc` for short docs. Use `--pdf-engine=weasyprint` (or `wkhtmltopdf`) wh
 ### Path B — HTML/CSS engines (weasyprint / wkhtmltopdf)
 1. Convert MD → HTML (pandoc if present, else any markdown renderer; as a last resort a
    minimal converter).
-2. Apply the print stylesheet `references/print.css` (1in margins via `@page`, page numbers,
+2. Apply the print stylesheet `${CLAUDE_SKILL_DIR}/references/print.css` (1in margins via `@page`, page numbers,
    running header, page-break rules, curly quotes, cover/watermark classes).
 ```bash
-weasyprint INPUT.html OUTPUT.pdf -s references/print.css
+weasyprint INPUT.html OUTPUT.pdf -s "${CLAUDE_SKILL_DIR}/references/print.css"
 # or
 wkhtmltopdf --enable-local-file-access --margin-top 25mm --footer-center "[page]/[topage]" INPUT.html OUTPUT.pdf
 ```
 
 ### Path C — Headless browser fallback (Chrome / Edge)
-Wrap the rendered HTML with `references/print.css`, then:
+Wrap the rendered HTML with `${CLAUDE_SKILL_DIR}/references/print.css`, then:
 ```bash
 "<chrome-or-edge>" --headless --disable-gpu --no-pdf-header-footer \
   --print-to-pdf="OUTPUT.pdf" "file:///ABSOLUTE/PATH/INPUT.html"

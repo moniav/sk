@@ -10,7 +10,7 @@ Front door to the **pricing-strategy** skill. Produces a pricing recommendation 
 
 ## Step 1: Load the Skill
 
-Read `.claude/skills/pricing-strategy/SKILL.md` and follow it.
+Read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/pricing-strategy/SKILL.md` and follow it.
 
 ## Step 2: Gather Context
 

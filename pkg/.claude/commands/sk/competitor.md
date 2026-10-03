@@ -10,7 +10,7 @@ intelligence into `docs/business/`.
 
 ## Step 1: Load the Skill
 
-Read `.claude/skills/competitor-analysis/SKILL.md` and follow it.
+Read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/competitor-analysis/SKILL.md` and follow it.
 
 ## Step 2: Gather Context
 

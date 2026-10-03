@@ -15,7 +15,7 @@ assets. Pairs with `/sk:release` (which cuts the version this announces).
 2. `docs/business/brand-voice.md` — the voice (if missing, offer to create it from
    `docs/templates/brand-voice.md` first; otherwise use the copywriting skill default)
 3. `docs/business/positioning.md` — audience and value framing (if it exists)
-4. `.claude/skills/copywriting/SKILL.md` — writing rules
+4. `${CLAUDE_PLUGIN_ROOT}/.claude/skills/copywriting/SKILL.md` — writing rules
 
 **Honesty rule:** the pack may only claim what the changelog actually says shipped.
 No aspirational features, no invented metrics.

@@ -42,7 +42,7 @@ Before making any changes:
    - **Fetch the official migration guide and changelog for the exact version jump**
      (WebSearch `"{package} migration guide v{X} to v{Y}"` / release notes, then
      WebFetch the official pages). Follow the source discipline in
-     `.claude/skills/research/SKILL.md` — never work from memory of the API;
+     `${CLAUDE_PLUGIN_ROOT}/.claude/skills/research/SKILL.md` — never work from memory of the API;
      knowledge cutoffs make remembered breaking-change lists wrong.
    - List each breaking change with affected code locations
 

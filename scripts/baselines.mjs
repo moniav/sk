@@ -28,10 +28,17 @@ function git(args, opts = {}) {
   return r.stdout;
 }
 
-// Same normalization as hashFile in cli.mjs.
+// Same normalization as hashData in cli.mjs.
 function hash(buffer) {
   const text = buffer.toString("latin1").replace(/\r\n/g, "\n");
   return createHash("sha256").update(text, "latin1").digest("hex").slice(0, 16);
+}
+
+// Same rewrite as renderForProject in cli.mjs: what a project install holds for this file.
+const PLUGIN_PREFIX = "${CLAUDE_PLUGIN_ROOT}/.claude/";
+function render(buffer, rel) {
+  if (!rel.startsWith(".claude/") || !rel.endsWith(".md")) return buffer;
+  return Buffer.from(buffer.toString("utf-8").split(PLUGIN_PREFIX).join(".claude/"), "utf-8");
 }
 
 const isManaged = (rel) => SHIPPED_DOCS.includes(rel) || MANAGED_DIRS.some((dir) => rel.startsWith(dir + "/"));
@@ -49,8 +56,9 @@ export function generate() {
       const blob = meta.split(" ")[2];
       const rel = hasPkg ? (path.startsWith("pkg/") ? path.slice(4) : null) : path;
       if (!rel || !isManaged(rel)) continue;
-      if (!byBlob.has(blob)) byBlob.set(blob, hash(git(["cat-file", "blob", blob])));
-      (files[rel] ||= new Set()).add(byBlob.get(blob));
+      const key = `${blob}:${rel}`;
+      if (!byBlob.has(key)) byBlob.set(key, hash(render(git(["cat-file", "blob", blob]), rel)));
+      (files[rel] ||= new Set()).add(byBlob.get(key));
     }
   }
   const sorted = {};

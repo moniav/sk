@@ -95,13 +95,13 @@ If your ranked hypotheses are exhausted (or the error is from a third-party
 library), **WebSearch the exact error message** (quoted, minus project-specific
 paths) plus the library name and version. Known issues, fixed bugs, and version
 incompatibilities often surface immediately. Apply the source discipline from
-`.claude/skills/research/SKILL.md`: prefer the library's issue tracker/changelog
+`${CLAUDE_PLUGIN_ROOT}/.claude/skills/research/SKILL.md`: prefer the library's issue tracker/changelog
 over forum guesses, and verify any suggested fix against your reproduction before
 trusting it.
 
 ### 5e: Escalation Check
 
-If your hypothesis is wrong 3 times, follow `.claude/skills/escalation-rules/SKILL.md`: stop fixing and question whether the architecture or design is the real problem.
+If your hypothesis is wrong 3 times, follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/escalation-rules/SKILL.md`: stop fixing and question whether the architecture or design is the real problem.
 
 ### 5f: Identify Root Cause vs Symptom
 
@@ -148,7 +148,7 @@ Follow the project's testing conventions from `docs/conventions/testing.md`.
 
 ## Step 8: Verify
 
-Read `.claude/skills/verification-before-completion/SKILL.md` before claiming the fix works.
+Read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/verification-before-completion/SKILL.md` before claiming the fix works.
 You MUST paste the actual test output showing the regression test passes and the full suite has no new failures.
 
 ### 8a: Confirm the Fix

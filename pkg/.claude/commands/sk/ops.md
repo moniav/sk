@@ -30,7 +30,7 @@ production readiness. All output lands in `docs/operations/`.
 
 ## Step 1: Load the Skill
 
-Read `.claude/skills/operations-advisor/SKILL.md` and follow the section for the selected mode.
+Read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/operations-advisor/SKILL.md` and follow the section for the selected mode.
 
 ## Step 2: Read Context
 

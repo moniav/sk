@@ -33,19 +33,19 @@ the scoped file list:
 
 | Agent | Dimension |
 |-------|-----------|
-| `security-reviewer` (`.claude/agents/security-reviewer.md`) | Injection, authn/authz, secrets, unsafe operations |
-| `perf-reviewer` (`.claude/agents/perf-reviewer.md`) | N+1, loops, I/O, caching, memory |
-| `quality-reviewer` (`.claude/agents/quality-reviewer.md`) | Conventions, test adequacy, simplicity |
+| `security-reviewer` | Injection, authn/authz, secrets, unsafe operations |
+| `perf-reviewer` | N+1, loops, I/O, caching, memory |
+| `quality-reviewer` | Conventions, test adequacy, simplicity |
 
 ```
 Use Agent tool (one message, three calls):
-  subagent_type: security-reviewer | perf-reviewer | quality-reviewer
+  subagent_type: security-reviewer | perf-reviewer | quality-reviewer   (prefixed `sk:` when SK is installed as a plugin)
   prompt: Review these files: {changed file list}.
           Base your findings on the actual code. Return your standard output format.
 ```
 
 **Optional fourth dimension:** if the scope touches UI files and the user wants it,
-also apply `.claude/commands/sk/ui-review.md` inline afterwards (read the file; it needs its reference docs).
+also apply `${CLAUDE_PLUGIN_ROOT}/.claude/commands/sk/ui-review.md` inline afterwards (read the file; it needs its reference docs).
 
 ## Step 3: Merge Report
 

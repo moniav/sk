@@ -20,12 +20,12 @@ Read conventions and skills when you start executing subtasks (Step 4), not now.
 
 If the task has 5+ subtasks, ask (use AskUserQuestion): **"This task has N subtasks. Use subagent mode? Each subtask gets a fresh agent with clean context. (Recommended for large tasks.)"**
 
-If yes: read `.claude/skills/subagent-driven-development/SKILL.md` and follow SDD pattern for subtask execution.
+If yes: read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/subagent-driven-development/SKILL.md` and follow SDD pattern for subtask execution.
 If no: continue with direct execution (standard mode).
 
 **Worktree setup (optional):** If working on a feature branch for M+ complexity, ask: **"Set up an isolated worktree for this work?"**
 
-If yes: follow `.claude/skills/git-worktrees/SKILL.md` setup steps.
+If yes: follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/git-worktrees/SKILL.md` setup steps.
 
 ## Step 2: Validate Readiness
 
@@ -55,7 +55,7 @@ Update `docs/tasks/.current`: set `phase: dev`, update subtask count (create it 
 
 ## Step 4: Execute Subtasks
 
-Follow `.claude/skills/subtask-execution/SKILL.md` — the canonical loop: load
+Follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/subtask-execution/SKILL.md` — the canonical loop: load
 conventions first, TDD ordering (`[TEST]` before `[DEV]`), per-type checklists,
 self-review, and escalation after 3 failed attempts.
 

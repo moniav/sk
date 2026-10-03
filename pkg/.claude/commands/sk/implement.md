@@ -74,11 +74,11 @@ Update frontmatter: `phase: dev`, `status: in-progress`; claim the task
 (`claimed_by` + `claimed_at` — skip if single-agent, see `docs/tasks/README.md`)
 Update `docs/tasks/.current`: set `phase: dev`
 
-Follow `.claude/skills/subtask-execution/SKILL.md` — the canonical loop: load
+Follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/subtask-execution/SKILL.md` — the canonical loop: load
 conventions and skills, TDD ordering (`[TEST]` before `[DEV]`), per-type checklists,
 self-review, compliance pass, and the evidence-based **DEV Exit Gate**.
 
-**Subagent mode (optional):** If 5+ subtasks, ask "Use subagent mode?" (use AskUserQuestion). If yes, read `.claude/skills/subagent-driven-development/SKILL.md`.
+**Subagent mode (optional):** If 5+ subtasks, ask "Use subagent mode?" (use AskUserQuestion). If yes, read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/subagent-driven-development/SKILL.md`.
 
 ## Step 5: [TEST] Phase
 
@@ -89,7 +89,7 @@ Update `docs/tasks/.current`: set `phase: test`
 
 Read these now:
 - `docs/conventions/testing.md`
-- `.claude/skills/verification-before-completion/SKILL.md` — Evidence requirements for every verification claim
+- `${CLAUDE_PLUGIN_ROOT}/.claude/skills/verification-before-completion/SKILL.md` — Evidence requirements for every verification claim
 
 **Skills active:** `verification-before-completion` (AC verification — paste actual test output for every claim).
 

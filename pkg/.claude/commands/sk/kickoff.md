@@ -57,7 +57,7 @@ Ask:
 
 ## Step 3: Research Current Best Practices
 
-Follow `.claude/skills/research/SKILL.md` — **Deep tier** (stack selection feeds every
+Follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/research/SKILL.md` — **Deep tier** (stack selection feeds every
 downstream decision; use the parallel subagent fan-out). Kickoff-specific angles:
 
 1. **Structure & conventions** — `{framework}` recommended project structure, naming

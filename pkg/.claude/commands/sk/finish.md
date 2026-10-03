@@ -14,7 +14,7 @@ Chain code review + commit + push + PR + task board update into one flow.
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
-1. `.claude/skills/verification-before-completion/SKILL.md` — Evidence requirements
+1. `${CLAUDE_PLUGIN_ROOT}/.claude/skills/verification-before-completion/SKILL.md` — Evidence requirements
 2. `docs/system/project-context.md` — Dense project summary (if it exists)
 3. `docs/conventions/git-workflow.md` — Commit and PR conventions
 
@@ -35,7 +35,7 @@ If this isn't a git repository or has no commits yet, skip the git-based steps a
 
 ## Step 3: Final Code Review
 
-Apply the analysis in `.claude/commands/sk/code-review.md` to the branch diff (read the file; it cannot be invoked as a command from here):
+Apply the analysis in `${CLAUDE_PLUGIN_ROOT}/.claude/commands/sk/code-review.md` to the branch diff (read the file; it cannot be invoked as a command from here):
 
 1. Determine the base branch: detect the default branch with `git symbolic-ref --short refs/remotes/origin/HEAD` (fall back to `main`, then `master`)
 2. Get the diff: `git diff {base}...HEAD`
@@ -51,7 +51,7 @@ Optionally save review: ask **"Save review report to `docs/reviews/code/`?"**
 
 ## Step 4: Commit and Ship
 
-Follow `.claude/skills/git-commit-flow/SKILL.md` end-to-end: assess working tree →
+Follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/git-commit-flow/SKILL.md` end-to-end: assess working tree →
 stage → conventional commit → push (optional) → PR (optional).
 
 ## Step 5: Update Task Board
@@ -71,7 +71,7 @@ If a task file was identified in Step 2:
 
 ## Step 6: Clean Up (if applicable)
 
-If working in a git worktree, follow the Cleanup steps in `.claude/skills/git-worktrees/SKILL.md`
+If working in a git worktree, follow the Cleanup steps in `${CLAUDE_PLUGIN_ROOT}/.claude/skills/git-worktrees/SKILL.md`
 (skip removal when the harness created the worktree; use `git branch -D` only after
 confirming a squash- or rebase-merged PR is merged).
 

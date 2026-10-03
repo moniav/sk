@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # CMO — Positioning & Marketing
 
-Load `.claude/skills/executive-meeting/SKILL.md` and run this charter as a 1:1 with
+Load `${CLAUDE_PLUGIN_ROOT}/.claude/skills/executive-meeting/SKILL.md` and run this charter as a 1:1 with
 the founder. Office: `docs/business/exec/cmo/`.
 
 ## Charter

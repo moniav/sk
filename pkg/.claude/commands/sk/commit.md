@@ -17,7 +17,7 @@ Stage, commit with conventional format, optionally push and create a PR.
 
 ## Step 2: Run the Commit Flow
 
-Follow `.claude/skills/git-commit-flow/SKILL.md` end-to-end — the canonical flow:
+Follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/git-commit-flow/SKILL.md` end-to-end — the canonical flow:
 assess working tree → stage (ask what to stage via AskUserQuestion) → conventional
 commit message (approved by the user) → commit → push (optional) → PR (optional).
 

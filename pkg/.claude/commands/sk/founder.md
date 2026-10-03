@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Founder — The Monday Packet
 
-Load `.claude/skills/executive-meeting/SKILL.md` for the office layout and citation
+Load `${CLAUDE_PLUGIN_ROOT}/.claude/skills/executive-meeting/SKILL.md` for the office layout and citation
 rules. This is **not an executive** — it is the founder's console: every brief the
 team wrote, merged into one page, with a decisions queue you walk and dispatch.
 The founder is never gated by this layer; the packet is a summons you choose to open.

@@ -30,7 +30,7 @@ inform the user — do NOT force-push without explicit approval.
 
 ## Step 3: Create the PR
 
-Follow **Step 6 (Create PR)** of `.claude/skills/git-commit-flow/SKILL.md`:
+Follow **Step 6 (Create PR)** of `${CLAUDE_PLUGIN_ROOT}/.claude/skills/git-commit-flow/SKILL.md`:
 gather commits with `git log {base}..HEAD --oneline`, generate a title (under 70
 chars) and body summarizing what changed and why, present for approval, then:
 

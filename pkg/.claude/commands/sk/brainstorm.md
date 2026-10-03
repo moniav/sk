@@ -127,7 +127,7 @@ Let the user respond and adjust. Keep the conversation moving — if a thread is
 
 ## Step 4: Research (Ask First)
 
-Follow `.claude/skills/research/SKILL.md`: check `docs/research/` for reusable prior
+Follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/research/SKILL.md`: check `docs/research/` for reusable prior
 research first, then ask the depth question (AskUserQuestion):
 **Quick** (~1–2 min, 2-3 inline searches) / **Deep** (~5–10 min, parallel subagent
 fan-out) / **Skip**.

@@ -15,7 +15,7 @@ Follow `docs/conventions/git-workflow.md` where it exists; the rules below are t
 `docs/conventions/delegation-policy.md` — if it grants the action (e.g. push feature
 branch: yes), proceed and log which policy row covered it; if it requires a human and
 none is available, stop after the last permitted step and record what's pending
-(see `headless-operation` skill).
+(call the Skill tool with "headless-operation").
 
 ## 1. Assess Working Tree
 

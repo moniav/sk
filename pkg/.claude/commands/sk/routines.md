@@ -7,7 +7,7 @@ disable-model-invocation: true
 # Routines — Scheduled Maintenance
 
 Set up recurring, unattended SK runs so maintenance happens on a schedule instead of
-when someone remembers. Every routine runs under `.claude/skills/headless-operation/SKILL.md`
+when someone remembers. Every routine runs under the `headless-operation` skill
 and `docs/conventions/delegation-policy.md`.
 
 ## Step 1: Read Context
@@ -53,14 +53,16 @@ Ask which scheduler to target (AskUserQuestion):
 **Routine prompt template** — every scheduled invocation uses this shape:
 
 ```
-/sk:{command} Headless run: follow .claude/skills/headless-operation/SKILL.md and
-docs/conventions/delegation-policy.md. No questions. Write the dated report to
+/sk:{command} Headless run: call the Skill tool with "headless-operation" and follow it,
+with docs/conventions/delegation-policy.md. No questions. Write the dated report to
 {report home}, escalate findings needing human judgment via the report's
 "Needs human review" section, and stamp the report `routine: {routine-name}`.
 ```
 
 The prompt must **start with the slash command**. SK commands run only when typed,
 so a prompt that asks the model to "run /sk:{command}" is refused.
+It names the `headless-operation` skill rather than a file path, because a stored
+prompt outlives SK updates and must work however SK is installed.
 
 ## Step 4: Write the Runbook
 

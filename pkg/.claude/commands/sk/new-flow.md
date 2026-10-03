@@ -56,7 +56,7 @@ Use **Grep** to find the entry point, then **Read** to follow each file.
 
 ### SVG Path
 
-Use the **technical-diagrams** skill. Read `.claude/skills/technical-diagrams/SKILL.md` for the design system and `.claude/skills/technical-diagrams/references/svg-elements.md` for copy-ready element patterns.
+Use the **technical-diagrams** skill. Read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/technical-diagrams/SKILL.md` for the design system and `${CLAUDE_PLUGIN_ROOT}/.claude/skills/technical-diagrams/references/svg-elements.md` for copy-ready element patterns.
 
 **Architecture diagrams** → save to `docs/architecture/{name}.svg`
 **Flow diagrams** → save to `docs/flows/{name}.svg`

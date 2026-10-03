@@ -14,7 +14,7 @@ developer/feature docs use `/sk:new-feature-doc`; for marketing copy use `/sk:co
 
 ## Step 1: Load the Skill
 
-Read the technical-writing skill: `.claude/skills/technical-writing/SKILL.md`. Apply it
+Read the technical-writing skill: `${CLAUDE_PLUGIN_ROOT}/.claude/skills/technical-writing/SKILL.md`. Apply it
 with a **customer audience**: plain language, task-first, no internal jargon or system
 internals.
 

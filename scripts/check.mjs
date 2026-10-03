@@ -72,7 +72,12 @@ const skillNames = readdirSync(skillsDir, { withFileTypes: true })
   .map((e) => e.name)
   .sort();
 
-// --- 1. pkg/.claude and root .claude are the same files ---
+// --- 1. Root .claude is pkg/.claude as a project install would hold it ---
+
+// Shipped files point at each other through the plugin root; a project install
+// (and the dogfood copy) gets that prefix rewritten to .claude/ (plan item 2.4).
+const PLUGIN_PREFIX = "${CLAUDE_PLUGIN_ROOT}/.claude/";
+const rendered = (text) => text.split(PLUGIN_PREFIX).join(".claude/");
 
 for (const sub of ["commands/sk", "agents", "skills"]) {
   const a = join(PKG, ".claude", sub);
@@ -80,11 +85,31 @@ for (const sub of ["commands/sk", "agents", "skills"]) {
   const aFiles = listFilesRel(a);
   const bFiles = new Set(listFilesRel(b));
   for (const rel of aFiles) {
-    if (!bFiles.has(rel)) err("sync", `.claude/${sub}/${rel} missing from the root copy`);
-    else if (read(join(a, rel)) !== read(join(b, rel))) err("sync", `.claude/${sub}/${rel} differs between pkg/ and root`);
+    if (!bFiles.has(rel)) err("sync", `.claude/${sub}/${rel} missing from the root copy -- run: npm run sync`);
+    else if (rendered(read(join(a, rel))) !== read(join(b, rel))) err("sync", `.claude/${sub}/${rel} differs between pkg/ and root -- run: npm run sync`);
     bFiles.delete(rel);
   }
   for (const rel of bFiles) err("sync", `.claude/${sub}/${rel} exists in the root copy but not in pkg/`);
+}
+
+// --- 1b. Paths work in both install channels (plan item 2.4) ---
+
+for (const rel of listFilesRel(PKG)) {
+  if (!rel.endsWith(".md")) continue;
+  const text = read(join(PKG, rel));
+  const where = `pkg/${rel}`;
+  // A path into SK's own files is only valid when it goes through the plugin root.
+  for (const m of text.matchAll(/(?<![\w${}/])\.claude\/(skills\/[a-z-]+\/[\w./-]+|agents\/[a-z-]+\.md|commands\/sk\/[a-z-]+\.md)/g)) {
+    err("paths", `${where}: bare path "${m[0]}" breaks when SK is installed as a plugin`);
+  }
+  // Only commands are loaded by Claude Code itself; a file read with the Read tool gets no substitution.
+  if (text.includes("${CLAUDE_PLUGIN_ROOT}") && !rel.startsWith(".claude/commands/")) {
+    err("paths", `${where}: \${CLAUDE_PLUGIN_ROOT} is only substituted in commands; use a path relative to this file`);
+  }
+  // Agents are dispatched by type; reading a definition file bypasses its tools and model.
+  if (/subagent_type:\s*general-purpose[\s\S]{0,300}agents\/[a-z-]+\.md/.test(text)) {
+    err("paths", `${where}: dispatches general-purpose and points it at an agent file; use the agent's type`);
+  }
 }
 
 // --- 2. Advertised counts match the file system ---
@@ -217,12 +242,18 @@ for (const name of READ_ONLY) {
 }
 
 // Skills loaded by commands, never by hand: hidden from both the model and the / menu.
+// headless-operation is the exception on the model side: a scheduled prompt is stored
+// outside SK and cannot carry an install path, so it reaches the skill by name.
 const INTERNAL_SKILLS = ["git-commit-flow", "subtask-execution", "research", "headless-operation", "executive-meeting"];
+const REACHED_BY_NAME = ["headless-operation"];
 for (const name of INTERNAL_SKILLS) {
   const path = join(skillsDir, name, "SKILL.md");
   if (!existsSync(path)) continue;
   const f = frontmatter(read(path))?.fields || {};
-  if (f["disable-model-invocation"] !== "true") err("internal-skill", `skills/${name} must set disable-model-invocation: true`);
+  const gated = f["disable-model-invocation"] === "true";
+  if (REACHED_BY_NAME.includes(name) ? gated : !gated) {
+    err("internal-skill", `skills/${name} ${REACHED_BY_NAME.includes(name) ? "must stay model-invocable" : "must set disable-model-invocation: true"}`);
+  }
   if (f["user-invocable"] !== "false") err("internal-skill", `skills/${name} must set user-invocable: false`);
 }
 
@@ -286,6 +317,10 @@ if (!staticOnly) {
     const manifest = readManifest(tmp);
     if (!manifest.files || !manifest.files[".claude/commands/sk/plan.md"]) err("install", "manifest has no per-file hashes");
     if (existsSync(join(tmp, ".claude-plugin")) || existsSync(join(tmp, ".sk-baselines.json"))) err("install", "packaging files leaked into the project");
+    for (const rel of listFilesRel(join(tmp, ".claude"))) {
+      if (rel.endsWith(".md") && read(join(tmp, ".claude", rel)).includes("CLAUDE_PLUGIN_ROOT")) err("install", `.claude/${rel} still contains a plugin path variable`);
+    }
+    if (!existsSync(join(tmp, ".claude", "skills", "git-commit-flow", "SKILL.md")) || !read(join(tmp, ".claude", "commands", "sk", "commit.md")).includes("`.claude/skills/git-commit-flow/SKILL.md`")) err("install", "commit.md does not point at the installed git-commit-flow skill");
 
     // Safe update (plan item 1.8): user work must survive an update.
     const editedSkill = join(tmp, ".claude", "skills", "git-worktrees", "SKILL.md");

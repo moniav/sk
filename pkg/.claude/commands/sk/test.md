@@ -21,7 +21,7 @@ Execute the [TEST] phase for a task, verifying every acceptance criterion.
 ## Step 1.5: Read Active Skills
 
 Read this skill file — its rules are active throughout this phase:
-1. `.claude/skills/verification-before-completion/SKILL.md` — Evidence requirements for every verification claim
+1. `${CLAUDE_PLUGIN_ROOT}/.claude/skills/verification-before-completion/SKILL.md` — Evidence requirements for every verification claim
 
 ## Step 2: Validate Readiness
 
