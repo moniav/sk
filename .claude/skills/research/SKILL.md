@@ -2,6 +2,7 @@
 name: research
 description: Canonical web-research procedure — prior-research reuse, depth tiers, parallel fan-out, source discipline, cited findings. Loaded by /sk:kickoff, /sk:brainstorm, /sk:plan, /sk:migrate, /sk:debug; not invoked directly.
 disable-model-invocation: true
+user-invocable: false
 ---
 
 # Research

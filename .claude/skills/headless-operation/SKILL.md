@@ -2,6 +2,7 @@
 name: headless-operation
 description: Rules for running SK commands unattended — no questions, policy-gated decisions, report artifacts, escalation via board items. Loaded by /sk:routines and scheduled/CI runs; not invoked directly.
 disable-model-invocation: true
+user-invocable: false
 ---
 
 # Headless Operation

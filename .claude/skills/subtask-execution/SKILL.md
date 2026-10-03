@@ -2,6 +2,7 @@
 name: subtask-execution
 description: Canonical DEV-phase subtask loop — TDD ordering, per-type checklists, self-review, compliance pass, exit-gate evidence. Loaded by /sk:dev and /sk:implement; not invoked directly.
 disable-model-invocation: true
+user-invocable: false
 ---
 
 # Subtask Execution

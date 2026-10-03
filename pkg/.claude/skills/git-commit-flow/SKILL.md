@@ -2,6 +2,7 @@
 name: git-commit-flow
 description: Canonical git flow — stage, conventional commit, push, PR. Loaded by /sk:commit and /sk:finish; not invoked directly.
 disable-model-invocation: true
+user-invocable: false
 ---
 
 # Git Commit Flow

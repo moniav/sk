@@ -2,6 +2,7 @@
 name: executive-meeting
 description: Shared protocol for executive 1:1s — office memory, conversation modes, dissent duty, meeting close. Loaded by /sk:ceo, /sk:cto, /sk:cmo, /sk:coo, /sk:founder; not invoked directly.
 disable-model-invocation: true
+user-invocable: false
 ---
 
 # Executive Meeting Protocol
