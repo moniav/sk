@@ -71,10 +71,9 @@ If a task file was identified in Step 2:
 
 ## Step 6: Clean Up (if applicable)
 
-If working in a git worktree:
-1. Switch back to main worktree
-2. Remove the feature worktree: `git worktree remove {path}`
-3. Delete the branch if merged: `git branch -d {branch}`
+If working in a git worktree, follow the Cleanup steps in `.claude/skills/git-worktrees/SKILL.md`
+(skip removal when the harness created the worktree; use `git branch -D` only after
+confirming a squash- or rebase-merged PR is merged).
 
 ## Step 7: Summary
 

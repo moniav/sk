@@ -293,6 +293,39 @@ if (!staticOnly) {
     rmSync(tmp2, { recursive: true, force: true });
   }
 
+  // The git-worktrees skill's setup command must actually work (plan item 1.1):
+  // run the documented `git worktree add` line in a scratch repository.
+  {
+    const skill = read(join(skillsDir, "git-worktrees", "SKILL.md"));
+    const documented = skill.match(/^\s*(git worktree add .*)$/m)?.[1];
+    if (/git checkout -b/.test(skill.replace(/Do not run `git checkout -b`[^\n]*/g, ""))) {
+      err("worktrees", "git-worktrees checks the branch out before adding the worktree, which git refuses");
+    }
+    if (!documented) err("worktrees", "git-worktrees has no `git worktree add` setup command");
+    else {
+      const tmp3 = mkdtempSync(join(tmpdir(), "sk-check-"));
+      try {
+        const git = (args, cwd) => spawnSync("git", args, { cwd, encoding: "utf-8" });
+        const repo = join(tmp3, "proj");
+        git(["init", "-q", "-b", "main", repo], tmp3);
+        git(["-c", "user.name=sk", "-c", "user.email=sk@example.com", "commit", "-q", "--allow-empty", "-m", "init"], repo);
+        const args = documented
+          .replace("{project-name}", "proj")
+          .replace(/\{task-name\}/g, "task")
+          .replace("{base}", "main")
+          .split(/\s+/)
+          .slice(1);
+        const added = git(args, repo);
+        if (added.status !== 0) err("worktrees", `documented setup command fails: ${added.stderr.trim()}`);
+        else if (git(["branch", "--show-current"], join(tmp3, "proj-task")).stdout.trim() !== "feature/task") {
+          err("worktrees", "documented setup command did not create the worktree on the feature branch");
+        }
+      } finally {
+        rmSync(tmp3, { recursive: true, force: true });
+      }
+    }
+  }
+
   const claude = spawnSync("claude", ["plugin", "validate", "."], { cwd: ROOT, encoding: "utf-8", shell: true });
   if (claude.error || /not recognized|not found/i.test(claude.stderr || "")) {
     console.log("[INFO] claude CLI not on PATH -- skipped plugin validation");
