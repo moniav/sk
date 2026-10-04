@@ -109,7 +109,8 @@ To move a project from copied files to the plugin: `npx shipkit-cld remove .` (k
 
 ## Updating
 
-With the plugin, `claude plugin update sk@shipkit` updates commands, skills and agents, and `npx shipkit-cld@latest update .` refreshes the shipped templates, SOPs and reference docs in the project.
+With the plugin, `claude plugin update sk@shipkit` updates commands, skills and agents.
+Then `/sk:scaffold update` in a project refreshes the shipped templates, SOPs and reference docs there (outside Claude Code: `npx shipkit-cld@latest update .`).
 
 With copied files, there are three ways to update after SK has been changed:
 
@@ -177,7 +178,7 @@ SK works with both new projects and existing codebases. The setup path differs.
 
 ```
 1. Install SK (see Installation above)
-2. /sk:kickoff                              # Answer questions, docs auto-generated
+2. /sk:kickoff                              # Answer questions, docs auto-generated (creates the docs/ scaffold if it is missing)
 3. /sk:brainstorm                           # Describe your first feature, get epic + tasks
 4. /sk:implement                            # Build it
 ```
@@ -258,6 +259,7 @@ Claude starts only six commands by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
 | `/sk:help` | Find the right command for a situation | Not sure where to start, or what comes next |
+| `/sk:scaffold` | Create `docs/` and `CLAUDE.md`, or refresh the shipped docs | Once per project when SK is installed as a plugin |
 | `/sk:kickoff` | Guided project setup + best-practice research | Starting a new (greenfield) project |
 | `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
 | `/sk:init-docs` | Auto-scan codebase, populate docs | Brownfield project or full rebuild |
@@ -376,11 +378,12 @@ SK separates the **product** (what gets installed) from **project files** (for d
 ```
 sk/                              ← SK source repository
 ├── CLAUDE.md                    ← SK development instructions (NOT shipped)
-├── cli.mjs                      ← CLI: install / update / remove / init
+├── cli.mjs                      ← npm entry point: imports pkg/cli.mjs
 ├── .claude-plugin/              ← marketplace.json: installs the plugin from ./pkg
 ├── scripts/                     ← Dev tooling (check, sync, baselines, evals), not shipped
 ├── package.json                 ← npm package config
 ├── pkg/                         ← Everything shipped to target projects; also the plugin root
+│   ├── cli.mjs                  ← CLI: install / update / remove / init; /sk:scaffold runs it under the plugin
 │   ├── .claude-plugin/          ← plugin.json
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree

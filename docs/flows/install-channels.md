@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-10-04
 **Lifecycle:** current
-**Source:** `cli.mjs`, `.claude-plugin/marketplace.json`, `pkg/.claude-plugin/plugin.json`
+**Source:** `pkg/cli.mjs`, `.claude-plugin/marketplace.json`, `pkg/.claude-plugin/plugin.json`
 **Type:** Flowchart
 **Format:** Mermaid
 
@@ -48,7 +48,7 @@ flowchart TD
 
 1. **Choose a channel.** The plugin is the default. Copying files is for a project that must stay on a specific SK version, because a plugin is one version per user.
 2. **Plugin: install once per machine.** The marketplace entry installs the plugin from `./pkg`, so the plugin cache holds only what ships. The plugin's `version` equals `package.json`.
-3. **Plugin: `init` once per project.** It copies only the files the project does not have yet, so it is safe on a project with existing docs and safe to run again. It refuses to run if SK is already copied into the project.
+3. **Plugin: `/sk:scaffold` once per project.** The command runs `init` from the CLI that ships inside the plugin, so the scaffold matches the plugin's version; `npx shipkit-cld init` runs the same code from npm. It copies only the files the project does not have yet, so it is safe on a project with existing docs and safe to run again. It refuses to run if SK is already copied into the project.
 4. **File copy: one command.** Existing `docs/` content is moved to `docs/old/<timestamp>/` first. Commands, agents and skills are written one file at a time; a file the project already has under the same name is treated as the project's own.
 5. **Path rewrite.** Shipped commands refer to shared skills as `${CLAUDE_PLUGIN_ROOT}/.claude/...`. The plugin resolves that variable; the file-copy channel rewrites the prefix to `.claude/` as it writes each file.
 6. **Manifest.** `.claude/.sk-manifest.json` records the version, the channel, the profile, who owns `CLAUDE.md`, and a hash for every file SK wrote.

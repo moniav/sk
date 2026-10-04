@@ -4,7 +4,7 @@
 
 **Last updated:** 2026-10-04
 **Lifecycle:** current
-**Source:** `cli.mjs`, `pkg/`, `.claude-plugin/`, `scripts/`
+**Source:** `pkg/cli.mjs`, `pkg/`, `.claude-plugin/`, `scripts/`
 
 ## Overview
 
@@ -29,7 +29,7 @@ graph TD
 
 | Command | Function |
 |---------|----------|
-| `npx shipkit-cld init [target] [--minimal]` | Scaffold `docs/` and `CLAUDE.md` only, for use with the plugin. Fills gaps, never replaces a file |
+| `npx shipkit-cld init [target] [--minimal]` | Scaffold `docs/` and `CLAUDE.md` only, for use with the plugin. Fills gaps, never replaces a file. `/sk:scaffold` runs the same code from the plugin: `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init .` |
 | `npx shipkit-cld [target] [--minimal]` | File-copy install: docs plus commands, agents and skills in `.claude/` |
 | `npx shipkit-cld update [target]` | Refresh SK-managed files one at a time, keeping user edits. Flags: `--dry-run`, `--yes`, `--force`, `--from <path>` |
 | `npx shipkit-cld remove [target]` | Remove SK's files and sidecars, keep `docs/` and the user's own files |
@@ -38,7 +38,7 @@ graph TD
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| CLI | `cli.mjs` | Install, update, remove, init. Zero dependencies |
+| CLI | `pkg/cli.mjs` | Install, update, remove, init. Zero dependencies. Ships in the plugin and in the npm package; the root `cli.mjs` only imports it |
 | Payload and plugin root | `pkg/` | Everything that ships |
 | Plugin manifest | `pkg/.claude-plugin/plugin.json` | Name `sk`, version (equals `package.json`), component paths |
 | Marketplace | `.claude-plugin/marketplace.json` | Marketplace `shipkit`, installs `sk` from `./pkg` |

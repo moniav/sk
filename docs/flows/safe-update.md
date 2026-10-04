@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-10-04
 **Lifecycle:** current
-**Source:** `cli.mjs` (`syncFile`, `pruneRemoved`, `syncClaudeMd`), `scripts/baselines.mjs`
+**Source:** `pkg/cli.mjs` (`syncFile`, `pruneRemoved`, `syncClaudeMd`), `scripts/baselines.mjs`
 **Type:** Flowchart
 **Format:** Mermaid
 

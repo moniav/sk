@@ -57,7 +57,8 @@ Copy the files into the project instead (`npx shipkit-cld`) only when the projec
 
 - **Commands, skills and agents:** `claude plugin update sk@shipkit`.
   To update automatically, open `/plugin`, go to Marketplaces, select `shipkit` and choose Enable auto-update. It is off by default.
-- **Shipped docs in the project** (templates, SOPs, reference): `npx shipkit-cld@latest update .`.
+- **Shipped docs in the project** (templates, SOPs, reference): `/sk:scaffold update`, after the plugin has been updated.
+  Outside Claude Code, `npx shipkit-cld@latest update .` does the same.
   A file you edited is kept, and the new version is written beside it as `<name>.sk-new`.
 
 ## Sharing with a team
