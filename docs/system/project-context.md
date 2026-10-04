@@ -81,6 +81,6 @@ sk/
 
 ## Current State
 
-- **Version:** 2.0.0 published. Unreleased work on branches `feat/best-practices-wave-1` to `-wave-3`: see `dev-docs/planning/2026-10-best-practices-enhancement-plan.md`.
+- **Version:** 2.0.0 published. Unreleased work on branches `feat/best-practices-wave-1` to `-wave-4`: see `dev-docs/planning/2026-10-best-practices-enhancement-plan.md`.
 - **Status:** active development.
-- **Next:** release the three waves, then Wave 4 (retro that improves the environment, decision trail, PR template, council model variation).
+- **Next:** re-run the trigger evals, then merge and release the four waves. After that, decide on the project-local verify skill (`dev-docs/planning/2026-10-verify-skill-design-note.md`).

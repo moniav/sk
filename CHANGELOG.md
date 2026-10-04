@@ -3,7 +3,8 @@
 ## Unreleased
 
 Changes from the 2026-10 best-practices review: correctness and safety fixes (Wave 1),
-then discovery, paths, agents and deployment (Wave 2), then content quality and proof (Wave 3).
+then discovery, paths, agents and deployment (Wave 2), then content quality and proof (Wave 3),
+then new capabilities (Wave 4).
 
 **Upgrade notes:**
 Updates no longer overwrite files you edited: your version is kept and the new one is written beside it as `<name>.sk-new`.
@@ -14,7 +15,14 @@ Scheduled routines created before this release must be re-created with `/sk:rout
 `/sk:test` now reports each acceptance criterion as passed, failed or untested, and a task is not done while any is untested.
 Tests may be skipped when writing one first is impractical, but only with the reason stated and another executable check run instead.
 The plugin is now the recommended install: `claude plugin install sk@shipkit`, then `npx shipkit-cld init` in each project. Copied-file installs keep working.
+`/sk:council` now runs its seats on different models (two of the five on `opus`), which costs more than before; reassign the models at the confirmation step to put every seat on one.
+`docs/decisions/decision-log.md` has new columns (evidence, result, who); an existing log keeps working, and new rows use the new columns.
 
+- **`/sk:retro` changes the environment** - a retrospective ends in proposed edits to named files, applied on approval: a mistake a tool could have caught becomes a check, a judgement call becomes one line in the convention file the reviewer reads, missing information becomes a pointer, and an instruction that was ignored is deleted. Lessons are no longer just saved to memory.
+- **One decision trail** - `plow-ahead` and `headless-operation` share one append-only format with an evidence pointer and a result per decision. A wrong call gets a superseding row. An unattended run audits its trail before handing back and ends with an attention list.
+- **PR body template** - `/sk:pr` and `/sk:finish` write a summary led by the smallest visual that shows the change, before and after evidence that is real or marked "not verified", and a merge-danger line (one-way or two-way door, blast radius). A repository's own PR template still wins.
+- **Interviewing** - a new internal skill (24 in total) used by `/sk:plan`, `/sk:brainstorm` and the executive grill mode: facts are looked up, not asked for; decisions are asked in one numbered round, each with a recommended answer; the round ends when nothing is open.
+- **Council on mixed models** - each seat has its own model, and the report has an Agreement Map showing where seats on different models agreed independently and where a split follows the model, not the mandate. Report layouts moved to two new templates (26 in total); `council` went from 332 to 230 lines.
 - **`/sk:help`** - a new command (54 in total) that maps a situation to the command that fits, or prints the whole flow.
 - **Proof over claims** - `verification-before-completion` adds a proof scale (stated, pointed, walked, ran, reproduced), three results per criterion, the revision tested, and before-and-after capture for bug fixes. `/sk:test` is rebuilt around it. Reviewer agents and review commands say how far each finding was proven.
 - **Checkable gates and reply contracts** - sixteen commands and the debugger agent now end each gate on something that can be shown, keep their non-negotiable rules at the top, and end with a line stating what the final reply must contain. `/sk:debug` allows no hypothesis before a reproduction has run, and writes the regression test before the fix.

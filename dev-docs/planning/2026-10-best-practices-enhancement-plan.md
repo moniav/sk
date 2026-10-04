@@ -493,6 +493,27 @@ Merges pstack's evidence ladder with michaelshimeles's evidence protocol into `v
 
 Each is independent and can be dropped without affecting the others.
 
+### Wave 4 status: implemented except 4.6, 4.8 and 4.9; not measured
+
+Committed on `feat/best-practices-wave-4`, stacked on Wave 3, and `npm test` passes with no errors.
+
+**Nothing in this wave was measured or run end to end.**
+No eval was run, because the account's usage limit was reached during Wave 3 and the Wave 3 gate is itself still open.
+The new and rewritten prompts were checked by `npm test` (structure, gating, counts, paths) and by reading them, which is the `walked` rung, not `ran`.
+Before merging, run the trigger suite as described under "Wave 3 status" with `--snapshot feat/best-practices-wave-4`, and try `/sk:retro`, `/sk:council` and `/sk:plan` once each in a real project.
+
+| Item | Result |
+|------|--------|
+| 4.1 `/sk:help` | Done in Wave 3. |
+| 4.2 Retro | `retro.md` rewritten: three passes over the evidence (judgement, tooling, divergence), a routing table from finding type to file edit, proposals applied only on approval, proposals only in a headless run. Transcript mining is the three passes over whatever evidence is available; there is no separate transcript parser. |
+| 4.3 Decision trail | One format in `plow-ahead/references/decision-trail.md`, used by `plow-ahead` and `headless-operation`; the shipped `decision-log.md` has the same columns. |
+| 4.4 PR body | In `git-commit-flow` step 6; `/sk:pr` points at it. |
+| 4.5 Interview pattern | New internal skill `interviewing` (24 skills). Used by `/sk:plan`, the executive grill mode, and the requirements round of `/sk:brainstorm`. Deviation: the exploration part of `brainstorm` stays conversational, one question at a time, because batching questions there defeats its purpose. |
+| 4.6 Verify skill | Not built. Design note with six decisions: `2026-10-verify-skill-design-note.md`. |
+| 4.7 Council | Per-seat models (two seats on `opus`, so a council costs more than before; the user can reassign at the confirmation step), Agreement Map, two new templates (26 templates). `council.md` is 230 lines, down from 332, still over the 200-line target: the remaining length is the three round prompts, which have to stay inline. The token estimates in Step 3 predate the model mix and were not re-measured. |
+| 4.8 Wider distribution | Not done. Optional and undecided. |
+| 4.9 Commands as skills | Not done. Major version only (decision D7). |
+
 ### 4.1 `/sk:help` router
 
 One user-invoked command that maps situations to commands and shows the main flow (brainstorm, new-task, plan, dev, test, finish) with its on-ramps.

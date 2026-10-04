@@ -22,6 +22,7 @@ made the mirror impure and confusing. Everything about *evolving SK the product*
 - `IMPLEMENTATION-PLAN.md` — unified-system implementation plan
 - `plugin-split-plan.md` — hybrid plugin + npx-init distribution migration (post-v1.9.0; see ADR-002)
 - `2026-10-best-practices-enhancement-plan.md` - four-wave plan from the Anthropic best-practices and external-repo review (post-v2.0.0)
+- `2026-10-verify-skill-design-note.md` - design note for plan item 4.6, a generated project-local verify skill (proposal, not built)
 
 ### reports/
 - `enhancement-report-external-skills.md` — external-skills review findings
