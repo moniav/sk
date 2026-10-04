@@ -82,6 +82,6 @@ sk/
 
 ## Current State
 
-- **Version:** 2.3.0 (the four waves of `dev-docs/planning/2026-10-best-practices-enhancement-plan.md`).
+- **Version:** 2.4.0 (`/sk:scaffold` on top of the four waves of `dev-docs/planning/2026-10-best-practices-enhancement-plan.md`).
 - **Status:** active development.
 - **Next:** run the trigger evals for Waves 3 and 4 (still open). Decide on the project-local verify skill (`dev-docs/planning/2026-10-verify-skill-design-note.md`).
