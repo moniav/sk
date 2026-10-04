@@ -86,7 +86,33 @@ Ask the user: **Create a pull request?**
 If yes:
 1. Determine the base branch: `git symbolic-ref --short refs/remotes/origin/HEAD` (fall back to `main`, then `master`)
 2. Run `git log {base}..HEAD --oneline` to gather all commits on this branch
-3. Generate a PR title (under 70 chars) and body from the commits
+3. Generate a PR title (under 70 chars) from the commits, and a body in the shape below. If the repository has its own PR template (`.github/pull_request_template.md`), fill that instead.
+
+```markdown
+## Summary
+
+<The smallest view that makes the change clear, then one or two sentences on what changed and why.
+ Pick one: a diff sketch of the structure, a call tree, a short file tree, pseudocode of the new logic,
+ or a small Mermaid diagram. Skip the visual for a one-line change.>
+
+## Evidence
+
+- **Before:** <the failing output, the screenshot, or the measured number>
+- **After:** <the passing output, the screenshot, or the measured number>
+
+## Merge danger
+
+**Door:** one-way | two-way
+**Blast radius:** <what is affected if this is wrong, in a few words>
+
+## Notes
+
+<Follow-ups, and what a reviewer should look at first. Omit if there is nothing.>
+```
+
+   - **Evidence is real or it is marked absent.** Use output produced in this session or recorded in the task's Verification section. If there is none, write "not verified" and why. Never invent it.
+   - **One-way door:** hard to undo once merged or deployed (a data migration, a public API or wire format, a deleted column). **Two-way door:** a revert restores the previous state.
+   - Link the task or issue the PR closes.
 4. Present for approval, then create:
 
 ```bash

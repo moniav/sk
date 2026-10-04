@@ -32,7 +32,8 @@ inform the user — do NOT force-push without explicit approval.
 
 Follow **Step 6 (Create PR)** of `${CLAUDE_PLUGIN_ROOT}/.claude/skills/git-commit-flow/SKILL.md`:
 gather commits with `git log {base}..HEAD --oneline`, generate a title (under 70
-chars) and body summarizing what changed and why, present for approval, then:
+chars) and a body in that step's shape (summary with the smallest visual that shows
+the change, before and after evidence, merge danger), present for approval, then:
 
 ```bash
 gh pr create --title "<title>" --body "<body>"
