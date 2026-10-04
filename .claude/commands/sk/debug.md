@@ -5,174 +5,129 @@ argument-hint: "[bug description or error message]"
 
 # Debug — Systematic Bug Investigation
 
-Find and fix bugs using a structured workflow: reproduce, isolate, fix, verify. Unlike feature work, the goal is to change as little as possible while eliminating the defect.
+Reproduce, isolate, fix, verify. Change as little as possible while eliminating the defect.
 
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
+
+## Rules and Gates
+
+- **Reproduce first.** No hypotheses and no code changes until a reproduction has actually been run in this session and seen to fail (Step 4).
+- **No blind fixes.** If you cannot build a repeatable pass/fail signal (no repro, no access, no observable signal), halt and request the missing access or artifacts.
+- **Hypotheses are falsifiable.** 3 to 5, ranked, each with a prediction that could prove it wrong (Step 5).
+- **Three wrong hypotheses:** stop fixing and follow `.claude/skills/escalation-rules/SKILL.md`: question whether the architecture or design is the real problem.
+- **Red, then green.** The regression test must be seen failing before the fix and passing after it; paste both outputs (Steps 6 to 8).
+- **Minimal diff.** Change only what fixes the root cause, in the existing code style. No drive-by fixes or refactors. Fix the cause, not the symptom.
+- **Evidence, not claims.** Every "reproduced", "root cause" and "fixed" statement is backed by pasted output.
+
 ## Step 1: Read Context
 
-**ALWAYS start by reading:**
-1. `docs/system/project-context.md` — Dense project summary (if it exists)
-2. `docs/conventions/code-style.md` — Coding standards
-3. `docs/conventions/testing.md` — Testing patterns
-4. `docs/system/tech-stack.md` — Current stack
-
-**Skip files that are empty or contain only template placeholders.**
+Read, skipping files that are empty or contain only template placeholders:
+1. `docs/system/project-context.md` (if it exists)
+2. `docs/conventions/code-style.md`
+3. `docs/conventions/testing.md`
+4. `docs/system/tech-stack.md`
 
 ## Step 2: Scope and Track
 
-Assess bug complexity:
-- **XS/S** (obvious cause, 1-2 files) — proceed directly, no task file needed
-- **M** (investigation needed, 3+ files) — create a task file first: scan `docs/tasks/TASK-*.md` for next number, create `docs/tasks/TASK-{N}-S-{kebab-name}.md` from `docs/templates/task-prd.md` with `phase: dev`, `status: in-progress`
-- **L/XL** (systemic issue, cross-cutting) — create a task file, consider if this is really an epic
+- **XS/S** (obvious cause, 1-2 files): proceed directly, no task file.
+- **M** (investigation needed, 3+ files): create a task file first. Scan `docs/tasks/TASK-*.md` for the next number, create `docs/tasks/TASK-{N}-S-{kebab-name}.md` from `docs/templates/task-prd.md` with `phase: dev`, `status: in-progress`.
+- **L/XL** (systemic, cross-cutting): create a task file, and consider whether this is really an epic.
 
 For M+ bugs, update `docs/tasks/README.md` to track the fix.
 
 ## Step 3: Gather Bug Report
 
-Ask the user for:
+Ask the user for whichever of these is missing:
 
 | Field | What to capture |
 |-------|----------------|
-| **Symptom** | What is happening? (exact error message, wrong behavior, crash) |
-| **Expected** | What should happen instead? |
+| **Symptom** | Exact error message, wrong behavior, or crash |
+| **Expected** | What should happen instead |
 | **Steps to reproduce** | Exact sequence to trigger the bug |
 | **Environment** | OS, browser, runtime version, relevant config |
-| **Frequency** | Always, sometimes, only under specific conditions? |
-| **When it started** | Recent change, always broken, or unknown? |
+| **Frequency** | Always, sometimes, or only under specific conditions |
+| **When it started** | Recent change, always broken, or unknown |
 
 If the user provides a GitHub issue number, read it with `gh issue view <N>`.
 
 ## Step 4: Reproduce
 
-Before investigating code, confirm the bug is reproducible:
+Run the reproduction steps exactly as described and capture the actual output (error message, stack trace, wrong result) and the exact failure point (which line, assertion, or response).
+Then reduce it to a repeatable pass/fail signal: a failing test, a script, a `curl` command, or a specific log line.
 
-1. **Run the reproduction steps** exactly as described
-2. **Capture the actual output** — error message, stack trace, wrong result
-3. **Note the exact failure point** — which line, which assertion, which response
+If it does not reproduce: ask about environment differences, check whether it is intermittent (race condition, timing, external dependency), try variations of the steps, and check whether it is already fixed on the current branch.
+If it still does not reproduce, apply the "No blind fixes" rule.
 
-If the bug cannot be reproduced:
-- Ask clarifying questions about environment differences
-- Check if it's intermittent (race condition, timing, external dependency)
-- Try variations of the reproduction steps
-- Check if it was already fixed on the current branch
-
-**Feedback-loop gate:** You need a tight, repeatable pass/fail signal — a failing test, a script, a `curl` command, a specific log line — *before* you start changing code. Build the right feedback loop and the bug is 90% fixed. If you genuinely cannot build one (no repro, no access, no observable signal), **halt and request the missing access or artifacts** rather than guessing at fixes blind.
-
-**Checkpoint:** State clearly: "Reproduced: [yes/no]. The bug manifests as [exact symptom] at [location]."
+**Done when** you can name ONE command (or exact scripted sequence), already run in this session, that fails because of this bug. Show the command and its output, then state: "Reproduced: yes. The bug manifests as [exact symptom] at [location]."
 
 ## Step 5: Isolate
 
-Narrow down the root cause. Work methodically — do NOT jump to a fix.
-
 ### 5a: Trace the Execution Path
 
-Starting from the entry point (route handler, event handler, CLI command):
-1. Use Grep/Read to follow the code path that triggers the bug
-2. Identify every function call in the chain
-3. Note where data transforms — what goes in vs what comes out
+From the entry point (route handler, event handler, CLI command), follow the code path that triggers the bug with Grep/Read.
+Done when you can list the call chain from entry point to failure point, and for each data transform what goes in and what comes out.
 
 ### 5b: Form Hypotheses
 
-Based on the trace, write **3–5 ranked, falsifiable hypotheses** — most likely first. Each must be specific enough that a single test or log line could prove it wrong:
-> "The bug occurs because [specific cause] in [specific location], which results in [specific symptom]."
+Write **3 to 5 ranked hypotheses**, most likely first, each in this form:
+> "The bug occurs because [specific cause] in [specific location], which results in [specific symptom]. Prediction: [a single test or log line] will show [X]; if it shows [Y], this hypothesis is wrong."
 
-Ranking forces you past your first instinct; listing several stops you from committing prematurely to the wrong one.
+Alongside them, list what you are assuming about the data flow and about the state at the failure point.
 
-**Surface your assumptions.** Before investigating further, list what you're assuming:
-- What do you assume about the data flow?
-- What do you assume about the state at the failure point?
-- Could the bug have a different root cause than your first instinct?
+### 5c: Test the Hypotheses
 
-### 5c: Verify the Hypothesis
+Check each hypothesis's prediction in rank order, with the smallest investigation that settles it:
+- Add a log or breakpoint to confirm the data flow. Tag every temporary debug log with a unique prefix such as `[DEBUG-a4f2]` so it can be found and removed.
+- Check recent changes to the suspect code: `git log --oneline -10 -- <file>`
+- Read the tests covering the suspect code: is the failing case tested?
 
-Test your top hypothesis with minimal investigation — do not assume it is correct:
-- Add a strategic log/breakpoint to confirm the data flow — tag temporary debug logs with a unique prefix like `[DEBUG-a4f2]` so every line is trivial to find and remove once the fix lands
-- Check the git log for recent changes to the suspect code: `git log --oneline -10 -- <file>`
-- Read the test coverage for the suspect code — is the failing case tested?
+Record each result as confirmed or refuted, with the output that decided it.
 
-### 5d: When Hypotheses Run Dry — Search the Error
+### 5d: When Hypotheses Run Dry
 
-If your ranked hypotheses are exhausted (or the error is from a third-party
-library), **WebSearch the exact error message** (quoted, minus project-specific
-paths) plus the library name and version. Known issues, fixed bugs, and version
-incompatibilities often surface immediately. Apply the source discipline from
-`.claude/skills/research/SKILL.md`: prefer the library's issue tracker/changelog
-over forum guesses, and verify any suggested fix against your reproduction before
-trusting it.
+If the ranked hypotheses are exhausted, or the error comes from a third-party library, **WebSearch the exact error message** (quoted, minus project-specific paths) plus the library name and version.
+Apply the source discipline from `.claude/skills/research/SKILL.md`: prefer the library's issue tracker/changelog over forum guesses, and verify any suggested fix against your reproduction before trusting it.
 
-### 5e: Escalation Check
+### 5e: Root Cause, Not Symptom
 
-If your hypothesis is wrong 3 times, follow `.claude/skills/escalation-rules/SKILL.md`: stop fixing and question whether the architecture or design is the real problem.
+Before leaving this step, answer in writing:
+- Would fixing this location prevent the bug, or only mask it?
+- Which other code paths have the same underlying problem? (Search for them; list the matches or state "none found".)
 
-### 5f: Identify Root Cause vs Symptom
+**Done when** one hypothesis's prediction has been observed (output shown) and you can state: "Root cause: [specific cause] in `file:line`. This happens because [mechanism]."
 
-Ask yourself:
-- Is this the **root cause** or a **symptom** of a deeper issue?
-- Would fixing this location prevent the bug, or would it just mask it?
-- Are there other code paths with the same underlying problem?
+## Step 6: Write the Regression Test (red)
 
-**Checkpoint:** State clearly: "Root cause: [specific cause] in `file:line`. This happens because [explanation]."
+Before touching the defective code, write a test for the exact scenario that broke, not a generic one.
+Name it `[expected behavior] when [condition that caused the bug]`, following `docs/conventions/testing.md`.
 
-## Step 6: Fix
+**Done when** you have run the test against the unfixed code and pasted its failing output, and the failure is the bug's symptom (not a setup or syntax error).
+If a test for this bug is not practical, apply "When a test first is not practical" in `.claude/skills/test-driven-development/SKILL.md`: say why, and use the Step 4 reproduction command as the before and after check instead.
 
-Apply the minimal change that eliminates the root cause:
+## Step 7: Fix
 
-### Fix Principles
-- **Minimal diff** — change only what's necessary to fix the bug
-- **Same patterns** — follow existing code style and conventions
-- **No drive-by fixes** — resist the urge to refactor surrounding code
-- **Fix the cause, not the symptom** — address the root, not a band-aid
+1. Make the minimal change at the root cause (see Rules).
+2. If the same root cause exists in several places, fix all of them.
+3. Re-read your diff and list every line that is not required by the fix; remove those lines.
 
-### Implementation
-1. Make the fix in the identified location
-2. If the fix requires changes in multiple places (same root cause), fix all of them
-3. Self-review: does this fix introduce any new issues?
-
-## Step 7: Write Regression Test
-
-Every bug fix MUST include a test that:
-
-1. **Fails without the fix** — proves the test catches the bug
-2. **Passes with the fix** — proves the fix works
-3. **Tests the specific scenario** — not a generic test, but the exact case that broke
-
-**Test naming convention:**
-```
-# TypeScript
-it('should [expected behavior] when [condition that caused the bug]')
-
-# Python
-def test_[behavior]_when_[condition_that_caused_bug]():
-```
-
-Follow the project's testing conventions from `docs/conventions/testing.md`.
-
-## Step 8: Verify
+## Step 8: Verify (green)
 
 Read `.claude/skills/verification-before-completion/SKILL.md` before claiming the fix works.
-You MUST paste the actual test output showing the regression test passes and the full suite has no new failures.
 
-### 8a: Confirm the Fix
-1. Re-run the original reproduction steps — bug should be gone
-2. Verify with specific evidence (exact output, not "it works now")
-3. Run the new regression test — should pass
-4. Run the full test suite — no regressions
+Run each of these and paste the actual output:
+1. The regression test from Step 6: now passes.
+2. The reproduction command from Step 4: the bug is gone.
+3. The project's full test suite, type-check and lint commands (see CLAUDE.md Build Commands): no new failures.
+4. A search for the debug-log prefix from 5c: no matches remain.
 
-### 8b: Check for Related Issues
-- Are there similar patterns elsewhere that might have the same bug?
-- If yes, fix those too (or note them as follow-up)
-
-### 8c: Run Project Tests
-```bash
-# Run your project's test, type-check, and lint commands
-# (check CLAUDE.md Build Commands for exact commands)
-```
+For the other code paths found in 5e: fix them too, or list them as follow-up.
 
 ## Step 9: Close Out
 
-Present to user:
+Present to the user:
 
 ### Bug Report
 | Field | Detail |
@@ -185,29 +140,27 @@ Present to user:
 
 ### Verification
 - [ ] Bug no longer reproducible
-- [ ] Regression test passes
+- [ ] Regression test failed before the fix and passes after it
 - [ ] Full test suite passes
 - [ ] No drive-by changes included
 
-### Documentation (if task file was created)
+### Documentation (if a task file was created)
 - [ ] Task file marked `phase: done`, `status: done`
 - [ ] `docs/tasks/README.md` updated
 - [ ] `docs/system/` updated (if the fix changed APIs, schema, or stack)
 
-### Save Investigation (Optional — only for M+ complexity)
+### Save Investigation (M+ complexity only)
 
-If the investigation was substantial (multiple hypotheses tested, complex root cause), ask: **"Save investigation trace to `docs/research/YYYY-MM-DD-{bug-name}.md`?"**
-
+If several hypotheses were tested or the root cause was complex, ask: **"Save investigation trace to `docs/research/YYYY-MM-DD-{bug-name}.md`?"**
 If yes, save using `docs/templates/research-doc.md`: symptom, hypotheses tested, root cause found, fix applied.
 
-### Postmortem (if this was a production incident)
+### Postmortem (production incidents only)
 
-If the bug was a **production incident** (user-facing impact, downtime, data issue), ask:
-**"Write a blameless postmortem to `docs/operations/postmortems/`?"**
-
-If yes, use `docs/templates/postmortem.md` (summary, impact, timeline, root cause,
-contributing factors, action items) and add a row to `docs/operations/README.md`.
+If the bug had user-facing impact, downtime, or a data issue in production, ask: **"Write a blameless postmortem to `docs/operations/postmortems/`?"**
+If yes, use `docs/templates/postmortem.md` (summary, impact, timeline, root cause, contributing factors, action items) and add a row to `docs/operations/README.md`.
 
 ### Follow-up (if any)
 - Related issues found during investigation
 - Broader patterns that might need attention
+
+**Reply:** what was broken, the root cause (mechanism, not just location), the fix, and the failing-then-passing output of the regression test, pasted verbatim.

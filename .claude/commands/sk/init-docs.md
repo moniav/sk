@@ -7,53 +7,51 @@ disable-model-invocation: true
 
 Bootstrap the entire `docs/` documentation system for a project, populated from codebase analysis.
 
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
+
 **Use when:** Setting up docs for an existing (brownfield) project or rebuilding stale docs from scratch.
+
+## Rules
+
+- Every generated doc describes what the code actually does: no placeholder text, no aspirational conventions.
+- If multiple package manifests exist (workspaces / monorepo), ask the user which package to target, or whether to cover the workspace root, before proceeding.
+- `CLAUDE.md` Build Commands are filled in from detection, each with a comment naming its source. A command that could not be detected keeps the placeholder comment plus `# [NOT DETECTED] - fill in manually`.
+- In every index file you create or keep, replace the `Last updated: YYYY-MM-DD` placeholder with today's date. Otherwise `/sk:docs-audit` reports the fresh scaffold as unfilled stubs.
+
+## Exit Gate
+
+Do not report completion until each line holds. For the minimal profile, the domain-home line covers only the homes you created.
+
+- [ ] Every `docs/system/` doc names real files, dependencies or endpoints from this codebase, and a search of `docs/system/` for template placeholder text returns nothing
+- [ ] Every dependency in `docs/system/tech-stack.md` appears in a dependency manifest
+- [ ] Every path in `docs/conventions/file-structure.md` exists on disk
+- [ ] Each convention doc cites at least one existing file that shows the pattern
+- [ ] `CLAUDE.md` Build Commands have a command or a `[NOT DETECTED]` marker on every line
+- [ ] Every link in `docs/README.md` (agent index) resolves to an existing file
+- [ ] `docs/START-HERE.md` (human router) exists with role lanes
+- [ ] A search of the index files for `YYYY-MM-DD` returns nothing
+- [ ] Domain homes exist, each with a stub index: features/, user-guides/, business/, legal/, operations/, _archive/
+- [ ] `docs/templates/` contains every template listed in step 3d
 
 ## Step 1: Scan Project
 
-### Read Project Context First
+If `docs/system/project-context.md` exists, read it first. Stamp today's date into every index file you write in Step 3 (see Rules).
 
-If `docs/system/project-context.md` exists, read it first for existing context.
+**Identity.** Glob for `package.json`, `pyproject.toml`, `requirements.txt`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`, `build.gradle`, and read the manifest found.
 
-### Project Identity
+**Structure.** Glob `src/**/*` (source), `tests/**/*`, `**/*.test.*`, `**/*.spec.*`, `**/test_*` (tests), and `*.config.*`, `.env*`, `tsconfig*`, `docker*` (config).
 
-Use **Glob** to detect project type:
-- `package.json`, `pyproject.toml`, `requirements.txt`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`, `build.gradle`
+**Dependencies.** Read the dependency manifest: `package.json` (dependencies and devDependencies), `requirements.txt` or `pyproject.toml`, `Cargo.toml`, `go.mod`.
 
-Use **Read** to examine the manifest file (e.g., `package.json` first 20 lines). If multiple package manifests exist (workspaces / monorepo), ask the user which package to target — or cover the workspace root — before proceeding.
-
-### Project Structure
-
-Use **Glob** with `**/` patterns to map the directory tree:
-- `src/**/*` — application source
-- `tests/**/*` or `**/*.test.*` — test files
-- `*.config.*` — config files at root
-
-### Dependencies
-
-Use **Read** to examine the dependency manifest:
-- Node: Read `package.json` (dependencies and devDependencies sections)
-- Python: Read `requirements.txt` or `pyproject.toml`
-- Rust: Read `Cargo.toml`
-- Go: Read `go.mod`
-
-### Key Patterns
-
-Use **Grep** to find key patterns:
-- Route/endpoint definitions: `"router|app.get|app.post|export.*GET|export.*POST|@app\.|@router\."` in `*.ts`, `*.tsx`, `*.py`
+**Key patterns.** Grep:
+- Routes/endpoints: `"router|app.get|app.post|export.*GET|export.*POST|@app\.|@router\."` in `*.ts`, `*.tsx`, `*.py`
 - Models/schema: `"createTable|model|Schema|BaseModel"` in `*.ts`, `*.py`
-
-Use **Glob** to find test and config files:
-- Test files: `**/*.test.*`, `**/*.spec.*`, `**/test_*`
-- Config files: `*.config.*`, `.env*`, `tsconfig*`, `docker*`
 
 ### Build Commands Detection
 
-Detect build commands from every available source. Check all that exist:
+Check every source that exists.
 
-**A) package.json scripts (Node/JS/TS projects)**
-
-Read `package.json` and extract the `"scripts"` object. Map scripts to build commands:
+**A) `package.json` scripts.** Map script keys, using the exact script name found (`"dev": "next dev"` gives `npm run dev`):
 
 | Script key | Maps to |
 |-----------|---------|
@@ -67,80 +65,21 @@ Read `package.json` and extract the `"scripts"` object. Map scripts to build com
 | `db:migrate`, `migrate`, `prisma migrate` | `db:migrate:` |
 | `db:seed`, `seed` | `db:seed:` |
 
-Use the exact script name as found. Example: if `package.json` has `"dev": "next dev"`, the build command is `npm run dev`.
+**B) `Makefile`.** Extract targets with `grep -E "^[a-zA-Z_-]+:" Makefile` and map the common ones: `make build`, `make test`, `make dev`, `make lint`, `make run`, `make clean`.
 
-**B) Makefile (any project)**
+**C) `pyproject.toml`.** Look for `[project.scripts]` or `[tool.poetry.scripts]` (entry points), `[tool.pytest]`, `[tool.ruff]` or `[tool.flake8]`, `[tool.mypy]`, `[tool.black]` or `[tool.ruff.format]`. Defaults when a tool is in deps or config: pytest gives `test: pytest`; ruff gives `lint: ruff check .`; flake8 gives `lint: flake8`; mypy gives `typecheck: mypy .`; black gives `format: black .`; uvicorn gives `dev: uvicorn main:app --reload`; django gives `dev: python manage.py runserver`; flask gives `dev: flask run --debug`.
 
-If `Makefile` exists, read it and extract target names:
+**D) `requirements.txt`** (fallback when there is no `pyproject.toml`). Detect the same tools by package name (pytest, ruff, flake8, mypy, black, uvicorn, django, flask, gunicorn).
 
-```
-grep -E "^[a-zA-Z_-]+:" Makefile
-```
+**E) `Cargo.toml`.** Defaults: `dev: cargo run`, `build: cargo build --release`, `test: cargo test`, `lint: cargo clippy -- -D warnings`, `format: cargo fmt --check`.
 
-Map common targets: `make build`, `make test`, `make dev`, `make lint`, `make run`, `make clean`.
+**F) `go.mod`.** Defaults: `dev: go run .`, `build: go build -o bin/ .`, `test: go test ./...`, `lint: golangci-lint run`.
 
-**C) pyproject.toml (Python projects)**
+**G) `docker-compose.yml` / `compose.yml`.** Add `docker: docker compose up`.
 
-Read `pyproject.toml` and look for:
-- `[project.scripts]` or `[tool.poetry.scripts]` — entry points
-- `[tool.pytest]` — test runner config (command: `pytest`)
-- `[tool.ruff]` or `[tool.flake8]` — linter (command: `ruff check .` or `flake8`)
-- `[tool.mypy]` — type checker (command: `mypy .`)
-- `[tool.black]` or `[tool.ruff.format]` — formatter
+**H) CI workflows.** If `.github/workflows/` exists, read the workflow files and extract the `run:` commands; use them to verify or fill gaps in the commands above. If `Jenkinsfile`, `.gitlab-ci.yml`, or `.circleci/config.yml` exist, read those instead.
 
-Default Python commands if tools are detected:
-| Tool found | Command |
-|-----------|---------|
-| pytest in deps or config | `test: pytest` |
-| ruff in deps | `lint: ruff check .` |
-| flake8 in deps | `lint: flake8` |
-| mypy in deps | `typecheck: mypy .` |
-| black in deps | `format: black .` |
-| uvicorn in deps | `dev: uvicorn main:app --reload` |
-| django in deps | `dev: python manage.py runserver` |
-| flask in deps | `dev: flask run --debug` |
-
-**D) requirements.txt (Python projects, fallback)**
-
-If no `pyproject.toml`, read `requirements.txt` and detect tools by package name (pytest, ruff, flake8, mypy, black, uvicorn, django, flask, gunicorn).
-
-**E) Cargo.toml (Rust projects)**
-
-Default Rust commands:
-```yaml
-dev:       cargo run
-build:     cargo build --release
-test:      cargo test
-lint:      cargo clippy -- -D warnings
-format:    cargo fmt --check
-```
-
-**F) go.mod (Go projects)**
-
-Default Go commands:
-```yaml
-dev:       go run .
-build:     go build -o bin/ .
-test:      go test ./...
-lint:      golangci-lint run
-```
-
-**G) docker-compose.yml / compose.yml**
-
-If found, add:
-```yaml
-docker:    docker compose up
-```
-
-**H) CI Workflows (verification source)**
-
-If `.github/workflows/` exists, read the workflow files. Extract `run:` commands from steps — these reveal the actual build, test, and lint commands used in CI. Use these to verify or fill gaps in the commands detected above.
-
-If `Jenkinsfile`, `.gitlab-ci.yml`, or `.circleci/config.yml` exist, read those instead.
-
-### Build Command Priority
-
-When multiple sources provide the same command type, prefer in this order:
+**Priority** when sources disagree on a command type:
 1. Package manifest scripts (`package.json` scripts, `pyproject.toml` scripts)
 2. Makefile targets
 3. CI workflow commands
@@ -149,100 +88,75 @@ When multiple sources provide the same command type, prefer in this order:
 ## Step 2: Choose Profile & Create Directory Structure
 
 Ask (use AskUserQuestion): **"Full doc system or minimal?"**
-- **Full** — all doc homes (engineering + features/user-guides/business/legal/operations)
-- **Minimal** — core only (`system`, `conventions`, `tasks`, `templates`, `sop`, `_archive`); the other homes are created on demand by their doc-creator commands
+- **Full**: all doc homes (engineering + features/user-guides/business/legal/operations)
+- **Minimal**: core only (`system`, `conventions`, `tasks`, `templates`, `sop`, `_archive`); the other homes are created on demand by their doc-creator commands
 
-Use **Bash** to create directories (full profile shown — for minimal, create only the core set):
+Create the directories (full profile shown; for minimal, create only the core set):
 ```bash
 mkdir -p docs/architecture docs/conventions docs/sop docs/tasks/examples docs/flows docs/decisions docs/system docs/templates
 mkdir -p docs/features docs/user-guides docs/business docs/legal docs/operations docs/_archive
-mkdir -p .claude/commands/sk
 ```
 
-For minimal, skip the domain-home generation steps below (3b flows/decisions homes still apply if the codebase scan produces content for them; the stub-index steps 16–21 apply only to homes you created).
+For minimal, skip the domain-home generation steps below (the 3b flows/decisions homes still apply if the codebase scan produces content for them; the stub-index steps 16-21 apply only to homes you created).
 
 ## Step 3: Generate Documentation
 
-Based on the codebase scan, generate these files in order:
+Generate these files in order, from the Step 1 scan.
 
 ### 3a. System Docs (source of truth)
 
-1. **`docs/system/tech-stack.md`** — From package.json/requirements.txt analysis
-2. **`docs/system/database-schema.md`** — From schema/model file analysis
-3. **`docs/system/api-reference.md`** — From route file analysis (if applicable)
-4. **`docs/system/integrations.md`** — From env vars and external service imports
-5. **`docs/system/project-context.md`** — Dense project summary from scan results (include detected build commands in the Build Commands section)
+1. **`docs/system/tech-stack.md`**: from the dependency manifests
+2. **`docs/system/database-schema.md`**: from schema/model files
+3. **`docs/system/api-reference.md`**: from route files (if applicable)
+4. **`docs/system/integrations.md`**: from env vars and external service imports
+5. **`docs/system/project-context.md`**: dense project summary; put the detected build commands in its Build Commands section
 
 ### 3b. Architecture Docs
 
-6. **`docs/architecture/README.md`** — Component diagram from directory structure analysis
-   - Map src/ subdirectories to components
-   - Identify data flow patterns
-   - Document cross-cutting concerns found in code
+6. **`docs/architecture/README.md`**: component diagram mapping source subdirectories to components, plus the data flow patterns and cross-cutting concerns found in code
 
 ### 3c. Convention Docs (from observed patterns)
 
-7. **`docs/conventions/code-style.md`** — Analyze actual naming patterns, import order, etc.
-8. **`docs/conventions/file-structure.md`** — Document actual project layout
-9. **`docs/conventions/git-workflow.md`** — Check for .github/workflows, branch patterns
-10. **`docs/conventions/testing.md`** — Analyze existing test files for patterns
+7. **`docs/conventions/code-style.md`**: actual naming patterns, import order, etc.
+8. **`docs/conventions/file-structure.md`**: actual project layout
+9. **`docs/conventions/git-workflow.md`**: from `.github/workflows` and branch patterns
+10. **`docs/conventions/testing.md`**: patterns in the existing test files
 
 ### 3d. Templates
 
-11. **`docs/templates/`** — Copy all templates (epic, task-prd, sop, adr, flow, component, feature-doc, user-guide, postmortem, + business/GTM)
+11. **`docs/templates/`**: copy all templates (epic, task-prd, sop, adr, flow, component, feature-doc, user-guide, postmortem, + business/GTM)
 
 ### 3e. Index Files
 
-12. **`docs/sop/README.md`** — SOP index
-13. **`docs/decisions/README.md`** — ADR index
-14. **`docs/flows/README.md`** — Flow diagram index with Mermaid cheat sheet
-15. **`docs/tasks/README.md`** — Task board
-16. **`docs/features/README.md`** — Feature docs index (stub)
-17. **`docs/user-guides/README.md`** — User guides index (stub)
-18. **`docs/business/README.md`** — Business / GTM index (stub)
-19. **`docs/legal/README.md`** — Legal & compliance index (stub; populated by `/sk:legal-scan`)
-20. **`docs/operations/README.md`** — Operations index (runbooks, incidents, postmortems)
-21. **`docs/_archive/README.md`** — Archive index (stub)
-22. **`docs/README.md`** — Master index linking everything (the **agent** front door)
-23. **`docs/START-HERE.md`** — Role-based **human** front door (router into the tree). Keep the generic role lanes (engineer / feature / end-user / business / compliance); prune any the project doesn't need.
-
-**Stamp dates:** in every index file you create or keep, replace the `Last updated: YYYY-MM-DD` placeholder with today's date — otherwise `/sk:docs-audit` reports the fresh scaffold as unfilled stubs.
+12. **`docs/sop/README.md`**: SOP index
+13. **`docs/decisions/README.md`**: ADR index
+14. **`docs/flows/README.md`**: flow diagram index with Mermaid cheat sheet
+15. **`docs/tasks/README.md`**: task board
+16. **`docs/features/README.md`**: feature docs index (stub)
+17. **`docs/user-guides/README.md`**: user guides index (stub)
+18. **`docs/business/README.md`**: business / GTM index (stub)
+19. **`docs/legal/README.md`**: legal & compliance index (stub; populated by `/sk:legal-scan`)
+20. **`docs/operations/README.md`**: operations index (runbooks, incidents, postmortems)
+21. **`docs/_archive/README.md`**: archive index (stub)
+22. **`docs/README.md`**: master index linking everything (the **agent** front door)
+23. **`docs/START-HERE.md`**: role-based **human** front door (router into the tree). Keep the generic role lanes (engineer / feature / end-user / business / compliance); prune any the project doesn't need.
 
 ### 3f. CLAUDE.md
 
-24. **`CLAUDE.md`** — Agent instructions with:
-    - **Build Commands filled in** from Step 1 detection (not placeholders)
-    - Project-specific constraints (discovered from linter configs, tsconfig, etc.)
-    - Links to all doc sections
+24. **`CLAUDE.md`**: agent instructions with the Build Commands filled in, project-specific constraints (from linter configs, tsconfig, etc.), and links to all doc sections.
 
-Write the detected build commands into the Build Commands YAML block:
+Build Commands YAML block format, one detection-source comment per line:
 
 ```yaml
 dev:       npm run dev          # detected from package.json scripts.dev
-build:     npm run build        # detected from package.json scripts.build
-test:      npm test             # detected from package.json scripts.test
-lint:      npm run lint         # detected from package.json scripts.lint
-typecheck: npx tsc --noEmit    # detected from tsconfig.json presence
+typecheck: npx tsc --noEmit     # detected from tsconfig.json presence
 ```
-
-Add a comment showing the detection source for each command. If a command could not be detected, leave the placeholder comment and add `# [NOT DETECTED] — fill in manually` so the user knows what's missing.
 
 ## Step 4: Generate Initial ADRs
 
-Scan for significant technical choices and create ADRs:
-
-```bash
-# What framework/language was chosen?
-# What database is used?
-# What deployment platform?
-# What key libraries were adopted?
-```
-
-Create ADRs for the 2-3 most significant choices found.
+Create ADRs in `docs/decisions/` for the 2-3 most significant technical choices found: framework/language, database, deployment platform, key libraries.
 
 ## Step 5: Create Starter SOPs
-
-Based on the project type, create relevant SOPs:
 
 | Project Type | Starter SOPs |
 |-------------|-------------|
@@ -253,32 +167,16 @@ Based on the project type, create relevant SOPs:
 
 ## Step 6: Validate
 
-```markdown
-- [ ] All system docs reference actual code (not placeholder text)
-- [ ] Tech stack matches real dependencies
-- [ ] File structure matches actual project layout
-- [ ] Convention docs describe actual patterns (not aspirational)
-- [ ] CLAUDE.md Build Commands are filled in (not placeholder comments)
-- [ ] README.md (agent index) links all sections correctly
-- [ ] START-HERE.md (human router) present with role lanes
-- [ ] Index files carry today's date, not the `YYYY-MM-DD` placeholder
-- [ ] Domain homes present: features/, user-guides/, business/, legal/, operations/, _archive/ (each with a stub index)
-- [ ] Templates are all present in docs/templates/
-```
+Check every line of the Exit Gate above and fix whatever fails before reporting.
 
 ## Step 7: Report
-
-Present to user:
 
 ```
 [INIT COMPLETE]
 
 Build commands detected:
   dev:       npm run dev          (from package.json)
-  build:     npm run build        (from package.json)
-  test:      npm test             (from package.json)
-  lint:      npm run lint         (from package.json)
-  typecheck: npx tsc --noEmit    (from tsconfig.json)
+  typecheck: npx tsc --noEmit     (from tsconfig.json)
   [NOT DETECTED] db:migrate      -- fill in manually if needed
 
 Files created: {count}
@@ -294,9 +192,8 @@ Recommendations:
 Next step: Run /sk:new-task to create your first task
 ```
 
-Ask (AskUserQuestion): **"Stand up your executive team?"** — if yes, suggest the
-due-diligence order for brownfield: `/sk:cto` first ("here's what you actually
-own"), then `/sk:ceo` (goals retrofit + zombie sweep), then `/sk:cmo` (audit the
-existing public surface).
+Ask (AskUserQuestion): **"Stand up your executive team?"** If yes, suggest the due-diligence order for brownfield: `/sk:cto` first ("here's what you actually own"), then `/sk:ceo` (goals retrofit + zombie sweep), then `/sk:cmo` (audit the existing public surface).
 
 Then ask: **"Documentation initialized. Want me to create an initial task for any of the gaps I found?"**
+
+**Reply:** the `[INIT COMPLETE]` report (detected and undetected build commands with sources, count and list of files created, recommendations), any Exit Gate line that still fails, then the executive-team question and the initial-task question.

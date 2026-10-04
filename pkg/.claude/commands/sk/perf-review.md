@@ -13,17 +13,23 @@ Analyze code for performance issues across database queries, memory usage, rende
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
+
 **Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/performance/`.
+
+## Rules
+
+- **Evidence.** Every finding cites `file:line` and says how far it was proven: stated, pointed at the line, traced the path, ran it.
+- **No invented numbers.** Only cite a measured benchmark if one was actually run. Otherwise describe the impact in words.
+- **Exit gate.** Done when the Step 9 tables and the Step 10 summary are presented with a location and proof level on every finding, the one-line tally is the last line of the summary, and the Step 11 question has been asked.
 
 ## Step 1: Read Context
 
-**ALWAYS start by reading:**
-1. `docs/system/project-context.md` — Dense project summary (if it exists)
-2. `docs/system/tech-stack.md` — Framework, runtime, database, caching layer
-3. `docs/system/database-schema.md` — Tables, indexes, relationships (if exists)
-4. `docs/conventions/code-style.md` — Existing patterns and practices
-
-**Skip files that are empty or contain only template placeholders.**
+Read first, skipping any file that is empty or contains only template placeholders:
+1. `docs/system/project-context.md` (if it exists)
+2. `docs/system/tech-stack.md`
+3. `docs/system/database-schema.md` (if it exists)
+4. `docs/conventions/code-style.md`
 
 ## Step 2: Determine Scope
 
@@ -31,121 +37,46 @@ Ask the user what to analyze:
 
 | Scope | What gets analyzed |
 |-------|-------------------|
-| **Full codebase** | All source files — broad sweep |
+| **Full codebase** | All source files, a broad sweep |
 | **Changed files** | Only files modified (staged + unstaged) |
 | **Specific area** | User-specified module, route, or feature |
 | **Specific concern** | Focus on one category: DB, rendering, bundle, etc. |
 
 ## Step 3: Database & Query Performance
 
-### N+1 Queries
-- **Search for:** loops that execute queries inside them
-- **Pattern:** `for` / `forEach` / `map` containing DB calls, ORM lookups, or API fetches
-- **Fix:** batch queries, eager loading, `WHERE IN` clauses, joins
-
-### Missing Indexes
-- Read the schema and identify columns used in:
-  - `WHERE` clauses
-  - `ORDER BY` clauses
-  - `JOIN` conditions
-  - Foreign key columns
-- Check if corresponding indexes exist
-
-### Unbounded Queries
-- **Search for:** queries without `LIMIT`, `TOP`, or pagination
-- **Pattern:** `SELECT *` or `findMany()` without limits
-- **Risk:** returns all rows from a table that could grow to millions
-
-### Expensive Operations
-- Full table scans (queries without index-backed filters)
-- `LIKE '%pattern%'` (leading wildcard defeats indexes)
-- Large `IN` clauses (>1000 items)
-- Aggregations without covering indexes
-- Unnecessary `SELECT *` when only a few columns are needed
-
-### Connection Management
-- Connection pool configured and sized appropriately
-- Connections released after use (no leaks)
-- Transaction scope is as narrow as possible
+- **N+1 queries:** loops (`for` / `forEach` / `map`) containing DB calls, ORM lookups, or API fetches
+- **Missing indexes:** read the schema and check that an index exists for every column used in `WHERE`, `ORDER BY`, `JOIN` conditions and foreign keys
+- **Unbounded queries:** `SELECT *` or `findMany()` without `LIMIT`, `TOP`, or pagination
+- **Expensive operations:** full table scans, `LIKE '%pattern%'`, `IN` clauses with >1000 items, aggregations without covering indexes, `SELECT *` when only a few columns are needed
+- **Connection management:** pool configured and sized, connections released after use, transaction scope as narrow as possible
 
 ## Step 4: Memory & Data Structure Performance
 
-### Memory Leaks
-- **Event listeners** — registered but never removed
-- **Timers** — `setInterval` / `setTimeout` without cleanup
-- **Caches** — unbounded in-memory caches that grow forever
-- **Closures** — holding references to large objects longer than needed
-- **Global state** — objects that accumulate data across requests
-
-### Data Structure Choices
-- Using arrays for frequent lookups (should be Map/Set/dict)
-- Copying large objects unnecessarily (spread operator on big objects)
-- String concatenation in loops (should use StringBuilder/join/array)
-- Storing derived data that can be computed on demand
-
-### Payload Size
-- API responses returning more data than needed
-- Large objects serialized unnecessarily
-- Missing pagination on list endpoints
-- Binary data not streamed
+- **Memory leaks:** event listeners never removed, `setInterval` / `setTimeout` without cleanup, unbounded in-memory caches, closures holding large objects, global state that accumulates across requests
+- **Data structure choices:** arrays used for frequent lookups, large objects copied unnecessarily, string concatenation in loops, stored data that could be derived on demand
+- **Payload size:** API responses returning more than needed, list endpoints without pagination, binary data not streamed
 
 ## Step 5: Rendering & Frontend Performance
 
-*Skip this section if the project has no frontend/UI.*
+*Skip this step if the project has no frontend/UI.*
 
-### Component Rendering
-- **Unnecessary re-renders** — components re-rendering when props haven't changed
-- **Missing memoization** — `React.memo`, `useMemo`, `useCallback` where expensive
-- **Unstable references** — objects/arrays/functions created in render (cause child re-renders)
-- **Large component trees** — single state change re-renders too many components
-
-### DOM & Layout
-- **Forced reflows** — reading layout properties after writing them
-- **Layout thrashing** — repeated read-write cycles in loops
-- **Large DOM** — too many nodes (>1500 elements)
-- **CSS performance** — complex selectors, excessive animations, unused styles
-
-### Loading Performance
-- **Images** — unoptimized formats, missing dimensions, no lazy loading
-- **Fonts** — no `font-display`, loading unused weights/styles
-- **Code splitting** — large bundles not split by route or feature
-- **Critical path** — render-blocking resources (CSS, sync JS in `<head>`)
-
-### Bundle Size
-If a JavaScript/TypeScript project:
-- Look for heavy imports (`moment`, `lodash` full bundle, etc.)
-- Check for tree-shaking friendliness (named imports vs default)
-- Identify large dependencies that could be replaced with lighter alternatives
-- Check for duplicate dependencies (same library at different versions)
+- **Component rendering:** unnecessary re-renders, missing memoization where the work is expensive, unstable references created in render, one state change re-rendering a large tree
+- **DOM & layout:** forced reflows, layout thrashing in loops, large DOM (>1500 elements), costly CSS (complex selectors, excessive animations, unused styles)
+- **Loading:** unoptimized or non-lazy images without dimensions, fonts without `font-display` or with unused weights, bundles not split by route or feature, render-blocking CSS or sync JS in `<head>`
+- **Bundle size** (JavaScript/TypeScript projects only): heavy imports (`moment`, full `lodash`), imports that defeat tree-shaking, large dependencies with lighter alternatives, the same library at different versions
 
 ## Step 6: Async & Concurrency
 
-### Sequential Where Parallel Is Possible
-- Independent API calls made sequentially (should use `Promise.all` / `asyncio.gather`)
-- Sequential file reads that could be parallelized
-- Independent DB queries that could run concurrently
-
-### Missing Async Patterns
-- **Blocking I/O** — synchronous file/network operations in async context
-- **Missing await** — fire-and-forget on operations that should be awaited
-- **Unbounded concurrency** — launching thousands of concurrent operations without limits
-- **Missing timeouts** — external calls without timeout/abort controls
-
-### Error Handling in Async
-- **Unhandled rejections** — promises without `.catch()` or try/catch
-- **Error swallowing** — catching errors without logging or re-throwing
-- **Partial failure** — batch operations where one failure loses all results
+- **Sequential where parallel is possible:** independent API calls, file reads or DB queries run one after another
+- **Missing async patterns:** blocking I/O in async context, missing `await`, unbounded concurrency, external calls without timeout/abort controls
+- **Error handling in async:** unhandled rejections, swallowed errors, batch operations where one failure loses all results
 
 ## Step 7: Caching Opportunities
 
-### Identify Cacheable Operations
-- **Repeated expensive computations** — same inputs, same outputs
-- **Frequent DB queries** — hot queries on rarely-changing data
-- **External API calls** — rate-limited or slow external services
-- **Static content** — computed values that rarely change
+- **Cacheable operations:** repeated expensive computations, hot queries on rarely-changing data, slow or rate-limited external API calls, static computed values
+- **Caching issues:** responses without `Cache-Control` / `ETag` / `Last-Modified`, static assets served from the application server, cache stampede, in-memory caches with no TTL or size limit
 
-### Caching Strategy Assessment
-For each opportunity, evaluate:
+For each caching opportunity you report, answer all five:
 
 | Factor | Question |
 |--------|----------|
@@ -155,46 +86,25 @@ For each opportunity, evaluate:
 | **Cache key** | What uniquely identifies this data? |
 | **Size** | How much memory will this consume? |
 
-### Common Caching Issues
-- **Missing cache headers** — API responses without `Cache-Control`, `ETag`, `Last-Modified`
-- **No CDN** — static assets served from application server
-- **Cache stampede** — many requests rebuild cache simultaneously
-- **Unbounded caches** — no TTL or size limit on in-memory caches
-
 ## Step 8: Algorithm & Complexity
 
-### Complexity Red Flags
-- **Nested loops** over large collections — O(n^2) or worse
-- **Recursive functions** without memoization on overlapping subproblems
-- **Sorting in loops** — re-sorting on every iteration
-- **String operations** — regex compilation inside loops, repeated parsing
-
-### Data Access Patterns
-- Linear search where binary search or hash lookup is possible
-- Repeated array scans for membership checks (use Set)
-- Building results by repeated concatenation instead of batch collection
+- **Complexity red flags:** nested loops over large collections, recursion without memoization on overlapping subproblems, sorting inside loops, regex compilation or repeated parsing inside loops
+- **Data access patterns:** linear search or repeated array scans where a hash lookup, Set or binary search fits, results built by repeated concatenation
 
 ## Step 9: Present Findings
 
-Format findings by severity and impact:
+Use these four sections, in this order.
+Warning and Suggestion use the same columns as Critical.
 
 ### Critical (measurable user-facing impact)
 
-| # | Category | Location | Finding | Impact | Fix |
-|---|----------|----------|---------|--------|-----|
-| 1 | DB-N+1 | `path:42` | Description | Response time / resource usage | Specific fix |
+| # | Category | Location | Finding | Impact | Proof | Fix |
+|---|----------|----------|---------|--------|-------|-----|
+| 1 | DB-N+1 | `path:42` | Description | Response time / resource usage | traced the path | Specific fix |
 
 ### Warning (will cause issues at scale)
 
-| # | Category | Location | Finding | Impact | Fix |
-|---|----------|----------|---------|--------|-----|
-| 1 | Memory | `path:88` | Description | When it becomes a problem | Specific fix |
-
 ### Suggestion (optimization opportunity)
-
-| # | Category | Location | Finding | Impact | Fix |
-|---|----------|----------|---------|--------|-----|
-| 1 | Caching | `path:15` | Description | Potential improvement | Specific fix |
 
 ### Good (efficient patterns worth noting)
 
@@ -214,10 +124,7 @@ Format findings by severity and impact:
 | Caching | OK / WARN / CRITICAL | Summary |
 | Algorithms | OK / WARN / CRITICAL | Summary |
 
-**Top 3 priorities** (ordered by impact):
-1. Most impactful fix
-2. Second most impactful
-3. Third most impactful
+**Top 3 priorities** (ordered by impact): a numbered list of the three most impactful fixes.
 
 **End with a one-line tally** so the result is glanceable and comparable across reviews:
 
@@ -228,3 +135,5 @@ Format findings by severity and impact:
 Ask: **"Save this performance review to `docs/reviews/performance/YYYY-MM-DD-{scope}.md`?"**
 
 If yes, save using the template from `docs/templates/review-report.md`.
+
+**Reply:** the Step 9 findings tables (every finding with `file:line` and proof level), the Step 10 summary table, the top 3 priorities, the one-line tally `Found: N critical, N warning, N suggestion`, and the report path if it was saved.

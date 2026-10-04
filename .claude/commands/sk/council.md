@@ -6,32 +6,42 @@ disable-model-invocation: true
 
 # Council — Multi-Persona Deliberation
 
-Convene a council of AI personas with genuinely different perspectives to debate a strategic or architectural question. Produces a structured decision report with recommendation, dissent, and conditions.
+Convene a council of personas with opposed mandates to debate a strategic or architectural question, and produce a decision report with recommendation, dissent, and conditions.
 
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
-**Use when:** Architecture decisions, technology choices, strategy questions, trade-off analysis, risk assessment, or any decision that benefits from adversarial thinking.
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
 
-**Do NOT use for:** Implementation details (use `/sk:plan`), brainstorming features (use `/sk:brainstorm`), or debugging (use `/sk:debug`).
+**Not for:** implementation details (`/sk:plan`), debugging (`/sk:debug`), or brainstorming features (suggest the user run `/sk:brainstorm`).
 
-**Plan-arbiter mode:** If you already have two or more *complete, competing plans* for the same goal (e.g. an `/sk:plan` output vs. a Codex second opinion vs. a prior council recommendation) and the job is to **pick one**, skip the persona debate and use **Plan-Arbiter Mode** (near the end of this file).
+**Plan-arbiter mode:** if the input is two or more *complete, competing plans* for the same goal (e.g. an `/sk:plan` output vs. a Codex second opinion vs. a prior council recommendation) and the job is to **pick one**, skip Steps 2 to 10 and use **Plan-Arbiter Mode** at the end of this file.
+
+## Rules and Gates
+
+- **Round 0 is independent:** zero cross-visibility, no persona sees another's position.
+- **Mandatory disagreement:** every persona MUST disagree with at least one other position.
+- **Record all dissent,** even if outvoted.
+- **Evidence, not principles:** personas must reference specific evidence (codebase, research, data).
+- **Maximum 3 rounds** (Round 0, 1, 2). If there is no convergence after 3, report the split decision as-is.
+- **Research is pre-debate only:** only you (the orchestrator) trigger it, and every persona receives the same output.
+- **You write the synthesis.** Do NOT delegate Step 9 to a subagent.
+- **Confirm before spending:** the user confirms the question (Step 2), and the composition and token estimate (Step 3), before any dispatch.
+- **Exit gate:** done when the report is saved to `docs/decisions/council-{YYYY-MM-DD}-{topic-slug}.md` and the user has chosen one of the five Step 10 options.
 
 ## Step 1: Read Context
 
-**Read these first:**
-1. `docs/system/project-context.md` — Project summary
-2. `docs/system/tech-stack.md` — Current stack
-3. `docs/architecture/README.md` — System design
-4. `docs/decisions/README.md` — Previous decisions (avoid re-litigating settled questions)
-
-**Skip files that are empty or contain only template placeholders.**
+Read, skipping files that are empty or contain only template placeholders:
+1. `docs/system/project-context.md`: project summary
+2. `docs/system/tech-stack.md`: current stack
+3. `docs/architecture/README.md`: system design
+4. `docs/decisions/README.md`: previous decisions (do not re-litigate settled questions)
 
 ## Step 2: Frame the Question
 
 Ask the user: **"What question should the council deliberate?"**
 
-Classify the question type:
+Classify it to size the council:
 
 | Type | Example | Default Council |
 |------|---------|----------------|
@@ -40,35 +50,26 @@ Classify the question type:
 | **Open exploration** | "How should we handle scaling?" | 5 personas |
 | **Risk assessment** | "What could go wrong with this migration?" | 3 personas (Adversary-heavy) |
 
-Restate the question clearly and confirm with the user before proceeding.
+Restate the question in one sentence and get the user's confirmation before proceeding.
 
 ## Step 3: Select Council Composition
 
-### Default Council (3 personas)
+The default council is the first three personas. The extended council (high-stakes decisions) adds the last two.
 
 | Persona | Mandate | Bias |
 |---------|---------|------|
 | **The Pragmatist** | Ship working software fast. Every abstraction is a liability until proven otherwise. | Against over-engineering, premature abstraction, speculative features. Would rather copy-paste 3 lines than create a shared utility. |
 | **The Architect** | Long-term system health above all. Tech debt compounds. Patterns exist for a reason. | Against shortcuts, "we'll fix it later," inconsistent patterns. Prefers proven solutions over novel ones. |
 | **The Adversary** | Break the proposal. Find what everyone else missed. | Must find at least 3 failure modes, security holes, scaling limits, or edge cases. Cannot agree with the majority without identifying risks first. |
-
-### Extended Council (5 personas — for high-stakes decisions)
-
-Add these two:
-
-| Persona | Mandate | Bias |
-|---------|---------|------|
-| **The User Advocate** | End-user experience is the only metric that matters. Developer convenience that hurts UX is unacceptable. | Against complexity users can feel — latency, confusing flows, poor error messages, accessibility gaps. |
+| **The User Advocate** | End-user experience is the only metric that matters. Developer convenience that hurts UX is unacceptable. | Against complexity users can feel: latency, confusing flows, poor error messages, accessibility gaps. |
 | **The Operator** | Production reliability. If you can't debug it at 3am, don't ship it. | Against hidden complexity, poor observability, hard-to-diagnose failures, systems that need experts to operate. |
 
-### Custom Personas
+Custom personas are allowed on request. Each needs a **clear mandate** (what they optimize for), a **concrete bias** (what they are against, specific not abstract), and a **disagreement requirement** (must challenge at least one other position).
 
-The user may request custom personas. If so, ensure each persona has:
-1. A **clear mandate** (what they optimize for)
-2. A **concrete bias** (what they're against — specific, not abstract)
-3. A **disagreement requirement** (must challenge at least one other position)
+Confirm the composition: **"Council of {N}: {names}. Proceed?"**
 
-Present the council composition and confirm: **"Council of {N}: {names}. Proceed?"**
+Then show the cost estimate before dispatching anything: **"This council will use approximately {N} personas over {R} rounds (~{T}K tokens). Proceed?"**
+Estimates: 3 personas, 2 rounds ~15-20K (default); 3 personas, 3 rounds ~20-30K (deep disagreement in Round 1); 5 personas, 2 rounds ~25-35K (high-stakes architecture); 5 personas, 3 rounds ~35-50K (use sparingly).
 
 ## Step 4: Pre-Debate Research (Optional)
 
@@ -90,13 +91,11 @@ If yes:
        Produce a neutral fact sheet — no recommendations, just evidence.
        Format: bullet points with sources.
    ```
-3. The research output becomes **shared evidence** — all personas receive it equally
+3. Pass the output to every persona as **shared evidence**
 
 ## Step 5: Round 0 — Independent Positions
 
-**Critical: Zero cross-visibility.** Each persona forms their position without seeing others.
-
-Dispatch ALL personas **simultaneously** (parallel Agent tool calls):
+Dispatch ALL personas **simultaneously** (parallel Agent tool calls), then collect all positions:
 
 ```
 For each persona:
@@ -109,7 +108,6 @@ For each persona:
 
       YOUR MANDATE: {mandate}
       YOUR BIAS: {bias}
-
       QUESTION: {the question}
 
       PROJECT CONTEXT:
@@ -133,11 +131,9 @@ For each persona:
       - 200 word limit on position statement. Be dense, not verbose.
 ```
 
-Collect all positions.
-
 ## Step 6: Summarize Round 0
 
-Compress each persona's position to a structured summary:
+Compress each position to this summary. The summary, not the full text, is what other personas see in Round 1:
 
 ```
 {Persona}: {position in 1 sentence}
@@ -146,8 +142,6 @@ Compress each persona's position to a structured summary:
   - Arg 3: {key point}
   Confidence: {level}
 ```
-
-This summary (not the full text) is shared in the next round.
 
 ## Step 7: Round 1 — Challenge
 
@@ -164,7 +158,6 @@ For each persona:
 
       YOUR MANDATE: {mandate}
       YOUR BIAS: {bias}
-
       QUESTION: {the question}
 
       YOUR ROUND 0 POSITION:
@@ -191,18 +184,10 @@ For each persona:
 
 ## Step 8: Convergence Check
 
-After Round 1, assess:
+Tally the AGREE/DISAGREE answers and each persona's post-Round-1 position (revised or held), and write the tally down.
 
-1. Count agreements vs disagreements across all personas
-2. Check if positions have converged or diverged
-
-**If converged** (most personas agree on core recommendation): Skip to Synthesis.
-
-**If diverged** (fundamental disagreement remains): Run one more round.
-
-### Round 2 — Rebuttal (only if needed)
-
-Dispatch ONLY the personas with unresolved disagreements:
+- **Converged** (a majority of personas now back the same core recommendation): skip to Step 9.
+- **Diverged** (no majority, or a fundamental disagreement remains): run Round 2, dispatching ONLY the personas with unresolved disagreements:
 
 ```
 For each disagreeing persona:
@@ -227,13 +212,7 @@ For each disagreeing persona:
 
 ## Step 9: Synthesis
 
-The orchestrator (you) reads all rounds and produces the council report.
-
-**Do NOT delegate synthesis to a subagent.** The orchestrator has full context and should produce the final report directly.
-
-### Report Structure
-
-Save to `docs/decisions/council-{YYYY-MM-DD}-{topic-slug}.md`:
+Read all rounds and write the report yourself. Save to `docs/decisions/council-{YYYY-MM-DD}-{topic-slug}.md`:
 
 ```markdown
 # Council Decision: {Topic}
@@ -258,14 +237,10 @@ Save to `docs/decisions/council-{YYYY-MM-DD}-{topic-slug}.md`:
 
 1. **{argument}** — raised by {persona}
    {supporting evidence}
-2. **{argument}** — raised by {persona}
-   {supporting evidence}
 
 ## Key Arguments Against
 
 1. **{argument}** — raised by {persona}
-   {supporting evidence}
-2. **{argument}** — raised by {persona}
    {supporting evidence}
 
 ## Dissenting Opinions
@@ -281,7 +256,6 @@ Save to `docs/decisions/council-{YYYY-MM-DD}-{topic-slug}.md`:
 ## Conditions That Would Change This Recommendation
 
 - If {condition}, reconsider {aspect}
-- If {condition}, the Adversary's concerns become critical
 
 ## Vote Summary
 
@@ -298,22 +272,15 @@ Save to `docs/decisions/council-{YYYY-MM-DD}-{topic-slug}.md`:
 <details>
 <summary>Round 0 — Independent Positions</summary>
 
-### {Persona 1}
-{full position}
-
-### {Persona 2}
-{full position}
-
-...
+### {Persona}
+{full position, one section per persona}
 </details>
 
 <details>
 <summary>Round 1 — Challenges</summary>
 
-### {Persona 1}
-{full challenge response}
-
-...
+### {Persona}
+{full challenge response, one section per persona}
 </details>
 
 {Round 2 if it occurred}
@@ -321,52 +288,28 @@ Save to `docs/decisions/council-{YYYY-MM-DD}-{topic-slug}.md`:
 
 ## Step 10: Present and Follow Up
 
-Show the user:
-1. The **recommendation** and **confidence level**
-2. Any **dissenting opinions** that deserve attention
-3. The **conditions** that would change the recommendation
+Show the user the **recommendation** and **confidence level**, every **dissenting opinion**, and the **conditions** that would change the recommendation.
 
 Ask: **"Accept this recommendation? Options:"**
-- **Accept** — Proceed with the recommendation
-- **Accept as ADR** — Save to `docs/decisions/` as a formal Architecture Decision Record
-- **Dig deeper** — Request another round on a specific unresolved point
-- **Reframe** — The question was wrong; rephrase and re-run
-- **Override** — User decides differently; record the override and reasoning
-
-If accepted as ADR, also update `docs/decisions/README.md` with the new entry.
-
-## Token Budget
-
-| Configuration | Estimated Cost | When to Use |
-|--------------|---------------|-------------|
-| 3 personas, 2 rounds | ~15-20K tokens | Default for most decisions |
-| 3 personas, 3 rounds | ~20-30K tokens | When Round 1 shows deep disagreement |
-| 5 personas, 2 rounds | ~25-35K tokens | High-stakes architecture decisions |
-| 5 personas, 3 rounds | ~35-50K tokens | Maximum depth, use sparingly |
-
-Show estimate before dispatching: **"This council will use approximately {N} personas over {R} rounds (~{T}K tokens). Proceed?"**
+- **Accept**: proceed with the recommendation
+- **Accept as ADR**: save to `docs/decisions/` as a formal Architecture Decision Record, and add the new entry to `docs/decisions/README.md`
+- **Dig deeper**: another round on a specific unresolved point (within the 3-round maximum)
+- **Reframe**: the question was wrong; rephrase and re-run
+- **Override**: the user decides differently; record the override and reasoning in the report
 
 ## Plan-Arbiter Mode (resolving competing plans)
 
-Use this when the input is **two or more complete plans for the same goal**, and the task is to choose — not to debate an open question. Blending competing plans usually produces incoherent architecture; pick one spine and graft the best ideas from the rest.
+Never average competing plans into a blend: choose one spine and graft the best ideas from the rest onto it.
 
-### Process
-
-1. **Normalize** — restate each plan in the same shape: goal, key decisions, file/area changes, risks, validation approach. Make them directly comparable.
-2. **Cross-review** — for each plan, list where it is stronger and weaker than the others. Check each against the real codebase (Read/Grep): a plan grounded in actual files beats a plausible-sounding one that isn't.
-3. **Score on the ranked tiebreaker** — apply in order; a higher criterion settles the choice before a lower one is considered:
-
-   | Rank | Criterion | Question |
-   |------|-----------|----------|
-   | 1 | **Correctness** | Does it actually solve the problem and meet the acceptance criteria? |
-   | 2 | **Grounding** | Is it anchored in real files, symbols, and constraints — not invented ones? |
-   | 3 | **Simplicity** | Is it the simplest approach that works (fewest moving parts)? |
-   | 4 | **Validation robustness** | How well can it be tested and verified? |
-   | 5 | **Execution cost** | Effort, risk, and blast radius to implement. |
-
-4. **Decide and hand off** — name the winning plan, justify it against the tiebreaker, and **graft** the specific better ideas from the runners-up into it. Produce one merged, executable direction.
-
-### Output
+1. **Normalize:** restate each plan in the same shape: goal, key decisions, file/area changes, risks, validation approach.
+2. **Cross-review:** for each plan, list where it is stronger and weaker than the others. Check each against the real codebase (Read/Grep) and note which referenced files and symbols actually exist.
+3. **Score on the ranked tiebreaker.** Apply in order; a higher criterion settles the choice before a lower one is considered:
+   1. **Correctness:** does it actually solve the problem and meet the acceptance criteria?
+   2. **Grounding:** is it anchored in real files, symbols, and constraints, not invented ones?
+   3. **Simplicity:** is it the simplest approach that works (fewest moving parts)?
+   4. **Validation robustness:** how well can it be tested and verified?
+   5. **Execution cost:** effort, risk, and blast radius to implement.
+4. **Decide and hand off:** name the winning plan, justify it against the tiebreaker, and graft the specific better ideas from the runners-up into it. Produce one merged, executable direction in this format:
 
 ```markdown
 # Plan Arbitration: {goal}
@@ -386,13 +329,4 @@ Use this when the input is **two or more complete plans for the same goal**, and
 {The merged plan, ready for /sk:dev or /sk:orchestrate.}
 ```
 
-Never average competing plans into a blend — choose one spine and improve it.
-
-## Guard Rails
-
-- **No echo chambers:** Every persona MUST disagree with at least one other position
-- **No groupthink:** Round 0 is always independent (zero cross-visibility)
-- **No false consensus:** Record all dissent, even if outvoted
-- **No debate theater:** Personas must reference specific evidence (codebase, research, data) — not abstract principles
-- **No runaway costs:** Maximum 3 rounds. If no convergence after 3 rounds, report the split decision as-is
-- **Research is pre-debate only:** Only the orchestrator triggers research, shared equally to all personas
+**Reply:** the recommendation and confidence level, the vote summary table, every dissenting opinion, the conditions that would change the recommendation, the path of the saved report, and the five follow-up options. In Plan-Arbiter Mode: the filled Plan Arbitration block.

@@ -11,6 +11,8 @@ Run the complete development lifecycle for a feature in a single session.
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
+
 **Use this when:** You want to go from idea to done without stopping between phases.
 **Use separate `/sk:plan`, `/sk:dev`, `/sk:test` when:** You want to review between phases.
 
@@ -29,7 +31,7 @@ Ask the user:
 - **Priority**: P0-P3
 
 Determine scope:
-- **L/XL complexity** — Create an epic first (`/sk:new-epic`) — this creates the epic file plus separate task files for each sub-task, then implement task by task
+- **L/XL complexity:** stop and suggest the user create an epic first with `/sk:new-epic`: this creates the epic file plus separate task files for each sub-task, then implement task by task
 - **M complexity** — Continue with this command (single task)
 - **XS/S complexity** — Proceed directly (skip formal task creation, but still follow Plan>Dev>Test mentally)
 
@@ -50,15 +52,17 @@ Determine scope:
 
 ### PLAN Exit Gate
 ```markdown
-- [ ] Acceptance criteria are testable
+- [ ] Every acceptance criterion names a yes/no verification method
 - [ ] Subtasks are S complexity each (single concern) with exact file paths
-- [ ] No open questions
-- [ ] Assumptions confirmed with user
-- [ ] Simplest approach chosen (no speculative features)
-- [ ] Approach follows existing codebase patterns
+- [ ] Open Questions table has no unanswered row
+- [ ] Every listed assumption is marked confirmed by the user in the task file
+- [ ] Simplest approach chosen: every subtask traces to an acceptance criterion (no speculative features)
+- [ ] Task file names the existing file or pattern the approach follows
 ```
 
-**Checkpoint:** Present plan summary to user. Wait for approval before proceeding.
+State the count (`PLAN gate: N/6`). Fix any unchecked box before the checkpoint.
+
+**Checkpoint:** Present the plan summary and the gate count to the user. Do not start Step 4 until the user has replied with approval.
 
 ### Update Current Work Tracker
 Write `docs/tasks/.current` (canonical format in `docs/tasks/README.md`):
@@ -117,12 +121,14 @@ Go through AC-1, AC-2, etc. one by one:
 
 ### TEST Exit Gate
 ```markdown
-- [ ] Every AC verified with evidence
-- [ ] Error paths handled
-- [ ] Edge cases covered
-- [ ] No regressions
-- [ ] All automated tests pass
+- [ ] Every AC has a row in the task's Verification section: the scenario run and its pasted output
+- [ ] Each error path listed above has a test, or a recorded run with its result
+- [ ] Each edge case listed above has a test, or a recorded run with its result
+- [ ] No regressions: no pre-existing test was removed, skipped or weakened, and none fails
+- [ ] Test, type-check and lint commands were run after the last code change; output pasted, zero failures
 ```
+
+State the count (`TEST gate: N/5`). Do not go to Step 6 with a box unchecked: fix it in DEV and re-verify.
 
 ## Step 6: Close Out
 
@@ -130,7 +136,7 @@ Go through AC-1, AC-2, etc. one by one:
 2. Update frontmatter: `phase: done`, `status: done`
 3. Update Progress Log with all phases
 4. Move task in `docs/tasks/README.md` to "Recently Completed"
-5. Final documentation check:
+5. Final documentation check. For each box, name the doc file you changed or write `n/a: <reason>`:
 
 ```markdown
 - [ ] docs/system/ updated (if schema, API, or stack changed)
@@ -146,3 +152,5 @@ Present to user:
 - Files: created/modified
 - Docs: updated
 - [WARN] Any notes or follow-up items
+
+**Reply:** each acceptance criterion with its verification result, the test command and its output, files created and modified, docs updated, and any follow-up items or steps skipped (with reasons).

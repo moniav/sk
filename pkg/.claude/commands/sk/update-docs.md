@@ -11,202 +11,103 @@ Scan the codebase and update `docs/` to accurately reflect the current system st
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
+
+## Rules
+
+- Only update docs that have been populated. Skip files that are empty or contain only template placeholders, and do not modify unfilled templates.
+- The code is the source of truth: read the code before changing the doc that describes it.
+- Fix gaps in priority order, P0 first.
+- Show the report to the user; do not save it unless asked.
+- If the user only wants a read-only coherence check (orphans, staleness, broken links) without rewriting content, suggest `/sk:docs-audit` instead.
+
+## Exit Gate
+
+Do not report completion until each line holds:
+
+- [ ] Remaining Gaps in the report lists no P0 or P1 item
+- [ ] Every doc changed in this run carries today's date in its last-updated field
+- [ ] Every link to or from a changed doc resolves to an existing file
+- [ ] Every doc created in this run is listed in its section README
+- [ ] The report has been shown to the user
+
 ## Step 1: Read Current Documentation
 
-**ALWAYS start by reading:**
-1. `docs/system/project-context.md` — Dense project summary (if it exists)
-2. `docs/README.md` — Master index and structure
-3. `docs/system/tech-stack.md` — Current recorded stack
-4. `docs/system/database-schema.md` — Current recorded schema
-5. `docs/architecture/README.md` — Current recorded architecture
-6. `docs/conventions/` — All convention files
-7. `docs/decisions/README.md` — Decision log
-8. `docs/features/README.md` — Feature docs index (if it exists)
-9. `docs/user-guides/README.md` — User guides index (if it exists)
-10. `docs/business/README.md` — Business / GTM index (if it exists)
-11. `docs/legal/README.md` — Legal & compliance index (if it exists)
-12. `docs/operations/README.md` — Operations index (if it exists)
-13. `docs/START-HERE.md` — Human front door (keep in sync with README.md)
-
-**Skip files that are empty or contain only template placeholders.** Only update docs that have been populated — don't modify unfilled templates.
+1. `docs/system/project-context.md` (if it exists)
+2. `docs/README.md`: master index and structure
+3. `docs/system/tech-stack.md`
+4. `docs/system/database-schema.md`
+5. `docs/architecture/README.md`
+6. `docs/conventions/`: all convention files
+7. `docs/decisions/README.md`
+8. `docs/features/README.md` (if it exists)
+9. `docs/user-guides/README.md` (if it exists)
+10. `docs/business/README.md` (if it exists)
+11. `docs/legal/README.md` (if it exists)
+12. `docs/operations/README.md` (if it exists)
+13. `docs/START-HERE.md`: human front door (keep in sync with README.md)
 
 ## Step 2: Ask Scope
 
-Ask the user (use AskUserQuestion — one question per dimension):
+Ask the user (use AskUserQuestion, one question per dimension):
 1. **Scope**: System docs | Architecture | Conventions | SOPs | Tasks | Features | User Guides | Business | Legal | Operations | All
 2. **Focus**: What changed recently? New features? Refactors? Dependency updates?
 3. **Depth**: Quick sync (just update what's stale) | Deep analysis (full audit) | Initialize (build from scratch)
 
-> For a read-only coherence check (orphans, staleness, broken links) without rewriting
-> content, use `/sk:docs-audit` instead.
-
 ## Step 3: Analyze Codebase
 
-### 3a. Recent Changes
-
-Use **Bash** for git commands only:
+**3a. Recent changes.** Use Bash for git commands only:
 ```bash
 git log --oneline -20
 git diff --stat HEAD~10
 git status
 ```
 
-### 3b. Project Structure Scan
+**3b. Structure.** Glob `src/**/*.ts`, `src/**/*.tsx`, `src/**/*.py` (source), `**/migrations/*`, `**/schema*` (schema/migrations), and `package.json`, `requirements.txt`, `pyproject.toml` (manifests).
 
-Use **Glob** to map current structure:
-- `src/**/*.ts`, `src/**/*.tsx`, `src/**/*.py` — source files
-- `**/migrations/*`, `**/schema*` — schema/migration files
-- `package.json`, `requirements.txt`, `pyproject.toml` — manifests
+**3c. Dependencies.** Read the manifests: `package.json` (dependencies and devDependencies), `requirements.txt` or `pyproject.toml`.
 
-### 3c. Dependency Scan
+**3d. API.** Grep `"route|router|app.get|app.post|@app|export.*GET|export.*POST"` in `*.ts`, `*.tsx`, `*.py`.
 
-Use **Read** to examine dependency manifests:
-- Read `package.json` (dependencies and devDependencies)
-- Read `requirements.txt` or `pyproject.toml` if Python
-
-### 3d. API Scan
-
-Use **Grep** to find route definitions:
-- Pattern: `"route|router|app.get|app.post|@app|export.*GET|export.*POST"`
-- Scope: `*.ts`, `*.tsx`, `*.py` files
-
-### 3e. Schema Scan
-
-Use **Grep** to find model/schema definitions:
-- Pattern: `"createTable|model|class.*Model|class.*Schema|BaseModel"`
-- Scope: `*.ts`, `*.py` files
+**3e. Schema.** Grep `"createTable|model|class.*Model|class.*Schema|BaseModel"` in `*.ts`, `*.py`.
 
 ## Step 4: Identify Gaps
 
-Compare code vs. docs for each section:
+For each section in scope, compare code against docs. Every check that fails is a gap.
 
 ### System Docs (`docs/system/`)
 
-```markdown
-#### project-context.md
-- [ ] Project description still accurate
-- [ ] Key features list reflects current state
-- [ ] Stack summary matches tech-stack.md
-- [ ] Current status / phase is up to date
-- [ ] Known gotchas and constraints still relevant
+- **project-context.md**: description accurate; key features list current; stack summary matches tech-stack.md; current status / phase up to date; gotchas and constraints still relevant
+- **tech-stack.md**: dependencies match `package.json` / `requirements.txt`; versions current; new tools/libraries documented; removed dependencies cleaned up
+- **database-schema.md**: tables match the schema files; relationships accurate; indexes documented; migration history current; ER diagram matches
+- **api-reference.md** (if exists): all endpoints documented; request/response formats accurate; new endpoints added; removed endpoints cleaned up; auth requirements noted
+- **integrations.md** (if exists): external services listed; API keys / env vars documented; webhook endpoints listed
 
-#### tech-stack.md
-- [ ] Dependencies match package.json / requirements.txt
-- [ ] Versions are current
-- [ ] New tools/libraries documented
-- [ ] Removed dependencies cleaned up
+### Other Sections
 
-#### database-schema.md
-- [ ] Tables match actual schema files
-- [ ] Relationships accurate
-- [ ] Indexes documented
-- [ ] Migration history current
-- [ ] ER diagram matches reality
+| Section | Checks |
+|---------|--------|
+| Architecture (`docs/architecture/`) | Component diagram reflects the current system; new components documented; removed components cleaned up; cross-cutting concerns current (auth, logging, errors) |
+| Conventions (`docs/conventions/`) | Code style matches actual codebase patterns; file structure matches actual layout; newly adopted patterns documented; git workflow still accurate |
+| Decisions (`docs/decisions/`) | Recent tech decisions have ADRs; superseded decisions marked; no undocumented significant decision in git log |
+| Flows (`docs/flows/`) | Diagrams match actual code flow; new features have flows; removed features' flows cleaned up |
+| Features (`docs/features/`) | Each feature doc matches the code it describes; new significant features have a doc (suggest `/sk:new-feature-doc` to the user); Status field accurate (shipped vs in-progress); `features/README.md` lists every feature doc |
+| User Guides (`docs/user-guides/`) | Each guide's steps match current product behavior; no guide documents a removed/changed feature; new user-facing features have a guide (suggest `/sk:new-user-guide` to the user); `user-guides/README.md` complete |
+| Business / GTM (`docs/business/`) | Positioning reflects the product and market; competitor profiles current (flag stale > 1 quarter); pricing strategy matches what is actually charged; investor updates / memos dated and filed; `business/README.md` complete |
+| Operations (`docs/operations/`) | Runbooks match current deploy/rollback/recovery reality; postmortems filed for recent incidents with action items tracked; no runbook references a removed system or stale command; `operations/README.md` complete |
 
-#### api-reference.md (if exists)
-- [ ] All endpoints documented
-- [ ] Request/response formats accurate
-- [ ] New endpoints added
-- [ ] Removed endpoints cleaned up
-- [ ] Auth requirements noted
+### Lifecycle Pass (all evergreen docs)
 
-#### integrations.md (if exists)
-- [ ] External services listed
-- [ ] API keys / env vars documented
-- [ ] Webhook endpoints listed
-```
+For every evergreen doc touched, refresh `Last updated` and confirm its `Lifecycle` (`current` / `stale` / `deprecated` / `archived`) per `docs/conventions/doc-lifecycle.md`.
 
-### Architecture Docs (`docs/architecture/`)
+**Doc-to-code linkage:** docs with a `Source:` / `Code:` / `Location:` field whose paths changed since their `Last updated` are the priority queue: update those first. When touching a doc that lacks the field but clearly describes specific code, add `**Source:** <paths>` so future audits can detect drift automatically.
 
-```markdown
-- [ ] Component diagram reflects current system
-- [ ] New components documented
-- [ ] Removed components cleaned up
-- [ ] Cross-cutting concerns current (auth, logging, errors)
-```
-
-### Convention Docs (`docs/conventions/`)
-
-```markdown
-- [ ] Code style matches actual codebase patterns
-- [ ] File structure matches actual project layout
-- [ ] New patterns adopted but not documented?
-- [ ] Git workflow still accurate?
-```
-
-### Decision Records (`docs/decisions/`)
-
-```markdown
-- [ ] Recent tech decisions have ADRs
-- [ ] Superseded decisions marked appropriately
-- [ ] No undocumented significant decisions in git log
-```
-
-### Flow Diagrams (`docs/flows/`)
-
-```markdown
-- [ ] Diagrams match actual code flow
-- [ ] New flows added for new features
-- [ ] Removed features' flows cleaned up
-```
-
-### Feature Docs (`docs/features/`)
-
-```markdown
-- [ ] Each feature doc still matches the code it describes
-- [ ] New significant features have a doc (create with /sk:new-feature-doc)
-- [ ] Status field accurate (shipped vs in-progress)
-- [ ] features/README.md index lists every feature doc
-```
-
-### User Guides (`docs/user-guides/`)
-
-```markdown
-- [ ] Each guide's steps still match current product behavior
-- [ ] No guide documents a removed/changed feature
-- [ ] New user-facing features have a guide (create with /sk:new-user-guide)
-- [ ] user-guides/README.md index is complete
-```
-
-### Business / GTM Docs (`docs/business/`)
-
-```markdown
-- [ ] Positioning still reflects the product and market
-- [ ] Competitor profiles current (intel rots fast — flag stale > 1 quarter)
-- [ ] Pricing strategy matches what's actually charged
-- [ ] Investor updates / memos dated and filed
-- [ ] business/README.md index complete
-```
-
-### Operations Docs (`docs/operations/`)
-
-```markdown
-- [ ] Runbooks match current deploy/rollback/recovery reality
-- [ ] Postmortems filed for recent incidents, action items tracked
-- [ ] No runbook references a removed system or stale command
-- [ ] operations/README.md index complete
-```
-
-### Lifecycle pass (all evergreen docs)
-
-For every evergreen doc touched, refresh `Last updated` and confirm its `Lifecycle`
-(`current` / `stale` / `deprecated` / `archived`) per `docs/conventions/doc-lifecycle.md`.
-
-**Doc-to-code linkage:** docs with a `Source:` / `Code:` / `Location:` field whose
-paths changed since their `Last updated` are the priority queue — update those first.
-When touching a doc that lacks the field but clearly describes specific code, add
-`**Source:** <paths>` so future audits can detect drift automatically.
-
-```markdown
-- [ ] Last updated bumped on docs that changed
+- [ ] `Last updated` bumped on docs that changed
 - [ ] Docs whose code changed but content didn't downgraded to `Lifecycle: stale`
-- [ ] Retired docs moved to docs/_archive/ and set to `Lifecycle: archived`
+- [ ] Retired docs moved to `docs/_archive/` and set to `Lifecycle: archived`
 - [ ] Both front doors (README.md + START-HERE.md) reflect the current section set
-```
 
 ## Step 5: Prioritize Updates
-
-Categorize gaps:
 
 | Priority | Criteria | Examples |
 |----------|---------|---------|
@@ -219,27 +120,31 @@ Categorize gaps:
 
 For each gap, starting with P0:
 
-1. **Read the current doc** — Understand what exists
-2. **Read the source of truth** — The actual code
-3. **Update the doc** — Match reality
-4. **Update `last_updated`** — Set today's date
-5. **Verify cross-references** — Links to/from this doc still valid
+1. Read the current doc.
+2. Read the source of truth: the actual code.
+3. Update the doc to match the code.
+4. Set `last_updated` to today's date.
+5. Open every link to and from this doc and fix any that no longer resolves.
 
-### Per-Section Update Patterns
+Per-section sources:
 
-**project-context.md**: Review git log + current features > update summary, status, and key details
-**tech-stack.md**: Compare `package.json`/`requirements.txt` > update table rows
-**database-schema.md**: Read schema files > update table definitions + ER diagram
-**api-reference.md**: Scan route files > update endpoint list
-**architecture/README.md**: Scan component structure > update diagram
-**conventions/file-structure.md**: Run `tree` or `find` > update structure diagram
+- **project-context.md**: git log + current features > summary, status, key details
+- **tech-stack.md**: `package.json`/`requirements.txt` > table rows
+- **database-schema.md**: schema files > table definitions + ER diagram
+- **api-reference.md**: route files > endpoint list
+- **architecture/README.md**: component structure > diagram
+- **conventions/file-structure.md**: `tree` or `find` output > structure diagram
 
-## Step 7: Generate Report
+## Step 7: Update Master Index
 
-Create a summary (show to user, don't save unless asked):
+If any new docs were created:
+1. Add them to the appropriate section README.
+2. Compare the `docs/README.md` structure tree with the directories on disk and fix any difference.
+
+## Step 8: Generate Report
 
 ```markdown
-## Documentation Update Report — YYYY-MM-DD
+## Documentation Update Report: YYYY-MM-DD
 
 ### Summary
 - Files scanned: N
@@ -250,31 +155,17 @@ Create a summary (show to user, don't save unless asked):
 ### Changes Made
 | Doc | Change | Priority |
 |-----|--------|----------|
-| system/tech-stack.md | Added lodash v4.17, updated React to 19 | P1 |
 | system/database-schema.md | Added `preferences` column to users table | P0 |
-| architecture/README.md | Updated component diagram with new NotificationService | P1 |
 
 ### Remaining Gaps
 | Gap | Priority | Recommendation |
 |-----|----------|----------------|
 | No ADR for Redis adoption | P2 | Create ADR-005 |
-| Missing flow diagram for payment process | P2 | Create docs/flows/payment-flow.md |
 
 ### New ADRs Needed
 - ADR-NNN: [Decision that needs recording]
 ```
 
-## Step 8: Update Master Index
+Then check every line of the Exit Gate above and fix whatever fails.
 
-If any new docs were created:
-1. Add them to the appropriate section README
-2. Verify `docs/README.md` structure tree is still accurate
-
-## Validation Checklist
-
-- [ ] All P0 gaps fixed (no misleading docs remain)
-- [ ] All P1 gaps fixed (key info complete)
-- [ ] `last_updated` dates refreshed on changed docs
-- [ ] Cross-references verified
-- [ ] Section READMEs updated with new entries
-- [ ] Report presented to user
+**Reply:** the Documentation Update Report (summary counts, Changes Made table, Remaining Gaps table, New ADRs Needed), plus any Exit Gate line that still fails and why.

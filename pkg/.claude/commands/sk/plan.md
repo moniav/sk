@@ -10,6 +10,12 @@ Complete the [PLAN] phase for a task, taking it from `backlog`/`planning` to `re
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
+
+**Rules (hold through every step):**
+- **Make no source edits during PLAN. Stay read-only until the user approves the direction.** If the session supports plan mode, use it for this phase: the harness then enforces read-only and provides the approval gate natively.
+- Do not exit PLAN with an unanswered open question, an unconfirmed assumption, or a known decision left implicit.
+
 ## Step 1: Read Context
 
 **ALWAYS start by reading:**
@@ -30,7 +36,7 @@ Ask the user which task to plan, or:
 
 ## Step 3: Deep Codebase Analysis
 
-For the specific task, perform a thorough analysis:
+Work through 3a to 3d for this task. The analysis is done when you can name, as real paths: every file that will change, the existing feature whose pattern you will follow, and the tests that cover the area (or `none`).
 
 ### 3a. Map the Feature Area
 ```
@@ -70,7 +76,7 @@ Before proceeding to the plan, explicitly list what you're assuming and flag wha
 1. **List assumptions** — Write down everything you believe to be true but haven't verified
 2. **Flag ambiguity** — Identify requirements that could be interpreted multiple ways
 3. **Present interpretations** — For each ambiguity, state the possible interpretations and your recommendation
-4. **Confirm with user** — Do not proceed past PLAN until assumptions are validated
+4. **Confirm with user**: do not exit PLAN while any row's Status is still Assumed or Ambiguous
 
 ```markdown
 ### Assumptions & Clarifications
@@ -130,7 +136,7 @@ Record scan results and technical decisions in the task's "Phase Analysis" secti
 
 ## Step 5: Adversarial Self-Review (high-stakes plans)
 
-Before validating, attack your own plan. **Make no source edits during PLAN — stay read-only until the user approves the direction.** If the session supports plan mode, use it for this phase — the harness then enforces read-only and provides the approval gate natively.
+Before validating, attack your own plan. The read-only rule at the top still applies.
 
 For high-stakes work — architecture, backend, data-model, migration, or multi-file changes — dispatch the **plan-reviewer** agent (`sk:plan-reviewer` when SK is installed as a plugin), or run the pass yourself. For architecturally significant or epic-level plans, also dispatch the **architecture-reviewer** agent to pressure-test the design (boundaries, coupling, data flow, scalability) before DEV. Check the plan against four failure classes:
 
@@ -141,22 +147,26 @@ For high-stakes work — architecture, backend, data-model, migration, or multi-
 
 Route every unresolved judgment call into the Open Questions table **with a recommended answer** — never silently assume. Do not exit PLAN with a known decision left implicit.
 
+Done when each of the four failure classes has a written finding or `none found`, and, if a reviewer agent was dispatched, its verdict is quoted.
+
 ## Step 6: Validate Plan
 
 Run the PLAN exit gate checklist:
 
 ```markdown
-- [ ] Problem statement is clear (what & why)
+- [ ] Problem statement in the task file says what changes and why
 - [ ] Every acceptance criterion is testable (yes/no answer possible)
 - [ ] Every subtask is S complexity (single concern, 1-2 files)
-- [ ] Every subtask has an exact file path
-- [ ] Subtask order respects dependencies
-- [ ] No open questions remain unresolved
-- [ ] Affected docs identified for updating
-- [ ] Approach follows existing codebase patterns
-- [ ] Approach is the simplest that satisfies acceptance criteria (no speculative features)
-- [ ] Adversarial self-review done — hard-to-reverse decisions surfaced explicitly, not left implicit
+- [ ] Every subtask has an exact file path (existing paths confirmed with Glob, new files marked new)
+- [ ] No subtask depends on one listed after it
+- [ ] Open Questions table has an answer in every row
+- [ ] Affected Areas table has a Docs row naming each doc to update, or `none`
+- [ ] Technical Decisions names the existing file or pattern the approach follows
+- [ ] Approach is the simplest that satisfies acceptance criteria: every subtask traces to a criterion (no speculative features)
+- [ ] Adversarial self-review done: each of the four failure classes has a written finding or `none found`, and every hard-to-reverse decision is listed in Technical Decisions or Open Questions
 ```
+
+State the count (`PLAN gate: N/10`). Do not go to Step 7 with a box unchecked: fix it, or stop and tell the user which box and why.
 
 ## Step 7: Update Status
 
@@ -182,3 +192,5 @@ Show:
 - Any risks identified
 
 Ask: **"Plan is complete. Ready to start DEV? I'll execute subtasks top-to-bottom."**
+
+**Reply:** the final acceptance criteria, the ordered subtask list with file paths, key technical decisions and rejected alternatives, assumptions the user confirmed, risks, the gate count, and the question whether to start DEV.

@@ -11,6 +11,16 @@ Structured approach to handling breaking changes, major version upgrades, and da
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
+
+## Rules
+
+- **Passing baseline first.** Run the test suite before changing anything and record the command and its output. If tests fail before the migration, fix those first.
+- **Atomic commit per step.** This enables git bisect and partial rollback.
+- **Read the migration guide.** Most major libraries publish one. Do not work from memory.
+- **Do not combine migration with feature work.** Migrate first, then build on it.
+- **Test beyond unit tests.** Migrations are high-risk: start the application and exercise it, as Step 6 requires.
+
 ## Step 1: Read Context
 
 Read these files to understand the current state:
@@ -56,7 +66,9 @@ Before making any changes:
    - Are there data transformations that aren't reversible?
 
 4. **Test coverage** — Do we have tests for affected areas?
-   - Run existing tests to establish baseline (all should pass before migration)
+   - Run the existing test suite and record the command, the pass and fail counts, and the warning count as the baseline. Any failure is fixed before the migration starts.
+
+Step 3 is done when you have written down: the affected files (with the search that found them), each breaking change with its source URL and affected locations, the commands that roll the migration back, and the baseline test output.
 
 ## Step 4: Create Migration Plan
 
@@ -66,9 +78,9 @@ Break the migration into ordered steps:
 ### Migration Plan: [name]
 
 **Pre-conditions:**
-- [ ] All tests passing (baseline)
-- [ ] Working branch created
-- [ ] Rollback plan documented
+- [ ] Baseline recorded: test command, its output, zero failures
+- [ ] Working branch created: [branch name]
+- [ ] Rollback plan written: the exact commands that undo each step, and any step that cannot be undone
 
 **Steps:**
 1. [Each step should be atomic and independently verifiable]
@@ -76,10 +88,10 @@ Break the migration into ordered steps:
 3. [Include "verify" checkpoints between major steps]
 
 **Post-conditions:**
-- [ ] All existing tests pass
-- [ ] New tests cover migration-specific changes
-- [ ] No deprecation warnings introduced
-- [ ] Documentation updated
+- [ ] All existing tests pass: same command as the baseline, pass count not lower
+- [ ] Each breaking change from Step 3 has a test that exercises the changed code path
+- [ ] Deprecation warning count is not higher than the baseline
+- [ ] Each doc named in Step 7 is updated, or marked `n/a: <reason>`
 ```
 
 ## Step 5: Execute Migration
@@ -87,7 +99,7 @@ Break the migration into ordered steps:
 For each step in the plan:
 
 1. **Make the change** — One logical change at a time
-2. **Verify** — Run tests, check for regressions
+2. **Verify**: run the test suite and compare the pass count to the baseline. A step with a new failure is not committed.
 3. **Commit** — Atomic commit per step (enables bisect if issues found later)
 
 ### If something breaks during migration:
@@ -98,24 +110,20 @@ For each step in the plan:
 
 ## Step 6: Verify Complete Migration
 
-Run full verification:
-- [ ] All pre-existing tests pass
-- [ ] No new warnings or deprecations (unless expected and documented)
-- [ ] Application starts and runs correctly
-- [ ] Key user flows work end-to-end
-- [ ] Performance hasn't regressed significantly
+Run full verification. For each box, show the command you ran and its output:
+- [ ] All pre-existing tests pass: the baseline command re-run, pass count not lower, zero failures
+- [ ] No new warnings or deprecations against the baseline count (unless expected and documented)
+- [ ] Application starts: the start command was run and its output shows no error
+- [ ] Each key user flow was exercised end-to-end: list the flow, the steps or command used, and the observed result
+- [ ] Performance compared before and after with the same measurement (test-suite duration or an existing benchmark), both numbers recorded. If nothing was measured, the box stays unchecked and the reply says `performance: not measured`
+
+State the count (`Migration gate: N/5`). An unchecked box is fixed, or reported to the user with the reason.
 
 ## Step 7: Update Documentation
 
 - Update `docs/system/tech-stack.md` with new versions
 - Update `docs/system/database-schema.md` if schema changed
-- Create an ADR if this was a significant decision (`/sk:new-adr`)
+- If this was a significant decision, suggest the user record it with `/sk:new-adr`
 - Update any affected convention files
 
-## Guidelines
-
-- **Always establish a passing baseline before starting** — if tests fail before migration, fix those first
-- **Atomic commits per step** — enables git bisect and partial rollback
-- **Read the migration guide** — most major libraries publish one; don't guess
-- **Don't combine migration with feature work** — migrate first, then build on it
-- **Test more than usual** — migrations are high-risk; runtime testing matters, not just unit tests
+**Reply:** what was migrated (from and to), the baseline and final test commands with their output, the Step 6 gate count with any unchecked box explained, commits made, the rollback commands, and docs updated.

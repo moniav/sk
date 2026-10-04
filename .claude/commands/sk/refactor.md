@@ -11,23 +11,36 @@ Restructure code without changing its external behavior. The key constraint: **b
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
+
+## Rules
+
+- **Proof of unchanged behavior.** Run the same test command before the first change (Step 4) and after the last (Step 7), and paste both outputs. Pass, fail and skip counts must be identical. Without both outputs the refactoring is not done.
+- **No behavior changes.** Do not fix bugs, add features, or change logic.
+- **No drive-by improvements.** Only change what is in the approved plan.
+- **If you find a bug:** note it, don't fix it. That is a separate `/sk:debug` task.
+- **If tests break:** your refactoring changed behavior. Revert and rethink.
+- **If a refactoring step fails 3 times:** follow `.claude/skills/escalation-rules/SKILL.md`: stop, evaluate whether the approach is correct, ask the user.
+- **No tests, no high-risk refactoring.** If the target lacks coverage, write characterization tests first (Step 4b).
+- **Approval gate.** Do not execute (Step 6) until the user has approved the plan from Step 5.
+
 ## Step 1: Read Context
 
-**ALWAYS start by reading:**
-1. `docs/system/project-context.md` — Dense project summary (if it exists)
-2. `docs/conventions/code-style.md` — Target coding standards
-3. `docs/conventions/file-structure.md` — Where files belong
-4. `docs/conventions/testing.md` — Testing patterns
-5. `docs/system/tech-stack.md` — Current stack
+Read first, skipping any file that is empty or contains only template placeholders:
+1. `docs/system/project-context.md` (if it exists)
+2. `docs/conventions/code-style.md`
+3. `docs/conventions/file-structure.md`
+4. `docs/conventions/testing.md`
+5. `docs/system/tech-stack.md`
 
-**Skip files that are empty or contain only template placeholders.** If conventions aren't configured, infer patterns from the existing codebase.
+If conventions aren't configured, infer patterns from the existing codebase.
 
 ## Step 2: Scope and Track
 
 Assess refactoring complexity:
-- **XS/S** (rename, simple extract, 1-2 files) — proceed directly, no task file needed
-- **M** (multi-file restructure, pattern change) — create a task file first: scan `docs/tasks/TASK-*.md` for next number, create `docs/tasks/TASK-{N}-S-{kebab-name}.md` from `docs/templates/task-prd.md` with `phase: dev`, `status: in-progress`
-- **L/XL** (architecture change, cross-cutting restructure) — create a task file, may warrant an ADR via `/sk:new-adr`
+- **XS/S** (rename, simple extract, 1-2 files): proceed directly, no task file needed
+- **M** (multi-file restructure, pattern change): create a task file first. Scan `docs/tasks/TASK-*.md` for the next number, then create `docs/tasks/TASK-{N}-S-{kebab-name}.md` from `docs/templates/task-prd.md` with `phase: dev`, `status: in-progress`
+- **L/XL** (architecture change, cross-cutting restructure): create a task file the same way. It may warrant an ADR: suggest `/sk:new-adr` to the user
 
 For M+ refactorings, update `docs/tasks/README.md` to track the work.
 
@@ -54,33 +67,23 @@ Determine the refactoring type:
 
 ## Step 4: Establish Safety Net
 
-Before any changes, verify the safety net is in place:
+Do this before any change.
 
 ### 4a: Existing Test Coverage
 
-1. Identify tests covering the target code:
-   ```bash
-   # Find tests that import/reference the target
-   ```
-   Use Grep to search for test files referencing the target module/function.
-
-2. Run the existing test suite and record the baseline:
-   ```bash
-   # Run your project's test commands (check CLAUDE.md Build Commands)
-   ```
-
-3. Record the baseline result: **N tests pass, M tests fail, K skipped**
+1. Use Grep to list the test files that reference the target module/function.
+2. Run the project's test commands (check CLAUDE.md Build Commands).
+3. Record the exact command and the baseline result: **N tests pass, M tests fail, K skipped**. Keep the output for Step 7.
 
 ### 4b: Coverage Gaps
 
 If the target code lacks test coverage:
 - **Do NOT proceed** with high-risk refactoring without tests
-- Write characterization tests first — tests that capture current behavior (even if imperfect)
-- These tests are a safety net, not quality tests — they lock in current behavior
+- Write characterization tests first: tests that lock in current behavior, even where that behavior is imperfect
 
 ### 4c: Behavioral Snapshot
 
-For code without automated tests, note the current behavior:
+For code without automated tests, write down the current behavior:
 - What inputs produce what outputs?
 - What side effects occur?
 - What errors are thrown under what conditions?
@@ -94,10 +97,9 @@ For code without automated tests, note the current behavior:
 - Whether changing the structure will affect performance or behavior
 - Which files are safe to change and which have hidden dependencies
 
-Break the refactoring into small, safe steps. Each step should:
+Break the refactoring into steps. Each step must:
 - Be independently committable
-- Keep the code working at every intermediate point
-- Be small enough to easily verify
+- Leave the test command from Step 4 passing at the baseline
 - Be the simplest transformation that achieves the goal (don't restructure more than needed)
 
 Present the plan:
@@ -111,101 +113,51 @@ Present the plan:
 
 1. [First safe transformation]
 2. [Second safe transformation]
-3. [Third safe transformation]
 ...
 
 **Expected outcome:** [what the code looks like after]
 **Files affected:** [list]
-**Risk assessment:** [low/medium/high] — [why]
+**Risk assessment:** [low/medium/high]: [why]
 ```
 
 **Checkpoint:** Wait for user approval before proceeding.
 
 ## Step 6: Execute
 
-Apply each step from the plan, one at a time:
+Apply the plan one step at a time. For each step:
 
-### Per-Step Process
+1. **Make the change**: a single transformation
+2. **Verify**: run the Step 4 test command and compare its counts to the baseline
+3. Move to the next step only when the counts match. If they don't, apply the Rules above.
 
-1. **Make the change** — apply a single transformation
-2. **Verify** — run the test suite after each step
-3. **Check** — does the code still behave identically?
-
-### Refactoring Techniques Reference
-
-**Extract Function:**
-- Identify a block of code with a single responsibility
-- Move it to a new function with a descriptive name
-- Replace the original block with a call to the new function
-- Ensure all variables are passed as parameters or accessible in scope
-
-**Extract Module/Class:**
-- Identify a group of related functions or data
-- Create a new module/class to house them
-- Update all imports/references
-- Ensure the public API remains the same
-
-**Rename:**
-- Use find-and-replace across the entire codebase
-- Check for string references (configs, URLs, serialized data)
-- Update imports, exports, and type definitions
-- Update documentation references
-
-**Inline:**
-- Replace function calls with the function body
-- Remove the now-unused function
-- Simplify the inlined code if it becomes clearer in context
-
-**Move:**
-- Move file to the correct location per `docs/conventions/file-structure.md`
-- Update all import paths across the codebase
-- Verify no broken references
-
-**Simplify:**
-- Replace nested conditionals with early returns
-- Remove dead code (unused functions, unreachable branches)
-- Replace complex logic with clearer alternatives
-- Flatten unnecessary wrapper layers
-
-### Rules During Execution
-
-- **No behavior changes** — do not fix bugs, add features, or change logic
-- **No drive-by improvements** — only change what's in the plan
-- **If you find a bug** — note it, don't fix it (that's a separate `/sk:debug` task)
-- **If tests break** — your refactoring changed behavior. Revert and rethink.
-- **If a refactoring step fails 3 times** — follow `.claude/skills/escalation-rules/SKILL.md`: stop, evaluate whether the approach is correct, ask the user.
+Per type, also check:
+- **Rename:** string references (configs, URLs, serialized data), imports, exports, type definitions and documentation references
+- **Extract module/class:** all imports/references updated and the public API unchanged
+- **Inline:** the now-unused function is removed
+- **Move:** destination follows `docs/conventions/file-structure.md` and every import path across the codebase is updated
 
 ## Step 7: Verify
 
 Read `.claude/skills/verification-before-completion/SKILL.md` before claiming verification.
 You MUST paste the actual test suite output and compare to the baseline from Step 4.
 
-After all steps are complete:
-
 ### 7a: Run Full Test Suite
-```bash
-# Run your project's test, type-check, and lint commands
-```
 
-Compare to the baseline from Step 4. The results must be identical:
+Run the same test command as Step 4, plus the project's type-check and lint commands.
+The results must be identical to the baseline:
 - Same number of passing tests
 - Same number of failing tests (if any were already failing)
 - No new type errors or lint violations
 
 ### 7b: Behavioral Verification
 
-For each behavior noted in Step 4c:
-- Same inputs produce same outputs
-- Same side effects occur
-- Same errors under same conditions
+For each behavior written down in Step 4c, show that the same inputs produce the same outputs, the same side effects occur, and the same errors are thrown under the same conditions.
 
 ### 7c: Convention Check
 
-Verify the refactored code now follows conventions:
 - Naming matches `docs/conventions/code-style.md`
 - Files are in correct locations per `docs/conventions/file-structure.md`
 - Import order is correct
-- No violations introduced
 
 ## Step 8: Close Out
 
@@ -221,12 +173,12 @@ Present to user:
 | **Files changed** | List of modified/moved/created/deleted files |
 
 ### Verification
-- [ ] All existing tests still pass (same baseline)
+- [ ] All existing tests still pass (same baseline, before and after output shown)
 - [ ] No behavior changes
 - [ ] No new type errors or lint violations
 - [ ] Code follows project conventions
 - [ ] No drive-by changes included
-- [ ] Result is simpler than before (fewer lines, less nesting, clearer names) — not just different
+- [ ] Result is simpler than before (fewer lines, less nesting, clearer names), not just different
 
 ### Documentation (if task file was created)
 - [ ] Task file marked `phase: done`, `status: done`
@@ -235,4 +187,6 @@ Present to user:
 - [ ] `docs/architecture/` updated (if component relationships changed)
 
 ### Before vs After
-Brief comparison showing the structural improvement (not a full diff — just the key change in organization, readability, or simplicity).
+A brief comparison of the key structural change (organization, readability, or simplicity), not a full diff.
+
+**Reply:** the Refactoring Complete table, the test command with its output before and after and the matching pass/fail/skip counts, the Verification and Documentation checklists with each box resolved, the Before vs After comparison, and any bug noted but not fixed.
