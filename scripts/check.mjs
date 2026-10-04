@@ -252,7 +252,7 @@ for (const name of READ_ONLY) {
 // Skills loaded by commands, never by hand: hidden from both the model and the / menu.
 // headless-operation is the exception on the model side: a scheduled prompt is stored
 // outside SK and cannot carry an install path, so it reaches the skill by name.
-const INTERNAL_SKILLS = ["git-commit-flow", "subtask-execution", "research", "headless-operation", "executive-meeting"];
+const INTERNAL_SKILLS = ["git-commit-flow", "subtask-execution", "research", "headless-operation", "executive-meeting", "interviewing"];
 const REACHED_BY_NAME = ["headless-operation"];
 for (const name of INTERNAL_SKILLS) {
   const path = join(skillsDir, name, "SKILL.md");

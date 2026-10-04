@@ -19,7 +19,7 @@ your-project/
 ├── .claude/
 │   ├── commands/sk/             ← 54 slash commands
 │   ├── agents/                  ← 9 agents (implementer, reviewers, debugger, dependency-analyzer)
-│   └── skills/                  ← 23 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
+│   └── skills/                  ← 24 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
     ├── START-HERE.md            Human front door (role-based router)
     ├── README.md                Agent index
@@ -31,7 +31,7 @@ your-project/
     ├── legal/                   Agreements, policies, compliance scans
     ├── operations/              Runbooks, incidents, postmortems
     ├── tasks/ decisions/ flows/ reviews/ research/ reference/  + _archive/
-    ├── templates/               24 starter templates
+    ├── templates/               26 starter templates
     └── commands-reference.md    Full command table (loaded on demand)
 ```
 

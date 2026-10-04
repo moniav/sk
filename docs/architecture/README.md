@@ -14,7 +14,7 @@ The same `pkg/` directory is delivered two ways: as a Claude Code plugin, or as 
 
 ```mermaid
 graph TD
-    PKG["pkg/ is everything that ships<br/>54 commands, 9 agents, 23 skills<br/>doc templates, CLAUDE.md template"]
+    PKG["pkg/ is everything that ships<br/>54 commands, 9 agents, 24 skills<br/>doc templates, CLAUDE.md template"]
 
     PKG -->|"Plugin channel<br/>claude plugin install sk@shipkit"| CACHE["Claude Code plugin cache<br/>commands, agents, skills<br/>outside the project"]
     PKG -->|"Plugin channel<br/>npx shipkit-cld init"| PDOCS["Project<br/>docs/ and CLAUDE.md"]
@@ -44,8 +44,8 @@ graph TD
 | Marketplace | `.claude-plugin/marketplace.json` | Marketplace `shipkit`, installs `sk` from `./pkg` |
 | Commands | `pkg/.claude/commands/sk/` | 54 slash commands; six are model-invocable |
 | Agents | `pkg/.claude/agents/` | implementer, spec-reviewer, plan-reviewer, quality-reviewer, security-reviewer, perf-reviewer, architecture-reviewer, dependency-analyzer, debugger |
-| Skills | `pkg/.claude/skills/` | 23 skills: 11 model-invoked, 12 user-invoked or loaded by commands |
-| Doc templates | `pkg/docs/templates/` | 24 templates |
+| Skills | `pkg/.claude/skills/` | 24 skills: 11 model-invoked, 13 user-invoked or loaded by commands |
+| Doc templates | `pkg/docs/templates/` | 26 templates |
 | Conventions | `pkg/docs/conventions/` | Code style, coding behaviour, file structure, git workflow, testing, doc lifecycle, delegation policy |
 | Release baselines | `pkg/.sk-baselines.json` | Generated: the hash of every released version of each managed file |
 | Check script | `scripts/check.mjs` | `npm test`: sync, counts, frontmatter, permissions, paths, models, install and update regressions |

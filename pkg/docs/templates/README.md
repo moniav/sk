@@ -42,6 +42,8 @@
 | `campaign.md` | A marketing campaign: goal-linked plan, assets, honest results | `/sk:campaign` |
 | `metrics.md` | Metrics dictionary: what each number means + its source of truth | `/sk:new-business-doc` |
 | `executive-charter.md` | A custom executive seat over the executive-meeting skill | manual |
+| `council-report.md` | The decision report of an advisory council | `/sk:council` |
+| `plan-arbitration.md` | A choice between competing plans | `/sk:council` (plan-arbiter mode) |
 
 > Evergreen templates carry a `Lifecycle` field (see
 > [../conventions/doc-lifecycle.md](../conventions/doc-lifecycle.md)). Transient ones
