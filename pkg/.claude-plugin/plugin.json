@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin.json",
   "name": "sk",
   "displayName": "SK — ShipKit",
-  "version": "2.0.0",
+  "version": "2.3.0",
   "description": "Documentation and lifecycle system for Claude Code: a Plan, Dev, Test lifecycle with 54 commands, 24 skills, and 9 agents. Run npx shipkit-cld init once per project to scaffold docs/ and CLAUDE.md.",
   "author": {
     "name": "moniav",

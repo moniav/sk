@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.3.0 (2026-10-04)
 
 Changes from the 2026-10 best-practices review: correctness and safety fixes (Wave 1),
 then discovery, paths, agents and deployment (Wave 2), then content quality and proof (Wave 3),
