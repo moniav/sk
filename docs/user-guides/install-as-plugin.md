@@ -1,70 +1,87 @@
-# Install SK as a Claude Code plugin (experimental)
+# Install SK as a Claude Code plugin
 
-**Last updated:** 2026-07-05
+**Last updated:** 2026-10-04
 **Lifecycle:** current
-**Audience:** Developers who want SK's commands/skills/agents installed natively via the Claude Code plugin system instead of file-copied into each project
+**Audience:** Developers who want SK's commands, skills and agents installed once through the Claude Code plugin system instead of copied into each project
 
 ## What you'll accomplish
 
-SK's 53 commands, 23 skills, and 9 agents installed once at the user level, updating
-natively with `/plugin update` — while your project keeps owning its `docs/` tree.
+SK's 53 commands, 23 skills and 9 agents installed once per machine and updated by Claude Code, while each project owns only its `docs/` tree and `CLAUDE.md`.
 
-> **Experimental.** The npm channel (`npx shipkit-cld`) remains the recommended path.
-> Known limitation: some command bodies reference `.claude/` files by project path,
-> which don't exist in a plugin install — a few skill/agent loads inside commands
-> degrade until the reference rewrite lands. Track progress in
-> [`dev-docs/planning/plugin-split-plan.md`](../../dev-docs/planning/plugin-split-plan.md).
+This is the recommended way to install SK.
+Copy the files into the project instead (`npx shipkit-cld`) only when the project must pin its own SK version, because a plugin is one version per user.
 
 ## Before you start
 
-- Claude Code with plugin support (`/plugin` command available)
-- A project for the docs scaffold (plugins don't create project files)
+- Claude Code with plugin support (`claude plugin` in your shell, or `/plugin` in a session)
+- Node.js 18 or later, for the one-time docs scaffold
+- A project that does not already have SK copied into it. If it has `.claude/commands/sk/`, see [Moving from copied files](#moving-from-copied-files).
 
 ## Steps
 
-1. **Add the marketplace (one-time):**
-   ```
-   /plugin marketplace add moniav/sk
-   ```
-   - *What you'll see:* the `shipkit` marketplace registered.
-2. **Install the plugin:**
-   ```
-   /plugin install sk@shipkit
-   ```
-   - *What you'll see:* the `sk` plugin installed. Commands keep their exact `/sk:*`
-     names (the plugin is named `sk`, and plugins namespace as `/plugin-name:command`).
-3. **Verify** — start a new session and run `/sk:task-status`.
-   - *What you'll see:* the command executes; agents appear in the Agent tool as
-     `sk:implementer`, `sk:spec-reviewer`, etc.
-4. **Scaffold the docs system** in your project (still required — plugins ship the
-   executable surface, not project files):
+1. **Add the marketplace**, once per machine:
+
    ```bash
-   npx shipkit-cld            # or --minimal
+   claude plugin marketplace add moniav/sk
    ```
-   - *Note:* this currently also copies `.claude/` into the project, duplicating what
-     the plugin provides. Harmless (project files shadow plugin files); a docs-only
-     `init` is planned.
-5. **Update later** with `/plugin update sk@shipkit` — during the experimental phase
-   the plugin tracks the latest commit on `main`, so updates arrive on every push.
 
-## Switching back / uninstalling
+   - *What you'll see:* `Successfully added marketplace: shipkit`.
 
+2. **Install the plugin:**
+
+   ```bash
+   claude plugin install sk@shipkit
+   ```
+
+   - *What you'll see:* `Successfully installed plugin: sk@shipkit`.
+
+3. **Scaffold the docs** in each project that will use SK:
+
+   ```bash
+   npx shipkit-cld init
+   ```
+
+   Add `--minimal` for the core doc homes only.
+   - *What you'll see:* a count of files added to `docs/`, and `CLAUDE.md created`.
+     If the project already has a `CLAUDE.md`, it is left alone and SK's template is written beside it as `CLAUDE.sk.md` for you to merge.
+   - `init` only fills gaps. It never replaces a file, so it is safe on a project that already has `docs/`, and safe to run again.
+
+4. **Verify.** Start a new Claude Code session in the project and run `/sk:task-status`.
+   - *What you'll see:* the task board. Agents are available to Claude as `sk:implementer`, `sk:spec-reviewer` and so on.
+
+5. **Start working.** Run `/sk:kickoff` in a new project, or `/sk:init-docs` in an existing codebase.
+
+## Keeping it up to date
+
+- **Commands, skills and agents:** `claude plugin update sk@shipkit`.
+  To update automatically, open `/plugin`, go to Marketplaces, select `shipkit` and choose Enable auto-update. It is off by default.
+- **Shipped docs in the project** (templates, SOPs, reference): `npx shipkit-cld@latest update .`.
+  A file you edited is kept, and the new version is written beside it as `<name>.sk-new`.
+
+## Sharing with a team
+
+Run this once in the repository and commit the `.claude/settings.json` it writes:
+
+```bash
+claude plugin marketplace add moniav/sk --scope project
 ```
-/plugin uninstall sk@shipkit
-```
 
-Your project's `docs/` (and any file-copied `.claude/` from step 4) are untouched —
-plugins never write project files.
+Each teammate gets the marketplace when they trust the folder, then installs the plugin.
 
-## Troubleshooting
+## Moving from copied files
 
-| If you see… | It means… | Do this |
-|-------------|-----------|---------|
-| A command says it can't find `.claude/skills/...` | The known path-reference limitation | Run `npx shipkit-cld` in the project (step 4) so the files exist, or use the npm channel |
-| `/sk:*` commands missing after install | Session predates the install | Start a new session |
-| Two copies of a command in the `/` menu | Plugin + file-copied project install coexist | Expected during the experimental phase; project files take precedence |
+1. `npx shipkit-cld remove .` removes the copied commands, skills and agents and keeps `docs/`.
+2. Install the plugin (steps 1 and 2 above).
+3. `npx shipkit-cld init .` fills any gaps in `docs/` and records that the project now uses the plugin.
 
-## Related guides
+Do not keep both. With the plugin and the copied files together, every command appears twice.
 
-- [Set up autonomous maintenance routines](./set-up-autonomous-routines.md)
-- [Run multiple agents on one project](./run-multiple-agents.md)
+## If something goes wrong
+
+| Symptom | Fix |
+|---------|-----|
+| `init` says SK is installed here as copied files | Follow [Moving from copied files](#moving-from-copied-files). |
+| Commands appear twice | The project still has `.claude/commands/sk/`. Run `npx shipkit-cld remove .`. |
+| `/sk:` commands are missing in a session | Run `claude plugin list` and check `sk@shipkit` is enabled, then start a new session. |
+| An update did not arrive | Updates are delivered when the plugin's version changes. Run `claude plugin update sk@shipkit`. |
+| `claude plugin details sk` shows "Agents (0)" | That command does not list agents declared in the manifest. They still load; ask Claude to list its `sk:` agent types to confirm. |

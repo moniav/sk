@@ -61,34 +61,49 @@ Every piece of work flows through three phases with explicit exit gates:
 
 ## Installation
 
+There are two ways to install SK. Pick one: with both, every command appears twice.
+
+### Recommended: the Claude Code plugin
+
+The plugin holds the commands, skills and agents. They live outside your project and update without touching it.
+
 ```bash
-# From your project root:
-npx shipkit-cld
+# Once per machine:
+claude plugin marketplace add moniav/sk
+claude plugin install sk@shipkit
 
-# Or targeting a specific directory:
-npx shipkit-cld /path/to/my-project
-
-# Minimal docs profile — core homes only (system, conventions, tasks, templates, sop);
-# other homes are created on demand by their doc-creator commands:
-npx shipkit-cld --minimal
+# Once per project, to scaffold docs/ and CLAUDE.md:
+npx shipkit-cld init
+npx shipkit-cld init --minimal   # core doc homes only; the rest are created on demand
 ```
 
-### Experimental: install as a Claude Code plugin
+Commands keep their `/sk:*` names. `init` only fills gaps: it never replaces a file you already have.
 
-```
-/plugin marketplace add moniav/sk
-/plugin install sk@shipkit
+To get new releases, run `claude plugin update sk@shipkit`, or turn on auto-update for the `shipkit` marketplace under `/plugin` → Marketplaces. Auto-update is off by default.
+
+To share SK with everyone working in a repository, run `claude plugin marketplace add moniav/sk --scope project` there once and commit the `.claude/settings.json` it writes.
+
+Full walkthrough: [plugin install guide](https://github.com/moniav/sk/blob/main/docs/user-guides/install-as-plugin.md).
+
+### Alternative: copy the files into the project
+
+Use this when a project must pin its own SK version, because a plugin is one version per user.
+
+```bash
+npx shipkit-cld                       # from your project root
+npx shipkit-cld /path/to/my-project   # or a specific directory
+npx shipkit-cld --minimal             # core doc homes only
 ```
 
-Commands keep their exact `/sk:*` names, and updates arrive natively. **Preview
-caveats:** the `docs/` scaffold still requires `npx shipkit-cld` (plugins don't
-scaffold project files), and some in-command references to `.claude/` files assume a
-project install — the npm channel above remains the recommended path until this note
-disappears. Full walkthrough: [plugin install guide](https://github.com/moniav/sk/blob/main/docs/user-guides/install-as-plugin.md).
+This copies the commands, skills and agents into the project's `.claude/` directory, next to the `docs/` scaffold.
+
+To move a project from copied files to the plugin: `npx shipkit-cld remove .` (keeps `docs/`), install the plugin, then `npx shipkit-cld init .`.
 
 ## Updating
 
-Three ways to update after SK has been changed:
+With the plugin, `claude plugin update sk@shipkit` updates commands, skills and agents, and `npx shipkit-cld@latest update .` refreshes the shipped templates, SOPs and reference docs in the project.
+
+With copied files, there are three ways to update after SK has been changed:
 
 ```bash
 # 1. From npm (latest published version):

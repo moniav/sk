@@ -4,6 +4,18 @@
 > **Status 2026-07-05:** format verified against official docs; experimental plugin
 > channel shipped (`.claude-plugin/plugin.json` + `marketplace.json` in this repo).
 > Remaining work below before the plugin channel can be recommended over npm.
+>
+> **Status 2026-10-04: superseded.** The remaining steps were carried out as items 1.9, 2.4 and 2.8 of
+> `2026-10-best-practices-enhancement-plan.md`, and the plugin is now the recommended channel.
+> What was settled, against the options listed below:
+> - The plugin root is `pkg/` (marketplace source `./pkg`), not the repository root.
+> - In-body paths: option 1 for commands (`${CLAUDE_PLUGIN_ROOT}`, confirmed to resolve in a command body),
+>   with `cli.mjs` rewriting the prefix for the file-copy channel. Files read with the Read tool get no
+>   substitution, so shared skills use paths relative to their own file. Option 2 (reference a skill by name)
+>   only works for model-invocable skills; it is used for `headless-operation` alone.
+> - `version` is set in `plugin.json` and must equal `package.json`.
+> - `npx shipkit-cld init` exists; `install`, `update` and `remove` stay for the file-copy channel.
+> - `agents` in the manifest must list files; a directory fails validation.
 
 ## End State
 

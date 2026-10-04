@@ -2,14 +2,24 @@
 
 ## Unreleased
 
-Correctness and safety fixes from the 2026-10 best-practices review
-(Wave 1 of the enhancement plan).
+Changes from the 2026-10 best-practices review: correctness and safety fixes (Wave 1),
+then discovery, paths, agents and deployment (Wave 2).
 
 **Upgrade notes:**
 Updates no longer overwrite files you edited: your version is kept and the new one is written beside it as `<name>.sk-new`.
 Seven commands that commit, push, publish or schedule (`commit`, `pr`, `finish`, `routines`, `founder`, `announce`, `campaign`) now run only when you type them.
 Review commands pre-approve fewer shell commands, so `git push` in `/sk:pr` and package-manager commands outside audit and listing in `/sk:deps` now ask for permission.
+Only six commands can now be started by Claude on its own (`debug`, `resume`, `task-status`, `new-task`, `plan`, `review`); type the others.
+Scheduled routines created before this release must be re-created with `/sk:routines`: their prompt has to start with the slash command.
+The plugin is now the recommended install: `claude plugin install sk@shipkit`, then `npx shipkit-cld init` in each project. Copied-file installs keep working.
 
+- **Skills are found again** - the eleven model-invoked skills have short trigger-first descriptions, and 47 of the 53 commands no longer add theirs to every turn. Always-loaded description text went from 7,270 to 3,680 characters. On Haiku, skills fired in 14% of the runs where they should before this change; the after figure is recorded in `dev-docs/evals/baselines/`.
+- **Plugin is the primary channel** - `pkg/` is the plugin root, so an install caches only what ships; the plugin has a version and updates on release; `npx shipkit-cld init [--minimal]` scaffolds `docs/` and `CLAUDE.md` only, fills gaps without replacing anything, and `update` then refreshes just the shipped docs.
+- **Paths work in both channels** - commands reference shared skills through `${CLAUDE_PLUGIN_ROOT}`, rewritten to `.claude/` when files are copied into a project; shared skills point at siblings relatively; agents are dispatched by type instead of general-purpose agents told to read an agent file.
+- **Agents** - new `plan-reviewer` (plan review moved out of `spec-reviewer`); reviewers have a turn cap; the implementer preloads the TDD and verification skills. Models are set by role: `debugger`, `architecture-reviewer` and `plan-reviewer` use the session's model, bounded agents `sonnet`, mechanical ones `haiku`, with one-tier escalation after repeated failure.
+- **Commands** - 19 more argument hints; every command that takes arguments places them explicitly; the `(project)` suffix is gone.
+- **Routines** - the scheduled prompt starts with the slash command and names the `headless-operation` skill instead of a file path.
+- **Evals** - `npm run evals` runs a 33-case trigger suite on Claude Code's `claude plugin eval` against a frozen copy of the plugin.
 - **Safe update** - `npx shipkit-cld update` works file by file. A managed file with local edits is kept and SK's version goes to a `.sk-new` sidecar; a file of yours that shares a name with an SK file is never overwritten, on install or update; an SK-created `CLAUDE.md` is refreshed only until you edit it; a file SK stops shipping is removed only if untouched. New flags: `--dry-run`, `--yes`, `--force`. The manifest records a hash per file, and `pkg/.sk-baselines.json` (generated from the release tags) lets installs from before this change upgrade without false positives.
 - **Permissions** - `allowed-tools` grants list read-only subcommands instead of whole binaries (`Bash(git:*)` covered `git push --force`; `Bash(gh:*)` covered `gh repo delete`; `/sk:deps` covered `npm publish`). Nine report-only commands set `disallowed-tools` so they cannot edit project files in the turn they run.
 - **Invocation control** - commands with side effects are user-invoked only; the five skills that commands load internally are hidden from the `/` menu.
