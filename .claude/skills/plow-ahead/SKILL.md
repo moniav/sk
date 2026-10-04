@@ -25,18 +25,9 @@ The user wants momentum over confirmation. Without this contract, agents either 
    | **Reserved decisions** | Anything the user explicitly said they want to decide |
    | **Hard-to-reverse design** | Wire format, public IDs, data-model shape — expensive to undo later |
 
-3. **Keep a running decision log** — every assumption you acted on.
+3. **Keep a decision trail:** one row for every assumption you acted on, in the format in `${CLAUDE_SKILL_DIR}/references/decision-trail.md` (`references/decision-trail.md` in this skill's directory). Read it before the first decision.
 
-4. **End with a recap** of every assumption, flagged so the user can correct any of them in one pass.
-
-## Decision Log Format
-
-```markdown
-| # | Decision point | Assumption made | Reversible? |
-|---|----------------|-----------------|-------------|
-| 1 | Date format unspecified | Used ISO-8601 | Yes — cheap to change |
-| 2 | No empty-state copy given | Wrote a neutral placeholder | Yes |
-```
+4. **End with the whole trail,** so the user can correct any assumption in one pass. For work the user stepped away from, audit the trail first, as that file describes.
 
 ## Relationship to escalation-rules
 
