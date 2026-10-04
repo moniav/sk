@@ -2,6 +2,12 @@
 
 Quick-reference for the codebase scan phase. Organized by what to search for and what it means.
 
+## Contents
+
+- Scan strategy
+- Signal to framework mapping: PII, PHI, payment, children's data, biometric, employee and HR, AI and ML, infrastructure, geography, third-party integrations
+- Scan output format
+
 ## Scan Strategy
 
 Run these scans in parallel using Grep and Glob. Focus on:
@@ -71,6 +77,15 @@ Run these scans in parallel using Grep and Glob. Focus on:
 | `voice_print`, `voiceprint` | Models, processing | Very High |
 | `facial_encoding`, `face_embedding` | ML models, processing | Very High |
 | `opencv`, `dlib`, `face-api` | package.json, imports | High |
+
+### Employee and HR Data Signals → Employment and Privacy Law
+
+| Search Pattern | Files to Check | Confidence |
+|---------------|---------------|------------|
+| `salary`, `compensation`, `payroll` | Models, schemas | HIGH if stored per person |
+| `employee_id`, `performance_review` | Models, schemas | HIGH |
+| `w2`, `w4`, `i9`, `benefits` | Models, forms, uploads | HIGH: tax and eligibility records |
+| `ssn`, `social_security` on an employee record | Models, schemas | HIGH: also a PII signal |
 
 ### AI/ML Signals → EU AI Act
 

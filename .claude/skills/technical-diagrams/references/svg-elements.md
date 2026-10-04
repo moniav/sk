@@ -2,6 +2,17 @@
 
 Copy-ready SVG patterns for technical diagrams. All elements follow the design system in `SKILL.md`.
 
+## Contents
+
+- Arrow markers
+- Nodes
+- Containers
+- Inner component boxes
+- Arrows and connections
+- Flow diagram elements
+- Legend / info box
+- Bottom notes
+
 ## Arrow Markers
 
 ```xml

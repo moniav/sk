@@ -55,15 +55,7 @@ Use the relevant headline formulas, page structures, and persuasion frameworks �
 
 ## Step 4: Write the Copy
 
-Produce **ready-to-use copy**, not outlines or suggestions.
-
-**Rules:**
-- Structure output with clear section headers — the user should be able to copy-paste
-- For headlines and CTAs, provide 3-5 numbered variants
-- Apply psychology principles naturally — don't label them
-- Every section earns its place — cut anything that doesn't advance the goal
-- Be specific: real numbers, concrete outcomes, named pain points
-- Match CTA intensity to commitment level
+Write it as the skill directs: ready-to-use copy under clear section labels, with numbered variants for headlines and CTAs.
 
 ## Step 5: Present & Iterate
 
