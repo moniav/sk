@@ -1,6 +1,6 @@
 # Best-Practices Enhancement Plan (post-v2.0.0)
 
-> **Status 2026-10-03:** Waves 1 and 2 implemented on branches `feat/best-practices-wave-1` and `feat/best-practices-wave-2` (wave 2 is stacked on wave 1; neither is merged or released). Waves 3 and 4 not started. All fourteen decisions settled by the maintainer the same day.
+> **Status 2026-10-03:** Waves 1, 2 and 3 implemented on branches `feat/best-practices-wave-1`, `-wave-2` and `-wave-3` (each stacked on the one before; none merged or released). Item 4.1 (`/sk:help`) was done with Wave 3. The rest of Wave 4 is not started. All fourteen decisions settled by the maintainer the same day.
 > Source: a review of all 23 skills, 53 commands and 8 agents against Anthropic's current docs, plus three external skill repos.
 > Revised the same day to add safe update (1.8), the plugin manifest fix (1.9), the model policy (2.6) and deployment (2.8).
 > Every item names the files it touches and a check that proves it is done.
@@ -372,6 +372,49 @@ The trade-off is one plugin version per user; projects that need a pinned versio
 ## Wave 3: Content quality and proof (target v2.2.0)
 
 Guarded by the Wave 2 evals: no rewrite merges if behaviour evals regress.
+
+### Wave 3 status: implemented, eval gate still open
+
+Every item is committed on `feat/best-practices-wave-3`, and `npm test` passes with no errors.
+
+**The eval gate has not been passed.**
+The trigger suite was run against the Wave 3 code, but 75 of its 99 runs failed with "You've hit your session limit" (the account's usage limit, reached during this work), so the result is void and was deleted.
+`scripts/eval-summary.mjs` now excludes runs that failed on an account or rate limit and exits non-zero when more than 10% are void.
+Before merging Wave 3, run:
+
+```
+npm run evals -- --snapshot feat/best-practices-wave-3 --tag trigger --model haiku -j 4 --max-cost-usd 5 --json dev-docs/evals/baselines/wave3-haiku.json
+node scripts/eval-summary.mjs dev-docs/evals/baselines/wave2-haiku.json dev-docs/evals/baselines/wave3-haiku.json
+```
+
+Wave 3 changed the bodies of three model-invoked skills (`technical-writing`, `test-driven-development`, `verification-before-completion`) but none of the descriptions, so trigger rates are not expected to move. That is a prediction, not a measurement.
+There are still no behaviour evals (they need `Bash`, which the eval tool refuses on native Windows), so the shortened commands were checked by reading them, not by running them.
+
+What was done, against the items below:
+
+| Item | Result |
+|------|--------|
+| 3.1 No-op pass | Every command is at or under 200 lines except `council` (398 to 332). About 235 of council's lines are dispatch prompts and report templates; moving them to a template file would get it under 200 and is left for Wave 4 with the council changes. `context-priming` was not trimmed. |
+| 3.2 Legal split, duplication | `legal-advisor/SKILL.md` 361 to 48 lines with three new reference files; `legal-scan` 323 to 32; `copywriting` 155 to 59. `ops` was already a thin router. Contents lists added; TDD `anti-patterns.md` moved to `references/`. |
+| 3.3 Gates and reply contracts | Sixteen commands and the `debugger` agent. Applied to more commands than the item listed. |
+| 3.4 Evidence protocol | `verification-before-completion`, `/sk:test`, five reviewer agents, review commands. |
+| 3.5 TDD | Escape hatch, two anti-patterns, runner-neutral examples. |
+| 3.6 Writing rules | `technical-writing/references/plain-writing-rules.md`, wired into eight commands and `copywriting`. |
+| 3.7 Em dashes | `pkg/docs/` is at zero (291 removed). 991 remain in `pkg/.claude/`, in lines that were not otherwise edited. |
+| Finding from Wave 2 | Three always-on rules added to `pkg/CLAUDE.md` (99 lines). `stay-within-limits`, `subagent-driven-development` and `technical-writing` are reached through the commands that use them. |
+| 4.1 `/sk:help` | Done early. `npm test` fails if a command is missing from it. |
+| Docs and flows | README, command reference, SK's project context and architecture docs, two new flow docs, README diagrams re-rendered. |
+
+How the rewrite was done: the em dash cleanup and the command trims were delegated to six parallel subagents with written constraints, and their output was checked by `npm test`, by diff size, and by reading `debug.md` and `finish.md` in full. The other fourteen rewritten commands were not read line by line.
+
+Things that changed behaviour, beyond wording:
+
+- `/sk:debug` writes the regression test before the fix (it was after).
+- `/sk:test` treats an untested criterion as blocking.
+- `/sk:init-docs` no longer creates `.claude/commands/sk` in the project.
+- `/sk:deps` uses `cargo tree --locked` in place of `cargo verify-project`, which its permissions did not cover.
+- `/sk:update-docs` updates the master index before writing its report (the two steps were swapped).
+- The subtask line format is `**ST-1** \`[DEV]\`: description` everywhere (was an em dash).
 
 ### 3.1 The no-op pass
 
