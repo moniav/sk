@@ -11,6 +11,8 @@ Create a step-by-step procedure in `docs/sop/` for a recurring development task.
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Write the text to the rules in `${CLAUDE_PLUGIN_ROOT}/.claude/skills/technical-writing/references/plain-writing-rules.md` (`docs/business/brand-voice.md` overrides them if it exists).
+
 ## When to Use
 
 Create an SOP when:

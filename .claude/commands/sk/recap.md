@@ -13,6 +13,8 @@ Turn a completed change into a structured, reviewer-facing recap so a human (or 
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Write the text to the rules in `.claude/skills/technical-writing/references/plain-writing-rules.md` (`docs/business/brand-voice.md` overrides them if it exists).
+
 **Report-only.** This command does not modify project files. The only file it may write is its recap under `docs/reviews/recap/`.
 
 **Distinct from:** `/sk:changelog` (user-facing release notes) and `/sk:retro` (lessons learned). This is a reviewer's map of a single unit of work.

@@ -5,110 +5,35 @@ description: Writes technical documentation, such as READMEs, API docs, guides, 
 
 # Technical Writing
 
-Write documentation that developers actually read and find useful.
+Documentation a developer can act on, and that is true of the code as it is today.
 
-## When This Activates
+## Before writing
 
-- Creating or rewriting a README
-- Writing API documentation
-- Creating onboarding/getting-started guides
-- Writing architecture or design documents
-- Documenting runbooks or operational procedures
-- When the user asks to "document X" or "write docs for X"
+1. **Name the reader and what they are trying to do.** Lead the document with that.
+2. **Read the code the document describes.** Every command, path, flag, endpoint and example must exist. Run commands where you can. Never document a feature that is planned.
+3. **Find the right home and template.** `docs/README.md` maps the doc tree; `docs/templates/` has a template for most doc types (`feature-doc.md`, `component-doc.md`, `user-guide.md`, `sop-procedure.md`, `adr-decision.md`, `flow-diagram.md`). Use the template instead of inventing a structure. A README at the repository root has no template: quick start first, then usage, reference, configuration.
+4. **Check for an existing doc.** Update it, or link to it, rather than writing a second one.
 
-## Core Principles
+## While writing
 
-1. **Start with the user's goal** — What is the reader trying to accomplish? Lead with that.
-2. **Show, don't just tell** — Code examples > descriptions. Working examples > theoretical explanations.
-3. **Progressive disclosure** — Quick start first, details later. Don't frontload complexity.
-4. **Be precise** — Vague docs are worse than no docs. Specify versions, exact commands, expected outputs.
-5. **Stay current** — Only document what actually exists in the code right now.
+- Follow `references/plain-writing-rules.md` in this skill's directory. Read it before the first draft.
+- Quick start before detail. A reader should be able to succeed with the first screen.
+- Show a working example for anything a reader will type or call. State expected output.
+- State versions, exact commands and exact paths. A vague instruction is worse than none.
+- Describe behaviour, not implementation that will change.
+- Link to other docs instead of repeating them.
 
-## Document Structures
+## SK doc conventions
 
-### README
-```
-# Project Name
-One-line description.
+- Evergreen docs carry `**Last updated:**` and `**Lifecycle:**` fields (see `docs/conventions/doc-lifecycle.md`). Set both.
+- A doc that describes code names it in a `Source:` field, so `/sk:docs-audit` can detect drift.
+- Add the new doc to its section's `README.md` index.
+- Skip any convention file that is empty or still a template; match the existing docs instead.
 
-## Quick Start
-3-5 steps to get running.
+## Done when
 
-## Usage
-Common use cases with code examples.
-
-## API / Commands
-Reference for available interfaces.
-
-## Configuration
-What can be configured and how.
-
-## Contributing (if open source)
-How to set up dev environment and submit changes.
-```
-
-### API Documentation
-```
-## Endpoint / Function Name
-One-line purpose.
-
-**Parameters:**
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-
-**Returns:** What it returns, with example.
-
-**Example:**
-[Working code example]
-
-**Errors:** What can go wrong.
-```
-
-### Getting Started Guide
-```
-## Prerequisites
-What you need before starting (be specific about versions).
-
-## Installation
-Exact steps, copy-pasteable commands.
-
-## First [thing]
-Walk through the simplest possible use case.
-
-## Next Steps
-Where to go from here (link to other docs).
-```
-
-### Architecture Document
-```
-## Overview
-What the system does (1-2 paragraphs).
-
-## Key Components
-What the major pieces are and what they do.
-
-## Data Flow
-How data moves through the system.
-
-## Key Decisions
-Why it's built this way (link to ADRs).
-```
-
-## Writing Rules
-
-- **Use active voice** — "The server processes requests" not "Requests are processed by the server"
-- **Use present tense** — "This function returns" not "This function will return"
-- **One idea per sentence** — If a sentence has "and" or "but", consider splitting it
-- **Code examples must work** — Verify against the actual codebase. Never invent API that doesn't exist.
-- **No filler** — Cut "In order to", "It should be noted that", "As mentioned above"
-- **Heading hierarchy matters** — Don't skip levels. Use headings to enable scanning.
-- **Link don't duplicate** — Reference other docs rather than copying content
-
-## Anti-Patterns to Avoid
-
-- Writing docs that describe the code structure instead of how to USE the code
-- Documenting implementation details that will change (document behavior instead)
-- Over-documenting simple things while under-documenting complex things
-- Using jargon without explanation in docs meant for newcomers
-- Writing a wall of text with no code examples
-- Documenting aspirational features ("will support X") — only document what exists now
+- [ ] Every command, path and example was checked against the code, and the ones that can run were run
+- [ ] A reader can complete the quick start without leaving the page
+- [ ] `Last updated`, `Lifecycle` and (where it applies) `Source` are set
+- [ ] The section index links to the doc
+- [ ] The text passes the self-check in `references/plain-writing-rules.md`

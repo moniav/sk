@@ -13,6 +13,8 @@ aspirations.
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Write the text to the rules in `.claude/skills/technical-writing/references/plain-writing-rules.md` (`docs/business/brand-voice.md` overrides them if it exists).
+
 **Use when:** A feature or subsystem is worth a standalone explainer (what it does, how it
 works, how to extend it). For system-level design use `docs/architecture/`; for diagrams
 use `/sk:new-flow`.

@@ -41,6 +41,8 @@ gh pr create --title "<title>" --body "<body>"
 If the repo has a PR template (`.github/pull_request_template.md`), fill that
 structure instead of inventing one.
 
+Write the text to the rules in `${CLAUDE_PLUGIN_ROOT}/.claude/skills/technical-writing/references/plain-writing-rules.md` (`docs/business/brand-voice.md` overrides them if it exists).
+
 ## Step 4: Report
 
 Return the PR URL. If a task file is active (`docs/tasks/.current`), add the PR

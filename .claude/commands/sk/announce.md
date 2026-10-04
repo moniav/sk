@@ -9,6 +9,8 @@ disable-model-invocation: true
 Close the ship-to-market loop: turn a changelog entry into coordinated launch
 assets. Pairs with `/sk:release` (which cuts the version this announces).
 
+Write the text to the rules in `.claude/skills/technical-writing/references/plain-writing-rules.md` (`docs/business/brand-voice.md` overrides them if it exists).
+
 ## Step 1: Read Context
 
 1. `CHANGELOG.md` — the entry for `$ARGUMENTS` version, or the latest entry
