@@ -1,6 +1,6 @@
 # Best-Practices Enhancement Plan (post-v2.0.0)
 
-> **Status 2026-10-03:** Wave 1 implemented on branch `feat/best-practices-wave-1` (not yet merged or released). Waves 2 to 4 not started. All fourteen decisions settled by the maintainer the same day.
+> **Status 2026-10-03:** Waves 1 and 2 implemented on branches `feat/best-practices-wave-1` and `feat/best-practices-wave-2` (wave 2 is stacked on wave 1; neither is merged or released). Waves 3 and 4 not started. All fourteen decisions settled by the maintainer the same day.
 > Source: a review of all 23 skills, 53 commands and 8 agents against Anthropic's current docs, plus three external skill repos.
 > Revised the same day to add safe update (1.8), the plugin manifest fix (1.9), the model policy (2.6) and deployment (2.8).
 > Every item names the files it touches and a check that proves it is done.
@@ -203,6 +203,56 @@ The experimental plugin channel advertised in the README is therefore probably n
 
 The model can only use a skill whose description it can see.
 In a real session the descriptions of SK's ten model-invoked skills were dropped from the listing; only their names remained.
+
+### Wave 2 status: implemented
+
+Every item is committed on `feat/best-practices-wave-2`, and `npm test` passes with no errors.
+Remaining work for v2.1.0: merge, bump both versions, rename the changelog's `Unreleased` heading, tag, `npm run baselines`, publish.
+
+**Measured result (2.1, 2.2, 2.3).**
+The 33-case trigger suite on Haiku, three runs per case, each against a frozen copy of the code:
+
+| | Fired when it should | Stayed quiet when it should | Cost |
+|---|---|---|---|
+| Wave 1 code | 14% | 100% | $3.53 |
+| Wave 2 code | 23% | 100% | $4.05 |
+
+`test-driven-development` went from 0% to 50%, `error-recovery` from 0% to 33%, `technical-diagrams` from 0% to 17%; nothing regressed.
+Six skills never fired in either run: `escalation-rules`, `plow-ahead`, `stay-within-limits`, `subagent-driven-development`, `technical-writing`, `verification-before-completion`.
+Results are in `dev-docs/evals/baselines/`; `node scripts/eval-summary.mjs <before> <after>` prints the table.
+
+How to read this:
+
+- The eval loads only SK, so the listing never overflows there.
+  It measures the wording of the descriptions, not the larger effect of gating 47 commands, which is that descriptions stop being dropped in a session with other skill packs installed.
+  That effect was observed directly: before the change a real session listed these skills by name only, and after it the full descriptions appear.
+- A run is one prompt in an empty workspace with no shell or write access, so it understates skills that fire mid-task.
+- Only Haiku was measured. Sonnet and Opus were not run, to limit spend; the plan asked for all three.
+- **Finding for Wave 3:** the six skills that never fire are rules about how to behave (stop after three failures, verify before claiming done), not tasks a user asks for.
+  A description cannot trigger on something the user did not say.
+  They are better delivered as always-on lines in `pkg/CLAUDE.md`, preloaded into agents with `skills:`, or referenced from the commands where they apply, than as model-invoked skills.
+
+What differs from the item text below:
+
+- **2.1:** the built-in `claude plugin eval` is used; no custom harness was needed for trigger cases.
+  Behaviour cases for `dev`, `test` and `debug` are not written: they need `Bash`, which the tool refuses on native Windows (no sandbox backend). They need WSL2 or CI.
+  The tool requires git 2.31 or no git; this machine has 2.28, so `scripts/evals.mjs` hides git from the run.
+- **2.2:** the listing went from 7,270 characters at v2.0.0 (6,655 after Wave 1) to 3,680, which is 49% lower. The 60% target was not reached; the remainder is eleven skill descriptions at the recommended length.
+  Because a gated command cannot be invoked by the model, `finish` and `review` read `code-review.md` and `ui-review.md` by path, and the routine prompt template now starts with the slash command.
+  Verified with a probe command that a gated command runs from `claude -p "/cmd ..."` and is refused when the prompt only asks the model to run it.
+  **Existing scheduled routines must be re-created.**
+- **2.4:** a variable is substituted only in content Claude Code loads itself.
+  So commands use `${CLAUDE_PLUGIN_ROOT}` (confirmed to resolve in a plugin command), and skills that are read with the Read tool use paths relative to their own file.
+  `headless-operation` was made model-invocable (still hidden from the menu), because a stored scheduled prompt cannot carry an install path.
+  `orchestrate` was dispatching `general-purpose` agents told to follow an agent file, which bypassed each agent's tools and model; it now dispatches the real agent types.
+- **2.5 and 2.6:** committed together. `maxTurns` is 30 for the reviewers and `dependency-analyzer`.
+  The escalation ladder is `haiku`, `sonnet`, `opus`.
+- **2.8:** `init` records `channel: plugin` in the manifest, and `update` then refreshes only the shipped docs.
+  Verified: a fresh install caches only the contents of `pkg/`; a new commit with an unchanged version reports "already at the latest version"; a plugin command reads its shared skill in a project with no copied SK files.
+  Not verified: the full lifecycle (`new-task` through `finish`) from a plugin-only install, and the GitHub Actions workflow, which has not run.
+  `claude plugin validate ./pkg --strict` warns that `pkg/CLAUDE.md` is not loaded as plugin context; that file is the template the CLI copies, so the warning is expected. Validation from the repository root passes strictly.
+
+Noticed, not fixed: SK's own dogfood docs are stale (`docs/system/project-context.md` says 5 agents; `docs/architecture/README.md` lists 4).
 
 ### 2.1 Build the eval harness first
 
