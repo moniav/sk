@@ -3,7 +3,7 @@
 ## Unreleased
 
 Changes from the 2026-10 best-practices review: correctness and safety fixes (Wave 1),
-then discovery, paths, agents and deployment (Wave 2).
+then discovery, paths, agents and deployment (Wave 2), then content quality and proof (Wave 3).
 
 **Upgrade notes:**
 Updates no longer overwrite files you edited: your version is kept and the new one is written beside it as `<name>.sk-new`.
@@ -11,8 +11,19 @@ Seven commands that commit, push, publish or schedule (`commit`, `pr`, `finish`,
 Review commands pre-approve fewer shell commands, so `git push` in `/sk:pr` and package-manager commands outside audit and listing in `/sk:deps` now ask for permission.
 Only six commands can now be started by Claude on its own (`debug`, `resume`, `task-status`, `new-task`, `plan`, `review`); type the others.
 Scheduled routines created before this release must be re-created with `/sk:routines`: their prompt has to start with the slash command.
+`/sk:test` now reports each acceptance criterion as passed, failed or untested, and a task is not done while any is untested.
+Tests may be skipped when writing one first is impractical, but only with the reason stated and another executable check run instead.
 The plugin is now the recommended install: `claude plugin install sk@shipkit`, then `npx shipkit-cld init` in each project. Copied-file installs keep working.
 
+- **`/sk:help`** - a new command (54 in total) that maps a situation to the command that fits, or prints the whole flow.
+- **Proof over claims** - `verification-before-completion` adds a proof scale (stated, pointed, walked, ran, reproduced), three results per criterion, the revision tested, and before-and-after capture for bug fixes. `/sk:test` is rebuilt around it. Reviewer agents and review commands say how far each finding was proven.
+- **Checkable gates and reply contracts** - sixteen commands and the debugger agent now end each gate on something that can be shown, keep their non-negotiable rules at the top, and end with a line stating what the final reply must contain. `/sk:debug` allows no hypothesis before a reproduction has run, and writes the regression test before the fix.
+- **Shorter prompts** - sentences that did not change behaviour were removed: `legal-scan` 323 to 32 lines, `legal-advisor` 361 to 48 (detail moved to reference files), `init-docs` 302 to 199, `orchestrate` 300 to 200, `update-docs` 280 to 171, `test` 205 to 104, `copywriting` 155 to 59. Every command except `council` is at or under 200 lines.
+- **Always-on behaviour rules** - evidence before "done", stop after three failed attempts, and what "just do it" permits are now three lines in the template `CLAUDE.md`, because the skills that carried them never fired on their own in the evals.
+- **TDD** - an escape hatch for when a test first is impractical, two new anti-patterns (an expected value recomputed the way the code does; all tests written before any code), runner-neutral examples.
+- **Plain-writing rules** - one shared reference (21 rules plus four optional style rules) used by technical writing, copywriting, PR bodies, changelogs, announcements and doc-creating commands. Adapted from the `unslop` skill in cursor/plugins (MIT).
+- **No em dashes in shipped docs** - 291 removed from the templates, SOPs and reference docs that are copied into projects, each sentence rewritten rather than swapped for a hyphen.
+- **Docs and diagrams** - README diagrams re-rendered (the command map is now a compact two-row map), SK's own architecture, project context and flow docs rewritten for the two install channels.
 - **Skills are found again** - the eleven model-invoked skills have short trigger-first descriptions, and 47 of the 53 commands no longer add theirs to every turn. Always-loaded description text went from 7,270 to 3,680 characters. Measured on Haiku with the 33-case trigger suite: skills fired in 14% of the runs where they should before this change and 23% after, with no wrong fires either way.
 - **Plugin is the primary channel** - `pkg/` is the plugin root, so an install caches only what ships; the plugin has a version and updates on release; `npx shipkit-cld init [--minimal]` scaffolds `docs/` and `CLAUDE.md` only, fills gaps without replacing anything, and `update` then refreshes just the shipped docs.
 - **Paths work in both channels** - commands reference shared skills through `${CLAUDE_PLUGIN_ROOT}`, rewritten to `.claude/` when files are copied into a project; shared skills point at siblings relatively; agents are dispatched by type instead of general-purpose agents told to read an agent file.
