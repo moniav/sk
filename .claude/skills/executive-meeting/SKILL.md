@@ -45,7 +45,11 @@ Selected by argument or inferred from the founder's opening:
   → decisions → close.
 - **grill <topic>** — adversarial stress-test. Forcing questions grounded in the
   company's own docs (goals, positioning, board, decision log) — never generic.
-  Unanswered questions become open threads in `STATE.md` and are re-asked next time.
+  Run it as `../interviewing/SKILL.md` describes (path relative to this file): rounds of
+  numbered questions, facts looked up rather than asked, but with one difference: in a
+  grill the executive states its own position on each question instead of a neutral
+  recommendation. Unanswered questions become open threads in `STATE.md` and are
+  re-asked next time.
 - **product <idea>** — structured feedback through the charter's lens. Must end in a
   position: **proceed / park / kill** + the evidence that would flip it. Never an
   option survey. "Proceed" hands off to the appropriate command with the framing

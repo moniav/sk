@@ -76,7 +76,7 @@ Before proceeding to the plan, explicitly list what you're assuming and flag wha
 1. **List assumptions** — Write down everything you believe to be true but haven't verified
 2. **Flag ambiguity** — Identify requirements that could be interpreted multiple ways
 3. **Present interpretations** — For each ambiguity, state the possible interpretations and your recommendation
-4. **Confirm with user**: do not exit PLAN while any row's Status is still Assumed or Ambiguous
+4. **Confirm with user**, following `.claude/skills/interviewing/SKILL.md`: look up every assumption that is a fact (read the code or the docs) and mark it Confirmed yourself; put only the real decisions to the user, in rounds, each with your recommended answer. Do not exit PLAN while any row's Status is still Assumed or Ambiguous
 
 ```markdown
 ### Assumptions & Clarifications

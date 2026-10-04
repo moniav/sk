@@ -129,6 +129,8 @@ Every recommendation that could change the design needs a cited source (primary-
 
 ## Step 6: Structure into Epic + Tasks
 
+The exploration above is a conversation. Settling the decisions the epic depends on is not: before writing any file, list the decisions still open for the chosen direction (scope edges, what is in the first task, what is explicitly out) and resolve them following `${CLAUDE_PLUGIN_ROOT}/.claude/skills/interviewing/SKILL.md`, in rounds, each question with your recommended answer.
+
 Scope: **L/XL (3+ tasks)** gets an Epic + Tasks; **M (single deliverable)** gets a standalone Task and no Epic.
 
 ### 6a. Create the Epic (if L/XL)
