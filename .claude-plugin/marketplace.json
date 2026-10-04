@@ -3,12 +3,12 @@
   "owner": {
     "name": "moniav"
   },
-  "description": "ShipKit marketplace — SK, the documentation & lifecycle system for Claude Code",
+  "description": "ShipKit marketplace: SK, the documentation and lifecycle system for Claude Code",
   "plugins": [
     {
       "name": "sk",
-      "source": "./",
-      "description": "Plan/Dev/Test lifecycle, doc system, autonomy stack — 53 commands, 23 skills, 9 agents (experimental plugin channel)",
+      "source": "./pkg",
+      "description": "Plan, Dev, Test lifecycle, doc system and autonomy stack: 53 commands, 23 skills, 9 agents",
       "license": "MIT"
     }
   ]

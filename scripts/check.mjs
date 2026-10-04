@@ -122,7 +122,7 @@ const countPatterns = {
 };
 const countFiles = [
   "package.json",
-  ".claude-plugin/plugin.json",
+  "pkg/.claude-plugin/plugin.json",
   ".claude-plugin/marketplace.json",
   "Readme.md",
   "CLAUDE.md",
@@ -281,15 +281,28 @@ for (const name of skillNames) {
   if (frontmatter(read(join(skillsDir, name, "SKILL.md")))?.fields.model) err("models", `skills/${name}: skills must not set a model`);
 }
 
-// --- 6. Plugin manifest lists exactly the shipped agents (plan item 1.9) ---
+// --- 6. Plugin manifest (plan items 1.9, 2.8) ---
 
 {
-  const manifest = JSON.parse(read(join(ROOT, ".claude-plugin", "plugin.json")));
+  // pkg/ is the plugin root, so an install caches only what ships.
+  const manifest = JSON.parse(read(join(PKG, ".claude-plugin", "plugin.json")));
   const listed = Array.isArray(manifest.agents) ? manifest.agents : [manifest.agents];
-  const expected = agentFiles.map((f) => `./pkg/.claude/agents/${f}`);
+  const expected = agentFiles.map((f) => `./.claude/agents/${f}`);
   if (JSON.stringify([...listed].sort()) !== JSON.stringify(expected)) {
-    err("plugin", `.claude-plugin/plugin.json "agents" must list each agent file: ${expected.join(", ")}`);
+    err("plugin", `pkg/.claude-plugin/plugin.json "agents" must list each agent file: ${expected.join(", ")}`);
   }
+  // A set version pins users until it changes, so it must move with every release.
+  const pkgVersion = JSON.parse(read(join(ROOT, "package.json"))).version;
+  if (manifest.version !== pkgVersion) err("plugin", `plugin.json version ${manifest.version} does not match package.json ${pkgVersion}`);
+
+  const marketplace = JSON.parse(read(join(ROOT, ".claude-plugin", "marketplace.json")));
+  const entry = marketplace.plugins.find((p) => p.name === manifest.name);
+  if (!entry) err("plugin", `marketplace.json has no entry named "${manifest.name}"`);
+  else {
+    if (entry.source !== "./pkg") err("plugin", `marketplace.json must install "${manifest.name}" from ./pkg (found ${JSON.stringify(entry.source)})`);
+    if (entry.version) err("plugin", "marketplace.json must not set a version; plugin.json is the single source");
+  }
+  if (existsSync(join(ROOT, ".claude-plugin", "plugin.json"))) err("plugin", "a second plugin.json at the repository root would shadow pkg/");
 }
 
 // --- 7. Ratchets: reported so they only go down ---
@@ -454,6 +467,47 @@ if (!staticOnly) {
     if (!readManifest(tmp).files) err("update", "the manifest was not upgraded with per-file hashes");
   });
 
+  // init (plan item 2.8): docs/ and CLAUDE.md only, for projects that use the plugin.
+  // It fills gaps, never replaces a file, and is safe to re-run.
+  scratch((tmp) => {
+    const ownDoc = join(tmp, "docs", "README.md");
+    mkdirSync(dirname(ownDoc), { recursive: true });
+    writeFileSync(ownDoc, "mine\n");
+
+    const init = runCli(["init", "."], tmp);
+    if (init.status !== 0) return err("init", `cli.mjs init exited ${init.status}: ${init.stderr.trim()}`);
+    if (existsSync(join(tmp, ".claude", "commands")) || existsSync(join(tmp, ".claude", "skills")) || existsSync(join(tmp, ".claude", "agents"))) {
+      err("init", "init copied commands, skills or agents into the project");
+    }
+    if (read(ownDoc) !== "mine\n") err("init", "init replaced a doc the project already had");
+    if (!existsSync(join(tmp, "docs", "templates", "task-prd.md"))) err("init", "init did not scaffold docs/templates");
+    if (!existsSync(join(tmp, "CLAUDE.md"))) err("init", "init did not create CLAUDE.md");
+    const manifest = readManifest(tmp);
+    if (manifest.channel !== "plugin") err("init", "manifest does not record the plugin channel");
+    if ("docs/README.md" in manifest.files) err("init", "a doc the project already had was recorded as SK-managed");
+    if (Object.keys(manifest.files).some((f) => f.startsWith(".claude/"))) err("init", "manifest lists .claude/ files in a plugin-channel project");
+
+    const before = snapshot(join(tmp, "docs"));
+    const again = runCli(["init", "."], tmp);
+    if (again.status !== 0 || JSON.stringify(snapshot(join(tmp, "docs"))) !== JSON.stringify(before)) err("init", "re-running init changed docs/");
+
+    // update keeps working for the shipped docs, and still leaves the project's own files alone.
+    appendFileSync(join(tmp, "docs", "templates", "task-prd.md"), "\nUSER EDIT\n");
+    const update = runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
+    if (update.status !== 0) err("init", `update after init exited ${update.status}: ${update.stderr.trim()}`);
+    if (read(ownDoc) !== "mine\n") err("init", "update replaced a doc the project already had");
+    if (!read(join(tmp, "docs", "templates", "task-prd.md")).includes("USER EDIT")) err("init", "update after init overwrote an edited template");
+    if (existsSync(join(tmp, ".claude", "commands"))) err("init", "update after init copied commands into a plugin-channel project");
+    if (readManifest(tmp).channel !== "plugin") err("init", "update dropped the plugin channel from the manifest");
+  });
+
+  // init refuses to mix channels: a file-copy install has to be removed first.
+  scratch((tmp) => {
+    runCli([".", "--yes"], tmp);
+    const init = runCli(["init", "."], tmp);
+    if (init.status === 0) err("init", "init ran on top of a file-copy install");
+  });
+
   // The release baselines are generated; they must match the tags.
   {
     const baselines = spawnSync(process.execPath, [join(ROOT, "scripts", "baselines.mjs"), "--check"], { cwd: ROOT, encoding: "utf-8" });
@@ -493,7 +547,7 @@ if (!staticOnly) {
     }
   }
 
-  const claude = spawnSync("claude plugin validate .", { cwd: ROOT, encoding: "utf-8", shell: true });
+  const claude = spawnSync("claude plugin validate . --strict", { cwd: ROOT, encoding: "utf-8", shell: true });
   if (claude.error || /not recognized|not found/i.test(claude.stderr || "")) {
     console.log("[INFO] claude CLI not on PATH -- skipped plugin validation");
   } else if (claude.status !== 0) {

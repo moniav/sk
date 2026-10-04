@@ -1,0 +1,3189 @@
+{
+  "schemaVersion": 1,
+  "claudeVersion": "2.1.288",
+  "startedAt": "2026-10-03T20:31:27.267Z",
+  "durationSeconds": 593,
+  "costUsd": 3.5344203999999997,
+  "partial": false,
+  "suite": {
+    "root": "C:\\Users\\monia\\AppData\\Local\\Temp\\sk-evals-KvjL2f\\sk",
+    "ablation": "none",
+    "modelOverride": "haiku",
+    "tagFilters": [
+      "trigger"
+    ],
+    "threshold": 1,
+    "concurrency": 4,
+    "plugins": [
+      {
+        "name": "sk",
+        "path": "C:\\Users\\monia\\AppData\\Local\\Temp\\sk-evals-KvjL2f\\sk"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "handbook-to-pdf",
+      "dir": "dev-docs\\evals\\trigger\\create-pdf\\handbook-to-pdf",
+      "source": "prose",
+      "promptMarkdown": "Turn docs/handbook.md into a PDF I can send to the board, with page numbers.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?create-pdf\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 5,
+            "costUsd": 0.029915200000000003,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:31:27.936Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-Gf8ITl\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 1x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 5,
+            "costUsd": 0.029416300000000003,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:31:27.936Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-Lmizx8\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 1x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 5,
+            "costUsd": 0.029765100000000003,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:31:27.936Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-OiUAZY\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 1x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "printable-readme",
+      "dir": "dev-docs\\evals\\trigger\\create-pdf\\printable-readme",
+      "source": "prose",
+      "promptMarkdown": "Export the README as a printable document.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?create-pdf\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.025358600000000002,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:31:27.936Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-nVimno\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.0249425,
+            "judgeCostUsd": 0,
+            "durationSeconds": 11,
+            "startedAt": "2026-10-03T20:31:40.124Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-TnHh0O\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.022535,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:31:40.124Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-S1JiQu\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "what-is-pdfa",
+      "dir": "dev-docs\\evals\\trigger\\create-pdf\\what-is-pdfa",
+      "source": "prose",
+      "promptMarkdown": "Summarize what a PDF/A file is in two sentences.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?create-pdf\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.017801900000000002,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:31:40.235Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-Yyhk24\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0178319,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:31:40.351Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-BJcYZ8\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0178329,
+            "judgeCostUsd": 0,
+            "durationSeconds": 8,
+            "startedAt": "2026-10-03T20:31:47.123Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-XpfYJ6\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "lockfile-conflict",
+      "dir": "dev-docs\\evals\\trigger\\error-recovery\\lockfile-conflict",
+      "source": "prose",
+      "promptMarkdown": "The build broke right after I bumped dependencies and the lockfile has conflict markers. Sort it out.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?error-recovery\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.05887305000000001,
+            "judgeCostUsd": 0,
+            "durationSeconds": 42,
+            "startedAt": "2026-10-03T20:31:47.742Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-ws7ro1\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.0271116,
+            "judgeCostUsd": 0,
+            "durationSeconds": 16,
+            "startedAt": "2026-10-03T20:31:50.262Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-w2nOTU\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.027360199999999998,
+            "judgeCostUsd": 0,
+            "durationSeconds": 15,
+            "startedAt": "2026-10-03T20:31:50.722Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-sQLZ9n\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "merge-vs-rebase",
+      "dir": "dev-docs\\evals\\trigger\\error-recovery\\merge-vs-rebase",
+      "source": "prose",
+      "promptMarkdown": "What's the difference between git merge and git rebase?",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?error-recovery\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0193609,
+            "judgeCostUsd": 0,
+            "durationSeconds": 9,
+            "startedAt": "2026-10-03T20:31:54.907Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-yFQHJZ\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0195099,
+            "judgeCostUsd": 0,
+            "durationSeconds": 9,
+            "startedAt": "2026-10-03T20:32:03.859Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-ESFqQx\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0198939,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:32:05.932Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-k1v6AY\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "rebase-blew-up",
+      "dir": "dev-docs\\evals\\trigger\\error-recovery\\rebase-blew-up",
+      "source": "prose",
+      "promptMarkdown": "My rebase blew up halfway and now git says I'm in a detached HEAD with conflicts in six files. Get me back to a working state.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?error-recovery\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.027506000000000003,
+            "judgeCostUsd": 0,
+            "durationSeconds": 16,
+            "startedAt": "2026-10-03T20:32:06.220Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-Bvygvy\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.0226219,
+            "judgeCostUsd": 0,
+            "durationSeconds": 9,
+            "startedAt": "2026-10-03T20:32:13.204Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-gmUICI\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.061748050000000006,
+            "judgeCostUsd": 0,
+            "durationSeconds": 49,
+            "startedAt": "2026-10-03T20:32:15.452Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-gt4jqj\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "going-in-circles",
+      "dir": "dev-docs\\evals\\trigger\\escalation-rules\\going-in-circles",
+      "source": "prose",
+      "promptMarkdown": "We keep going in circles on this parser bug: four attempts, same failure. Stop and tell me how to proceed.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?escalation-rules\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0189319,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:32:21.966Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-kcR4MM\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0206569,
+            "judgeCostUsd": 0,
+            "durationSeconds": 11,
+            "startedAt": "2026-10-03T20:32:22.420Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-UxE65g\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0190819,
+            "judgeCostUsd": 0,
+            "durationSeconds": 8,
+            "startedAt": "2026-10-03T20:32:29.389Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-mFSom6\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "simple-rename",
+      "dir": "dev-docs\\evals\\trigger\\escalation-rules\\simple-rename",
+      "source": "prose",
+      "promptMarkdown": "Rename the variable tmp to retryCount in utils.js.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?escalation-rules\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 4,
+            "costUsd": 0.0253077,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:32:29.540Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-C1UzcG\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 4,
+            "costUsd": 0.0252309,
+            "judgeCostUsd": 0,
+            "durationSeconds": 8,
+            "startedAt": "2026-10-03T20:32:33.845Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-zkcw6D\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 4,
+            "costUsd": 0.024800500000000003,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:32:37.144Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-8RVoGT\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "third-failed-fix",
+      "dir": "dev-docs\\evals\\trigger\\escalation-rules\\third-failed-fix",
+      "source": "prose",
+      "promptMarkdown": "That's the third fix you've tried for the flaky login test and it still fails the same way. What now?",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?escalation-rules\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.019911900000000003,
+            "judgeCostUsd": 0,
+            "durationSeconds": 11,
+            "startedAt": "2026-10-03T20:32:39.571Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-v2iyc1\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0188839,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:32:41.834Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-tfEXx2\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0191869,
+            "judgeCostUsd": 0,
+            "durationSeconds": 8,
+            "startedAt": "2026-10-03T20:32:47.360Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-IpE1ZS\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "isolated-billing",
+      "dir": "dev-docs\\evals\\trigger\\git-worktrees\\isolated-billing",
+      "source": "prose",
+      "promptMarkdown": "I want to work on the billing feature in an isolated worktree so main stays clean. Set that up.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?git-worktrees\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 4,
+            "costUsd": 0.0283658,
+            "judgeCostUsd": 0,
+            "durationSeconds": 13,
+            "startedAt": "2026-10-03T20:32:48.850Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-CQEEo7\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 1x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 5,
+            "costUsd": 0.15292235000000004,
+            "judgeCostUsd": 0,
+            "durationSeconds": 150,
+            "startedAt": "2026-10-03T20:32:50.358Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-UTYD65\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 2x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 4,
+            "costUsd": 0.0277332,
+            "judgeCostUsd": 0,
+            "durationSeconds": 13,
+            "startedAt": "2026-10-03T20:32:55.715Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-OGGpR2\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 1x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "last-five-commits",
+      "dir": "dev-docs\\evals\\trigger\\git-worktrees\\last-five-commits",
+      "source": "prose",
+      "promptMarkdown": "Show me the last five commits on this branch.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?git-worktrees\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 3,
+            "costUsd": 0.0633076,
+            "judgeCostUsd": 0,
+            "durationSeconds": 43,
+            "startedAt": "2026-10-03T20:33:01.690Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-cwIkHk\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 3,
+            "costUsd": 0.0490481,
+            "judgeCostUsd": 0,
+            "durationSeconds": 27,
+            "startedAt": "2026-10-03T20:33:04.542Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-8L4JuZ\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 3,
+            "costUsd": 0.12773815,
+            "judgeCostUsd": 0,
+            "durationSeconds": 99,
+            "startedAt": "2026-10-03T20:33:08.959Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-wzI8fQ\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "separate-workspace",
+      "dir": "dev-docs\\evals\\trigger\\git-worktrees\\separate-workspace",
+      "source": "prose",
+      "promptMarkdown": "Set up a separate workspace for the search rewrite so I can keep hotfixing on main in parallel.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?git-worktrees\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 31,
+            "costUsd": 0.09928399999999998,
+            "judgeCostUsd": 0,
+            "durationSeconds": 181,
+            "startedAt": "2026-10-03T20:33:31.265Z",
+            "error": "timed out after 180s",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-ErrwFL\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 3x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 5,
+            "costUsd": 0.0295201,
+            "judgeCostUsd": 0,
+            "durationSeconds": 14,
+            "startedAt": "2026-10-03T20:33:45.114Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-XoWQc9\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 1x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 6,
+            "costUsd": 0.03289135,
+            "judgeCostUsd": 0,
+            "durationSeconds": 181,
+            "startedAt": "2026-10-03T20:33:58.685Z",
+            "error": "timed out after 180s",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-OzsT3J\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 1x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "ask-everything",
+      "dir": "dev-docs\\evals\\trigger\\plow-ahead\\ask-everything",
+      "source": "prose",
+      "promptMarkdown": "Before you change anything, ask me about every decision.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?plow-ahead\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0176789,
+            "judgeCostUsd": 0,
+            "durationSeconds": 5,
+            "startedAt": "2026-10-03T20:34:48.112Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-IvvSrY\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0177329,
+            "judgeCostUsd": 0,
+            "durationSeconds": 5,
+            "startedAt": "2026-10-03T20:34:53.471Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-3UVRnn\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0174919,
+            "judgeCostUsd": 0,
+            "durationSeconds": 5,
+            "startedAt": "2026-10-03T20:34:58.112Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-g0s0sN\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "just-do-it",
+      "dir": "dev-docs\\evals\\trigger\\plow-ahead\\just-do-it",
+      "source": "prose",
+      "promptMarkdown": "Just do it, keep going until the CSV export works, and tell me what you assumed at the end.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?plow-ahead\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.026621099999999998,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:35:03.389Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-Dw7U54\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.028227,
+            "judgeCostUsd": 0,
+            "durationSeconds": 14,
+            "startedAt": "2026-10-03T20:35:15.079Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-gxJLxp\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.026080100000000002,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:35:19.880Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-6zoDAt\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "stop-asking",
+      "dir": "dev-docs\\evals\\trigger\\plow-ahead\\stop-asking",
+      "source": "prose",
+      "promptMarkdown": "Stop asking me to confirm every little thing. Use your judgment and just build the settings page.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?plow-ahead\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.024886500000000002,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:35:29.033Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-AnEkHn\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.09018150000000001,
+            "judgeCostUsd": 0,
+            "durationSeconds": 61,
+            "startedAt": "2026-10-03T20:35:31.438Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-RTnFuC\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.2075748,
+            "judgeCostUsd": 0,
+            "durationSeconds": 110,
+            "startedAt": "2026-10-03T20:35:41.033Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-xKLMsd\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "fan-out-forty",
+      "dir": "dev-docs\\evals\\trigger\\stay-within-limits\\fan-out-forty",
+      "source": "prose",
+      "promptMarkdown": "Fan out agents to migrate all 40 modules to the new logger, and make sure you don't burn through my usage limit halfway.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?stay-within-limits\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.029312900000000003,
+            "judgeCostUsd": 0,
+            "durationSeconds": 17,
+            "startedAt": "2026-10-03T20:36:32.131Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-Q6lXFO\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.054324,
+            "judgeCostUsd": 0,
+            "durationSeconds": 33,
+            "startedAt": "2026-10-03T20:36:32.512Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-NB6gFu\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.053532300000000005,
+            "judgeCostUsd": 0,
+            "durationSeconds": 34,
+            "startedAt": "2026-10-03T20:36:49.504Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-3lcRGH\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "hours-long-refactor",
+      "dir": "dev-docs\\evals\\trigger\\stay-within-limits\\hours-long-refactor",
+      "source": "prose",
+      "promptMarkdown": "This refactor will run for hours with lots of subagents. Pace it so we don't hit the limit mid-task and can resume cleanly.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?stay-within-limits\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.0311124,
+            "judgeCostUsd": 0,
+            "durationSeconds": 15,
+            "startedAt": "2026-10-03T20:36:59.824Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-NLVpnI\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.0256924,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:37:05.863Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-4vllVd\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.027259300000000004,
+            "judgeCostUsd": 0,
+            "durationSeconds": 16,
+            "startedAt": "2026-10-03T20:37:15.144Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-TRO40C\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "tokens-per-page",
+      "dir": "dev-docs\\evals\\trigger\\stay-within-limits\\tokens-per-page",
+      "source": "prose",
+      "promptMarkdown": "How many tokens is a typical page of text?",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?stay-within-limits\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0207189,
+            "judgeCostUsd": 0,
+            "durationSeconds": 11,
+            "startedAt": "2026-10-03T20:37:15.656Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-nJSA17\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 3,
+            "costUsd": 0.08356259999999999,
+            "judgeCostUsd": 0,
+            "durationSeconds": 16,
+            "startedAt": "2026-10-03T20:37:23.288Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-JI4HEe\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 4,
+            "costUsd": 0.0899779,
+            "judgeCostUsd": 0,
+            "durationSeconds": 15,
+            "startedAt": "2026-10-03T20:37:26.183Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-NnLqMF\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "eight-subtasks",
+      "dir": "dev-docs\\evals\\trigger\\subagent-driven-development\\eight-subtasks",
+      "source": "prose",
+      "promptMarkdown": "This task has eight subtasks. Use a fresh subagent per subtask with reviews, so context stays clean.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?subagent-driven-development\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0184519,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:37:31.234Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-7y14hG\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0184309,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:37:31.470Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-uH8Zv4\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.018193900000000002,
+            "judgeCostUsd": 0,
+            "durationSeconds": 6,
+            "startedAt": "2026-10-03T20:37:37.996Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-RWg2Kf\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "subagent-mode",
+      "dir": "dev-docs\\evals\\trigger\\subagent-driven-development\\subagent-mode",
+      "source": "prose",
+      "promptMarkdown": "Implement the notifications feature in subagent mode.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?subagent-driven-development\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.06596395000000002,
+            "judgeCostUsd": 0,
+            "durationSeconds": 42,
+            "startedAt": "2026-10-03T20:37:38.038Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-7g1zzq\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.0268274,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:37:39.747Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-LRXuKu\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.0643234,
+            "judgeCostUsd": 0,
+            "durationSeconds": 49,
+            "startedAt": "2026-10-03T20:37:41.289Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-o4DKCm\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "what-is-a-subagent",
+      "dir": "dev-docs\\evals\\trigger\\subagent-driven-development\\what-is-a-subagent",
+      "source": "prose",
+      "promptMarkdown": "Explain what a subagent is.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?subagent-driven-development\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0190749,
+            "judgeCostUsd": 0,
+            "durationSeconds": 8,
+            "startedAt": "2026-10-03T20:37:44.019Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-2JC9gk\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0197069,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:37:52.137Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-4Iz4pl\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0206419,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:37:52.240Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-gYhUQt\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "architecture-svg",
+      "dir": "dev-docs\\evals\\trigger\\technical-diagrams\\architecture-svg",
+      "source": "prose",
+      "promptMarkdown": "Create an SVG architecture diagram of our API gateway, auth service and database for docs/architecture/.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?technical-diagrams\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.026754399999999998,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:38:02.081Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-00k44N\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 7,
+            "costUsd": 0.1408223,
+            "judgeCostUsd": 0,
+            "durationSeconds": 104,
+            "startedAt": "2026-10-03T20:38:03.746Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-QxQsMM\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.0313022,
+            "judgeCostUsd": 0,
+            "durationSeconds": 13,
+            "startedAt": "2026-10-03T20:38:12.542Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-8JMP2t\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "checkout-flow-svg",
+      "dir": "dev-docs\\evals\\trigger\\technical-diagrams\\checkout-flow-svg",
+      "source": "prose",
+      "promptMarkdown": "Draw a flow diagram of the checkout process as an SVG for the docs.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?technical-diagrams\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.0261308,
+            "judgeCostUsd": 0,
+            "durationSeconds": 13,
+            "startedAt": "2026-10-03T20:38:20.045Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-Mf2tpj\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 6,
+            "costUsd": 0.0273666,
+            "judgeCostUsd": 0,
+            "durationSeconds": 13,
+            "startedAt": "2026-10-03T20:38:25.222Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-CHmMzt\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.027384699999999998,
+            "judgeCostUsd": 0,
+            "durationSeconds": 13,
+            "startedAt": "2026-10-03T20:38:30.442Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-UZQTU7\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "load-balancer-in-words",
+      "dir": "dev-docs\\evals\\trigger\\technical-diagrams\\load-balancer-in-words",
+      "source": "prose",
+      "promptMarkdown": "Describe in words how a load balancer works.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?technical-diagrams\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0193469,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:38:33.134Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-5eCA91\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0192439,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:38:37.819Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-3s7A3U\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0191529,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:38:40.332Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-qLSmPo\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "cli-readme",
+      "dir": "dev-docs\\evals\\trigger\\technical-writing\\cli-readme",
+      "source": "prose",
+      "promptMarkdown": "Write a README for this CLI tool: it syncs a local folder to S3.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?technical-writing\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.0229632,
+            "judgeCostUsd": 0,
+            "durationSeconds": 9,
+            "startedAt": "2026-10-03T20:38:43.760Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-tzRYiT\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.024492800000000002,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:38:45.028Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-zZ1bEJ\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.026926800000000004,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-10-03T20:38:47.375Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-2yhHpa\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "landing-headline",
+      "dir": "dev-docs\\evals\\trigger\\technical-writing\\landing-headline",
+      "source": "prose",
+      "promptMarkdown": "Write a punchy landing page headline for our product.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?technical-writing\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0184389,
+            "judgeCostUsd": 0,
+            "durationSeconds": 6,
+            "startedAt": "2026-10-03T20:38:52.764Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-3qx3cM\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0184769,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:38:55.498Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-dpV41y\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0182219,
+            "judgeCostUsd": 0,
+            "durationSeconds": 6,
+            "startedAt": "2026-10-03T20:38:58.412Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-X28osQ\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "orders-api-docs",
+      "dir": "dev-docs\\evals\\trigger\\technical-writing\\orders-api-docs",
+      "source": "prose",
+      "promptMarkdown": "Document the /orders API endpoints for other developers.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?technical-writing\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.049506600000000005,
+            "judgeCostUsd": 0,
+            "durationSeconds": 28,
+            "startedAt": "2026-10-03T20:38:59.399Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-Qg2290\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.025828199999999996,
+            "judgeCostUsd": 0,
+            "durationSeconds": 11,
+            "startedAt": "2026-10-03T20:39:02.090Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-VKWGGQ\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.0261993,
+            "judgeCostUsd": 0,
+            "durationSeconds": 11,
+            "startedAt": "2026-10-03T20:39:04.040Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-EcsQzW\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "email-validation",
+      "dir": "dev-docs\\evals\\trigger\\test-driven-development\\email-validation",
+      "source": "prose",
+      "promptMarkdown": "Add a function that validates email addresses and use it in the signup handler. Test first.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?test-driven-development\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.0259076,
+            "judgeCostUsd": 0,
+            "durationSeconds": 11,
+            "startedAt": "2026-10-03T20:39:12.602Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-RCbNkF\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.025467699999999996,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:39:14.630Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-Dv1lVz\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.16546900000000003,
+            "judgeCostUsd": 0,
+            "durationSeconds": 117,
+            "startedAt": "2026-10-03T20:39:23.888Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-rxOAWt\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "nan-on-empty-cart",
+      "dir": "dev-docs\\evals\\trigger\\test-driven-development\\nan-on-empty-cart",
+      "source": "prose",
+      "promptMarkdown": "Fix this bug: calculateTotal returns NaN when the cart is empty.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?test-driven-development\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.0252673,
+            "judgeCostUsd": 0,
+            "durationSeconds": 9,
+            "startedAt": "2026-10-03T20:39:24.873Z",
+            "error": "exit 1: Reached maximum number of turns (4)",
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-7BKWKw\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.0251894,
+            "judgeCostUsd": 0,
+            "durationSeconds": 9,
+            "startedAt": "2026-10-03T20:39:27.206Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-csuaqy\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.025542899999999997,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-10-03T20:39:33.727Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-m7ZviR\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "what-tdd-stands-for",
+      "dir": "dev-docs\\evals\\trigger\\test-driven-development\\what-tdd-stands-for",
+      "source": "prose",
+      "promptMarkdown": "What does the acronym TDD stand for?",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?test-driven-development\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0177559,
+            "judgeCostUsd": 0,
+            "durationSeconds": 5,
+            "startedAt": "2026-10-03T20:39:35.729Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-zAlHQb\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0176109,
+            "judgeCostUsd": 0,
+            "durationSeconds": 4,
+            "startedAt": "2026-10-03T20:39:40.497Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-aaDZCh\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0179799,
+            "judgeCostUsd": 0,
+            "durationSeconds": 5,
+            "startedAt": "2026-10-03T20:39:43.811Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-KLSHn8\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "are-we-done",
+      "dir": "dev-docs\\evals\\trigger\\verification-before-completion\\are-we-done",
+      "source": "prose",
+      "promptMarkdown": "Are we done with the password reset task? Confirm everything works before you say yes.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?verification-before-completion\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 2,
+            "costUsd": 0.021076400000000002,
+            "judgeCostUsd": 0,
+            "durationSeconds": 8,
+            "startedAt": "2026-10-03T20:39:44.199Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-sAMSZ1\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0185419,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-10-03T20:39:47.368Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-QMf9Jn\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.018519900000000002,
+            "judgeCostUsd": 0,
+            "durationSeconds": 6,
+            "startedAt": "2026-10-03T20:39:48.599Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-m8exOr\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    },
+    {
+      "name": "date-now-timezone",
+      "dir": "dev-docs\\evals\\trigger\\verification-before-completion\\date-now-timezone",
+      "source": "prose",
+      "promptMarkdown": "What time zone does Date.now() use?",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "stayed-quiet",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?verification-before-completion\"",
+            "min": 0,
+            "max": 0,
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0187319,
+            "judgeCostUsd": 0,
+            "durationSeconds": 6,
+            "startedAt": "2026-10-03T20:39:52.080Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-2a0H3O\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0184049,
+            "judgeCostUsd": 0,
+            "durationSeconds": 5,
+            "startedAt": "2026-10-03T20:39:54.160Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-AHXE6r\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0179759,
+            "judgeCostUsd": 0,
+            "durationSeconds": 5,
+            "startedAt": "2026-10-03T20:39:54.904Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-4zirxp\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "stayed-quiet",
+                "passed": true,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 0..0)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1
+      }
+    },
+    {
+      "name": "wrap-up-caching",
+      "dir": "dev-docs\\evals\\trigger\\verification-before-completion\\wrap-up-caching",
+      "source": "prose",
+      "promptMarkdown": "Wrap up the caching change and tell me it's complete.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 180,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "fired",
+          "type": "tool_used",
+          "weight": 1,
+          "config": {
+            "tool": "Skill",
+            "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?verification-before-completion\"",
+            "arm": "both"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0184229,
+            "judgeCostUsd": 0,
+            "durationSeconds": 6,
+            "startedAt": "2026-10-03T20:39:57.901Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-KXxF7q\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.0240082,
+            "judgeCostUsd": 0,
+            "durationSeconds": 9,
+            "startedAt": "2026-10-03T20:39:59.532Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-zom4sc\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0182179,
+            "judgeCostUsd": 0,
+            "durationSeconds": 5,
+            "startedAt": "2026-10-03T20:40:00.140Z",
+            "error": null,
+            "tracePath": "C:\\Users\\monia\\AppData\\Local\\Temp\\claude-eval-ZnD7lE\\out\\trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "fired",
+                "passed": false,
+                "weight": 1,
+                "explanation": "Skill called 0x (expected 1..∞)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    }
+  ],
+  "aggregates": {
+    "casesTotal": 33,
+    "casesPassed": 14,
+    "overallScore": 0.42424242424242425,
+    "overallPassRate": 0.42424242424242425
+  }
+}

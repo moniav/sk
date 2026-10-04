@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "sk",
+  "displayName": "SK — ShipKit",
+  "version": "2.0.0",
+  "description": "Documentation and lifecycle system for Claude Code: a Plan, Dev, Test lifecycle with 53 commands, 23 skills, and 9 agents. Run npx shipkit-cld init once per project to scaffold docs/ and CLAUDE.md.",
+  "author": {
+    "name": "moniav",
+    "url": "https://github.com/moniav"
+  },
+  "homepage": "https://github.com/moniav/sk#readme",
+  "repository": "https://github.com/moniav/sk",
+  "license": "MIT",
+  "keywords": [
+    "documentation",
+    "lifecycle",
+    "plan-dev-test",
+    "code-review",
+    "agents",
+    "autonomy"
+  ],
+  "commands": "./.claude/commands/sk",
+  "agents": [
+    "./.claude/agents/architecture-reviewer.md",
+    "./.claude/agents/debugger.md",
+    "./.claude/agents/dependency-analyzer.md",
+    "./.claude/agents/implementer.md",
+    "./.claude/agents/perf-reviewer.md",
+    "./.claude/agents/plan-reviewer.md",
+    "./.claude/agents/quality-reviewer.md",
+    "./.claude/agents/security-reviewer.md",
+    "./.claude/agents/spec-reviewer.md"
+  ],
+  "skills": "./.claude/skills"
+}

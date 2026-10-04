@@ -6,6 +6,7 @@
 //   npx shipkit-cld update [target]             Update from package source
 //   npx shipkit-cld update [target] --from PATH Update from local SK checkout
 //   npx shipkit-cld remove [target]             Remove SK system files (keeps docs/)
+//   npx shipkit-cld init [target] [--minimal]   Scaffold docs/ and CLAUDE.md only, for use with the SK plugin
 // Flags:
 //   --dry-run   (update) Show what would change, write nothing
 //   --force     (update) Accept SK's version of every file, discarding local edits
@@ -87,6 +88,13 @@ const SHIPPED_DOCS = [
   "docs/conventions/coding-behavior.md",
 ];
 
+// Minimal profile: core doc homes only. The rest grow on demand (doc-creator
+// commands create their home with a stub README when it's missing).
+const MINIMAL_DOCS = [
+  "README.md", "START-HERE.md", "commands-reference.md",
+  "system", "conventions", "tasks", "templates", "sop", "_archive",
+];
+
 // A new SK version of a file the user edited is written beside it with this suffix.
 const SIDECAR = ".sk-new";
 
@@ -116,9 +124,11 @@ function renderForProject(pkg, rel) {
 // Minimal-profile installs never had docs/reference — don't lay it down on update.
 function shippedFiles(pkg, target, oldManifest) {
   const skipRef = oldManifest?.profile === "minimal" && !existsSync(join(target, "docs", "reference"));
+  const pluginChannel = oldManifest?.channel === "plugin";
   const out = [];
   for (const dir of MANAGED_DIRS) {
     if (dir === "docs/reference" && skipRef) continue;
+    if (pluginChannel && dir.startsWith(".claude/")) continue;
     for (const rel of listFilesRel(join(pkg, dir))) out.push(`${dir}/${rel}`);
   }
   for (const rel of SHIPPED_DOCS) {
@@ -227,7 +237,7 @@ function sourceVersion(source) {
 
 // `skipped` = same-named files that belong to the user; they stay out of the
 // manifest so later updates and remove keep leaving them alone.
-function writeManifest(target, source, claudeMdOwner, profile = "full", skipped = []) {
+function writeManifest(target, source, claudeMdOwner, profile = "full", skipped = [], channel = "files") {
   const pkg = join(source, "pkg");
   const mine = new Set(skipped);
   const managed = {};
@@ -254,6 +264,9 @@ function writeManifest(target, source, claudeMdOwner, profile = "full", skipped 
     claudeMd: claudeMdOwner,
     // "minimal" = core doc homes only; update skips laying down homes the target never had
     profile,
+    // "files" = commands, agents and skills copied into .claude/; "plugin" = they
+    // come from the SK plugin and only docs/ and CLAUDE.md live in the project
+    channel,
     managed,
     files,
   };
@@ -442,13 +455,15 @@ const yesFlag = args.includes("--yes") || args.includes("-y");
 
 // Positional args = everything that isn't a flag or the --from value
 const positional = args.filter((a, i) => !a.startsWith("-") && args[i - 1] !== "--from");
-const command = ["remove", "update"].includes(positional[0]) ? positional[0] : "install";
+const command = ["remove", "update", "init"].includes(positional[0]) ? positional[0] : "install";
 const targetArg = command === "install" ? positional[0] : positional[1];
 
 if (command === "remove") {
   await runRemove(resolve(targetArg || "."));
 } else if (command === "update") {
   await runUpdate(resolve(targetArg || "."), fromArg, { dryRun: dryRunFlag, force: forceFlag });
+} else if (command === "init") {
+  await runInit(resolve(targetArg || "."), minimalFlag);
 } else {
   await runInstall(resolve(targetArg || "."), minimalFlag);
 }
@@ -540,10 +555,6 @@ async function runInstall(target, minimal = false) {
   if (minimal) {
     // Core homes only — the rest grow on demand (doc-creator commands create
     // their home with a stub README when it's missing).
-    const MINIMAL_DOCS = [
-      "README.md", "START-HERE.md", "commands-reference.md",
-      "system", "conventions", "tasks", "templates", "sop", "_archive",
-    ];
     for (const entry of MINIMAL_DOCS) {
       const src = join(pkg, "docs", entry);
       if (existsSync(src)) {
@@ -671,6 +682,90 @@ async function runInstall(target, minimal = false) {
 }
 
 // =============================================================================
+// INIT — docs/ and CLAUDE.md only, for projects that use the SK plugin
+// =============================================================================
+
+async function runInit(target, minimal = false) {
+  banner();
+
+  console.log(c.blue("[INFO]") + ` Scaffolding docs/ and CLAUDE.md in: ${target}` + (minimal ? " (minimal profile)" : ""));
+  console.log();
+
+  if (existsSync(join(target, ".claude", "commands", "sk"))) {
+    console.log(c.red("[ERROR]") + " SK is installed here as copied files (.claude/commands/sk/ exists).");
+    console.log("  To move this project to the plugin:");
+    console.log(`    1. ${c.cyan("npx shipkit-cld remove .")}    (keeps docs/)`);
+    console.log(`    2. ${c.cyan("claude plugin marketplace add moniav/sk")} and ${c.cyan("claude plugin install sk@shipkit")}`);
+    console.log(`    3. ${c.cyan("npx shipkit-cld init .")}`);
+    process.exit(1);
+  }
+
+  const source = findSource(target, null);
+  if (!source) {
+    console.log(c.red("[ERROR]") + " Cannot find SK source files. Run: " + c.cyan("npx shipkit-cld@latest init ."));
+    process.exit(1);
+  }
+  const pkg = join(source, "pkg");
+  const oldManifest = readManifest(target);
+  const profile = minimal ? "minimal" : oldManifest?.profile || "full";
+
+  // Fill gaps only: a file that already exists is the project's and is never replaced,
+  // so init is safe to re-run and safe on a project that already has docs/.
+  let added = 0;
+  let kept = 0;
+  // Files the project had before SK: kept out of the manifest, so update leaves them alone too.
+  const mine = [];
+  const docs = listFilesRel(join(pkg, "docs")).filter(
+    (rel) => profile !== "minimal" || MINIMAL_DOCS.some((entry) => rel === entry || rel.startsWith(entry + "/"))
+  );
+  for (const rel of docs) {
+    const dest = join(target, "docs", rel);
+    if (existsSync(dest)) {
+      kept++;
+      const wasManaged = oldManifest?.files ? `docs/${rel}` in oldManifest.files : hashFile(dest) === hashFile(join(pkg, "docs", rel));
+      if (!wasManaged) mine.push(`docs/${rel}`);
+      continue;
+    }
+    mkdirSync(dirname(dest), { recursive: true });
+    cpSync(join(pkg, "docs", rel), dest);
+    added++;
+  }
+  console.log(c.green("  [OK]") + ` docs/: ${added} file(s) added, ${kept} already present and left as they are`);
+
+  // CLAUDE.md: create it, or leave the project's own and offer the template beside it.
+  const live = join(target, "CLAUDE.md");
+  let claudeOwner = oldManifest?.claudeMd || "user";
+  if (!existsSync(live)) {
+    cpSync(join(pkg, "CLAUDE.md"), live);
+    claudeOwner = "sk";
+    console.log(c.green("  [OK]") + " CLAUDE.md created");
+  } else if (hashFile(live) === hashFile(join(pkg, "CLAUDE.md"))) {
+    console.log(c.green("  [OK]") + " CLAUDE.md already current");
+  } else if (oldManifest) {
+    console.log(c.yellow("  [KEEP]") + " CLAUDE.md left as it is");
+  } else {
+    cpSync(join(pkg, "CLAUDE.md"), join(target, "CLAUDE.sk.md"), { force: true });
+    console.log(c.yellow("  [KEEP]") + " Existing CLAUDE.md preserved -- SK template written to CLAUDE.sk.md (merge manually)");
+  }
+
+  writeManifest(target, source, claudeOwner, profile, mine, "plugin");
+
+  console.log();
+  console.log(c.bold(c.green(`  [SUCCESS] SK v${sourceVersion(source)} docs scaffold ready`)));
+  console.log();
+  console.log(c.bold("  Commands, skills and agents come from the SK plugin:"));
+  console.log(`    ${c.cyan("claude plugin marketplace add moniav/sk")}`);
+  console.log(`    ${c.cyan("claude plugin install sk@shipkit")}`);
+  console.log();
+  console.log("  Then, in Claude Code:");
+  console.log(`    New project:      ${c.cyan("/sk:kickoff")}`);
+  console.log(`    Existing project: ${c.cyan("/sk:init-docs")}`);
+  console.log();
+  console.log(`  Later, ${c.cyan("npx shipkit-cld@latest update .")} refreshes the shipped templates, SOPs and reference docs.`);
+  console.log();
+}
+
+// =============================================================================
 // UPDATE — SK system files only; user content and user edits are preserved
 // =============================================================================
 
@@ -686,7 +781,7 @@ async function runUpdate(target, fromOverride, opts = {}) {
   // --- Pre-flight: confirm SK is installed ---
 
   const skCommandsDir = join(target, ".claude", "commands", "sk");
-  if (!existsSync(skCommandsDir)) {
+  if (!existsSync(skCommandsDir) && readManifest(target)?.channel !== "plugin") {
     console.log(c.red("[ERROR]") + " SK is not installed here. Run install first:");
     console.log(`  ${c.cyan("npx shipkit-cld")} ${target === process.cwd() ? "" : target}`);
     process.exit(1);
@@ -802,7 +897,7 @@ async function runUpdate(target, fromOverride, opts = {}) {
       removeEmptyDirs(join(target, ".claude", "agents"));
     }
     const newOwner = claudeResult === "sidecar" ? "user" : "sk";
-    writeManifest(target, source, newOwner, oldManifest?.profile || "full", r.skipped);
+    writeManifest(target, source, newOwner, oldManifest?.profile || "full", r.skipped, oldManifest?.channel || "files");
   }
 
   // --- Summary ---
