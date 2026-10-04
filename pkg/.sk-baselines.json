@@ -12,101 +12,128 @@
   "v1.7.0",
   "v1.8.0",
   "v1.9.0",
-  "v2.0.0"
+  "v2.0.0",
+  "v2.3.0"
  ],
  "files": {
   ".claude/agents/architecture-reviewer.md": [
+   "02e57a4f2a3eb4e4",
    "63dcc71c0f3ee7a4",
    "86236d8a69956161",
    "ae5e7925c6b3f880"
   ],
   ".claude/agents/debugger.md": [
-   "4d4917726eb3cb9f"
+   "4d4917726eb3cb9f",
+   "7e554187fcc31384"
   ],
   ".claude/agents/dependency-analyzer.md": [
    "2c12ef760d437fd4",
+   "390f41b2d083f21a",
    "e45e1576321b9974"
   ],
   ".claude/agents/implementer.md": [
    "6a4c95531ca68a03",
-   "835b50959955caa6"
+   "835b50959955caa6",
+   "8e38946eb5a450f3"
   ],
   ".claude/agents/perf-reviewer.md": [
+   "7ed75e67e75b97d6",
    "d850d0d07914b5d3"
   ],
+  ".claude/agents/plan-reviewer.md": [
+   "5d5a32c7c0135ad7"
+  ],
   ".claude/agents/quality-reviewer.md": [
+   "61e1644d5e0fedca",
    "76a41291fb47fc3b",
    "e598a68da9f216ad"
   ],
   ".claude/agents/security-reviewer.md": [
-   "563a3bd47c4adeef"
+   "563a3bd47c4adeef",
+   "6b6f2e492aacab06"
   ],
   ".claude/agents/spec-reviewer.md": [
    "6bbc296c606db33d",
    "6c056ff7a990588f",
-   "7de6b39946fd4959"
+   "7de6b39946fd4959",
+   "ad293dc411244eac"
   ],
   ".claude/commands/sk/announce.md": [
-   "025af2549ca23586"
+   "025af2549ca23586",
+   "6730d5208da6015c"
   ],
   ".claude/commands/sk/brainstorm.md": [
    "3913d3776279c5a1",
    "6ff4473598643e27",
+   "7ace67b608b54a5a",
    "d302d62ae245df02",
    "deb36a5a4e805794"
   ],
   ".claude/commands/sk/campaign.md": [
-   "83674e6067bd6d1e"
+   "83674e6067bd6d1e",
+   "9d938fe63190eca8"
   ],
   ".claude/commands/sk/ceo.md": [
+   "9e2abb364e0d1a2e",
    "c36b1a9b26e725b2"
   ],
   ".claude/commands/sk/changelog.md": [
    "3645eb7e1efe29f9",
    "46817beeefa8cfbb",
+   "cb6a554e59ae15b5",
    "d660e39050948147"
   ],
   ".claude/commands/sk/cmo.md": [
-   "08d6c53dabbb53a4"
+   "08d6c53dabbb53a4",
+   "90e867c0bcf38be2"
   ],
   ".claude/commands/sk/code-review.md": [
    "2c22e6536aed0626",
    "3de478fd8b92edb9",
    "51d457d1de45b2ed",
+   "c5c7d9701d8302f3",
    "c9645517b99eb46e",
    "e68dafa2aa8b2fbf",
    "ea2c051ea0b18560"
   ],
   ".claude/commands/sk/commit.md": [
+   "321277e7183d3d58",
    "7d1069232dcc1983",
    "aee14e7c92a834d5",
    "bde6835bae0c07dc",
    "e352e559910fcc69"
   ],
   ".claude/commands/sk/competitor.md": [
+   "c941f5b676db505c",
    "dda445113870a99d"
   ],
   ".claude/commands/sk/coo.md": [
-   "44aea344c96d944b"
+   "44aea344c96d944b",
+   "f42c1cbc89cbcf1c"
   ],
   ".claude/commands/sk/copywrite.md": [
+   "25519d183af58801",
    "3850f5dc5ca03f5e",
    "719e14841c70d86f"
   ],
   ".claude/commands/sk/council.md": [
    "157942297b55b2f3",
    "62ecbb3d37f60a3a",
+   "83ec8b5546ce12f1",
    "fe8a7953b8b1030f"
   ],
   ".claude/commands/sk/cto.md": [
+   "5098c298bde799a5",
    "669df5643bfbde16"
   ],
   ".claude/commands/sk/debt.md": [
    "035fcc165e8a8bfb",
+   "315c85104ca9f45d",
    "5acfd66ef4762aed"
   ],
   ".claude/commands/sk/debug.md": [
    "0a2713f21fb8a0c3",
+   "17e6ee8ac68b60ef",
    "59e3d67fa4ceae4f",
    "5fa3121c487eb75a",
    "77e74d60ec7108f6",
@@ -115,6 +142,7 @@
   ],
   ".claude/commands/sk/deps.md": [
    "1404347ef225e611",
+   "4829110e916203ff",
    "5f1b725cf36a4ab4",
    "a6f930b4c09bb97d",
    "ed0d355ad4393e1c"
@@ -126,21 +154,29 @@
    "4335c8d998f44855",
    "ad7e94de698d0982",
    "bbe8f50512d462e8",
+   "e80d4763ab94f574",
    "f46163f10d5d5016"
   ],
   ".claude/commands/sk/docs-audit.md": [
    "67469e40ccab8164",
-   "ae428f9fed86689b"
+   "ae428f9fed86689b",
+   "d56309d51d581249"
   ],
   ".claude/commands/sk/finish.md": [
    "0927d622f00172d7",
    "2855fac1ae4db700",
+   "7873a97b7247e516",
    "b9012e1c18372a69"
   ],
   ".claude/commands/sk/founder.md": [
-   "4c0b24017f0b07be"
+   "4c0b24017f0b07be",
+   "e00bee9d837e83ee"
+  ],
+  ".claude/commands/sk/help.md": [
+   "8d97aeb4223988fe"
   ],
   ".claude/commands/sk/implement.md": [
+   "1e12f8cf2e9fa817",
    "3ed214302e8874a7",
    "422931aa879ab50b",
    "7dd2b695947f3d27",
@@ -153,41 +189,49 @@
    "0fc262f2649c9d6a",
    "27b5fa2f2599be0c",
    "346598b7df92d5f9",
-   "663136467bd0779f"
+   "663136467bd0779f",
+   "6c5ce4124b3e429b"
   ],
   ".claude/commands/sk/kickoff.md": [
    "027918c5f6b6a7b1",
+   "0cc3d9dc2f7bf37e",
    "27d425727640eedb",
    "7cc9565eb4fb0930"
   ],
   ".claude/commands/sk/legal-scan.md": [
    "a61ce23272eec006",
    "cd1cea832865f997",
-   "e622289850d7d784"
+   "e622289850d7d784",
+   "f58d218ee6242dea"
   ],
   ".claude/commands/sk/migrate.md": [
    "1ad34e4d53848a3b",
    "5f7e0a0c68712064",
-   "abe0e70e941bf6ea"
+   "abe0e70e941bf6ea",
+   "b621144e6e9dfc75"
   ],
   ".claude/commands/sk/new-adr.md": [
    "816d00999fa16c4e",
    "cba52d0d81d5f6a9",
    "d6cf88efc9ef5c69",
+   "d9804bf610420301",
    "e32908a81127cd8d"
   ],
   ".claude/commands/sk/new-business-doc.md": [
    "4420afe269cb1e33",
    "5e8d056c1a89d906",
-   "71348518cc4d7ad3"
+   "71348518cc4d7ad3",
+   "bb43a7a24a1f222e"
   ],
   ".claude/commands/sk/new-epic.md": [
+   "54552eabb935577f",
    "6417dc1d7fc9b99e",
    "803c0836eed8978d",
    "8a7d636dd4da4672",
    "f694200d94ba0b95"
   ],
   ".claude/commands/sk/new-feature-doc.md": [
+   "2e0780f861246751",
    "4f83fd82fd5d245d",
    "eab53f00423a3b51"
   ],
@@ -196,29 +240,35 @@
    "47e9d110eded8778",
    "7a3c6efaa96cc81e",
    "a703304728a06f30",
-   "ce693af7f871d019"
+   "ce693af7f871d019",
+   "d4951699cd4d0a05"
   ],
   ".claude/commands/sk/new-sop.md": [
    "16e68dbdcf33712c",
    "37dd26587e79b196",
-   "59e811e220c56467"
+   "59e811e220c56467",
+   "a9fa0342db0e9404"
   ],
   ".claude/commands/sk/new-task.md": [
    "06e19451001241f9",
    "d5abb4d91a337790",
    "d791752987209999",
-   "e321d8ae48a73525"
+   "e321d8ae48a73525",
+   "f41a4578c0ed34c1"
   ],
   ".claude/commands/sk/new-user-guide.md": [
+   "2822bbaa12741547",
    "3e5a6cd6cd6692fc",
    "4e9e4c00851d358c"
   ],
   ".claude/commands/sk/ops.md": [
    "b387832c53c9986b",
-   "b8a1540bf6eff44d"
+   "b8a1540bf6eff44d",
+   "c292dedcec98d372"
   ],
   ".claude/commands/sk/orchestrate.md": [
    "2e037e74200655b4",
+   "2fdef00f6597deb6",
    "7ea96eb6c21cc00f",
    "fe46bf8d8d690235"
   ],
@@ -226,6 +276,7 @@
    "843683d68645344e",
    "880a33d1406c314b",
    "b443fdc18584c50a",
+   "e6a3b86b30dce045",
    "f1b39554429c1da9"
   ],
   ".claude/commands/sk/plan.md": [
@@ -234,46 +285,57 @@
    "8b80b4ccd563b696",
    "aec205e776dc845a",
    "bf5d63128745bc41",
+   "d4520e28e1201c88",
    "d57676a6c311dfc9",
    "ec13c569704dbbf9"
   ],
   ".claude/commands/sk/positioning.md": [
-   "02f61a2eda1a8bd0"
+   "02f61a2eda1a8bd0",
+   "bbb3c09d87b8098d"
   ],
   ".claude/commands/sk/pr.md": [
+   "02ac365d6cee709c",
    "73b8215b6e491fac"
   ],
   ".claude/commands/sk/pricing.md": [
-   "07b619c118df7bd5"
+   "07b619c118df7bd5",
+   "78eed8f1e73418cf"
   ],
   ".claude/commands/sk/recap.md": [
    "09eb2d8e4868d3bc",
-   "6a0cf5926ff9984a"
+   "6a0cf5926ff9984a",
+   "72a04d1fbd7a6bf1"
   ],
   ".claude/commands/sk/refactor.md": [
+   "1bf9df7e50aa5a0d",
    "470829a1a2933156",
    "7258a0f41bfb1b86",
    "9b24a53796ca7e36",
    "d0bdc53d1595fd72"
   ],
   ".claude/commands/sk/release.md": [
-   "42b28b8f86d793ed"
+   "42b28b8f86d793ed",
+   "6d71b785636a6a84"
   ],
   ".claude/commands/sk/resume.md": [
    "aad909b462944ac2",
    "bbb3637fa1d76dc8",
-   "ed8d77194e2f370a"
+   "ed8d77194e2f370a",
+   "f2a942a0bf5cc6a1"
   ],
   ".claude/commands/sk/retro.md": [
+   "22a2bb630ce0ae22",
    "46123c7804051e9e",
    "de414121088723de",
    "f3b60836d8bb891b"
   ],
   ".claude/commands/sk/review.md": [
-   "67b8744f1d963bae"
+   "67b8744f1d963bae",
+   "f9ceba152e644570"
   ],
   ".claude/commands/sk/routines.md": [
    "9878d144ede3cf8d",
+   "a0c95a7661f50722",
    "afedd159fa8229dd"
   ],
   ".claude/commands/sk/security-review.md": [
@@ -281,16 +343,19 @@
    "57b67513b32e3cee",
    "5ab37233de2a0411",
    "d81084307ce319f0",
-   "e62da0fde202fde0"
+   "e62da0fde202fde0",
+   "f7f59e1ff3296a7c"
   ],
   ".claude/commands/sk/task-status.md": [
    "5d0ee0de681cfaea",
+   "8148411796399535",
    "85bf8d78e9d3b79e",
    "88fc5355172a4f2b"
   ],
   ".claude/commands/sk/test.md": [
    "2b12283262c9af75",
    "5d05dc5a13e266cc",
+   "6695bfb634308ba5",
    "72eff39a3718463a",
    "7939e8034ef0e7cc",
    "b303f483dc501906",
@@ -302,6 +367,7 @@
    "525c116d2b982e36",
    "5662263161914731",
    "6fa2ee7e15464c7a",
+   "72b71bae17c32a92",
    "e1c962d2ad0c4d6c"
   ],
   ".claude/commands/sk/update-docs.md": [
@@ -309,10 +375,12 @@
    "38c500bc35b64b4d",
    "7a99978369d67060",
    "91062717da956ceb",
+   "b1381b45e67abc7a",
    "bfd9de13848f8e32",
    "c44ede17ab6fd13e"
   ],
   ".claude/commands/sk/update.md": [
+   "1efe3ebd791ae5da",
    "4e88802934d4a023",
    "63654ef8df33c8dd",
    "ae3a837e85fde0e5",
@@ -326,6 +394,7 @@
   ],
   ".claude/skills/copywriting/SKILL.md": [
    "490e7389c7bae8e4",
+   "85dbb863e5551f65",
    "d3e83bd927c0dd6a"
   ],
   ".claude/skills/copywriting/references/frameworks.md": [
@@ -333,32 +402,43 @@
   ],
   ".claude/skills/create-pdf/SKILL.md": [
    "70025ad53839a616",
+   "7988ba9b3365fa91",
    "e15a63bb9d050708"
   ],
   ".claude/skills/create-pdf/references/print.css": [
    "6fc4084c2b410c3a"
   ],
   ".claude/skills/error-recovery/SKILL.md": [
+   "b3b003d3f9e5bdaa",
    "cf0b69507297cc5c",
    "f41bec9c5dd6ee3f"
   ],
   ".claude/skills/escalation-rules/SKILL.md": [
    "31b9fbf65b0bd46a",
+   "84b94c68b21c3f84",
    "ce306c6e49a3a0c4"
   ],
   ".claude/skills/executive-meeting/SKILL.md": [
+   "3c2d9eedbf6ad5c7",
    "a6aacb2b744b6bc8"
   ],
   ".claude/skills/git-commit-flow/SKILL.md": [
+   "55cc8ea8be0eadce",
    "56dbaad2e7be3918"
   ],
   ".claude/skills/git-worktrees/SKILL.md": [
+   "a10d8a8fd6f1a255",
    "aa97cf758bd6d549"
   ],
   ".claude/skills/headless-operation/SKILL.md": [
-   "1697bc3d367aaf8b"
+   "1697bc3d367aaf8b",
+   "d73b9b723b49e3b0"
+  ],
+  ".claude/skills/interviewing/SKILL.md": [
+   "bb7f46944ab2426f"
   ],
   ".claude/skills/legal-advisor/SKILL.md": [
+   "61e51319f1c5b6d6",
    "724d8e2c2f47887d",
    "7ce27b955c6c8507",
    "b675d14e0a01fc68"
@@ -367,16 +447,30 @@
    "fc661cba96abad28"
   ],
   ".claude/skills/legal-advisor/references/detection-signals.md": [
-   "88a86da84db3891d"
+   "88a86da84db3891d",
+   "e23f9dc75134f861"
+  ],
+  ".claude/skills/legal-advisor/references/document-modes.md": [
+   "c7b04076d034d69c"
   ],
   ".claude/skills/legal-advisor/references/entity-formation.md": [
    "bfc5a5ca6fdb7ae7"
+  ],
+  ".claude/skills/legal-advisor/references/output-layout.md": [
+   "6b68b470b5d2745a"
+  ],
+  ".claude/skills/legal-advisor/references/scan-workflow.md": [
+   "edd2babce0e5494e"
   ],
   ".claude/skills/operations-advisor/SKILL.md": [
    "b4e0b352cfbd0352"
   ],
   ".claude/skills/plow-ahead/SKILL.md": [
+   "7901731c28345753",
    "ac4d0f5b426ae48b"
+  ],
+  ".claude/skills/plow-ahead/references/decision-trail.md": [
+   "86e48b6848bd0d77"
   ],
   ".claude/skills/pricing-strategy/SKILL.md": [
    "69edbb0fb48649ca"
@@ -385,41 +479,57 @@
    "0b0e9700aef210fb"
   ],
   ".claude/skills/research/SKILL.md": [
+   "3dcea14fdcced4ec",
    "72dbd6dc14d667c9"
   ],
   ".claude/skills/stay-within-limits/SKILL.md": [
-   "495ed1cd4493dd3c"
+   "495ed1cd4493dd3c",
+   "c4ef24934e77f989"
   ],
   ".claude/skills/subagent-driven-development/SKILL.md": [
    "42cd89fdab366da0",
-   "9ee33a56acde188d"
+   "9ee33a56acde188d",
+   "acc23ee76f7a2e48"
   ],
   ".claude/skills/subtask-execution/SKILL.md": [
-   "75a728922bfca588"
+   "75a728922bfca588",
+   "fab2c93a077e9f3a"
   ],
   ".claude/skills/technical-diagrams/SKILL.md": [
-   "55416478900c6f26"
+   "55416478900c6f26",
+   "af2403620fa2b53a"
   ],
   ".claude/skills/technical-diagrams/references/svg-elements.md": [
-   "c3bbfea57e0809de"
+   "c3bbfea57e0809de",
+   "dfc8d2d2e11f471d"
   ],
   ".claude/skills/technical-writing/SKILL.md": [
-   "7e2f5a4eeff9df8c"
+   "7e2f5a4eeff9df8c",
+   "ac673ecce0339d79"
+  ],
+  ".claude/skills/technical-writing/references/plain-writing-rules.md": [
+   "06a212f48d6d55aa"
   ],
   ".claude/skills/test-driven-development/SKILL.md": [
    "3878c2fc2dda22ad",
-   "7f3e2d9a7fd016c0"
+   "7f3e2d9a7fd016c0",
+   "806af332ae16cada"
   ],
   ".claude/skills/test-driven-development/anti-patterns.md": [
    "2a0a8505329421ff"
   ],
+  ".claude/skills/test-driven-development/references/anti-patterns.md": [
+   "ca68760bc41c7ae6"
+  ],
   ".claude/skills/verification-before-completion/SKILL.md": [
    "1dc92742e8ba38bc",
+   "51e146dee44da6eb",
    "566415ef18e81a5a",
    "ded05885ceba806e"
   ],
   "CLAUDE.md": [
    "0787349b7a1eb451",
+   "2448214d2d7d6f41",
    "26835af8880ba521",
    "2d2a76bf615e737a",
    "417a94f681e9afb1",
@@ -434,11 +544,13 @@
    "211922e988e1b730",
    "23152c447aba73bc",
    "6fc512e8d0daafdb",
+   "81c3de382186985b",
    "efc3232c533bf873",
    "fc4060bd450381af"
   ],
   "docs/commands-reference.md": [
    "2b5cc6572cc8e67b",
+   "4cf2444d7d1ce1cf",
    "9ac24be3df0fbca3",
    "ad42a7248304de52",
    "d9c9b6ab80da1494",
@@ -446,31 +558,38 @@
   ],
   "docs/conventions/coding-behavior.md": [
    "4f6528a4679e5872",
-   "6752370bfe9db33b"
+   "6752370bfe9db33b",
+   "c300845319a8d1c2"
   ],
   "docs/reference/README.md": [
-   "b930904837886230"
+   "b930904837886230",
+   "c42268ab08c535c5"
   ],
   "docs/reference/ui-design/anti-patterns.md": [
-   "38be9407b1496c0c"
+   "38be9407b1496c0c",
+   "4e345bae4b730ada"
   ],
   "docs/reference/ui-design/visual-design.md": [
-   "616ea27c9ea5ec3b"
+   "616ea27c9ea5ec3b",
+   "72a1337868715253"
   ],
   "docs/sop/README.md": [
    "604bd1f269f7e602",
    "9997e0db6f86c19e"
   ],
   "docs/sop/creating-a-task.md": [
+   "0f14501a44270752",
    "8aad9f5d1c2ae0bd",
    "b8d33511b65a49c9"
   ],
   "docs/sop/database-migration.md": [
    "2da8db68d926dc78",
+   "3976aeab1c1ff77e",
    "c5863d3c666ae16a"
   ],
   "docs/templates/README.md": [
    "0e248431cde17be9",
+   "6fedd39e161434f8",
    "7e5e33a13832e911",
    "84727c86bbed0a6a"
   ],
@@ -479,84 +598,110 @@
    "e29d7e35846faaf9"
   ],
   "docs/templates/brand-voice.md": [
+   "01069acecc82661d",
    "6a3794f748f61db8"
   ],
   "docs/templates/business-plan.md": [
    "91d6ab1fbe619235"
   ],
   "docs/templates/campaign.md": [
-   "b224f06d67b2b635"
+   "b224f06d67b2b635",
+   "bbb6e60efffabcd1"
   ],
   "docs/templates/cap-table.md": [
-   "10ab4d1a679751ab"
+   "10ab4d1a679751ab",
+   "387fe349ae7bb83b"
   ],
   "docs/templates/competitor-profile.md": [
+   "4bd7e77996db5838",
    "c4c92970218d81ea"
   ],
   "docs/templates/component-doc.md": [
    "0388743b91e5777b",
+   "1c45889ff261db48",
    "839d3f77aa9fd058"
+  ],
+  "docs/templates/council-report.md": [
+   "045763d92ce12dbd"
   ],
   "docs/templates/decision-memo.md": [
    "4113e90e45996352"
   ],
   "docs/templates/epic.md": [
    "1e13c953a1c8e202",
+   "44abaaeaa61ff19a",
    "829a76ac6c4cee18",
    "eb2651151e0d34e5"
   ],
   "docs/templates/executive-charter.md": [
-   "8ee5362e0789dbd9"
+   "8ee5362e0789dbd9",
+   "d9597615c6889686"
   ],
   "docs/templates/feature-doc.md": [
-   "18ef88112ea53ae1"
+   "18ef88112ea53ae1",
+   "f4daab79eed1e9a5"
   ],
   "docs/templates/financial-model.md": [
+   "5823a9c0e0ad4121",
    "74baa0cf795ee35d"
   ],
   "docs/templates/flow-diagram.md": [
    "38be318da3c1390f",
    "3fbe11baee4a13e6",
    "a709327abd486825",
+   "cf747f7fbc55064e",
    "d01cf26fefc88448"
   ],
   "docs/templates/goals.md": [
-   "c89f8b0f303c89fe"
+   "c89f8b0f303c89fe",
+   "eed2acc3d45bb0af"
   ],
   "docs/templates/investor-update.md": [
-   "582643cc1ca22be7"
+   "582643cc1ca22be7",
+   "975b3bad5e66dacf"
   ],
   "docs/templates/metrics.md": [
-   "2b7fa1b09290583c"
+   "2b7fa1b09290583c",
+   "4cf723b30678723d"
+  ],
+  "docs/templates/plan-arbitration.md": [
+   "5061fb04164104e1"
   ],
   "docs/templates/positioning.md": [
    "f012636fa99a41c5"
   ],
   "docs/templates/postmortem.md": [
+   "7d834988fd2f6c0f",
    "f790f73db8d8d05a"
   ],
   "docs/templates/pricing-strategy.md": [
+   "6a7cfdb958442fed",
    "af124895eaf08823"
   ],
   "docs/templates/research-doc.md": [
    "70aba92d16322fda",
-   "858e86788bad2a77"
+   "858e86788bad2a77",
+   "c2985829aeffe0ff"
   ],
   "docs/templates/review-report.md": [
-   "30ed3251d97a70a8"
+   "30ed3251d97a70a8",
+   "76f86a6c221284b4"
   ],
   "docs/templates/sop-procedure.md": [
    "296ae54ccfb3196c",
+   "b141a286925e8961",
    "e25e29f39e66d661",
    "fa69bd535dd4de4b"
   ],
   "docs/templates/task-prd.md": [
    "2a7fa663de452e58",
    "6d9a62242f19077d",
-   "7683fa0af25d6fc9"
+   "7683fa0af25d6fc9",
+   "a4c823768800a080"
   ],
   "docs/templates/user-guide.md": [
-   "3624289847b56d24"
+   "3624289847b56d24",
+   "835c67ac4fc9e969"
   ]
  }
 }
