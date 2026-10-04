@@ -13,7 +13,8 @@
   "v1.8.0",
   "v1.9.0",
   "v2.0.0",
-  "v2.3.0"
+  "v2.3.0",
+  "v2.4.0"
  ],
  "files": {
   ".claude/agents/architecture-reviewer.md": [
@@ -173,6 +174,7 @@
    "e00bee9d837e83ee"
   ],
   ".claude/commands/sk/help.md": [
+   "157a6445049b6a30",
    "8d97aeb4223988fe"
   ],
   ".claude/commands/sk/implement.md": [
@@ -186,6 +188,7 @@
   ],
   ".claude/commands/sk/init-docs.md": [
    "010f781b32913241",
+   "06755522970aa80e",
    "0fc262f2649c9d6a",
    "27b5fa2f2599be0c",
    "346598b7df92d5f9",
@@ -196,6 +199,7 @@
    "027918c5f6b6a7b1",
    "0cc3d9dc2f7bf37e",
    "27d425727640eedb",
+   "723f3964dd35c491",
    "7cc9565eb4fb0930"
   ],
   ".claude/commands/sk/legal-scan.md": [
@@ -337,6 +341,9 @@
    "9878d144ede3cf8d",
    "a0c95a7661f50722",
    "afedd159fa8229dd"
+  ],
+  ".claude/commands/sk/scaffold.md": [
+   "23e9cf3f2eccb615"
   ],
   ".claude/commands/sk/security-review.md": [
    "256bffb33a5f97d7",
@@ -553,6 +560,7 @@
    "4cf2444d7d1ce1cf",
    "9ac24be3df0fbca3",
    "ad42a7248304de52",
+   "cb0f275989efe852",
    "d9c9b6ab80da1494",
    "edcb4bd58b275316"
   ],
