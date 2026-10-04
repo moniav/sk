@@ -36,7 +36,7 @@
 
 ## Contributing factors
 
-<!-- What made it worse or slower to detect/fix — gaps in monitoring, runbooks, tests. -->
+<!-- What made it worse or slower to detect/fix: gaps in monitoring, runbooks, tests. -->
 
 ## Resolution & recovery
 

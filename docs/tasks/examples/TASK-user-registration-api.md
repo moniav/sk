@@ -13,7 +13,7 @@ updated: 2025-02-11
 
 # Task: User Registration API
 
-> **Note:** This is a worked example showing a TypeScript/Node.js implementation. Your project's file paths and tools will differ — the format and lifecycle process are what matter.
+> **Note:** This is a worked example showing a TypeScript/Node.js implementation. Your project's file paths and tools will differ. The format and lifecycle process are what matter.
 
 ---
 
@@ -25,7 +25,7 @@ Users need to create accounts with email and password so they can access protect
 
 - [x] **AC-1:** POST `/api/auth/register` accepts `{ email, password, name }` and returns `201` with user object (no password hash)
 - [x] **AC-2:** Duplicate email returns `409` with clear error message
-- [x] **AC-3:** Password must be >= 8 chars with at least 1 number — invalid input returns `400` with field-level errors
+- [x] **AC-3:** Password must be >= 8 chars with at least 1 number. Invalid input returns `400` with field-level errors
 - [x] **AC-4:** Password is stored as bcrypt hash, never as plaintext
 - [x] **AC-5:** A welcome email job is queued (not sent synchronously)
 
@@ -67,7 +67,7 @@ Use Zod for input validation, bcrypt for hashing, and the existing queue system 
 
 - Existing API pattern in `src/app/api/` uses route handlers with Zod validation
 - Queue system in `src/lib/queue/` supports typed job definitions
-- No existing auth module — this is the first auth feature
+- No existing auth module: this is the first auth feature
 
 ### Technical Decisions
 
@@ -76,7 +76,7 @@ Use Zod for input validation, bcrypt for hashing, and the existing queue system 
 
 ### Dev Notes
 
-- Bcrypt cost factor 12 takes ~250ms — acceptable for registration but would be too slow for hot paths
+- Bcrypt cost factor 12 takes ~250ms, acceptable for registration but would be too slow for hot paths
 - Zod schema reusable for client-side validation later
 - Used `UNIQUE` constraint on email column for duplicate detection
 
@@ -86,19 +86,19 @@ Use Zod for input validation, bcrypt for hashing, and the existing queue system 
 
 ### Subtasks
 
-- [x] **ST-1** `[DEV]` — Create `users` table migration (id, email, password_hash, name, created_at, updated_at)
-- [x] **ST-2** `[DEV]` — Create Zod schema for registration input validation
-- [x] **ST-3** `[DEV]` — Implement `AuthService.register()` — validate, hash, insert, queue email
-- [x] **ST-4** `[DEV]` — Create POST `/api/auth/register` route handler
-- [x] **ST-5** `[DEV]` — Create `welcome-email` queue job (just the job definition, email content is separate)
-- [x] **ST-6** `[TEST]` — Unit tests for AuthService.register (happy path, duplicate, invalid input)
-- [x] **ST-7** `[TEST]` — Integration test for the API endpoint
-- [x] **ST-8** `[DOCS]` — Update database-schema.md and api-reference.md
+- [x] **ST-1** `[DEV]`: Create `users` table migration (id, email, password_hash, name, created_at, updated_at)
+- [x] **ST-2** `[DEV]`: Create Zod schema for registration input validation
+- [x] **ST-3** `[DEV]`: Implement `AuthService.register()` (validate, hash, insert, queue email)
+- [x] **ST-4** `[DEV]`: Create POST `/api/auth/register` route handler
+- [x] **ST-5** `[DEV]`: Create `welcome-email` queue job (just the job definition, email content is separate)
+- [x] **ST-6** `[TEST]`: Unit tests for AuthService.register (happy path, duplicate, invalid input)
+- [x] **ST-7** `[TEST]`: Integration test for the API endpoint
+- [x] **ST-8** `[DOCS]`: Update database-schema.md and api-reference.md
 
 ### Implementation Notes
 
 - Used `UNIQUE` constraint on email column + caught DB error for duplicate detection (faster than SELECT first)
-- Bcrypt cost factor 12 takes ~250ms — acceptable for registration but would be too slow for hot paths
+- Bcrypt cost factor 12 takes ~250ms, acceptable for registration but would be too slow for hot paths
 - Zod schema reusable for client-side validation later
 
 ---
@@ -120,7 +120,7 @@ Use Zod for input validation, bcrypt for hashing, and the existing queue system 
 - [x] **AC-1** verified: Postman test returns 201 with `{id, email, name, createdAt}`, no hash
 - [x] **AC-2** verified: Second registration with same email returns `409 {"error": "Email already registered"}`
 - [x] **AC-3** verified: "short" returns 400 with `{"errors": {"password": "Must be at least 8 characters with 1 number"}}`
-- [x] **AC-4** verified: Inspected DB row — password_hash starts with `$2b$12$`
+- [x] **AC-4** verified: Inspected DB row, password_hash starts with `$2b$12$`
 - [x] **AC-5** verified: Queue dashboard shows `welcome-email` job created after registration
 - [x] All existing tests still pass
 - [x] No regressions

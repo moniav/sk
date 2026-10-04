@@ -41,4 +41,21 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     }
     console.log(`[OK] .claude/${sub} (${files.length} files)`);
   }
+
+  // Shipped reference docs that SK does not fill in for itself: keep the dogfood
+  // copies identical to what ships. Docs with SK's own content are not touched.
+  const SHIPPED_AS_IS = ["templates", "reference", "sop", "commands-reference.md", "conventions/coding-behavior.md"];
+  let docs = 0;
+  for (const entry of SHIPPED_AS_IS) {
+    const from = join(ROOT, "pkg", "docs", entry);
+    if (!existsSync(from)) continue;
+    const rels = entry.includes(".") ? [""] : listFilesRel(from).map((r) => "/" + r);
+    for (const rel of rels) {
+      const to = join(ROOT, "docs", entry + rel);
+      mkdirSync(dirname(to), { recursive: true });
+      writeFileSync(to, readFileSync(join(ROOT, "pkg", "docs", entry + rel)));
+      docs++;
+    }
+  }
+  console.log(`[OK] docs/ shipped reference docs (${docs} files)`);
 }

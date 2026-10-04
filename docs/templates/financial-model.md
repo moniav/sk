@@ -2,10 +2,10 @@
 
 **Last updated:** YYYY-MM-DD
 **Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
-**Live model:** [link to the spreadsheet — the source of truth for all numbers]
+**Live model:** [link to the spreadsheet, the source of truth for all numbers]
 
 > This is the **narrative** over the model. Numbers live in the linked model; don't duplicate
-> or invent them here — summarize and interpret.
+> or invent them here. Summarize and interpret.
 
 ## Key assumptions
 
@@ -13,7 +13,7 @@
 
 ## Revenue
 
-<!-- Model, key metrics (ARPU, conversion, churn), trajectory — at a glance. -->
+<!-- Model, key metrics (ARPU, conversion, churn), trajectory, at a glance. -->
 
 ## Costs & burn
 
@@ -27,7 +27,7 @@
 
 | Scenario | Assumption change | Outcome |
 |----------|-------------------|---------|
-| Base | — | … |
+| Base | - | … |
 | Upside | … | … |
 | Downside | … | … |
 

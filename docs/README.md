@@ -10,7 +10,7 @@
 |---------|---------|--------------|
 | [Tasks](./tasks/) | Task board, epics, PRDs & implementation plans | Before/during feature development |
 | [Architecture](./architecture/) | System design, component relationships, data flow | Before designing new features |
-| [Features](./features/) | Per-feature docs — what each does, how to extend | Building on or changing a feature |
+| [Features](./features/) | Per-feature docs: what each does, how to extend | Building on or changing a feature |
 | [Conventions](./conventions/) | Code standards, naming, patterns, file organization | Before writing any code |
 | [SOP](./sop/) | Step-by-step procedures for common tasks | Before executing any recurring task |
 | [Flows](./flows/) | Visual diagrams (Mermaid) for key processes | When understanding system behavior |
@@ -28,12 +28,12 @@
 
 ## Documentation Principles
 
-1. **Docs are code** — They live in the repo, get reviewed in PRs, and stay in sync
-2. **Write for the AI pair** — Be explicit about conventions; don't assume tribal knowledge
-3. **Minimize, don't maximize** — Short, accurate docs beat long, stale ones
-4. **Link, don't duplicate** — Reference other docs instead of copying content
-5. **Date everything** — Every doc has a `Last updated` field
-6. **Track freshness** — Evergreen docs carry a `Lifecycle` field (`current`/`stale`/`deprecated`/`archived`); audit with `/sk:docs-audit` (see [conventions/doc-lifecycle.md](./conventions/doc-lifecycle.md))
+1. **Docs are code:** They live in the repo, get reviewed in PRs, and stay in sync
+2. **Write for the AI pair:** Be explicit about conventions; don't assume tribal knowledge
+3. **Minimize, don't maximize:** Short, accurate docs beat long, stale ones
+4. **Link, don't duplicate:** Reference other docs instead of copying content
+5. **Date everything:** Every doc has a `Last updated` field
+6. **Track freshness:** Evergreen docs carry a `Lifecycle` field (`current`/`stale`/`deprecated`/`archived`); audit with `/sk:docs-audit` (see [conventions/doc-lifecycle.md](./conventions/doc-lifecycle.md))
 
 ## How This System Works
 
@@ -114,7 +114,7 @@ docs/
 |-- _archive/
 |   |-- README.md              <- Archive index
 |   +-- [retired-doc].md       <- Superseded docs (Lifecycle: archived)
-+-- templates/                 <- 24 doc templates — see templates/README.md for the full list + which command emits each
++-- templates/                 <- 24 doc templates: see templates/README.md for the full list + which command emits each
 ```
 
 ## Maintenance Rules

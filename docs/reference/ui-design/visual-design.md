@@ -1,6 +1,6 @@
 # Visual Design & Aesthetic Reference
 
-> Consulted by `/sk:ui-review` for the **taste** dimension — the part a WCAG/compliance pass doesn't cover.
+> Consulted by `/sk:ui-review` for the **taste** dimension: the part a WCAG/compliance pass doesn't cover.
 > Critique-first: use this to judge a rendered/coded UI, not to generate a design system.
 
 ## Aesthetic Audit Checklist
@@ -28,7 +28,7 @@ Rate each dimension and name the specific gap. A "10" answer is given so the rev
 
 ## Choosing / Judging a Visual Style
 
-When assessing whether a chosen style fits, check it on multiple axes — a style can look good but fail a hard constraint:
+When assessing whether a chosen style fits, check it on multiple axes: a style can look good but fail a hard constraint:
 
 | Axis | Question |
 |------|----------|
@@ -36,9 +36,9 @@ When assessing whether a chosen style fits, check it on multiple axes — a styl
 | **Accessibility** | Does it hold contrast and focus visibility? (glassmorphism/low-contrast often fails) |
 | **Dark mode** | Does it work in both themes, or only one? |
 | **Mobile** | Does the footprint and density survive small screens? |
-| **Performance** | Heavy blur/shadow/animation cost — acceptable for this surface? |
+| **Performance** | Heavy blur/shadow/animation cost: acceptable for this surface? |
 | **Conversion** | For marketing surfaces: does it support the CTA, or distract from it? |
 
 ## Persisting a Design System (optional)
 
-For projects with a real design system, capture it once in `docs/design/DESIGN.md` (aesthetic direction, palette tokens, type pairing, spacing scale, motion). `/sk:ui-review` should then check the UI *against* that file rather than against generic defaults — deviations from the canonical tokens become findings.
+For projects with a real design system, capture it once in `docs/design/DESIGN.md` (aesthetic direction, palette tokens, type pairing, spacing scale, motion). `/sk:ui-review` should then check the UI *against* that file rather than against generic defaults: deviations from the canonical tokens become findings.

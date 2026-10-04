@@ -1,6 +1,6 @@
 # Features
 
-> Per-feature / subsystem documentation — what each feature does, how to use it, how to
+> Per-feature / subsystem documentation: what each feature does, how to use it, how to
 > extend it. Complements [`../architecture/`](../architecture/) (system-level design).
 
 **Last updated:** YYYY-MM-DD
@@ -15,4 +15,4 @@ Created and maintained by `/sk:new-feature-doc`. Each doc uses the
 
 | Feature | Doc | Lifecycle |
 |---------|-----|-----------|
-| _none yet_ | — | — |
+| _none yet_ | - | - |

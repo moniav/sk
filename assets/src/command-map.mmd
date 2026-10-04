@@ -1,153 +1,39 @@
-graph LR
-    subgraph "Getting Started"
-        kickoff["/sk:kickoff"]
-        brainstorm["/sk:brainstorm"]
-        initdocs["/sk:init-docs"]
+flowchart TB
+    subgraph flow [" "]
+        direction LR
+        GS["<b>Start</b><br/>/sk:help<br/>/sk:kickoff<br/>/sk:init-docs<br/>/sk:brainstorm"]
+        CR["<b>Create work</b><br/>/sk:new-epic<br/>/sk:new-task"]
+        LC["<b>Build</b><br/>/sk:plan, /sk:dev, /sk:test<br/>/sk:implement (all three)<br/>/sk:orchestrate (parallel)"]
+        QA["<b>Review</b><br/>/sk:review (all at once)<br/>/sk:code-review<br/>/sk:security-review<br/>/sk:perf-review<br/>/sk:ui-review<br/>/sk:recap"]
+        SH["<b>Ship</b><br/>/sk:finish<br/>/sk:commit, /sk:pr<br/>/sk:changelog, /sk:release<br/>/sk:announce"]
+        GS --> CR --> LC --> QA --> SH
     end
 
-    subgraph "Lifecycle"
-        implement["/sk:implement"]
-        plan["/sk:plan"]
-        dev["/sk:dev"]
-        test["/sk:test"]
-        orchestrate["/sk:orchestrate"]
-        finish["/sk:finish"]
+    subgraph anytime [" "]
+        direction LR
+        FX["<b>Fix and change</b><br/>/sk:debug<br/>/sk:refactor<br/>/sk:migrate<br/>/sk:deps, /sk:debt"]
+        SE["<b>Session and upkeep</b><br/>/sk:resume<br/>/sk:task-status<br/>/sk:retro<br/>/sk:routines<br/>/sk:update"]
+        DO["<b>Docs</b><br/>/sk:update-docs<br/>/sk:docs-audit<br/>/sk:new-feature-doc<br/>/sk:new-user-guide<br/>/sk:new-sop, /sk:new-flow"]
+        DE["<b>Decide</b><br/>/sk:council<br/>/sk:new-adr"]
+        RU["<b>Run and comply</b><br/>/sk:ops<br/>/sk:legal-scan"]
+        GT["<b>Go to market</b><br/>/sk:positioning<br/>/sk:competitor<br/>/sk:pricing<br/>/sk:copywrite<br/>/sk:campaign<br/>/sk:new-business-doc"]
+        EX["<b>Executive team</b><br/>/sk:ceo, /sk:cto<br/>/sk:cmo, /sk:coo<br/>/sk:founder"]
+        FX ~~~ SE ~~~ DO ~~~ DE ~~~ RU ~~~ GT ~~~ EX
     end
 
-    subgraph "Creation"
-        newtask["/sk:new-task"]
-        newepic["/sk:new-epic"]
-        newsop["/sk:new-sop"]
-        newadr["/sk:new-adr"]
-        newflow["/sk:new-flow"]
-        newfeaturedoc["/sk:new-feature-doc"]
-        newuserguide["/sk:new-user-guide"]
-    end
+    flow ~~~ anytime
 
-    subgraph "Quality"
-        review["/sk:review"]
-        codereview["/sk:code-review"]
-        secreview["/sk:security-review"]
-        uireview["/sk:ui-review"]
-        perfreview["/sk:perf-review"]
-        recap["/sk:recap"]
-    end
-
-    subgraph "Decision Making"
-        council["/sk:council"]
-    end
-
-    subgraph "Debugging & Refactoring"
-        debug["/sk:debug"]
-        refactor["/sk:refactor"]
-        migrate["/sk:migrate"]
-        debt["/sk:debt"]
-    end
-
-    subgraph "Marketing, GTM & Legal"
-        copywrite["/sk:copywrite"]
-        campaign["/sk:campaign"]
-        announce["/sk:announce"]
-        positioning["/sk:positioning"]
-        competitor["/sk:competitor"]
-        pricing["/sk:pricing"]
-        newbusinessdoc["/sk:new-business-doc"]
-        legalscan["/sk:legal-scan"]
-    end
-
-    subgraph "Executive Team"
-        ceo["/sk:ceo"]
-        cto["/sk:cto"]
-        cmo["/sk:cmo"]
-        coo["/sk:coo"]
-        founder["/sk:founder"]
-    end
-
-    subgraph "Management"
-        resume["/sk:resume"]
-        retro["/sk:retro"]
-        status["/sk:task-status"]
-        updatedocs["/sk:update-docs"]
-        docsaudit["/sk:docs-audit"]
-        ops["/sk:ops"]
-        update["/sk:update"]
-        routines["/sk:routines"]
-        commit["/sk:commit"]
-        pr["/sk:pr"]
-        changelog["/sk:changelog"]
-        release["/sk:release"]
-        deps["/sk:deps"]
-    end
-
-    kickoff -->|"generates docs"| brainstorm
-    brainstorm -->|"creates tasks"| implement
-    initdocs -->|"populates docs"| newtask
-
-    implement --> plan
-    plan --> dev
-    plan --> orchestrate
-    dev --> test
-    orchestrate --> test
-    test --> finish
-
-    newepic -->|"creates tasks"| newtask
-
-    dev -->|"done"| codereview
-    codereview --> secreview
-    codereview --> perfreview
-    secreview --> commit
-    perfreview --> commit
-
-    council -->|"decision"| newadr
-    debug -->|"fixed"| codereview
-    refactor -->|"restructured"| codereview
-    migrate -->|"migrated"| test
-    test -->|"shipped"| retro
-    test -->|"recap diff"| recap
-    recap -->|"before PR"| commit
-    debt -.->|"feeds backlog"| refactor
-
-    deps -.->|"updates needed"| commit
-    changelog -.->|"commit changelog"| commit
-
-    review -->|"ship verdict"| finish
-    commit --> pr
-    changelog -.->|"release notes"| release
-    release -->|"announce it"| announce
-    announce -.->|"major launch"| campaign
-    routines -.->|"schedules"| docsaudit
-    routines -.->|"weekly briefs"| founder
-    ceo -->|"proceed"| brainstorm
-    founder -->|"approvals"| newtask
-
-    style ceo fill:#9b59b6,color:#fff
-    style cto fill:#9b59b6,color:#fff
-    style cmo fill:#9b59b6,color:#fff
-    style coo fill:#9b59b6,color:#fff
-    style founder fill:#2d6a4f,color:#fff
-
-    style kickoff fill:#2d6a4f,color:#fff
-    style brainstorm fill:#2d6a4f,color:#fff
-    style initdocs fill:#2d6a4f,color:#fff
-    style implement fill:#e76f51,color:#fff
-    style plan fill:#2a9d8f,color:#fff
-    style dev fill:#2a9d8f,color:#fff
-    style test fill:#2a9d8f,color:#fff
-    style orchestrate fill:#e76f51,color:#fff
-    style council fill:#9b59b6,color:#fff
-    style finish fill:#2a9d8f,color:#fff
-    style perfreview fill:#e9c46a,color:#000
-    style debug fill:#e76f51,color:#fff
-    style refactor fill:#e76f51,color:#fff
-    style migrate fill:#e76f51,color:#fff
-    style retro fill:#264653,color:#fff
-    style changelog fill:#264653,color:#fff
-    style deps fill:#264653,color:#fff
-    style recap fill:#e9c46a,color:#000
-    style debt fill:#264653,color:#fff
-    style commit fill:#e9c46a,color:#000
-    style resume fill:#264653,color:#fff
-    style pr fill:#e9c46a,color:#000
-    style release fill:#e9c46a,color:#000
-    style routines fill:#264653,color:#fff
-    style review fill:#e9c46a,color:#000
+    style flow fill:none,stroke:none
+    style anytime fill:none,stroke:none
+    style GS fill:#2d6a4f,color:#fff
+    style CR fill:#2a9d8f,color:#fff
+    style LC fill:#e76f51,color:#fff
+    style QA fill:#e9c46a,color:#000
+    style SH fill:#264653,color:#fff
+    style FX fill:#f4f1ea,color:#000
+    style SE fill:#f4f1ea,color:#000
+    style DO fill:#f4f1ea,color:#000
+    style DE fill:#f4f1ea,color:#000
+    style RU fill:#f4f1ea,color:#000
+    style GT fill:#f4f1ea,color:#000
+    style EX fill:#f4f1ea,color:#000

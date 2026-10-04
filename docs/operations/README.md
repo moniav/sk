@@ -1,6 +1,6 @@
 # Operations
 
-> Running the software in production — runbooks, incidents, and postmortems. This is the
+> Running the software in production: runbooks, incidents, and postmortems. This is the
 > *operate* counterpart to the engineering docs that cover *building*.
 
 **Last updated:** YYYY-MM-DD
@@ -11,7 +11,7 @@
 ```
 operations/
 ├── README.md          <- this index
-├── runbooks/          <- on-call, deploy, rollback, recovery — step-by-step ops procedures
+├── runbooks/          <- on-call, deploy, rollback, recovery: step-by-step ops procedures
 ├── incidents/         <- active/recent incident notes (timeline as it unfolds)
 └── postmortems/       <- blameless postmortems after resolution
 ```
@@ -40,12 +40,12 @@ operations/
 ### Runbooks
 | Runbook | Trigger | Lifecycle |
 |---------|---------|-----------|
-| _none yet_ | — | — |
+| _none yet_ | - | - |
 
 ### Postmortems
 | Incident | Date | Severity | Status |
 |----------|------|----------|--------|
-| _none yet_ | — | — | — |
+| _none yet_ | - | - | - |
 
 > Create a runbook with `/sk:new-sop` (save it under `operations/runbooks/`). Write a
 > postmortem from `templates/postmortem.md` after an incident is resolved.

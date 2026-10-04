@@ -2,7 +2,7 @@
 
 **Last updated:** YYYY-MM-DD
 **Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
-**Source:** `src/path/to/flow-code`  <!-- code paths this flow describes — enables code-drift detection -->
+**Source:** `src/path/to/flow-code`  <!-- code paths this flow describes (enables code-drift detection) -->
 **Type:** Sequence | Flowchart | State | Entity Relationship
 **Format:** Mermaid | SVG
 
@@ -48,8 +48,8 @@ stateDiagram-v2
 
 ## Step-by-Step Explanation
 
-1. **Step name** — What happens and why
-2. **Step name** — What happens and why
+1. **Step name:** What happens and why
+2. **Step name:** What happens and why
 
 ## Error Paths
 

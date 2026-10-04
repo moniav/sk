@@ -35,6 +35,8 @@ your-project/
     └── commands-reference.md    Full command table (loaded on demand)
 ```
 
+With the plugin, the `.claude/` folder is not created: the commands, agents and skills load from the plugin, and the project holds only `CLAUDE.md` and `docs/`.
+
 ## How It Works
 
 ![How It Works](https://raw.githubusercontent.com/moniav/sk/main/assets/how-it-works.png)
@@ -168,7 +170,7 @@ SK works with both new projects and existing codebases. The setup path differs.
 ### Greenfield Project (starting from scratch)
 
 ```
-1. npx shipkit-cld                          # Install SK
+1. Install SK (see Installation above)
 2. /sk:kickoff                              # Answer questions, docs auto-generated
 3. /sk:brainstorm                           # Describe your first feature, get epic + tasks
 4. /sk:implement                            # Build it
@@ -191,7 +193,7 @@ SK works with both new projects and existing codebases. The setup path differs.
 ### Brownfield Project (existing codebase)
 
 ```
-1. npx shipkit-cld                          # Install SK
+1. Install SK (see Installation above)
 2. /sk:init-docs                            # Auto-scan codebase, detect build commands, populate docs
 3. Review generated docs                    # Verify accuracy, fix anything wrong
 4. /sk:new-task                             # Define your first piece of work
@@ -241,10 +243,15 @@ SK tracks your active work across sessions:
 
 ## Command Reference
 
+Not sure which command you need? Run `/sk:help`, or `/sk:help <what you want to do>`.
+
+Claude starts only six commands by itself: `/sk:debug`, `/sk:resume`, `/sk:task-status`, `/sk:new-task`, `/sk:plan` and `/sk:review`. Every other command runs when you type it, so nothing commits, pushes or publishes unless you ask.
+
 ### Getting Started
 
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
+| `/sk:help` | Find the right command for a situation | Not sure where to start, or what comes next |
 | `/sk:kickoff` | Guided project setup + best-practice research | Starting a new (greenfield) project |
 | `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
 | `/sk:init-docs` | Auto-scan codebase, populate docs | Brownfield project or full rebuild |
@@ -363,14 +370,17 @@ SK separates the **product** (what gets installed) from **project files** (for d
 ```
 sk/                              ← SK source repository
 ├── CLAUDE.md                    ← SK development instructions (NOT shipped)
-├── cli.mjs                      ← CLI: install / update / remove
+├── cli.mjs                      ← CLI: install / update / remove / init
+├── .claude-plugin/              ← marketplace.json: installs the plugin from ./pkg
+├── scripts/                     ← Dev tooling (check, sync, baselines, evals), not shipped
 ├── package.json                 ← npm package config
-├── pkg/                         ← Everything shipped to target projects
+├── pkg/                         ← Everything shipped to target projects; also the plugin root
+│   ├── .claude-plugin/          ← plugin.json
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
 │       ├── commands/sk/         ← 54 slash commands
-│       ├── agents/              ← Implementer, reviewers, dependency-analyzer, architecture-reviewer
+│       ├── agents/              ← 9 agents: implementer, six reviewers, dependency-analyzer, debugger
 │       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
 └── .claude/                     ← Development copy (dogfooding, not shipped)
 ```
@@ -406,6 +416,12 @@ sk/                              ← SK source repository
 **Advisory council** — `/sk:council` convenes 3-5 AI personas with genuinely incompatible value systems (pragmatist vs architect vs adversary) to debate strategic questions. Structured rounds: independent positions (zero cross-visibility), challenge, optional rebuttal, synthesis. Produces a decision report with recommendation, confidence, dissent, and conditions for reversal. A plan-arbiter mode resolves competing plans via a ranked tiebreaker instead of blending them. Research shows multi-agent debate reduces hallucinations by 30%+ and improves factual accuracy.
 
 **Behavioral guardrails** — LLMs over-engineer, make hidden assumptions, and drift from scope. Five principles (surface assumptions, do exactly what's asked, keep it simple, verify with evidence, track deliberate shortcuts via `sk-debt` markers) are embedded in every lifecycle command to counteract this. See `docs/conventions/coding-behavior.md`.
+
+**Proof over claims.** Every phase gate ends on something that can be shown: a command that was run with its output, a file that exists, a count that matches. Each acceptance criterion is reported as passed, failed or untested, never left out. Reviewer findings say how far they were proven.
+
+**Updates never destroy your work.** The updater works one file at a time. A file you edited is kept, with SK's new version written beside it; a file of yours that shares a name with one of SK's is never touched.
+
+**Context is a budget.** A command or skill that Claude can start by itself puts its description in every turn. Only six commands and eleven skills do; the rest run when you type them. Three behaviour rules that used to depend on a skill firing (evidence before "done", stop after three failed attempts, what "just do it" permits) are always on through `CLAUDE.md`.
 
 ## Anti-Patterns to Avoid
 

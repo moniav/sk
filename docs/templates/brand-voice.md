@@ -4,13 +4,13 @@
 **Lifecycle:** current
 
 > The single source of truth for how this company sounds in public. Everything that
-> writes outward-facing words — `/sk:copywrite`, `/sk:announce`, campaign assets,
-> social posts — reads this file first and follows it over any default voice.
+> writes outward-facing words (`/sk:copywrite`, `/sk:announce`, campaign assets,
+> social posts) reads this file first and follows it over any default voice.
 > Derive it from [positioning](./positioning.md); update it when positioning shifts.
 
 ## Voice in Three Words
 
-<!-- e.g. "Direct, warm, technical" — the attributes every piece should pass. -->
+<!-- e.g. "Direct, warm, technical": the attributes every piece should pass. -->
 
 ## Tone by Context
 
@@ -24,14 +24,14 @@
 
 ## Vocabulary
 
-**We say:** <!-- product terms, preferred phrasing — e.g. "workspace" not "tenant" -->
+**We say:** <!-- product terms, preferred phrasing, e.g. "workspace" not "tenant" -->
 
-**We never say:** <!-- banned words/phrases — e.g. "leverage", "revolutionary", competitor slang -->
+**We never say:** <!-- banned words/phrases, e.g. "leverage", "revolutionary", competitor slang -->
 
 ## Style Rules
 
 - <!-- e.g. Second person ("you"), active voice, contractions OK -->
-- <!-- e.g. Numbers over adjectives — "10x fewer clicks", never "blazing fast" -->
+- <!-- e.g. Numbers over adjectives: "10x fewer clicks", never "blazing fast" -->
 - <!-- e.g. No exclamation marks in product copy; one allowed in launches -->
 
 ## Before / After Examples

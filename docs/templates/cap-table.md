@@ -2,7 +2,7 @@
 
 **Last updated:** YYYY-MM-DD
 **Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
-**Source of record:** [link to the captable tool / legal source — authoritative numbers there]
+**Source of record:** [link to the captable tool / legal source, authoritative numbers there]
 
 > Snapshot for context, not the legal record. Keep the linked source authoritative.
 

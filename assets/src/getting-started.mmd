@@ -1,5 +1,5 @@
 flowchart TD
-    Start(["npx shipkit-cld"]) --> Q{"New or existing<br/>codebase?"}
+    Start(["Install the SK plugin<br/>then: npx shipkit-cld init"]) --> Q{"New or existing<br/>codebase?"}
 
     Q -->|"Greenfield<br/>(no code yet)"| GF1["/sk:kickoff<br/><i>guided setup + research</i>"]
     GF1 --> GF2["/sk:brainstorm<br/><i>define first feature</i>"]

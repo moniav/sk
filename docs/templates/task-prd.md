@@ -8,7 +8,7 @@ status: planning  # planning | ready | in-progress | testing | done | blocked | 
 priority: P1
 epic: E{N} | standalone
 claimed_by:   # agent/session working this task (blank = unclaimed); see tasks/README.md claim convention
-claimed_at:   # YYYY-MM-DD HH:MM — claim goes stale when `updated` is >24h old
+claimed_at:   # YYYY-MM-DD HH:MM (claim goes stale when `updated` is >24h old)
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
@@ -58,7 +58,7 @@ updated: YYYY-MM-DD
 
 | Question | Answer |
 |----------|--------|
-| — | — |
+| - | - |
 
 > **PLAN exit gate:** All questions resolved, approach clear, subtasks defined below.
 
@@ -66,7 +66,7 @@ updated: YYYY-MM-DD
 
 ## Phase Analysis
 
-<!-- Written by /sk:plan, consumed by /sk:dev — DO NOT fill manually -->
+<!-- Written by /sk:plan, consumed by /sk:dev. DO NOT fill manually -->
 
 ### Codebase Scan Results
 
@@ -88,12 +88,12 @@ updated: YYYY-MM-DD
 
 <!-- Each subtask at S complexity (single concern, 1-2 files). Tagged by phase. Execute top-to-bottom. -->
 
-- [ ] **ST-1** `[DEV]` — Description of what to implement
-- [ ] **ST-2** `[DEV]` — Description of what to implement
-- [ ] **ST-3** `[DEV]` — Description of what to implement
-- [ ] **ST-4** `[TEST]` — Write unit tests for [what]
-- [ ] **ST-5** `[TEST]` — Write integration test for [what]
-- [ ] **ST-6** `[DOCS]` — Update [specific docs]
+- [ ] **ST-1** `[DEV]`: Description of what to implement
+- [ ] **ST-2** `[DEV]`: Description of what to implement
+- [ ] **ST-3** `[DEV]`: Description of what to implement
+- [ ] **ST-4** `[TEST]`: Write unit tests for [what]
+- [ ] **ST-5** `[TEST]`: Write integration test for [what]
+- [ ] **ST-6** `[DOCS]`: Update [specific docs]
 
 ### Implementation Notes
 

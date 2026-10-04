@@ -1,7 +1,7 @@
 # Start Here
 
 > **Human front door.** Pick your lane below. (If you're an AI agent, read
-> [`README.md`](./README.md) instead — it's the machine index.)
+> [`README.md`](./README.md) instead: it's the machine index.)
 
 **Last updated:** YYYY-MM-DD
 **Lifecycle:** current
@@ -13,13 +13,13 @@ Delete any lane your project doesn't need.
 
 | If you're a… | Start with | Then |
 |--------------|-----------|------|
-| **New engineer** | [system/project-context.md](./system/project-context.md) — what this is | [conventions/](./conventions/) → [architecture/](./architecture/) |
-| **Building a feature** | [features/](./features/) — how subsystems work | [tasks/](./tasks/) → [flows/](./flows/) |
-| **On-call / operating prod** | [operations/](./operations/) — runbooks, postmortems | [system/](./system/) |
-| **End user / customer** | [user-guides/](./user-guides/) — how to use the product | — |
-| **Business / GTM** | [business/](./business/) — positioning, competitors, pricing | — |
-| **Compliance / legal** | [legal/](./legal/) — agreements, policies, compliance scans | [decisions/](./decisions/) |
-| **Returning contributor** | [tasks/](./tasks/) — what's in flight | [README.md](./README.md) — full map |
+| **New engineer** | [system/project-context.md](./system/project-context.md): what this is | [conventions/](./conventions/) → [architecture/](./architecture/) |
+| **Building a feature** | [features/](./features/): how subsystems work | [tasks/](./tasks/) → [flows/](./flows/) |
+| **On-call / operating prod** | [operations/](./operations/): runbooks, postmortems | [system/](./system/) |
+| **End user / customer** | [user-guides/](./user-guides/): how to use the product | - |
+| **Business / GTM** | [business/](./business/): positioning, competitors, pricing | - |
+| **Compliance / legal** | [legal/](./legal/): agreements, policies, compliance scans | [decisions/](./decisions/) |
+| **Returning contributor** | [tasks/](./tasks/): what's in flight | [README.md](./README.md): full map |
 
 ## Conventions you should know
 
