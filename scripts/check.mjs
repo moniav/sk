@@ -228,8 +228,15 @@ for (const file of commandFiles) {
   if (f["argument-hint"] && !text.includes("$ARGUMENTS")) err("frontmatter", `commands/sk/${file} takes arguments but never places $ARGUMENTS`);
 
   // The Skill tool cannot reach a gated command, so one command must not tell the model to run another.
+  // "Suggest the user run /sk:x" is fine: the user types it.
   for (const m of text.slice(text.indexOf("\n---", 4)).matchAll(/^(?!\s*[-|>*]).*\b[Rr]un `\/sk:([a-z-]+)`[^?\n]*$/gm)) {
+    if (/\buser(s)? run\b|\bsuggest\b/i.test(m[0])) continue;
     if (!MODEL_INVOCABLE.includes(m[1])) err("gating", `commands/sk/${file} tells the model to run gated /sk:${m[1]}: "${m[0].trim().slice(0, 70)}"`);
+  }
+
+  // The help command is the map of the others; a command it does not mention is one nobody will find.
+  if (existsSync(join(commandsDir, "help.md")) && name !== "help" && !new RegExp("/sk:" + name + "\\b").test(read(join(commandsDir, "help.md")))) {
+    err("help", `commands/sk/help.md does not mention /sk:${name}`);
   }
 }
 

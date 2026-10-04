@@ -5,8 +5,13 @@
 
 ## Slash Commands (sk namespace)
 
+Not sure which one you need? Run `/sk:help`, or `/sk:help <what you want to do>`.
+
+Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-status`, `/sk:new-task`, `/sk:plan` and `/sk:review`. Every other command runs when you type it.
+
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
+| `/sk:help` | Find the right command for a situation | Not sure where to start, or what comes next |
 | `/sk:kickoff` | Guided project setup + research | Starting a new (greenfield) project |
 | `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
 | `/sk:implement` | Full lifecycle: Plan > Dev > Test | Build a feature end-to-end |
@@ -88,6 +93,7 @@
 | /sk:founder | Executive briefs (schedule via /sk:routines) |
 | /sk:ops | docs/operations/ home (created by init-docs) |
 | /sk:finish | Build commands filled in, code-review prerequisites |
+| /sk:help | Nothing |
 | /sk:implement | project-context.md populated |
 | /sk:init-docs | Nothing (auto-scan for brownfield) |
 | /sk:kickoff | Nothing (guided setup for greenfield) |
@@ -120,6 +126,7 @@
 
 ```
 Getting Started
+├── /sk:help → which command fits the situation
 ├── /sk:kickoff (greenfield) → generates foundation docs
 │   └── /sk:brainstorm → explore idea, create epic + tasks
 └── /sk:init-docs (brownfield) → scan codebase, populate docs
@@ -142,6 +149,7 @@ Decision Making
 └── /sk:council → multi-persona deliberation → decision report
 
 Quality Gates
+├── /sk:review → security, performance and quality reviewers in parallel, one verdict
 ├── /sk:code-review
 ├── /sk:security-review
 ├── /sk:ui-review
@@ -150,7 +158,9 @@ Quality Gates
 
 Git & Release
 ├── /sk:commit → conventional commit
+├── /sk:pr → pull request from the current branch
 ├── /sk:changelog → generate changelog
+├── /sk:release → version bump, changelog, tag, release
 └── /sk:deps → dependency audit
 
 Marketing & Legal
@@ -187,7 +197,7 @@ Migration & Recovery
 | Before release (security focus) | `/sk:security-review` |
 | After UI changes | `/sk:ui-review` |
 | Performance concerns | `/sk:perf-review` |
-| All of the above | Run them in sequence or as part of `/sk:finish` |
+| Security, performance and quality in one pass | `/sk:review` |
 
 ### Creating Work Items
 
@@ -200,14 +210,14 @@ Migration & Recovery
 
 ## Skill Interactions
 
-Skills activate automatically during command execution. Here's how they compose:
+Commands load the skills they need. Three rules are also always on through `CLAUDE.md`: evidence before "done", stop after three failed attempts, and what "just do it" permits. Here's how they compose:
 
 | Skill Combination | When It Happens | Effect |
 |-------------------|-----------------|--------|
 | **TDD + Verification** | Every `/sk:dev` and `/sk:implement` subtask | Tests written first (RED-GREEN-REFACTOR), then verified with actual output before marking done |
-| **Escalation + Any Command** | After 3 failed attempts at the same problem | Stops retrying, presents structured options (break down, revise, rethink, debug) |
+| **Escalation + Any Command** | After 3 failed attempts at the same problem | Stops retrying, presents structured options (break down, revise, rethink, debug). A dispatched subtask that fails review twice is retried one model tier up first |
 | **Subagent Dev + TDD** | `/sk:dev` with 5+ subtasks in subagent mode | Each subagent follows TDD independently with fresh context |
 | **Git Worktrees + Orchestrate** | `/sk:orchestrate` with parallel waves | Each parallel agent gets an isolated worktree to avoid file conflicts |
 | **Error Recovery + Escalation** | During any recovery that hits 3 failures | Recovery attempts are structured; if stuck, escalation kicks in |
 | **Context Priming + Resume** | `/sk:resume` at session start | Context priming guides efficient file reading order for warm-up |
-| **Verification + Test** | `/sk:test` phase exit | Must show actual command output proving all ACs pass, no "trust me" allowed |
+| **Verification + Test** | `/sk:test` phase exit | Every acceptance criterion is reported as passed, failed or untested, with the command output and the revision it was run against |

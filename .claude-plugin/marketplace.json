@@ -8,7 +8,7 @@
     {
       "name": "sk",
       "source": "./pkg",
-      "description": "Plan, Dev, Test lifecycle, doc system and autonomy stack: 53 commands, 23 skills, 9 agents",
+      "description": "Plan, Dev, Test lifecycle, doc system and autonomy stack: 54 commands, 23 skills, 9 agents",
       "license": "MIT"
     }
   ]
