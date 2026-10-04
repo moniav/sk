@@ -7,7 +7,7 @@
 // Errors fail the run. Warnings are known gaps scheduled in
 // dev-docs/planning/2026-10-best-practices-enhancement-plan.md; each names its item.
 
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, appendFileSync } from "fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, appendFileSync } from "fs";
 import { createHash } from "crypto";
 import { dirname, join, resolve } from "path";
 import { fileURLToPath } from "url";
@@ -77,7 +77,9 @@ const skillNames = readdirSync(skillsDir, { withFileTypes: true })
 // Shipped files point at each other through the plugin root; a project install
 // (and the dogfood copy) gets that prefix rewritten to .claude/ (plan item 2.4).
 const PLUGIN_PREFIX = "${CLAUDE_PLUGIN_ROOT}/.claude/";
-const rendered = (text) => text.split(PLUGIN_PREFIX).join(".claude/");
+// A copied-file install has no plugin root: the bundled CLI becomes the npm one.
+const PLUGIN_CLI = 'node "${CLAUDE_PLUGIN_ROOT}/cli.mjs"';
+const rendered = (text) => text.split(PLUGIN_PREFIX).join(".claude/").split(PLUGIN_CLI).join("npx shipkit-cld");
 
 for (const sub of ["commands/sk", "agents", "skills"]) {
   const a = join(PKG, ".claude", sub);
@@ -513,6 +515,29 @@ if (!staticOnly) {
     runCli([".", "--yes"], tmp);
     const init = runCli(["init", "."], tmp);
     if (init.status === 0) err("init", "init ran on top of a file-copy install");
+  });
+
+  // The plugin ships the CLI (pkg/cli.mjs), so /sk:scaffold can run it from the plugin
+  // cache, where only the contents of pkg/ exist: no package.json, no enclosing pkg/ folder.
+  scratch((cache) => {
+    cpSync(PKG, cache, { recursive: true });
+    scratch((tmp) => {
+      const init = spawnSync(process.execPath, [join(cache, "cli.mjs"), "init", ".", "--yes"], { cwd: tmp, input: "", encoding: "utf-8", timeout: 120000 });
+      if (init.status !== 0) return err("plugin-cli", `cli.mjs init from a plugin-layout copy exited ${init.status}: ${(init.stderr || init.stdout || "").trim().slice(0, 300)}`);
+      if (!existsSync(join(tmp, "docs", "templates", "task-prd.md"))) err("plugin-cli", "init from the plugin copy did not scaffold docs/templates");
+      if (!existsSync(join(tmp, "CLAUDE.md"))) err("plugin-cli", "init from the plugin copy did not create CLAUDE.md");
+      if (existsSync(join(tmp, ".claude", "commands"))) err("plugin-cli", "init from the plugin copy copied commands into the project");
+      const manifest = readManifest(tmp);
+      const expectedVersion = JSON.parse(read(join(ROOT, "package.json"))).version;
+      if (manifest.channel !== "plugin") err("plugin-cli", "manifest does not record the plugin channel");
+      if (manifest.version !== expectedVersion) err("plugin-cli", `manifest version is ${manifest.version}, expected ${expectedVersion}`);
+
+      // update from the plugin copy refreshes shipped docs and keeps an edited one.
+      appendFileSync(join(tmp, "docs", "templates", "task-prd.md"), "\nUSER EDIT\n");
+      const update = spawnSync(process.execPath, [join(cache, "cli.mjs"), "update", ".", "--yes"], { cwd: tmp, input: "", encoding: "utf-8", timeout: 120000 });
+      if (update.status !== 0) err("plugin-cli", `update from the plugin copy exited ${update.status}: ${(update.stderr || "").trim().slice(0, 300)}`);
+      if (!read(join(tmp, "docs", "templates", "task-prd.md")).includes("USER EDIT")) err("plugin-cli", "update from the plugin copy overwrote an edited template");
+    });
   });
 
   // The release baselines are generated; they must match the tags.

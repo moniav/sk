@@ -11,10 +11,12 @@ import { fileURLToPath } from "url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PLUGIN_PREFIX = "${CLAUDE_PLUGIN_ROOT}/.claude/";
+// A copied-file install has no plugin root: the bundled CLI becomes the npm one.
+const PLUGIN_CLI = 'node "${CLAUDE_PLUGIN_ROOT}/cli.mjs"';
 
 export function renderForProject(buffer, rel) {
   if (!rel.endsWith(".md")) return buffer;
-  return Buffer.from(buffer.toString("utf-8").split(PLUGIN_PREFIX).join(".claude/"), "utf-8");
+  return Buffer.from(buffer.toString("utf-8").split(PLUGIN_PREFIX).join(".claude/").split(PLUGIN_CLI).join("npx shipkit-cld"), "utf-8");
 }
 
 function listFilesRel(dir, base = dir) {

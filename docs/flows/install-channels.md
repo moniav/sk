@@ -20,7 +20,7 @@ flowchart TD
 
     Pin -->|No: recommended| P1[claude plugin marketplace add moniav/sk]
     P1 --> P2[claude plugin install sk@shipkit]
-    P2 --> P3[npx shipkit-cld init]
+    P2 --> P3["/sk:scaffold<br/>(or npx shipkit-cld init)"]
     P3 --> P4{File already<br/>exists?}
     P4 -->|No| P5[Copy it into docs/]
     P4 -->|Yes| P6[Leave it alone:<br/>it is the project's]

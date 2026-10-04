@@ -6,7 +6,7 @@
 
 ## What you'll accomplish
 
-SK's 54 commands, 24 skills and 9 agents installed once per machine and updated by Claude Code, while each project owns only its `docs/` tree and `CLAUDE.md`.
+SK's 55 commands, 24 skills and 9 agents installed once per machine and updated by Claude Code, while each project owns only its `docs/` tree and `CLAUDE.md`.
 
 This is the recommended way to install SK.
 Copy the files into the project instead (`npx shipkit-cld`) only when the project must pin its own SK version, because a plugin is one version per user.
@@ -35,16 +35,18 @@ Copy the files into the project instead (`npx shipkit-cld`) only when the projec
 
    - *What you'll see:* `Successfully installed plugin: sk@shipkit`.
 
-3. **Scaffold the docs** in each project that will use SK:
+3. **Scaffold the docs** in each project that will use SK. Start Claude Code in the project and run:
 
-   ```bash
-   npx shipkit-cld init
+   ```
+   /sk:scaffold
    ```
 
    Add `--minimal` for the core doc homes only.
+   The command runs the script that ships inside the plugin, so the docs match the plugin's version. It needs Node.js 18 or later.
+   Outside Claude Code, `npx shipkit-cld init` does the same.
    - *What you'll see:* a count of files added to `docs/`, and `CLAUDE.md created`.
      If the project already has a `CLAUDE.md`, it is left alone and SK's template is written beside it as `CLAUDE.sk.md` for you to merge.
-   - `init` only fills gaps. It never replaces a file, so it is safe on a project that already has `docs/`, and safe to run again.
+   - The scaffold only fills gaps. It never replaces a file, so it is safe on a project that already has `docs/`, and safe to run again.
 
 4. **Verify.** Start a new Claude Code session in the project and run `/sk:task-status`.
    - *What you'll see:* the task board. Agents are available to Claude as `sk:implementer`, `sk:spec-reviewer` and so on.
@@ -72,7 +74,7 @@ Each teammate gets the marketplace when they trust the folder, then installs the
 
 1. `npx shipkit-cld remove .` removes the copied commands, skills and agents and keeps `docs/`.
 2. Install the plugin (steps 1 and 2 above).
-3. `npx shipkit-cld init .` fills any gaps in `docs/` and records that the project now uses the plugin.
+3. `/sk:scaffold` fills any gaps in `docs/` and records that the project now uses the plugin.
 
 Do not keep both. With the plugin and the copied files together, every command appears twice.
 

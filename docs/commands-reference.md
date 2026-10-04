@@ -12,6 +12,7 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
 | `/sk:help` | Find the right command for a situation | Not sure where to start, or what comes next |
+| `/sk:scaffold` | Create `docs/` and `CLAUDE.md`, or refresh the shipped docs | Once per project when SK is installed as a plugin |
 | `/sk:kickoff` | Guided project setup + research | Starting a new (greenfield) project |
 | `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
 | `/sk:implement` | Full lifecycle: Plan > Dev > Test | Build a feature end-to-end |

@@ -28,6 +28,7 @@ Do not run any command from here. This command only points the way.
 
 | You are... | Start with |
 |------------|------------|
+| In a project with no `docs/` tree yet | `/sk:scaffold`, then one of the next two |
 | Starting a new project | `/sk:kickoff` |
 | Adding SK to an existing codebase | `/sk:init-docs` |
 | Coming back to work in progress | `/sk:resume`, or `/sk:task-status` for the whole board |

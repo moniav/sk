@@ -17,7 +17,7 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 54 slash commands
+│   ├── commands/sk/             ← 55 slash commands
 │   ├── agents/                  ← 9 agents (implementer, reviewers, debugger, dependency-analyzer)
 │   └── skills/                  ← 24 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
@@ -74,12 +74,18 @@ The plugin holds the commands, skills and agents. They live outside your project
 claude plugin marketplace add moniav/sk
 claude plugin install sk@shipkit
 
-# Once per project, to scaffold docs/ and CLAUDE.md:
-npx shipkit-cld init
-npx shipkit-cld init --minimal   # core doc homes only; the rest are created on demand
 ```
 
-Commands keep their `/sk:*` names. `init` only fills gaps: it never replaces a file you already have.
+Then, once per project, in Claude Code:
+
+```
+/sk:scaffold              # creates docs/ and CLAUDE.md
+/sk:scaffold --minimal    # core doc homes only; the rest are created on demand
+```
+
+The scaffold only fills gaps: it never replaces a file you already have.
+It runs the script that ships inside the plugin, so the docs always match the plugin's version. It needs Node.js 18 or later.
+Outside Claude Code, `npx shipkit-cld init` does the same.
 
 To get new releases, run `claude plugin update sk@shipkit`, or turn on auto-update for the `shipkit` marketplace under `/plugin` → Marketplaces. Auto-update is off by default.
 
@@ -99,7 +105,7 @@ npx shipkit-cld --minimal             # core doc homes only
 
 This copies the commands, skills and agents into the project's `.claude/` directory, next to the `docs/` scaffold.
 
-To move a project from copied files to the plugin: `npx shipkit-cld remove .` (keeps `docs/`), install the plugin, then `npx shipkit-cld init .`.
+To move a project from copied files to the plugin: `npx shipkit-cld remove .` (keeps `docs/`), install the plugin, then `/sk:scaffold`.
 
 ## Updating
 
@@ -379,7 +385,7 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 54 slash commands
+│       ├── commands/sk/         ← 55 slash commands
 │       ├── agents/              ← 9 agents: implementer, six reviewers, dependency-analyzer, debugger
 │       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
 └── .claude/                     ← Development copy (dogfooding, not shipped)

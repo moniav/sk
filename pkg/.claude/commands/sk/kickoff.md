@@ -11,6 +11,8 @@ Set up a new project from scratch through guided conversation and current best-p
 
 ## Step 1: Read Existing State
 
+If `docs/templates/` does not exist, the scaffold is missing. If `.claude/commands/sk/` does not exist in the project either (SK runs as a plugin), create it before anything else by running `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init . --yes` from the project root; it only fills gaps and never replaces a file.
+
 Check what already exists:
 
 1. If `docs/system/project-context.md` exists, read it

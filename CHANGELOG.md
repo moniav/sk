@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- **`/sk:scaffold`** - a new command (55 in total) that creates `docs/` and `CLAUDE.md` in a project from inside Claude Code, so a plugin user no longer needs `npx shipkit-cld init`. It runs the script that now ships inside the plugin, so the scaffold always matches the plugin's version. `/sk:scaffold update` refreshes the shipped docs and keeps edited files. `/sk:kickoff` and `/sk:init-docs` create a missing scaffold themselves. Needs Node.js 18 or later.
+- **CLI moved into the plugin** - the CLI is now `pkg/cli.mjs`; the `cli.mjs` at the package root only imports it. `npx shipkit-cld` behaves as before, and `--from` accepts a checkout or its `pkg/` folder.
+
 ## 2.3.0 (2026-10-04)
 
 Changes from the 2026-10 best-practices review: correctness and safety fixes (Wave 1),

@@ -14,10 +14,10 @@ The same `pkg/` directory is delivered two ways: as a Claude Code plugin, or as 
 
 ```mermaid
 graph TD
-    PKG["pkg/ is everything that ships<br/>54 commands, 9 agents, 24 skills<br/>doc templates, CLAUDE.md template"]
+    PKG["pkg/ is everything that ships<br/>55 commands, 9 agents, 24 skills<br/>doc templates, CLAUDE.md template"]
 
     PKG -->|"Plugin channel<br/>claude plugin install sk@shipkit"| CACHE["Claude Code plugin cache<br/>commands, agents, skills<br/>outside the project"]
-    PKG -->|"Plugin channel<br/>npx shipkit-cld init"| PDOCS["Project<br/>docs/ and CLAUDE.md"]
+    PKG -->|"Plugin channel<br/>/sk:scaffold"| PDOCS["Project<br/>docs/ and CLAUDE.md"]
     PKG -->|"File-copy channel<br/>npx shipkit-cld"| PALL["Project<br/>docs/, CLAUDE.md and .claude/"]
     PKG -->|"Development<br/>npm run sync"| DOG["SK repository<br/>.claude/ dogfood copy"]
 
@@ -42,7 +42,7 @@ graph TD
 | Payload and plugin root | `pkg/` | Everything that ships |
 | Plugin manifest | `pkg/.claude-plugin/plugin.json` | Name `sk`, version (equals `package.json`), component paths |
 | Marketplace | `.claude-plugin/marketplace.json` | Marketplace `shipkit`, installs `sk` from `./pkg` |
-| Commands | `pkg/.claude/commands/sk/` | 54 slash commands; six are model-invocable |
+| Commands | `pkg/.claude/commands/sk/` | 55 slash commands; six are model-invocable |
 | Agents | `pkg/.claude/agents/` | implementer, spec-reviewer, plan-reviewer, quality-reviewer, security-reviewer, perf-reviewer, architecture-reviewer, dependency-analyzer, debugger |
 | Skills | `pkg/.claude/skills/` | 24 skills: 11 model-invoked, 13 user-invoked or loaded by commands |
 | Doc templates | `pkg/docs/templates/` | 26 templates |
