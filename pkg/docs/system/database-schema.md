@@ -39,8 +39,8 @@ Primary user accounts table.
 | `name` | varchar(255) | NOT NULL | Display name |
 | `password_hash` | varchar(255) | NOT NULL | bcrypt hash |
 | `role` | varchar(50) | NOT NULL, default 'user' | user, admin |
-| `created_at` | timestamptz | NOT NULL, default now() | — |
-| `updated_at` | timestamptz | NOT NULL, default now() | — |
+| `created_at` | timestamptz | NOT NULL, default now() | - |
+| `updated_at` | timestamptz | NOT NULL, default now() | - |
 
 **Indexes:** `idx_users_email` on `email`
 

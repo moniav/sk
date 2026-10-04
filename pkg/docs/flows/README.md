@@ -11,7 +11,7 @@
 
 | Flow | Type | Description |
 |------|------|-------------|
-| — | — | No flows created yet |
+| - | - | No flows created yet |
 
 ## Suggested Flows
 

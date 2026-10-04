@@ -1,7 +1,7 @@
 # SOP: Database Migration
 
 **Last updated:** YYYY-MM-DD
-**Criticality:** High — mistakes can cause data loss
+**Criticality:** High (mistakes can cause data loss)
 
 ## Pre-flight Checklist
 

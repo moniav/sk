@@ -63,9 +63,9 @@ src/features/payments/             app/payments/
 
 ### When to Create a New Directory
 
-- **3+ related files** — Group them in a directory
-- **Shared by 2+ features** — Move to `lib/` or `utils/`
-- **Single use** — Keep it next to the consumer
+- **3+ related files:** Group them in a directory
+- **Shared by 2+ features:** Move to `lib/` or `utils/`
+- **Single use:** Keep it next to the consumer
 
 ### File Size Limits
 

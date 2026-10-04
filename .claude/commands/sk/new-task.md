@@ -81,15 +81,15 @@ Follow this standard decomposition pattern, adapted to the specific task:
 ```markdown
 ### Subtasks
 
-- [ ] **ST-1** `[DEV]` — Define/update data models (`path/to/models`)
-- [ ] **ST-2** `[DEV]` — Implement service logic (`path/to/services`)
-- [ ] **ST-3** `[DEV]` — Create API endpoint (`path/to/routes`)
-- [ ] **ST-4** `[DEV]` — Build UI component (`path/to/components`)
-- [ ] **ST-5** `[DEV]` — Wire up state and integration
-- [ ] **ST-6** `[TEST]` — Unit tests for service logic
-- [ ] **ST-7** `[TEST]` — Integration test for API endpoint
-- [ ] **ST-8** `[TEST]` — Verify all acceptance criteria
-- [ ] **ST-9** `[DOCS]` — Update system docs (schema, API, architecture)
+- [ ] **ST-1** `[DEV]`: Define/update data models (`path/to/models`)
+- [ ] **ST-2** `[DEV]`: Implement service logic (`path/to/services`)
+- [ ] **ST-3** `[DEV]`: Create API endpoint (`path/to/routes`)
+- [ ] **ST-4** `[DEV]`: Build UI component (`path/to/components`)
+- [ ] **ST-5** `[DEV]`: Wire up state and integration
+- [ ] **ST-6** `[TEST]`: Unit tests for service logic
+- [ ] **ST-7** `[TEST]`: Integration test for API endpoint
+- [ ] **ST-8** `[TEST]`: Verify all acceptance criteria
+- [ ] **ST-9** `[DOCS]`: Update system docs (schema, API, architecture)
 ```
 
 ### TEST Section (define test plan)

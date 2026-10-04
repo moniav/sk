@@ -36,7 +36,7 @@ Rules:
 ## PR Process
 
 1. Branch from `main`
-2. Keep PRs focused — one feature/fix per PR
+2. Keep PRs focused: one feature/fix per PR
 3. Self-review diff before requesting review
 4. Update relevant docs in same PR
 5. Squash merge to `main`

@@ -1,12 +1,12 @@
 # Templates
 
-> Starter templates for every doc type. Copy one when creating a new doc — most are emitted
+> Starter templates for every doc type. Copy one when creating a new doc. Most are emitted
 > automatically by the `/sk:` command in the right-hand column.
 
 **Last updated:** YYYY-MM-DD
 **Lifecycle:** current
 
-> These are scaffolds with intentional placeholder links (`{N}`, `[Name]`) — `/sk:docs-audit`
+> These are scaffolds with intentional placeholder links (`{N}`, `[Name]`). `/sk:docs-audit`
 > exempts this folder from the broken-link check.
 
 ## Lifecycle / work templates
@@ -37,10 +37,10 @@
 | `cap-table.md` | A cap-table snapshot | `/sk:new-business-doc` |
 | `investor-update.md` | An investor update | `/sk:new-business-doc` |
 | `decision-memo.md` | A decision memo | `/sk:new-business-doc` |
-| `goals.md` | Company goals — the strategy layer epics link to via `goal:` | `/sk:new-business-doc` |
-| `brand-voice.md` | How the company sounds — overrides the copywriting default voice | `/sk:new-business-doc` |
-| `campaign.md` | A marketing campaign — goal-linked plan, assets, honest results | `/sk:campaign` |
-| `metrics.md` | Metrics dictionary — what each number means + its source of truth | `/sk:new-business-doc` |
+| `goals.md` | Company goals: the strategy layer epics link to via `goal:` | `/sk:new-business-doc` |
+| `brand-voice.md` | How the company sounds: overrides the copywriting default voice | `/sk:new-business-doc` |
+| `campaign.md` | A marketing campaign: goal-linked plan, assets, honest results | `/sk:campaign` |
+| `metrics.md` | Metrics dictionary: what each number means + its source of truth | `/sk:new-business-doc` |
 | `executive-charter.md` | A custom executive seat over the executive-meeting skill | manual |
 
 > Evergreen templates carry a `Lifecycle` field (see

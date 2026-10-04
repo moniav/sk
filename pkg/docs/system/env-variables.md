@@ -26,7 +26,7 @@
 
 | Variable | Service | Where to Get It |
 |----------|---------|----------------|
-| — | No service keys configured yet | — |
+| - | No service keys configured yet | - |
 
 ## Local Development
 
@@ -35,7 +35,7 @@
 cp .env.example .env
 
 # Fill in your local values
-# Never commit .env — it's in .gitignore
+# Never commit .env: it's in .gitignore
 ```
 
 ## Adding New Variables

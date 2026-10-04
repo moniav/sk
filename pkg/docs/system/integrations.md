@@ -8,7 +8,7 @@
 
 | Service | Purpose | Env Var(s) | Docs |
 |---------|---------|-----------|------|
-| — | No integrations documented yet | — | — |
+| - | No integrations documented yet | - | - |
 
 ## Integration Patterns
 
@@ -22,7 +22,7 @@
 
 | Webhook | Source | Endpoint | Purpose |
 |---------|--------|----------|---------|
-| — | — | — | — |
+| - | - | - | - |
 
 ### Background Jobs
 
@@ -31,6 +31,6 @@
 ## Failure Handling
 
 <!-- How does the system handle external service outages? -->
-- Retry strategy: —
-- Circuit breaker: —
-- Fallback behavior: —
+- Retry strategy: -
+- Circuit breaker: -
+- Fallback behavior: -

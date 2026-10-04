@@ -47,7 +47,7 @@ graph TB
 
 | Component | Doc | Owner | Status |
 |-----------|-----|-------|--------|
-| <!-- e.g. Auth Service --> | [Link](./auth-service.md) | — | Active |
+| <!-- e.g. Auth Service --> | [Link](./auth-service.md) | - | Active |
 
 ## Key Design Principles
 

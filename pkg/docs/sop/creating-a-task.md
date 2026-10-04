@@ -5,7 +5,7 @@
 
 ## Purpose
 
-Follow this procedure whenever starting new work — from a bug fix to a full feature.
+Follow this procedure whenever starting new work, from a bug fix to a full feature.
 
 ## Decision: What Level Do I Need?
 
@@ -45,9 +45,9 @@ cp docs/templates/task-prd.md docs/tasks/TASK-N-S-feature-name.md
 ```
 
 **Naming convention:**
-- Epics: `EPIC-{N}-{kebab-name}.md` — e.g., `EPIC-1-user-auth.md`
-- Tasks (with epic): `TASK-{N}-E{epicN}-{kebab-name}.md` — e.g., `TASK-1-E1-registration-api.md`
-- Tasks (standalone): `TASK-{N}-S-{kebab-name}.md` — e.g., `TASK-5-S-fix-login-bug.md`
+- Epics: `EPIC-{N}-{kebab-name}.md`, e.g., `EPIC-1-user-auth.md`
+- Tasks (with epic): `TASK-{N}-E{epicN}-{kebab-name}.md`, e.g., `TASK-1-E1-registration-api.md`
+- Tasks (standalone): `TASK-{N}-S-{kebab-name}.md`, e.g., `TASK-5-S-fix-login-bug.md`
 
 **Phase and status tracking:** Tracked in YAML frontmatter inside each file. Filenames never change.
 
@@ -66,12 +66,12 @@ Update the `updated` date field each time. No file renaming needed.
 
 Complete these sections (do NOT skip to coding):
 
-1. **What** — Write the problem statement (1 paragraph)
-2. **Acceptance Criteria** — Define 2-5 testable conditions
-3. **Approach** — Describe the technical approach
-4. **Affected Areas** — List files/components that will change
-5. **Dependencies** — List what must exist first
-6. **Open Questions** — List unknowns, then resolve them
+1. **What:** Write the problem statement (1 paragraph)
+2. **Acceptance Criteria:** Define 2-5 testable conditions
+3. **Approach:** Describe the technical approach
+4. **Affected Areas:** List files/components that will change
+5. **Dependencies:** List what must exist first
+6. **Open Questions:** List unknowns, then resolve them
 
 ### 3. Break Down into Subtasks
 
@@ -121,7 +121,7 @@ For each subtask, top-to-bottom:
 
 1. Update frontmatter: `phase: done`, `status: done`
 2. Add final entry to Progress Log
-3. Update `docs/tasks/README.md` — move task from Active to Completed
+3. Update `docs/tasks/README.md`: move task from Active to Completed
 4. Update any affected system docs
 
 ## Template: Quick Subtask Breakdown
@@ -131,15 +131,15 @@ Here's a reusable pattern for most features:
 ```markdown
 ### Subtasks
 
-- [ ] **ST-1** `[PLAN]` — Define schema/data model changes
-- [ ] **ST-2** `[DEV]` — Implement data layer (schema, migrations, queries)
-- [ ] **ST-3** `[DEV]` — Implement business logic (service/handler)
-- [ ] **ST-4** `[DEV]` — Implement API endpoint (route, validation, response)
-- [ ] **ST-5** `[DEV]` — Implement UI (component, state, integration)
-- [ ] **ST-6** `[TEST]` — Unit tests for business logic
-- [ ] **ST-7** `[TEST]` — Integration test for API endpoint
-- [ ] **ST-8** `[TEST]` — Verify all acceptance criteria
-- [ ] **ST-9** `[DOCS]` — Update schema, API, and architecture docs
+- [ ] **ST-1** `[PLAN]`: Define schema/data model changes
+- [ ] **ST-2** `[DEV]`: Implement data layer (schema, migrations, queries)
+- [ ] **ST-3** `[DEV]`: Implement business logic (service/handler)
+- [ ] **ST-4** `[DEV]`: Implement API endpoint (route, validation, response)
+- [ ] **ST-5** `[DEV]`: Implement UI (component, state, integration)
+- [ ] **ST-6** `[TEST]`: Unit tests for business logic
+- [ ] **ST-7** `[TEST]`: Integration test for API endpoint
+- [ ] **ST-8** `[TEST]`: Verify all acceptance criteria
+- [ ] **ST-9** `[DOCS]`: Update schema, API, and architecture docs
 ```
 
 ## Common Mistakes
@@ -150,5 +150,5 @@ Here's a reusable pattern for most features:
 | Skipping PLAN phase | The plan IS the work. Code is just typing. |
 | Acceptance criteria not testable | Rewrite as yes/no questions |
 | Subtasks above S complexity | Break them down further |
-| Forgetting the DOCS subtask | Always include it — it's part of "done" |
+| Forgetting the DOCS subtask | Always include it: it's part of "done" |
 | Not updating Progress Log | Future-you will thank present-you |

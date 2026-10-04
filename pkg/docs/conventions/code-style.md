@@ -88,13 +88,13 @@ function processUser(user: User) {
 if retries > 3: ...              # What is 3?
 if retries > MAX_RETRIES: ...    # Better
 
-# God functions (>50 lines) — break into composed smaller functions
+# God functions (>50 lines): break into composed smaller functions
 
 # Catch-and-ignore
 try:
     risky_op()
 except Exception:
-    pass                         # Bad — at minimum, log the error
+    pass                         # Bad: at minimum, log the error
 ```
 
 ## Error Handling

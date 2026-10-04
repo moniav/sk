@@ -14,7 +14,7 @@
 
 ## Decision Framework
 
-<!-- 3-5 principles that make this seat's judgment DISTINCT — not personality,
+<!-- 3-5 principles that make this seat's judgment DISTINCT: not personality,
      method. e.g. "reversibility first: one-way doors escalate". -->
 
 ## Standing Agenda (every meeting / weekly brief)
@@ -29,7 +29,7 @@
 
 ## Wields
 
-<!-- Existing /sk: commands this seat uses — executives orchestrate, never duplicate. -->
+<!-- Existing /sk: commands this seat uses. Executives orchestrate, never duplicate. -->
 
 ## Founding / Due-Diligence Mode
 

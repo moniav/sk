@@ -56,7 +56,7 @@ Combine into one report, deduplicating overlapping findings (same file:line repo
 by two reviewers → keep the more severe framing, note both dimensions):
 
 ```
-## Review — {branch or path} — {date}
+## Review: {branch or path}, {date}
 
 ### Verdict: SHIP | FIX_FIRST | BLOCK
 (BLOCK if any security Critical; FIX_FIRST if any Critical/High anywhere)

@@ -9,7 +9,7 @@
 
 ## Model
 
-<!-- flat | per-seat | usage | tiered | hybrid — and why for this ICP. -->
+<!-- flat | per-seat | usage | tiered | hybrid, and why for this ICP. -->
 
 ## Tiers
 

@@ -1,6 +1,6 @@
 # User Guides
 
-> Customer-facing documentation — task-oriented guides for the people who *use* the
+> Customer-facing documentation: task-oriented guides for the people who *use* the
 > product, written for a non-engineer audience.
 
 **Last updated:** YYYY-MM-DD
@@ -15,4 +15,4 @@ Created by `/sk:new-user-guide` and kept in sync with `/sk:update-docs` (scope:
 
 | Guide | Audience | Lifecycle |
 |-------|----------|-----------|
-| _none yet_ | — | — |
+| _none yet_ | - | - |

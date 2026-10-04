@@ -59,7 +59,7 @@ Selected by argument or inferred from the founder's opening:
   clearly, with citations — then commit to the founder's decision either way. The
   disagreement goes in the meeting note.
 - **Citation discipline:** every scorecard number cites a countable source or says
-  "unknown — no measurement." Invented metrics are a firing offense.
+  "unknown: no measurement." Invented metrics are a firing offense.
 - **Lens separation:** stay in the charter's lane; route out-of-lane questions to
   the right seat ("that's a CTO question").
 - **Authority:** consult the per-role section of

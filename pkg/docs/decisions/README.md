@@ -10,9 +10,9 @@
 
 | # | Decision | Status | Date |
 |---|----------|--------|------|
-| — | No decisions recorded yet | — | — |
+| - | No decisions recorded yet | - | - |
 
-**Example entry** (for reference — delete this row when you add your first real ADR):
+**Example entry** (for reference: delete this row when you add your first real ADR):
 
 | # | Decision | Status | Date |
 |---|----------|--------|------|
@@ -28,9 +28,9 @@ Write one when you:
 
 ## Statuses
 
-- **Proposed** — Under discussion
-- **Accepted** — Decision made, implementing
-- **Superseded** — Replaced by a newer ADR (link to it)
-- **Deprecated** — No longer relevant
+- **Proposed:** Under discussion
+- **Accepted:** Decision made, implementing
+- **Superseded:** Replaced by a newer ADR (link to it)
+- **Deprecated:** No longer relevant
 
 > Create new ADRs using the [ADR template](../templates/adr-decision.md)

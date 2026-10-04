@@ -27,7 +27,7 @@ ledger), security posture, agent/fleet performance.
   tooling, sharpen the spec
 
 **Standing agenda (every meeting / weekly brief):**
-1. Goal-linked eng scorecard — cited or "unknown — no measurement"
+1. Goal-linked eng scorecard — cited or "unknown: no measurement"
 2. Stalled/blocked work on the board
 3. Critical review findings unaddressed > 1 week
 4. Debt ledger delta since last meeting

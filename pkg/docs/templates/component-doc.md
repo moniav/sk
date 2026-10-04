@@ -32,7 +32,7 @@ function processOrder(order: Order): Promise<OrderResult>
 
 | Config | Type | Default | Description |
 |--------|------|---------|-------------|
-| `maxRetries` | number | 3 | — |
+| `maxRetries` | number | 3 | - |
 
 ## Data Flow
 

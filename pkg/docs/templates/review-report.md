@@ -7,7 +7,7 @@ command: "/sk:{command-name}"
 status: "{N open / M resolved}"
 ---
 
-# {Category} Review — YYYY-MM-DD
+# {Category} Review: YYYY-MM-DD
 
 ## Scope
 
@@ -19,25 +19,25 @@ status: "{N open / M resolved}"
 
 | # | Category | Location | Finding | Status |
 |---|----------|----------|---------|--------|
-| — | — | — | — | ⬜ Open |
+| - | - | - | - | ⬜ Open |
 
 ### Warning
 
 | # | Category | Location | Finding | Status |
 |---|----------|----------|---------|--------|
-| — | — | — | — | ⬜ Open |
+| - | - | - | - | ⬜ Open |
 
 ### Suggestion
 
 | # | Category | Location | Finding | Status |
 |---|----------|----------|---------|--------|
-| — | — | — | — | ⬜ Open |
+| - | - | - | - | ⬜ Open |
 
 ### Good Patterns
 
 | # | Category | Location | What's Good |
 |---|----------|----------|-------------|
-| — | — | — | — |
+| - | - | - | - |
 
 ## Verdict
 
@@ -48,4 +48,4 @@ status: "{N open / M resolved}"
 <!-- Tasks created from findings, next review date recommendation -->
 | Finding # | Action | Reference |
 |-----------|--------|-----------|
-| — | — | — |
+| - | - | - |

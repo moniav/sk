@@ -25,7 +25,7 @@ date: YYYY-MM-DD
 |--------|-----|----------|----------|
 | <!-- Next.js docs --> | <!-- https://... --> | <!-- YYYY-MM-DD --> | <!-- which finding --> |
 
-**Valid until:** <!-- rough freshness horizon — version facts ~30d, comparisons ~90d, concepts ~6-12mo (see SK's `research` skill) -->
+**Valid until:** <!-- rough freshness horizon: version facts ~30d, comparisons ~90d, concepts ~6-12mo (see SK's `research` skill) -->
 
 ## Decision
 

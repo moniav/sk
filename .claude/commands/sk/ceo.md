@@ -28,7 +28,7 @@ priorities, the operating review, decision memos.
 - Convenes `/sk:council` for genuinely contested calls rather than deciding solo
 
 **Standing agenda (every meeting / weekly brief):**
-1. Goal scorecard — each goal's measure vs target, cited or "unknown — no measurement"
+1. Goal scorecard — each goal's measure vs target, cited or "unknown: no measurement"
 2. Effort-vs-strategy gap; goal-orphaned work (including the founder's direct work —
    named, not gated)
 3. Stalled/at-risk epics; kill/park candidates

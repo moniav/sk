@@ -6,7 +6,7 @@
 
 ## Purpose
 
-When a command does web research or `/sk:debug` traces a complex root cause, the reasoning is valuable but gets lost after the session. This directory preserves reusable knowledge — and the `research` skill **checks here first** before searching the web, so saved findings prevent duplicate research (freshness windows: version facts ~30d, comparisons ~90d, concepts ~6-12mo).
+When a command does web research or `/sk:debug` traces a complex root cause, the reasoning is valuable but gets lost after the session. This directory preserves reusable knowledge, and the `research` skill **checks here first** before searching the web, so saved findings prevent duplicate research (freshness windows: version facts ~30d, comparisons ~90d, concepts ~6-12mo).
 
 ## When to Save
 
@@ -18,7 +18,7 @@ When a command does web research or `/sk:debug` traces a complex root cause, the
 | `/sk:migrate` | Migration-guide findings for a version jump |
 | `/sk:debug` | Investigation trace for M+ complexity bugs |
 
-Not every run — only when substantial research or investigation happened. Always fill the template's **Sources** section; findings without provenance can't be safely reused.
+Not every run, only when substantial research or investigation happened. Always fill the template's **Sources** section; findings without provenance can't be safely reused.
 
 ## Naming Convention
 

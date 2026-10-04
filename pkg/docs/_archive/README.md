@@ -18,4 +18,4 @@ for history. `/sk:docs-audit` **exempts** this folder from orphan and staleness 
 
 | Doc | Archived | Replaced by |
 |-----|----------|-------------|
-| _empty_ | — | — |
+| _empty_ | - | - |

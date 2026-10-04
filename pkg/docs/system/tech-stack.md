@@ -8,13 +8,13 @@
 
 | Layer | Technology | Version | Purpose |
 |-------|-----------|---------|---------|
-| Language | <!-- TypeScript / Python / Go / etc. --> | — | Primary language |
-| Runtime | <!-- Node.js 20+ / Python 3.12+ / etc. --> | — | Server runtime |
-| Framework | <!-- Next.js / FastAPI / Django / Flask / Express / etc. --> | — | Web framework |
-| Database | <!-- PostgreSQL / MySQL / SQLite / MongoDB / etc. --> | — | Primary data store |
-| ORM | <!-- Drizzle / Prisma / SQLAlchemy / Django ORM / etc. --> | — | DB queries |
-| Cache | <!-- Redis / Memcached / none --> | — | Session store, caching |
-| Auth | <!-- NextAuth / Passport / Django Auth / custom JWT / etc. --> | — | Authentication |
+| Language | <!-- TypeScript / Python / Go / etc. --> | - | Primary language |
+| Runtime | <!-- Node.js 20+ / Python 3.12+ / etc. --> | - | Server runtime |
+| Framework | <!-- Next.js / FastAPI / Django / Flask / Express / etc. --> | - | Web framework |
+| Database | <!-- PostgreSQL / MySQL / SQLite / MongoDB / etc. --> | - | Primary data store |
+| ORM | <!-- Drizzle / Prisma / SQLAlchemy / Django ORM / etc. --> | - | DB queries |
+| Cache | <!-- Redis / Memcached / none --> | - | Session store, caching |
+| Auth | <!-- NextAuth / Passport / Django Auth / custom JWT / etc. --> | - | Authentication |
 
 ## Infrastructure
 
@@ -43,4 +43,4 @@
 | Package | Why We Use It | Notes |
 |---------|--------------|-------|
 | <!-- e.g., zod / pydantic --> | Runtime validation | Used for all API input validation |
-| — | — | — |
+| - | - | - |

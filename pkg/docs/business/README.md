@@ -1,13 +1,13 @@
 # Business
 
-> Go-to-market and business documentation — positioning, competitors, pricing, and the
+> Go-to-market and business documentation: positioning, competitors, pricing, and the
 > business artifacts (plan, model summary, investor updates, decision memos).
 
 **Last updated:** YYYY-MM-DD
 **Lifecycle:** current
 
 Created by the GTM front doors (`/sk:positioning`, `/sk:competitor`, `/sk:pricing`) and
-`/sk:new-business-doc`. This is the **single home** for business/marketing docs — keep
+`/sk:new-business-doc`. This is the **single home** for business/marketing docs: keep
 everything here rather than splitting across `marketing/` and `business/`.
 
 ## Index
@@ -16,7 +16,7 @@ everything here rather than splitting across `marketing/` and `business/`.
 
 | Doc | Type | Lifecycle |
 |-----|------|-----------|
-| _none yet_ | — | — |
+| _none yet_ | - | - |
 
 ## What goes where
 

@@ -113,14 +113,14 @@ class NameFormatter:
 
 Before writing code, walk down this ladder and **stop at the first step that works**:
 
-1. **Does it need to exist?** (YAGNI — the cheapest code is the code you don't write)
+1. **Does it need to exist?** (YAGNI: the cheapest code is the code you don't write)
 2. **Does the standard library cover it?**
 3. **Is there a native platform feature?** (e.g. `<input type="date">` before adding a date-picker dependency)
 4. **Is a dependency already installed that does this?**
 5. **Is it a one-liner?**
 6. **Minimal working code.**
 
-**Non-negotiables — never simplified away:** input validation, error handling, security, accessibility, and anything the user explicitly asked for. Lazy means *efficient*, not careless.
+**Non-negotiables, never simplified away:** input validation, error handling, security, accessibility, and anything the user explicitly asked for. Lazy means *efficient*, not careless.
 
 ### Anti-Patterns
 - **Over-engineering:** Building for requirements that don't exist yet
@@ -156,14 +156,14 @@ Verification:
 
 ## 5. Track Deliberate Shortcuts (Don't Let Debt Go Silent)
 
-**Principle:** Principles 2 and 3 produce *intentional* shortcuts — the minimal solution that meets the acceptance criteria today. That's correct. But an undocumented shortcut is invisible the moment the session ends ("later means never"). When you deliberately defer something, leave a structured marker so the debt is trackable.
+**Principle:** Principles 2 and 3 produce *intentional* shortcuts: the minimal solution that meets the acceptance criteria today. That's correct. But an undocumented shortcut is invisible the moment the session ends ("later means never"). When you deliberately defer something, leave a structured marker so the debt is trackable.
 
 ### Marker Format
 ```
 // sk-debt: <ceiling>, <upgrade trigger>
 ```
-- **ceiling** — what the shortcut does NOT handle (the limit you're accepting).
-- **upgrade trigger** — the condition that should make someone revisit it.
+- **ceiling:** what the shortcut does NOT handle (the limit you're accepting).
+- **upgrade trigger:** the condition that should make someone revisit it.
 
 ### Good Example
 ```js
@@ -172,8 +172,8 @@ const total = cents / 100;
 ```
 
 ### Anti-Patterns
-- **Silent shortcut:** Taking the minimal path but leaving no marker — the next person can't tell intent from accident.
-- **No-trigger debt:** A marker with a ceiling but no upgrade trigger — debt with no exit plan. Always state what should make someone come back.
+- **Silent shortcut:** Taking the minimal path but leaving no marker. The next person can't tell intent from accident.
+- **No-trigger debt:** A marker with a ceiling but no upgrade trigger: debt with no exit plan. Always state what should make someone come back.
 - **Marker as TODO dump:** Using it for aspirational features rather than a real, bounded shortcut you just made.
 
 Run `/sk:debt` to harvest all markers into a ranked ledger.

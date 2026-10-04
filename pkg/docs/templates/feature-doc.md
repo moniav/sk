@@ -8,7 +8,7 @@
 ## What it does
 
 <!-- 1-3 sentences: the user-facing capability this feature provides. Describe what
-     actually ships today, verified against the code — not aspirational behavior. -->
+     actually ships today, verified against the code, not aspirational behavior. -->
 
 ## How it works
 

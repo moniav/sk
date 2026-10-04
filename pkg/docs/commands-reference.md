@@ -1,7 +1,7 @@
 # Command Reference
 
 > **Claude Code:** Read this file when you need to find the right command for a task.
-> This is NOT loaded automatically — CLAUDE.md points here when needed.
+> This is NOT loaded automatically. CLAUDE.md points here when needed.
 
 ## Slash Commands (sk namespace)
 
@@ -16,7 +16,7 @@
 | `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
 | `/sk:test` | Execute TEST phase | Verify acceptance criteria |
 | `/sk:finish` | Review + commit + push + PR + task update | After work is done, ready to ship |
-| `/sk:review` | Parallel multi-dimension review — security, perf, quality subagents | Before shipping a branch or feature |
+| `/sk:review` | Parallel multi-dimension review: security, perf, quality subagents | Before shipping a branch or feature |
 | `/sk:pr` | Create a pull request from the current branch | Branch committed, just want the PR |
 | `/sk:release` | Version bump + changelog + tag + GitHub release | Cutting a release |
 | `/sk:orchestrate` | Parallel agent team for task/epic | 3+ independent subtasks, want speed |
@@ -32,34 +32,34 @@
 | `/sk:new-adr` | Create an ADR | Record a significant tech decision |
 | `/sk:new-flow` | Create a flow diagram | Visualize a system process |
 | `/sk:code-review` | Analyze code for bugs, patterns, quality | Before committing or merging |
-| `/sk:security-review` | Security scan — OWASP, secrets, deps | Before release or on-demand |
-| `/sk:ui-review` | UI quality — a11y, responsive, UX | After UI changes |
-| `/sk:perf-review` | Performance — queries, memory, rendering, caching | Before release or on-demand |
-| `/sk:debug` | Systematic debugging — reproduce, isolate, fix, verify | Bug reports and unexpected behavior |
-| `/sk:refactor` | Safe refactoring — restructure without behavior change | Code improvement without feature changes |
+| `/sk:security-review` | Security scan: OWASP, secrets, deps | Before release or on-demand |
+| `/sk:ui-review` | UI quality: a11y, responsive, UX | After UI changes |
+| `/sk:perf-review` | Performance: queries, memory, rendering, caching | Before release or on-demand |
+| `/sk:debug` | Systematic debugging: reproduce, isolate, fix, verify | Bug reports and unexpected behavior |
+| `/sk:refactor` | Safe refactoring: restructure without behavior change | Code improvement without feature changes |
 | `/sk:changelog` | Generate changelog from git history | Before release or version bump |
-| `/sk:deps` | Dependency health — outdated, vulnerabilities, licenses | Periodic audit or before release |
-| `/sk:legal-scan` | Legal & compliance expert — requirements, framework deep-dives, document drafting, contract review | Starting a project, adding payments/health data, fundraising |
-| `/sk:copywrite` | Write marketing copy — landing pages, emails, ads, CTAs, social posts | Any marketing copy task for SaaS/tech products |
-| `/sk:retro` | Run retrospective on completed work — capture lessons and improvements | After completing a task/epic, periodic reflection |
+| `/sk:deps` | Dependency health: outdated, vulnerabilities, licenses | Periodic audit or before release |
+| `/sk:legal-scan` | Legal & compliance expert: requirements, framework deep-dives, document drafting, contract review | Starting a project, adding payments/health data, fundraising |
+| `/sk:copywrite` | Write marketing copy: landing pages, emails, ads, CTAs, social posts | Any marketing copy task for SaaS/tech products |
+| `/sk:retro` | Run retrospective on completed work: capture lessons and improvements | After completing a task/epic, periodic reflection |
 | `/sk:migrate` | Handle breaking changes, dependency upgrades, and database migrations safely | Major version bumps, schema changes, runtime upgrades |
-| `/sk:recap` | Reviewer-facing recap of a diff — what changed and why | After implementation, before PR review |
+| `/sk:recap` | Reviewer-facing recap of a diff: what changed and why | After implementation, before PR review |
 | `/sk:debt` | Harvest `sk-debt` markers into a ranked ledger | Periodic debt sweep, or feeding `/sk:refactor` |
-| `/sk:docs-audit` | Audit doc coherence — orphans, staleness, broken links, lifecycle | Periodic doc health check, before release |
+| `/sk:docs-audit` | Audit doc coherence: orphans, staleness, broken links, lifecycle | Periodic doc health check, before release |
 | `/sk:new-feature-doc` | Document a feature/subsystem, verified against code | A feature is worth a standalone explainer |
 | `/sk:new-user-guide` | Write a customer-facing, task-oriented user guide | Documenting how a user accomplishes a task |
 | `/sk:positioning` | Define product positioning & messaging (ICP, category, value prop) | Establishing GTM foundation |
-| `/sk:competitor` | Analyze competitors — profiles, positioning map, comparison | Competitive intelligence |
-| `/sk:pricing` | Design or evaluate pricing — value metric, model, tiers | Pricing decisions |
+| `/sk:competitor` | Analyze competitors: profiles, positioning map, comparison | Competitive intelligence |
+| `/sk:pricing` | Design or evaluate pricing: value metric, model, tiers | Pricing decisions |
 | `/sk:new-business-doc` | Create a business doc (plan, model, cap table, update, memo) | Capturing a business artifact |
 | `/sk:campaign` | Plan, track, and close a marketing campaign | Coordinated marketing work |
 | `/sk:announce` | Turn a release into an announcement pack | After `/sk:release` |
-| `/sk:ceo` | 1:1 with your CEO — strategy, goals, grill mode, product feedback | Strategy sessions, feature verdicts |
-| `/sk:cto` | 1:1 with your CTO — architecture, quality, debt, feasibility | Technical direction, tech health |
-| `/sk:cmo` | 1:1 with your CMO — positioning, brand, campaigns, launches | Marketing direction |
-| `/sk:coo` | 1:1 with your COO — routines, incidents, reliability | Operational health |
-| `/sk:founder` | Monday packet — executive briefs merged into an approval console | Weekly founder review |
-| `/sk:ops` | Operations/SRE expert — incidents, runbooks, postmortems, SLOs, readiness | Running prod, on-call, reliability work |
+| `/sk:ceo` | 1:1 with your CEO: strategy, goals, grill mode, product feedback | Strategy sessions, feature verdicts |
+| `/sk:cto` | 1:1 with your CTO: architecture, quality, debt, feasibility | Technical direction, tech health |
+| `/sk:cmo` | 1:1 with your CMO: positioning, brand, campaigns, launches | Marketing direction |
+| `/sk:coo` | 1:1 with your COO: routines, incidents, reliability | Operational health |
+| `/sk:founder` | Monday packet: executive briefs merged into an approval console | Weekly founder review |
+| `/sk:ops` | Operations/SRE expert: incidents, runbooks, postmortems, SLOs, readiness | Running prod, on-call, reliability work |
 
 ## Command Prerequisites
 
@@ -195,7 +195,7 @@ Migration & Recovery
 |-----------|-----|
 | Large feature (L/XL) with multiple tasks | `/sk:new-epic` |
 | Single deliverable (M complexity) | `/sk:new-task` |
-| XS/S complexity | No task file — just do it and `/sk:commit` |
+| XS/S complexity | No task file: just do it and `/sk:commit` |
 | Have an idea, need to explore first | `/sk:brainstorm` → produces epic + tasks |
 
 ## Skill Interactions
@@ -210,4 +210,4 @@ Skills activate automatically during command execution. Here's how they compose:
 | **Git Worktrees + Orchestrate** | `/sk:orchestrate` with parallel waves | Each parallel agent gets an isolated worktree to avoid file conflicts |
 | **Error Recovery + Escalation** | During any recovery that hits 3 failures | Recovery attempts are structured; if stuck, escalation kicks in |
 | **Context Priming + Resume** | `/sk:resume` at session start | Context priming guides efficient file reading order for warm-up |
-| **Verification + Test** | `/sk:test` phase exit | Must show actual command output proving all ACs pass — no "trust me" allowed |
+| **Verification + Test** | `/sk:test` phase exit | Must show actual command output proving all ACs pass, no "trust me" allowed |

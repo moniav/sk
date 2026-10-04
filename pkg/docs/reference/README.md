@@ -1,6 +1,6 @@
 # Reference
 
-> Curated, stable reference material — lookup docs that commands and contributors consult,
+> Curated, stable reference material: lookup docs that commands and contributors consult,
 > distinct from the project's own evolving docs.
 
 **Last updated:** YYYY-MM-DD

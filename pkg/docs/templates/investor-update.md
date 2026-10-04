@@ -22,7 +22,7 @@
 
 ## Lowlights
 
-<!-- Be honest — investors fund founders who name problems. -->
+<!-- Be honest: investors fund founders who name problems. -->
 
 - …
 

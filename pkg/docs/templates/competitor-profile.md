@@ -13,7 +13,7 @@
 
 ## Where they're strong
 
-<!-- Steelman it — why a smart buyer picks them. -->
+<!-- Steelman it: why a smart buyer picks them. -->
 
 ## Where they're weak
 

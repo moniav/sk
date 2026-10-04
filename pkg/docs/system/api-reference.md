@@ -8,26 +8,26 @@
 
 | Method | Path | Description | Auth |
 |--------|------|-------------|------|
-| — | — | No endpoints documented yet | — |
+| - | - | No endpoints documented yet | - |
 
 ## Request/Response Conventions
 
 ### Success Responses
 
 ```json
-// 200 OK — Resource retrieved or updated
+// 200 OK: Resource retrieved or updated
 { "data": { ... } }
 
-// 201 Created — Resource created
+// 201 Created: Resource created
 { "data": { "id": "...", ... } }
 
-// 204 No Content — Resource deleted (empty body)
+// 204 No Content: Resource deleted (empty body)
 ```
 
 ### Error Responses
 
 ```json
-// 400 Bad Request — Validation error
+// 400 Bad Request: Validation error
 {
   "error": "Validation failed",
   "details": {
@@ -36,16 +36,16 @@
   }
 }
 
-// 401 Unauthorized — Not authenticated
+// 401 Unauthorized: Not authenticated
 { "error": "Authentication required" }
 
-// 403 Forbidden — Not authorized
+// 403 Forbidden: Not authorized
 { "error": "Insufficient permissions" }
 
 // 404 Not Found
 { "error": "Resource not found" }
 
-// 409 Conflict — Duplicate resource
+// 409 Conflict: Duplicate resource
 { "error": "Email already registered" }
 
 // 500 Internal Server Error

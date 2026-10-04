@@ -1,6 +1,6 @@
 # Legal & Compliance
 
-> The home for legal and compliance documents — agreements, policies, and compliance scans.
+> The home for legal and compliance documents: agreements, policies, and compliance scans.
 > Generated and maintained by `/sk:legal-scan` (and the `legal-advisor` skill).
 
 **Last updated:** YYYY-MM-DD
@@ -26,17 +26,17 @@ legal/
 ### Agreements
 | Doc | Status | Lifecycle |
 |-----|--------|-----------|
-| _none yet_ | — | — |
+| _none yet_ | - | - |
 
 ### Policies
 | Doc | Status | Lifecycle |
 |-----|--------|-----------|
-| _none yet_ | — | — |
+| _none yet_ | - | - |
 
 ### Compliance scans
 | Framework | Date | Score / status |
 |-----------|------|----------------|
-| _none yet_ | — | — |
+| _none yet_ | - | - |
 
 ## How to use
 
