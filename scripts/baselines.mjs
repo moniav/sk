@@ -46,7 +46,7 @@ function render(buffer, rel) {
 const isManaged = (rel) => SHIPPED_DOCS.includes(rel) || MANAGED_DIRS.some((dir) => rel.startsWith(dir + "/"));
 
 export function generate() {
-  const tags = git(["tag", "--list", "v*", "--sort=version:refname"]).toString("utf-8").split("\n").filter(Boolean);
+  const tags = git(["tag", "--merged", "HEAD", "--list", "v*", "--sort=version:refname"]).toString("utf-8").split("\n").filter(Boolean);
   const byBlob = new Map();
   const files = {};
   for (const tag of tags) {
