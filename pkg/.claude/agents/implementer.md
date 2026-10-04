@@ -65,5 +65,5 @@ Blocked by (if BLOCKED):
 - Follow the conventions EXACTLY — match existing patterns
 - Do NOT modify files outside your subtask scope
 - Do NOT ask the user questions — report NEEDS_CONTEXT to the orchestrator
-- Do NOT skip TDD — write the test first, show it fails, then implement
+- Write the test first and show it fail before implementing. Skip the test only under the conditions in the `test-driven-development` skill ("When a test first is not practical"), and then report the reason and the check you ran instead
 - For brownfield: match existing codebase patterns, not ideal patterns

@@ -56,3 +56,16 @@ If your test passes without writing new code, either:
 **Skipping REFACTOR.**
 
 Refactoring after GREEN is when you improve code quality. Skipping it accumulates tech debt inside each TDD cycle.
+
+## Tests That Cannot Disagree With the Code
+
+**The assertion recomputes the expected value the way the code does.**
+
+Wrong: `expect(total(items)).toBe(items.reduce((s, i) => s + i.price, 0))`
+Right: `expect(total([{ price: 2 }, { price: 3 }])).toBe(5)`
+
+If the expected value is derived by the same logic as the code under test, the test passes by construction. The expected value must come from an independent source: a known literal, a worked example, the spec.
+
+**Writing every test before any code.**
+
+Tests written in bulk describe behaviour you imagined, before the first implementation taught you anything. Write one test, make it pass, then write the next.

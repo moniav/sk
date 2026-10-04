@@ -50,3 +50,4 @@ Verdict: FIX_BEFORE_SHIP | ACCEPTABLE | CLEAN
 - No micro-optimization findings (string concat style, minor allocations) unless in a proven hot loop
 - Respect the codebase's existing patterns; flag deviations from how the project already solves the same problem
 - If the scope is clean, say CLEAN — don't invent findings to seem thorough
+- State how far each finding was proven: **pointed** (you cite the `file:line` that shows it) or **traced** (you followed the path step by step and it holds). You cannot run code, so say when a finding needs a run to confirm

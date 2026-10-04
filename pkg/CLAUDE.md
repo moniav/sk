@@ -9,10 +9,7 @@ Commands update this file automatically. Use `/sk:resume` to get a briefing.
 
 ## Memory Integration
 
-Use Claude Code memory for cross-session context:
-- **Save to memory:** User preferences, workflow patterns, project-specific gotchas
-- **Save to docs:** Technical decisions (ADRs), conventions, architecture
-- **Save to task files:** Current work state, progress, subtask status
+Save user preferences and project gotchas to Claude Code memory; technical decisions, conventions and architecture to docs; current work state to the task file.
 
 ## Development Lifecycle: Plan > Dev > Test
 
@@ -50,15 +47,18 @@ Most work is XS/S complexity — just describe what you want and go. No task fil
 
 **Exit gate:** All criteria verified, all tests pass.
 
-## Coding Behavior (5 Principles)
+## Working Behavior
 
-See `docs/conventions/coding-behavior.md` for detailed examples and anti-patterns.
+Rules 1-5 have examples in `docs/conventions/coding-behavior.md`; rules 6-8 each have a skill with the detail.
 
 1. **Surface Assumptions Before Writing Code** — State beliefs, verify by reading code/docs, flag ambiguity before proceeding.
 2. **Do Exactly What Was Asked** — No drive-by refactoring, no speculative features, no gold plating. Note improvements as follow-ups.
 3. **Keep the Solution as Simple as Possible** — Simplest solution that satisfies all criteria. Walk the simplicity ladder (stdlib → native → existing dep → one-liner); justify complexity with a specific requirement.
 4. **Verify Goals After Implementation** — Re-read each criterion, verify with evidence, run actual checks.
 5. **Track Deliberate Shortcuts** — Mark intentional shortcuts with `// sk-debt: <ceiling>, <upgrade trigger>`; harvest them with `/sk:debt`.
+6. **Evidence Before "Done"** — Run the check in this session and show its output before saying work is complete or passing. Report each criterion as passed, failed or untested (`verification-before-completion`).
+7. **Stop After Three Failed Attempts** — Same problem, three failed fixes: say what was tried and why each failed, then offer options instead of a fourth try (`escalation-rules`).
+8. **When Told to Just Do It** — Proceed on reversible choices, state each assumption as you make it, list them at the end. Still stop for anything destructive, irreversible or security-related (`plow-ahead`).
 
 ## Documentation System
 

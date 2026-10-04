@@ -11,195 +11,109 @@ Execute the [TEST] phase for a task, verifying every acceptance criterion.
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
+Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
+
+**Rules for the whole phase:**
+
+- Every claim needs output produced in this session. Read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/verification-before-completion/SKILL.md` now; its rules apply to every step.
+- Every acceptance criterion ends as exactly one of **passed**, **failed** or **untested** (with the reason). Never leave one out because it could not be checked.
+- Fix and re-verify one criterion at a time. Do not batch fixes.
+- The task is not done while any criterion is failed or untested.
+
 ## Step 1: Read Context
 
-**ALWAYS start by reading:**
-1. `docs/system/project-context.md` — Dense project summary (if it exists — skip if empty/template)
-2. The task file being tested — find task files with `phase: test` in frontmatter — especially Acceptance Criteria
-3. The task's "Phase Analysis > Dev Notes" section — understand what was built and why
-4. `docs/conventions/testing.md` — Testing standards and patterns
+1. `docs/system/project-context.md`
+2. The task file being tested (the one with `phase: test` in its frontmatter, or the one named in the arguments): the Acceptance Criteria, and "Phase Analysis > Dev Notes"
+3. `docs/conventions/testing.md`
 
-**Skip files that are empty or contain only template placeholders.**
-
-## Step 1.5: Read Active Skills
-
-Read this skill file — its rules are active throughout this phase:
-1. `${CLAUDE_PLUGIN_ROOT}/.claude/skills/verification-before-completion/SKILL.md` — Evidence requirements for every verification claim
+Skip files that are empty or contain only template placeholders.
 
 ## Step 2: Validate Readiness
 
-```markdown
-- [ ] Task status is `testing` (DEV phase complete)
-- [ ] All `[DEV]` subtasks are checked off
-- [ ] All `[TEST]` subtasks are checked off (test code written)
-- [ ] All `[DOCS]` subtasks are checked off
-```
+- [ ] Task status is `testing`
+- [ ] Every `[DEV]`, `[TEST]` and `[DOCS]` subtask is checked off
 
-If DEV isn't complete — go back (`/sk:dev` command).
+If not, stop and tell the user the DEV phase is incomplete (they continue it with `/sk:dev`).
 
-## Step 3: Run Automated Tests
+Record the revision under test: the output of `git rev-parse --short HEAD` and the branch, or "uncommitted changes on `<branch>`".
 
-```bash
-# Run your project's test, type-check, and lint commands
-# (check docs/system/tech-stack.md and CLAUDE.md for exact commands)
-#
-# Examples:
-#   npm test / pytest / python -m unittest
-#   npm run typecheck / mypy . / pyright
-#   npm run lint / ruff check . / flake8
-```
+## Step 3: Run the Automated Checks
 
-**IMPORTANT:** Per the `verification-before-completion` skill, paste the ACTUAL command output below. "All tests pass" without output is not acceptable evidence.
+Run the project's test, type-check and lint commands. The exact commands are in `CLAUDE.md` under Build Commands, or in `docs/system/tech-stack.md`. If a kind of check does not exist in this project, record it as "none configured", not as passed.
 
-Document results:
-```markdown
-- [ ] All unit tests pass (paste output)
-- [ ] All integration tests pass (paste output)
-- [ ] No type errors (paste output)
-- [ ] No lint errors (paste output)
-- [ ] No new warnings introduced
-```
+Paste the output of each command.
 
-## Step 4: Verify Acceptance Criteria
+- [ ] Tests: command and output, zero failures
+- [ ] Type check: command and output, zero errors
+- [ ] Lint: command and output, zero errors
+- [ ] No warnings that were not there before the change
 
-### Goal Transformation
+## Step 4: Verify Each Acceptance Criterion
 
-Before testing, restate each acceptance criterion as a concrete, verifiable goal:
+First restate each criterion as a concrete check. If a criterion cannot be restated as "done when X", it is too vague to verify: record it as untested and say the plan needs a sharper criterion.
 
-```markdown
-### Goal Transformation
-
-| AC | Original Criterion | Done When | Verification Method |
-|----|-------------------|-----------|-------------------|
-| AC-1 | Users can register | POST /api/users returns 201 with {id, email, name} | curl / test runner |
-| AC-2 | Validation works | POST with invalid email returns 400 with field-level error | curl / test runner |
-| AC-3 | No duplicates | POST with existing email returns 409 | curl / test runner |
-```
-
-**If you cannot restate an AC as a specific "Done when X" statement, the AC is too vague -- go back to PLAN.**
-
-### Per-Criterion Verification
-
-Per the `verification-before-completion` skill: for each AC, run the specific test or command and paste the output. Do not write "verified" without showing what you ran and what it returned.
-
-Go through each acceptance criterion **one by one**. For each:
-
-1. **Read the criterion** from the task file
-2. **Execute the test** — Run the specific scenario
-3. **Record the result** — Update the Verification section in the task file
-4. **If it fails** — Stop, document the failure, return to DEV
+Then go through them one by one: run the check, keep the output, record the result in the task file's Verification section.
 
 ```markdown
 ### Verification
 
-- [ ] **AC-1** verified: [describe exactly how you confirmed it]
-- [ ] **AC-2** verified: [describe exactly how you confirmed it]
-- [ ] **AC-3** verified: [describe exactly how you confirmed it]
+Revision: <commit hash> on <branch>
+
+| AC | Done when | What was run | Result | Proof |
+|----|-----------|--------------|--------|-------|
+| AC-1 | <observable outcome> | <command or action> | passed / failed / untested | ran / reproduced, or the reason it is untested |
 ```
 
-**Be specific in verification notes.** Not "it works" but "POST /api/users with valid payload returns 201 with {id, email, name}, no password_hash field present."
+"Proof" is how far the result was proven, on the scale in the verification skill. Aim for "ran" or "reproduced" for every criterion.
 
-### Verification Loop
+**When a criterion fails:** find the root cause, make the smallest fix, re-run that criterion, then re-run the full suite from Step 3, and only then move to the next criterion. After three failed fixes for the same criterion, stop and follow the `escalation-rules` skill.
 
-When a criterion fails, follow this exact loop:
+## Step 5: Error Paths and Edge Cases
 
-1. **Diagnose** — Identify the root cause of the failure
-2. **Fix** — Make the minimal change to address the issue
-3. **Re-verify** — Test the specific criterion again
-4. **Re-run suite** — Ensure the fix didn't break other tests
-5. **Continue** — Move to the next criterion only after this one passes
-
-Do not batch fixes. Fix and verify one criterion at a time.
-
-## Step 5: Test Error Paths
-
-For each feature area, test what happens when things go wrong:
+For each feature area the task touched, test what happens when things go wrong. Pick the cases that apply; the rows below are prompts, not a required list.
 
 ```markdown
-### Error Path Testing
+### Error Paths and Edge Cases
 
-| Scenario | Input | Expected | Actual | Pass? |
-|----------|-------|----------|--------|-------|
-| Invalid input | Missing required field | 400 + field error | — | — |
-| Unauthorized | No auth token | 401 | — | — |
-| Not found | Invalid ID | 404 | — | — |
-| Duplicate | Existing unique value | 409 | — | — |
-| Server error | Force internal error | 500 + logged | — | — |
+| Scenario | Input | Expected | Actual | Result |
+|----------|-------|----------|--------|--------|
+| Invalid input | <a required field missing> | <clear error, nothing saved> | | |
+| Not permitted | <no credentials> | <refused> | | |
+| Not found | <an id that does not exist> | <clear error> | | |
+| Duplicate | <an existing unique value> | <refused, or idempotent> | | |
+| Empty | <empty collection> | <handled, no crash> | | |
+| Boundary | <maximum size or length> | <accepted, or a clear error> | | |
 ```
 
-**Tip:** For security-focused testing, run `/sk:security-review` to scan for OWASP vulnerabilities, hardcoded secrets, and dependency risks.
+Fill "Actual" from what you observed, and "Result" with passed, failed or untested.
 
-## Step 6: Test Edge Cases
+## Step 6: Regression Check
 
-```markdown
-### Edge Case Testing
+- [ ] The full suite from Step 3, run again after the last fix: paste the output
+- [ ] The failure count is not higher than before the task (state both counts if the suite was not clean to begin with)
 
-| Scenario | Input | Expected | Actual | Pass? |
-|----------|-------|----------|--------|-------|
-| Empty data | Empty array/object | Graceful handling | — | — |
-| Boundary values | Max length string | Accepted or clear error | — | — |
-| Null/undefined | Null where object expected | Clear error, no crash | — | — |
-| Concurrent requests | Rapid duplicate calls | Idempotent or proper error | — | — |
-| Large payload | Oversized input | Rejection with clear error | — | — |
-```
+## Step 7: Exit Gate
 
-## Step 7: Regression Check
+All must be true:
 
-Verify the existing system still works:
+- [ ] Every acceptance criterion is **passed**, with what was run and its output
+- [ ] No criterion is failed or untested
+- [ ] The automated checks in Step 3 are clean, with output
+- [ ] The Verification table in the task file is filled in and names the revision
 
-```markdown
-### Regression Testing
+## Step 8: Update Task Status
 
-- [ ] Full test suite passes (same as Step 3)
-- [ ] Existing features still work (quick manual smoke test)
-- [ ] No unexpected errors or warnings in output
-- [ ] No new errors in server logs
-- [ ] Performance not degraded (page loads, API response times)
-```
+**If the gate passes:**
 
-## Step 8: TEST Exit Gate
+1. Set frontmatter `phase: done`, `status: done`, update `updated`, clear `claimed_by` and `claimed_at`
+2. Add to the Progress Log: `| YYYY-MM-DD | TEST | All ACs verified, all tests pass. |` and `| YYYY-MM-DD | DONE | Task complete |`
+3. Move the task in `docs/tasks/README.md` from "Testing" to "Recently Completed"
+4. Delete `docs/tasks/.current`
 
-**ALL must be true to pass:**
+**If it does not:**
 
-```markdown
-- [ ] Every acceptance criterion verified with specific evidence
-- [ ] Error paths tested — errors are handled gracefully
-- [ ] Edge cases tested — no crashes or unexpected behavior
-- [ ] All automated tests pass
-- [ ] No regressions in existing functionality
-- [ ] No type errors, lint errors, or new warnings
-- [ ] Each criterion has a concrete "Done when X" statement with evidence
-```
+1. Keep status `testing`
+2. Add to the Progress Log: `| YYYY-MM-DD | TEST | AC-N <failed or untested>: <what happened> |`
+3. Say what is needed: a fix (the DEV phase), or whatever is blocking an untested criterion
 
-## Step 9: Update Task Status
-
-### If ALL criteria pass:
-
-1. Delete `docs/tasks/.current` (work is complete)
-2. Update YAML frontmatter: set `phase: done`, `status: done`, update `updated` date, clear `claimed_by`/`claimed_at`
-3. Update the Verification section with results
-4. Update Progress Log:
-
-```markdown
-| YYYY-MM-DD | TEST | All ACs verified, all tests pass. |
-| YYYY-MM-DD | DONE | Task complete |
-```
-
-5. Move task in `docs/tasks/README.md` from "Testing" to "Recently Completed"
-
-Inform user: **"Task complete. All N acceptance criteria verified. Docs updated."**
-
-### If ANY criterion fails:
-
-1. Keep task status as `testing`
-2. Document the failure in the task file:
-
-```markdown
-| YYYY-MM-DD | TEST | AC-2 failed: [description of failure] |
-```
-
-3. Identify the fix needed
-4. Return to DEV to fix the issue
-5. Re-run TEST from Step 3
-
-Inform user: **"[FAIL] AC-2 failed: [description]. Returning to DEV to fix. Will re-verify after."**
+**Reply:** the revision tested, the result for every acceptance criterion (passed, failed or untested, with what was run), the output of the test command, and either "task complete" or exactly what blocks it. Suggest `/sk:security-review` when the task touched authentication, input handling or sensitive data.

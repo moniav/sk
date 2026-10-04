@@ -15,7 +15,7 @@ to implementer subagents instead.
 
 Before the first subtask, read:
 - `docs/conventions/code-style.md`, `file-structure.md`, `testing.md`
-- `../test-driven-development/SKILL.md` (and its `anti-patterns.md`)
+- `../test-driven-development/SKILL.md` (and its `references/anti-patterns.md`)
 - `../escalation-rules/SKILL.md`
 
 Skill paths in this file are relative to the directory this file is in.
@@ -100,7 +100,7 @@ All conditions must be true:
 - [ ] All `[DEV]` subtasks checked off
 - [ ] All `[TEST]` subtasks checked off
 - [ ] All `[DOCS]` subtasks checked off
-- [ ] Code self-reviewed against conventions
+- [ ] Convention Compliance Pass above completed: every box checked, or the `file:line` fixed to make it true
 - [ ] All existing tests still pass (no regressions)
 - [ ] Documentation updated in same commit as code
 ```

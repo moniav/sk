@@ -5,54 +5,73 @@ description: Requires fresh command output as evidence before any claim that wor
 
 # Verification Before Completion
 
-> No completion claims without fresh verification evidence.
+> No completion claim without evidence produced in this session.
 
-## Core Rule
+## The rule
 
-Before claiming any task is done, you must:
+Before saying a task is done:
 
-1. **Run** the actual test/check command in THIS session
-2. **Show** the raw output — not a summary, not a paraphrase
-3. **Map** each acceptance criterion to specific evidence (what you ran + what it returned)
+1. **Run** the check in this session. Prefer the project's test command over a manual check.
+2. **Show** the raw output, not a summary of it.
+3. **Map** each acceptance criterion to the evidence for it: what you ran and what it returned.
+4. **State the revision** the evidence is for: the commit hash and branch, or "uncommitted changes on `<branch>`".
 
-If a test command exists, always prefer it over manual verification.
+"It works", "tests pass", "looks good", "verified" and "confirmed" are claims. On their own they are never evidence.
 
-## Audit Against the Original Contract
+## How far each claim was proven
 
-Passing tests are necessary but not sufficient — they prove the code you wrote works, not that you built what was asked. Before claiming done, reconstruct the original contract and audit the real evidence against it:
+Say which rung every claim reached. A higher rung is stronger; the first rung is worth nothing on its own.
 
-1. **Reconstruct the ask** — the user's actual request, stated constraints, and every acceptance criterion. Treat the user's intent as ground truth, not your own summary of what you did.
-2. **Audit the evidence** — the diff, test output, and any CI/screenshots. For each acceptance criterion, point to the specific change that satisfies it.
-3. **Check both directions:**
-   - **Missing** — every requirement has a corresponding change (nothing silently dropped).
-   - **Extra** — no scope creep: features, refactors, or files that were never asked for. Note those as follow-ups instead of folding them into "done".
+| Rung | What you did | Worth |
+|------|--------------|-------|
+| 1. Stated | You said it | Nothing |
+| 2. Pointed | You cited the `file:line` that makes it true | Weak: the reader can check |
+| 3. Walked | You traced the failure path step by step and showed it cannot happen | Moderate |
+| 4. Ran | A test or script exercised the real code and printed the result | Strong |
+| 5. Reproduced | You saw it in the running application | Strongest |
 
-If any criterion has no evidence, or the diff does things outside the ask, you are not done — fix it or surface it before claiming completion.
+Get every acceptance criterion to rung 4 where a command can reach it. When something stops below rung 4, say where it stopped and why.
 
-## What Counts as Evidence
+## Three results, never two
 
-**Acceptable:**
-```
-$ npm test
- ✓ user service returns profile (3ms)
- ✓ user service handles missing user (1ms)
- Tests: 2 passed, 0 failed
-```
+Every criterion ends as exactly one of:
 
-**Not acceptable** — these phrases alone are never evidence:
-- "It works" / "Tests pass" / "Looks good" / "Verified" / "Confirmed"
+- **passed:** with its evidence
+- **failed:** with its evidence
+- **untested:** with the reason it could not be checked (a missing credential, a service that is unreachable, no way to drive the UI from here)
 
-## When No Test Command Exists
+Never drop a criterion from the report because it could not be checked. An honest "untested" is a result; silence is not.
 
-Manual verification is acceptable if specific:
-- **Good:** "Ran `curl -X POST /api/users -d '{...}'`, got `201` with `{id: 1, ...}`"
-- **Bad:** "Tested manually, it works"
+## Fixing a bug: capture the failure first
 
-Setting up a test runner should be the first priority in any untested codebase.
+Before writing the fix, run the failing case and keep the output. That is the "before". After the fix, run the same thing: that is the "after". Report them as a pair. A fix shown only as "after" does not show that anything changed.
 
-## When Tests Are Flaky
+## Evidence when there is no test
 
-1. Record baseline before changes: "847 pass, 123 fail, 12 pending"
-2. Record after changes: "851 pass, 123 fail, 12 pending"
-3. Your changes must not increase the failure count
-4. Fixing existing flaky tests is a separate task
+| Kind of change | Evidence |
+|----------------|----------|
+| API or service | The request you sent and the status and body that came back |
+| Performance | The measured number before and after, with how it was measured |
+| Visual | A screenshot or captured frame, looked at, at the size it will be used |
+| Data or migration | The query you ran and the rows or counts it returned |
+| Behaviour of an agent or prompt | The transcript excerpt showing the tool call and the response |
+
+Good: "Ran `curl -X POST /api/users -d '{...}'`, got `201` with `{id: 1, ...}`."
+Bad: "Tested manually, it works."
+
+In a codebase with no tests, setting up a test runner comes first.
+
+## Audit against what was asked
+
+Passing tests show that the code you wrote works. They do not show that you built what was asked.
+
+1. **Reconstruct the request:** the user's words, the stated constraints, every acceptance criterion. The user's intent is the reference, not your summary of what you did.
+2. **Check both directions against the diff:**
+   - **Missing:** every requirement has a change that satisfies it.
+   - **Extra:** nothing in the diff was not asked for. Report extras as follow-ups; do not fold them into "done".
+
+If a criterion has no evidence, or the diff goes beyond the request, the work is not done: fix it or say so.
+
+## Flaky test suites
+
+Record the counts before your change ("847 pass, 123 fail, 12 pending") and after. Your change must not raise the failure count. Fixing the existing failures is a separate task.

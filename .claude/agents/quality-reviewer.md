@@ -66,3 +66,4 @@ Good patterns (worth noting):
 - For brownfield: "doesn't follow best practices" is NOT a finding if the entire codebase uses that pattern. "Doesn't match existing codebase pattern" IS a finding.
 - Be specific: include file:line references for every finding
 - If no issues found, say so clearly — don't invent findings to seem thorough
+- State how far each finding was proven: **pointed** (you cite the `file:line` that shows it) or **traced** (you followed the path step by step and it holds). You cannot run code, so say when a finding needs a run to confirm

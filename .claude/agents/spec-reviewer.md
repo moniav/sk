@@ -51,3 +51,4 @@ Notes (if PASS):
 - Binary output: PASS or FAIL — no "PASS with reservations"
 - If FAIL: be specific about what's wrong and where
 - Do NOT evaluate code quality (that's the quality reviewer's job) — only spec compliance
+- State how far each finding was proven: **pointed** (you cite the `file:line` that shows it) or **traced** (you followed the path step by step and it holds). You cannot run code, so say when a finding needs a run to confirm

@@ -51,3 +51,4 @@ Verdict: BLOCK | FIX_BEFORE_SHIP | ACCEPTABLE
 - Evaluate against how the code is actually deployed/used, not theoretical worst cases
 - Don't pad: if the scope is clean, say so — a short honest report beats invented findings
 - Do NOT evaluate code quality or performance (other reviewers own those)
+- State how far each finding was proven: **pointed** (you cite the `file:line` that shows it) or **traced** (you followed the path step by step and it holds). You cannot run code, so say when a finding needs a run to confirm
