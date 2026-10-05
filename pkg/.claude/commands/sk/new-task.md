@@ -50,7 +50,7 @@ Before writing the task, scan the codebase to understand impact:
 1. **Identify affected files**: Use `Glob` and `Grep` to find files related to the feature
 2. **Check existing patterns**: Find similar features already implemented to follow their pattern
 3. **Map dependencies**: What must exist before this task can start?
-4. **Rate complexity**: Count affected layers (DB, API, service, UI, tests, docs) — assign XS/S/M/L/XL
+4. **Rate complexity**: Count affected layers (DB, API, service, UI, tests, docs) — assign XS/S/M/L/XL and write it to the `complexity` frontmatter field; L or XL means an epic, not a task
 
 ## Step 5: Create Task File
 

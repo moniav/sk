@@ -17,6 +17,7 @@
 
 - **Users affected:** …
 - **Duration:** [start] → [recovery] ( … )
+- **Time to detect / time to mitigate:** … / …
 - **What broke:** …
 
 ## Timeline
@@ -54,3 +55,9 @@
 | Action | Type (prevent/detect/mitigate) | Owner | Link |
 |--------|--------------------------------|-------|------|
 | … | … | … | … |
+
+## Docs to update
+
+<!-- The runbook, SOP, flow Error Paths or ADR this incident proved wrong or missing. -->
+
+- …

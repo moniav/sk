@@ -87,6 +87,9 @@ updated: YYYY-MM-DD
 
 **Persona:** · **Trigger:** · **Preconditions:** · **End state:**
 
+<!-- Above ~15 nodes add %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%% as the first line. Add a sequenceDiagram for a step
+     where several components take part, and a stateDiagram-v2 for every entity with a status: each transition is an FR. -->
+
 ```mermaid
 flowchart TD
     A[Trigger] --> B[Step]

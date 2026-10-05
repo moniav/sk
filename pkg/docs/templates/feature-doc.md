@@ -4,6 +4,8 @@
 **Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
 **Status:** [shipped | in-progress | planned]
 **Code:** `src/path/to/feature`
+**Delivered by:** <!-- PRD-N / EPIC-N / TASK-N; the FR ids this feature satisfies -->
+**Flags / config:** <!-- feature flag or settings that turn it on, or `none` -->
 
 ## What it does
 
@@ -30,7 +32,8 @@
 
 ## Edge cases & limitations
 
-<!-- Known constraints, unsupported cases, sharp edges. -->
+<!-- The decided behaviour on bad input, empty state, limits, permissions, a dependency down, concurrency. Known constraints,
+     unsupported cases, sharp edges. Link the flow's Error Paths table instead of repeating it. -->
 
 ## Related
 

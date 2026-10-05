@@ -25,7 +25,7 @@
 
 ## Competition
 
-<!-- Link to competitive-landscape.md; the wedge. -->
+<!-- Link the competitor profiles (competitor-profile.md per competitor) and the landscape summary; the wedge. -->
 
 ## Team
 

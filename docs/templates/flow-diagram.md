@@ -2,60 +2,66 @@
 
 **Last updated:** YYYY-MM-DD
 **Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
-**Source:** `src/path/to/flow-code`  <!-- code paths this flow describes (enables code-drift detection) -->
-**Type:** Sequence | Flowchart | State | Entity Relationship
+**Source:** `src/path/to/flow-code`  <!-- code paths this flow describes (enables code-drift detection); or PRD-N F-n before it is built -->
+**Type:** User flow | Sequence | Flowchart | State | Entity Relationship
 **Format:** Mermaid | SVG
 
 ## Overview
 
-<!-- 1-2 sentences explaining what this flow represents -->
+<!-- 1-2 sentences: what this flow represents. For a user flow: persona, trigger, preconditions, end state. -->
+
+**Persona:** · **Trigger:** · **Preconditions:** · **End state:**
 
 ## Diagram
 
-<!-- For SVG diagrams: create a separate .svg file using the technical-diagrams skill,
-     then link to it here:
-     See [process-name.svg](./process-name.svg)
--->
-
-<!-- For Mermaid diagrams: pick ONE diagram type below, delete the others -->
-
-### Option A: Sequence Diagram (for component interactions)
-
-```mermaid
-sequenceDiagram
-    participant A as Component A
-    participant B as Component B
-    A->>B: Request
-    B-->>A: Response
-```
-
-### Option B: Flowchart (for processes with decisions)
+<!-- SVG: create a separate .svg file with the technical-diagrams skill and link it: See [process-name.svg](./process-name.svg)
+     Mermaid: keep the one block that fits, delete the others. Above ~15 nodes, add this first line inside the block:
+     %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%% -->
 
 ```mermaid
 flowchart TD
-    A[Start] --> B{Decision?}
-    B -->|Yes| C[Action]
-    B -->|No| D[Other Action]
+    A[Trigger] --> B[Step]
+    B --> C{Decision?}
+    C -->|yes| D[End state]
+    C -->|no| E[Recovery]
 ```
 
-### Option C: State Diagram (for entity lifecycles)
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant A as Client
+    participant S as API
+    U->>A: Action
+    A->>S: Request
+    S-->>A: Response (or timeout)
+```
 
 ```mermaid
 stateDiagram-v2
-    [*] --> State1
-    State1 --> State2: Event
+    [*] --> Draft
+    Draft --> Submitted: submit
+    Submitted --> [*]
 ```
 
-## Step-by-Step Explanation
+## Steps
 
-1. **Step name:** What happens and why
-2. **Step name:** What happens and why
+<!-- For a user flow: what the user does and what the system does, numbered to match the diagram. -->
+
+| # | User does | System does |
+|---|-----------|-------------|
+| 1 | | |
 
 ## Error Paths
 
-<!-- What happens when things go wrong? -->
+<!-- Every edge and failure case with its decided behaviour, not "show an error": the message, the recovery path,
+     what is preserved. For a user flow, this is the edge-case table from the flow-design skill. -->
+
+| Case | At step | Behaviour | Requirement |
+|------|---------|-----------|-------------|
+| | | | |
 
 ## Related Docs
 
 - [Architecture doc](../architecture/relevant-component.md)
 - [SOP for this process](../sop/relevant-sop.md)
+- <!-- PRD-N / feature doc / ADRs -->

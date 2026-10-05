@@ -6,7 +6,7 @@ disallowed-tools: Edit, Write, NotebookEdit
 
 # Task Status
 
-Scan all task files and present a complete status overview.
+Scan all task files and present a complete status overview. If `docs/prd/README.md` exists, open with the PRDs and their status (draft / approved / delivered) and the epics each one feeds.
 
 **Report-only.** This command does not modify project files. It writes nothing; regenerating the board happens only in a later turn, after you confirm.
 
@@ -16,7 +16,7 @@ Scan all task files and present a complete status overview.
 2. Scan all `docs/tasks/EPIC-*.md` and `docs/tasks/TASK-*.md` files
 3. **Read YAML frontmatter** from each task/epic file to extract:
    - `phase` (plan, dev, test, done)
-   - `status` (planning, ready, in-progress, testing, done, blocked, cancelled, abandoned)
+   - `status` (planning, ready, in-progress, testing, done, blocked, needs-replan, cancelled, abandoned); `needs-replan` means a PRD amendment changed its requirements: it goes back through `/sk:plan` before DEV
    - `priority` (P0, P1, P2, P3)
    - `epic` (parent epic reference or standalone)
    - `goal` (on epics — which company goal this serves, if `docs/business/goals.md` exists)

@@ -4,6 +4,8 @@ category: "{code|security|performance|ui|deps}"
 date: YYYY-MM-DD
 scope: "{full codebase|branch diff|specific area}"
 command: "/sk:{command-name}"
+base: "{branch or commit reviewed against}"
+verdict: "{APPROVE | REQUEST CHANGES | NEEDS DISCUSSION}"
 status: "{N open / M resolved}"
 ---
 
@@ -17,21 +19,21 @@ status: "{N open / M resolved}"
 
 ### Critical
 
-| # | Category | Location | Finding | Status |
-|---|----------|----------|---------|--------|
-| - | - | - | - | ⬜ Open |
+| # | Category | Location | Finding | Proof | Status |
+|---|----------|----------|---------|-------|--------|
+| - | - | `file:line` | - | pointed / traced / needs a run | ⬜ Open |
 
 ### Warning
 
-| # | Category | Location | Finding | Status |
-|---|----------|----------|---------|--------|
-| - | - | - | - | ⬜ Open |
+| # | Category | Location | Finding | Proof | Status |
+|---|----------|----------|---------|-------|--------|
+| - | - | `file:line` | - | pointed / traced / needs a run | ⬜ Open |
 
 ### Suggestion
 
-| # | Category | Location | Finding | Status |
-|---|----------|----------|---------|--------|
-| - | - | - | - | ⬜ Open |
+| # | Category | Location | Finding | Proof | Status |
+|---|----------|----------|---------|-------|--------|
+| - | - | `file:line` | - | pointed / traced / needs a run | ⬜ Open |
 
 ### Good Patterns
 
@@ -41,7 +43,8 @@ status: "{N open / M resolved}"
 
 ## Verdict
 
-<!-- APPROVE / REQUEST CHANGES / NEEDS DISCUSSION -->
+<!-- APPROVE / REQUEST CHANGES / NEEDS DISCUSSION, with the tally: N critical, N warnings, N suggestions.
+     Proof: pointed = the file:line shows it; traced = followed step by step; needs a run = could not be confirmed without executing. -->
 
 ## Follow-up
 
