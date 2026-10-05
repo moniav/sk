@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## 3.0.0 (2026-10-05)
 
-**Plugin only (3.0).** The file-copy install (`npx shipkit-cld`) is gone; the Claude Code plugin is the only channel (ADR-003). Commands, agents and skills are never written into a project. `pkg/cli.mjs` stays inside the plugin with three jobs behind `/sk:scaffold`: `init`, `update` (the shipped docs) and the new `migrate`, which removes what SK 2.x copied into `.claude/` and keeps the user's own agents, skills, `docs/` and `CLAUDE.md`. Removed: `install`, `remove`, `--from`, `.claude/.sk-source`, `pkg/.sk-baselines.json` and its generator, the root `cli.mjs` and `bin`, `npm run sync` and the dogfood copy under `.claude/` (`npm run dev` loads `pkg/` with `claude --plugin-dir`), and the `/sk:update` command (55 commands): `claude plugin update sk@shipkit` then `/sk:scaffold update` replace it. The npm package is private and no longer published.
+**Plugin only.** The file-copy install (`npx shipkit-cld`) is gone; the Claude Code plugin is the only channel (ADR-003). Commands, agents and skills are never written into a project. `pkg/cli.mjs` stays inside the plugin with three jobs behind `/sk:scaffold`: `init`, `update` (the shipped docs) and the new `migrate`, which removes what SK 2.x copied into `.claude/` and keeps the user's own agents, skills, `docs/` and `CLAUDE.md`. Removed: `install`, `remove`, `--from`, `.claude/.sk-source`, `pkg/.sk-baselines.json` and its generator, the root `cli.mjs` and `bin`, `npm run sync` and the dogfood copy under `.claude/` (`npm run dev` loads `pkg/` with `claude --plugin-dir`), and the `/sk:update` command (55 commands): `claude plugin update sk@shipkit` then `/sk:scaffold update` replace it. The npm package is private and no longer published.
 
 **The idea-to-epics flow, without overlaps.** One command owns each step: `/sk:brainstorm` picks a direction, `/sk:prd` defines it, `/sk:kickoff` (greenfield) or `/sk:init-docs` (existing code) sets up the engineering foundation, and the lifecycle commands build it.
 

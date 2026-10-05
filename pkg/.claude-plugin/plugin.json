@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin.json",
   "name": "sk",
   "displayName": "SK — ShipKit",
-  "version": "2.4.0",
+  "version": "3.0.0",
   "description": "Documentation and lifecycle system for Claude Code: a Plan, Dev, Test lifecycle with 55 commands, 28 skills, and 9 agents. Run /sk:scaffold once per project to create docs/ and CLAUDE.md.",
   "author": {
     "name": "moniav",

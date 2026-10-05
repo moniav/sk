@@ -70,7 +70,7 @@ Each teammate gets the marketplace when they trust the folder, then installs the
 
 ## Moving from SK 2.x
 
-Until 2.4, `npx shipkit-cld` copied the commands, skills and agents into the project's `.claude/`. The npm package is no longer published.
+Until 2.4.0, `npx shipkit-cld` copied the commands, skills and agents into the project's `.claude/`. The npm package is no longer published.
 
 1. Install the plugin (steps 1 and 2 above).
 2. `/sk:scaffold migrate` removes SK's copied files. Your own agents and skills, `docs/` and `CLAUDE.md` are kept.
