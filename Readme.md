@@ -1,73 +1,94 @@
-# SK — Documentation & Lifecycle System for Claude Code
+# SK — ShipKit for Claude Code
+
+**A Claude Code plugin that takes an idea to shipped software with the same discipline every time: a PRD that has been argued with, epics cut from it, a Plan > Dev > Test lifecycle with proof at every gate, and a documentation system the agent reads before it writes a line.**
+
+55 slash commands, 28 skills and 9 agents, installed once per machine. Your project keeps only `docs/` and `CLAUDE.md`.
+
+```bash
+claude plugin marketplace add moniav/sk && claude plugin install sk@shipkit
+```
+Then in any project: `/sk:scaffold`, and `/sk:prd` for your first idea.
 
 ## Why This Exists
 
-Claude Code (and any AI coding agent) works dramatically better when it has structured context about your project's conventions, architecture, and procedures. Without it, you get inconsistent code style, forgotten edge cases, and repeated mistakes across sessions.
+Claude Code works dramatically better when it has structured context: your conventions, your architecture, your procedures, and a clear statement of what it is building. Without it you get inconsistent style, forgotten edge cases, scope drift, and the same mistakes in every session.
 
-SK solves three problems:
+SK fixes that at three points:
 
-1. **Procedural context** -- Conventions, file structure, testing patterns, and step-by-step workflows so the agent follows your project's rules instead of inventing its own.
-2. **Thinking before building** -- `/sk:prd` grills an idea into a PRD (problem, user flows attacked step by step, requirements with numbers, architecture with its decisions recorded) before any epic exists, so the agent builds what was decided rather than what it assumed.
-3. **Behavioral guardrails** -- Principles that govern *how* the agent thinks: surface assumptions before coding, do exactly what was asked, keep solutions simple, verify goals with evidence, and track deliberate shortcuts (see `docs/conventions/coding-behavior.md`).
+1. **Before anything is built.** `/sk:prd` grills an idea until it is precise: the problem has to pass a check, every user flow is walked and attacked step by step, requirements get numbers, the architecture is challenged and its hard-to-reverse decisions become ADRs. Only then are epics cut, each tracing its requirements.
+2. **While building.** A Plan > Dev > Test lifecycle with exit gates, subtasks capped at single-concern size, and guardrails on how the agent thinks: surface assumptions, do exactly what was asked, keep it simple, verify with evidence, track deliberate shortcuts.
+3. **Between sessions.** A documentation tree the agent reads first and updates in the same commit as the code, so nothing is relearned: conventions, system state, decisions, flows, a glossary, and `/sk:resume` to pick up where you left off.
 
-**Beyond engineering.** SK extends the same discipline to the whole software-company doc surface — dedicated homes and tooling for **end-user guides**, **business / GTM** (positioning, competitors, pricing), **legal & compliance**, and **operations** (runbooks, incidents, postmortems) — plus two domain experts (`/sk:legal-scan`, `/sk:ops`), document **lifecycle** tracking, a read-only coherence **audit** (`/sk:docs-audit`), and one-command **PDF export**.
+**Beyond engineering.** The same discipline covers the rest of a software company: end-user guides, business and GTM (positioning, competitors, pricing, campaigns), legal and compliance, operations (runbooks, incidents, postmortems), an executive team you meet 1:1, headless routines, document lifecycle tracking, a read-only coherence audit and one-command PDF export.
 
-## What Gets Installed
+## What You Get
+
+Two places, one system:
 
 ```
-your-project/
-├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
-├── .claude/
-│   ├── commands/sk/             ← 55 slash commands
-│   ├── agents/                  ← 9 agents (implementer, reviewers, debugger, dependency-analyzer)
-│   └── skills/                  ← 28 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
-└── docs/                        ← Documentation hub (multi-audience)
-    ├── START-HERE.md            Human front door (role-based router)
-    ├── README.md                Agent index
-    ├── architecture/ system/    Engineering: design + current state
-    ├── conventions/ sop/        How to work: standards + procedures
-    ├── features/                Per-feature / subsystem docs
-    ├── user-guides/             Customer-facing guides
-    ├── business/                Positioning, competitors, pricing
-    ├── legal/                   Agreements, policies, compliance scans
-    ├── operations/              Runbooks, incidents, postmortems
+Claude Code plugin cache (installed once, updated by Claude Code)
+├── commands/sk/        55 slash commands: /sk:prd, /sk:plan, /sk:dev, /sk:test, /sk:review, ...
+├── agents/             9 agents: implementer, six reviewers, dependency-analyzer, debugger
+├── skills/             28 skills: TDD, verification, escalation, flow design, architecture, legal, ops, ...
+└── cli.mjs             the script behind /sk:scaffold
+
+your-project/ (created by /sk:scaffold; yours to edit and commit)
+├── CLAUDE.md                    the agent reads this first (under 100 lines)
+└── docs/
+    ├── START-HERE.md            human front door, by role
+    ├── README.md                agent index
     ├── prd/                     PRDs: brief, user flows, requirements, architecture, epics
-    ├── tasks/ decisions/ flows/ reviews/ research/ reference/  + _archive/
-    ├── templates/               27 starter templates
-    └── commands-reference.md    Full command table (loaded on demand)
+    ├── tasks/                   the board: epics, tasks, .current pointer
+    ├── system/                  current state: stack, schema, APIs, integrations, glossary
+    ├── architecture/ flows/     design, components, user and system flows
+    ├── conventions/ sop/        how to work here: standards, procedures, delegation policy
+    ├── decisions/               ADRs and the decision log
+    ├── features/ user-guides/   what each feature does; customer-facing guides
+    ├── business/ legal/ operations/   GTM, compliance, runbooks and postmortems
+    ├── reviews/ research/ reference/ _archive/
+    ├── templates/               27 starter templates, one per doc type
+    └── commands-reference.md    the full command table, loaded on demand
 ```
 
-The commands, agents and skills load from the plugin; the project holds only `CLAUDE.md` and `docs/`.
+Nothing of SK's is copied into `.claude/`, so a plugin update never touches your project, and `/sk:scaffold update` refreshes the shipped docs without overwriting a file you edited.
 
 ## How It Works
 
 ![How It Works](https://raw.githubusercontent.com/moniav/sk/main/assets/how-it-works.png)
 
-**LIFECYCLE** = How work flows from idea to done (PRD > epics > plan > dev > test)
-**WHAT** = What the system looks like (architecture, current state, features, diagrams)
-**HOW** = How to work in and run it (coding rules, procedures, ops runbooks)
-**WHY** = Why things are the way they are (decision records)
-**AUDIENCES** = Who else the docs serve — customers, business/GTM, legal/compliance
+**LIFECYCLE** = how work flows from idea to done (PRD > epics > Plan > Dev > Test)
+**WHAT** = what the system looks like (architecture, current state, features, flows)
+**HOW** = how to work in and run it (coding rules, procedures, runbooks)
+**WHY** = why things are the way they are (decision records)
+**AUDIENCES** = who else the docs serve (customers, business and GTM, legal and compliance)
 
-## Task Lifecycle
+## From Idea to Shipped
+
+```
+new product:    /sk:prd (product) → /sk:kickoff   ┐
+existing code:  /sk:init-docs → /sk:prd (feature) ├→ /sk:plan → /sk:dev → /sk:test → /sk:finish
+one task:       /sk:new-task                      ┘
+```
+
+One command owns each step, and none asks a question another already answered. `/sk:brainstorm` comes before any of them when the direction itself is still open. The flow, with what each stage writes, is in [docs/flows/idea-to-epics.md](https://github.com/moniav/sk/blob/main/docs/flows/idea-to-epics.md).
+
+### Task Lifecycle
 
 Every piece of work flows through three phases with explicit exit gates:
 
 ![Task Lifecycle](https://raw.githubusercontent.com/moniav/sk/main/assets/task-lifecycle.png)
 
-**Quick Path (XS/S complexity):** Most work doesn't need task files. Just describe what you want — Claude Code follows Plan > Dev > Test mentally and commits when done.
+**Quick Path (XS/S):** most work needs no task file. Describe what you want; Claude Code follows Plan > Dev > Test mentally and commits when done.
 
-**Formal lifecycle (M+ complexity):** Create a task file, go through each phase with exit gates.
+**Formal lifecycle (M and up):** a task file, each phase with its exit gate, and evidence recorded at the end: what was run, what it showed, at which revision.
 
 ### Task Hierarchy
 
 ![Task Hierarchy](https://raw.githubusercontent.com/moniav/sk/main/assets/task-hierarchy.png)
 
-Above the epic sits the **PRD** (`docs/prd/`): one per product or per feature big enough to need several epics. Epics link back to it (`prd: PRD-N`), tasks name the requirements they deliver (`delivers: FR-3`), so every subtask traces to a decided requirement. The flow is drawn in [docs/flows/idea-to-epics.md](https://github.com/moniav/sk/blob/main/docs/flows/idea-to-epics.md).
+A PRD covers a product or a feature big enough to need several epics. Epics link back to it (`prd: PRD-N`), tasks name the requirements they deliver (`delivers: FR-3`), subtasks are capped at single-concern size. Task files for a later epic are written when that epic starts, so they are planned against the code as it is then.
 
 ## Installation
-
-SK is a Claude Code plugin. The commands, skills and agents live in the plugin, outside your project, and update without touching it. Your project holds only `docs/` and `CLAUDE.md`.
 
 ```bash
 # Once per machine:
@@ -133,7 +154,7 @@ The names are aliases. On Amazon Bedrock, Google Cloud and Microsoft Foundry the
 
 ## Getting Started
 
-SK works with both new projects and existing codebases. The setup path differs.
+The setup path depends on whether code exists yet.
 
 ![Getting Started](https://raw.githubusercontent.com/moniav/sk/main/assets/getting-started.png)
 
@@ -160,7 +181,7 @@ When you are not sure what to build, `/sk:brainstorm` comes first: it explores t
 
 `/sk:prd` challenges the problem and success metric, walks every user flow and attacks each step (bad input, empty state, limits, permissions, failures, concurrency, RTL), offers clickable prototypes of the key flows, designs the architecture and questions each decision, writes ADRs for the hard-to-reverse ones, and only then cuts the PRD into epics.
 
-**No manual file editing required.** Both commands generate everything through conversation.
+**No manual file editing required.** Both commands work through conversation and write the files themselves.
 
 ### Brownfield Project (existing codebase)
 
@@ -338,9 +359,9 @@ Weekly headless briefs via `/sk:routines`; per-seat decision rights live in your
 `docs/conventions/delegation-policy.md`. Custom seats via the `executive-charter`
 template. Full walkthrough: [Meet your executive team](https://github.com/moniav/sk/blob/main/docs/user-guides/meet-your-executive-team.md).
 
-## Package Structure
+## Repository Structure
 
-SK separates the **product** (`pkg/`, the plugin root) from **project files** (for developing SK itself). To work on SK, run `npm run dev`: it starts Claude Code with the plugin loaded from `pkg/`, and `/reload-plugins` picks up edits.
+`pkg/` is the plugin root and the only thing that ships; everything else is for developing SK. To work on SK, run `npm run dev`: it starts Claude Code with the plugin loaded from `pkg/`, and `/reload-plugins` picks up edits.
 
 ```
 sk/                              ← SK source repository
@@ -348,7 +369,7 @@ sk/                              ← SK source repository
 ├── .claude-plugin/              ← marketplace.json: installs the plugin from ./pkg
 ├── scripts/                     ← Dev tooling (check, evals), not shipped
 ├── package.json                 ← Private: version, npm test, npm run dev (claude --plugin-dir ./pkg)
-├── pkg/                         ← Everything shipped to target projects; also the plugin root
+├── pkg/                         ← The plugin root: everything that ships
 │   ├── cli.mjs                  ← The script behind /sk:scaffold: init, update (docs), migrate
 │   ├── .claude-plugin/          ← plugin.json
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
@@ -368,8 +389,6 @@ sk/                              ← SK source repository
 
 **Lazy-loaded context** — Commands only read the docs they need for the current phase, not everything upfront. This keeps context windows lean and response times fast.
 
-**Session continuity** — `.current` file + `/sk:resume` command + memory integration means you never lose context between sessions.
-
 **PRD before epics** — A product or a multi-epic feature is grilled first: the problem statement has to pass a check, every user flow is walked and attacked step by step (bad input, empty state, limits, permissions, a dependency down, concurrency, RTL), requirements get numbers, the architecture is challenged and its hard-to-reverse decisions become ADRs. Epics are cut from the approved PRD, each tracing its requirements. Key flows can be prototyped as clickable variants before a line of production code exists.
 
 **One owner per step** — `/sk:brainstorm` picks a direction, `/sk:prd` defines it, `/sk:kickoff` or `/sk:init-docs` lays the engineering foundation, the lifecycle commands build it. No command asks a question another one already answered.
@@ -380,7 +399,7 @@ sk/                              ← SK source repository
 
 **Worked examples over abstract docs** — The `examples/` folder shows exactly what a completed task looks like. Worth more than pages of explanation.
 
-**Templates over empty files** — Every doc type has a template. Copy, fill in, done. No blank page anxiety.
+**Templates over empty files** — Every doc type has a template whose placeholders say what good looks like, and the commands that fill them read the same section names.
 
 **SVG + Mermaid for diagrams** — SVG diagrams (via the `technical-diagrams` skill) for polished architecture and flow visuals with a consistent design system. Mermaid for quick sequences, ER diagrams, and state charts that render natively in GitHub. Both live in git alongside code.
 

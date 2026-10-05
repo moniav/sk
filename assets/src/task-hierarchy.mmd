@@ -1,7 +1,9 @@
 graph TD
-    Epic["Epic<br/><i>L/XL — large feature, cross-cutting</i>"]
-    Epic --> T1["Task<br/><i>M — self-contained deliverable</i>"]
-    Epic --> T2["Task<br/><i>M — self-contained deliverable</i>"]
+    PRD["PRD<br/><i>a product, or a feature of several epics:<br/>brief, flows, requirements (FR-n), architecture</i>"]
+    PRD --> Epic["Epic<br/><i>L/XL — a vertical slice; prd: PRD-N</i>"]
+    PRD --> Epic2["Epic<br/><i>written when it starts</i>"]
+    Epic --> T1["Task<br/><i>M — self-contained; delivers: FR-1, FR-2</i>"]
+    Epic --> T2["Task<br/><i>M — self-contained; delivers: FR-3</i>"]
 
     T1 --> S1["Subtask S<br/>[DEV]"]
     T1 --> S2["Subtask S<br/>[TEST]"]
@@ -10,7 +12,9 @@ graph TD
     T2 --> S4["Subtask S"]
     T2 --> S5["Subtask S"]
 
+    style PRD fill:#1b4332,color:#fff
     style Epic fill:#264653,color:#fff
+    style Epic2 fill:#264653,color:#fff,stroke-dasharray: 5 5
     style T1 fill:#2a9d8f,color:#fff
     style T2 fill:#2a9d8f,color:#fff
     style S1 fill:#e9c46a,color:#000
