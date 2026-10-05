@@ -2,13 +2,14 @@
 
 > Visual diagrams for SK processes, in Mermaid so they render on GitHub and in most Markdown viewers.
 
-**Last updated:** 2026-10-04
+**Last updated:** 2026-10-05
 **Lifecycle:** current
 
 ## Diagram Index
 
 | Flow | Type | Description |
 |------|------|-------------|
+| [Idea to epics](./idea-to-epics.md) | Flowchart (Mermaid) | `/sk:brainstorm` → `/sk:prd` (brief, flows, requirements, architecture, delivery) → epics → `/sk:kickoff` or `/sk:plan`; which command owns each step |
 | [Install channels](./install-channels.md) | Flowchart (Mermaid) | Plugin plus `init`, or files copied into the project: what each writes and records |
 | [Safe update](./safe-update.md) | Flowchart (Mermaid) | How `update` decides, per file, between overwrite, keep with a sidecar, and skip |
 

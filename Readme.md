@@ -4,10 +4,11 @@
 
 Claude Code (and any AI coding agent) works dramatically better when it has structured context about your project's conventions, architecture, and procedures. Without it, you get inconsistent code style, forgotten edge cases, and repeated mistakes across sessions.
 
-SK solves two problems:
+SK solves three problems:
 
 1. **Procedural context** -- Conventions, file structure, testing patterns, and step-by-step workflows so the agent follows your project's rules instead of inventing its own.
-2. **Behavioral guardrails** -- Principles that govern *how* the agent thinks: surface assumptions before coding, do exactly what was asked, keep solutions simple, verify goals with evidence, and track deliberate shortcuts (see `docs/conventions/coding-behavior.md`).
+2. **Thinking before building** -- `/sk:prd` grills an idea into a PRD (problem, user flows attacked step by step, requirements with numbers, architecture with its decisions recorded) before any epic exists, so the agent builds what was decided rather than what it assumed.
+3. **Behavioral guardrails** -- Principles that govern *how* the agent thinks: surface assumptions before coding, do exactly what was asked, keep solutions simple, verify goals with evidence, and track deliberate shortcuts (see `docs/conventions/coding-behavior.md`).
 
 **Beyond engineering.** SK extends the same discipline to the whole software-company doc surface — dedicated homes and tooling for **end-user guides**, **business / GTM** (positioning, competitors, pricing), **legal & compliance**, and **operations** (runbooks, incidents, postmortems) — plus two domain experts (`/sk:legal-scan`, `/sk:ops`), document **lifecycle** tracking, a read-only coherence **audit** (`/sk:docs-audit`), and one-command **PDF export**.
 
@@ -30,8 +31,9 @@ your-project/
     ├── business/                Positioning, competitors, pricing
     ├── legal/                   Agreements, policies, compliance scans
     ├── operations/              Runbooks, incidents, postmortems
+    ├── prd/                     PRDs: brief, user flows, requirements, architecture, epics
     ├── tasks/ decisions/ flows/ reviews/ research/ reference/  + _archive/
-    ├── templates/               26 starter templates
+    ├── templates/               27 starter templates
     └── commands-reference.md    Full command table (loaded on demand)
 ```
 
@@ -41,7 +43,7 @@ With the plugin, the `.claude/` folder is not created: the commands, agents and 
 
 ![How It Works](https://raw.githubusercontent.com/moniav/sk/main/assets/how-it-works.png)
 
-**LIFECYCLE** = How work flows from idea to done (plan > dev > test, task hierarchy)
+**LIFECYCLE** = How work flows from idea to done (PRD > epics > plan > dev > test)
 **WHAT** = What the system looks like (architecture, current state, features, diagrams)
 **HOW** = How to work in and run it (coding rules, procedures, ops runbooks)
 **WHY** = Why things are the way they are (decision records)
@@ -60,6 +62,8 @@ Every piece of work flows through three phases with explicit exit gates:
 ### Task Hierarchy
 
 ![Task Hierarchy](https://raw.githubusercontent.com/moniav/sk/main/assets/task-hierarchy.png)
+
+Above the epic sits the **PRD** (`docs/prd/`): one per product or per feature big enough to need several epics. Epics link back to it (`prd: PRD-N`), tasks name the requirements they deliver (`delivers: FR-3`), so every subtask traces to a decided requirement. The flow is drawn in [docs/flows/idea-to-epics.md](https://github.com/moniav/sk/blob/main/docs/flows/idea-to-epics.md).
 
 ## Installation
 
@@ -205,8 +209,9 @@ When you are not sure what to build, `/sk:brainstorm` comes first: it explores t
 1. Install SK (see Installation above)
 2. /sk:init-docs                            # Auto-scan codebase, detect build commands, populate docs
 3. Review generated docs                    # Verify accuracy, fix anything wrong
-4. /sk:new-task                             # Define your first piece of work
-5. /sk:implement                            # Build it
+4. /sk:prd <feature>                        # A feature with new flows: scoped PRD, then its epics
+   (or /sk:new-task for a single piece of work)
+5. /sk:plan, /sk:dev, /sk:test, /sk:finish  # Build it (/sk:implement runs the three phases in one go)
 ```
 
 `/sk:init-docs` scans your codebase and generates:
@@ -217,6 +222,7 @@ When you are not sure what to build, `/sk:brainstorm` comes first: it explores t
 - `docs/conventions/code-style.md` — from observed naming and formatting patterns
 - `docs/conventions/file-structure.md` — from actual project layout
 - `docs/architecture/README.md` — component map from directory structure
+- `docs/flows/` — one file per user-facing flow found in the code, and `docs/system/glossary.md` with the terms the code uses: the baseline a feature PRD compares against
 - ADRs for 2-3 major tech choices it discovers
 
 **Build commands are auto-detected** from `package.json` scripts, `Makefile` targets, `pyproject.toml` tools, `Cargo.toml`, `go.mod`, and CI workflows. You only need to fill in commands marked `[NOT DETECTED]`.
@@ -393,7 +399,7 @@ sk/                              ← SK source repository
 │   └── .claude/                 ← Commands, agents, skills
 │       ├── commands/sk/         ← 56 slash commands
 │       ├── agents/              ← 9 agents: implementer, six reviewers, dependency-analyzer, debugger
-│       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
+│       └── skills/              ← 28 skills: 11 the model fires itself (TDD, verification, escalation, ...), the rest loaded by commands (research, interviewing, product-brief, flow-design, architecture-design, prototype, ...)
 └── .claude/                     ← Development copy (dogfooding, not shipped)
 ```
 
@@ -406,6 +412,10 @@ sk/                              ← SK source repository
 **Lazy-loaded context** — Commands only read the docs they need for the current phase, not everything upfront. This keeps context windows lean and response times fast.
 
 **Session continuity** — `.current` file + `/sk:resume` command + memory integration means you never lose context between sessions.
+
+**PRD before epics** — A product or a multi-epic feature is grilled first: the problem statement has to pass a check, every user flow is walked and attacked step by step (bad input, empty state, limits, permissions, a dependency down, concurrency, RTL), requirements get numbers, the architecture is challenged and its hard-to-reverse decisions become ADRs. Epics are cut from the approved PRD, each tracing its requirements. Key flows can be prototyped as clickable variants before a line of production code exists.
+
+**One owner per step** — `/sk:brainstorm` picks a direction, `/sk:prd` defines it, `/sk:kickoff` or `/sk:init-docs` lays the engineering foundation, the lifecycle commands build it. No command asks a question another one already answered.
 
 **Task hierarchy (Epic > Task > Subtask)** — Epics break into tasks, tasks break into subtasks. Each level has a clear scope and complexity ceiling. Subtasks capped at S complexity (single concern) prevent scope creep and make progress visible.
 
@@ -447,3 +457,5 @@ sk/                              ← SK source repository
 | Add features "while you're in the file" | Stick to the task scope, note improvements as follow-ups |
 | Build for hypothetical future needs | Implement the simplest thing that satisfies the acceptance criteria |
 | Mark criteria as "works" or "done" | Verify with specific evidence ("returns 201 with {id, email}") |
+| Start an epic from a one-line idea | Run `/sk:prd` first; let the flows and the architecture decide the epics |
+| Write "handle errors" in a spec | Decide the message, the recovery path and what is preserved, per step |

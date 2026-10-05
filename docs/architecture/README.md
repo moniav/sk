@@ -2,7 +2,7 @@
 
 > System design and component relationships for SK.
 
-**Last updated:** 2026-10-04
+**Last updated:** 2026-10-05
 **Lifecycle:** current
 **Source:** `pkg/cli.mjs`, `pkg/`, `.claude-plugin/`, `scripts/`
 
@@ -14,7 +14,7 @@ The same `pkg/` directory is delivered two ways: as a Claude Code plugin, or as 
 
 ```mermaid
 graph TD
-    PKG["pkg/ is everything that ships<br/>55 commands, 9 agents, 24 skills<br/>doc templates, CLAUDE.md template"]
+    PKG["pkg/ is everything that ships<br/>56 commands, 9 agents, 28 skills<br/>doc templates, CLAUDE.md template"]
 
     PKG -->|"Plugin channel<br/>claude plugin install sk@shipkit"| CACHE["Claude Code plugin cache<br/>commands, agents, skills<br/>outside the project"]
     PKG -->|"Plugin channel<br/>/sk:scaffold"| PDOCS["Project<br/>docs/ and CLAUDE.md"]
@@ -42,10 +42,10 @@ graph TD
 | Payload and plugin root | `pkg/` | Everything that ships |
 | Plugin manifest | `pkg/.claude-plugin/plugin.json` | Name `sk`, version (equals `package.json`), component paths |
 | Marketplace | `.claude-plugin/marketplace.json` | Marketplace `shipkit`, installs `sk` from `./pkg` |
-| Commands | `pkg/.claude/commands/sk/` | 55 slash commands; six are model-invocable |
+| Commands | `pkg/.claude/commands/sk/` | 56 slash commands; six are model-invocable |
 | Agents | `pkg/.claude/agents/` | implementer, spec-reviewer, plan-reviewer, quality-reviewer, security-reviewer, perf-reviewer, architecture-reviewer, dependency-analyzer, debugger |
-| Skills | `pkg/.claude/skills/` | 24 skills: 11 model-invoked, 13 user-invoked or loaded by commands |
-| Doc templates | `pkg/docs/templates/` | 26 templates |
+| Skills | `pkg/.claude/skills/` | 28 skills: 11 model-invoked, 17 user-invoked or loaded by commands (internal: research, interviewing, product-brief, flow-design, architecture-design, prototype, git-commit-flow, subtask-execution, executive-meeting, headless-operation) |
+| Doc templates | `pkg/docs/templates/` | 27 templates |
 | Conventions | `pkg/docs/conventions/` | Code style, coding behaviour, file structure, git workflow, testing, doc lifecycle, delegation policy |
 | Release baselines | `pkg/.sk-baselines.json` | Generated: the hash of every released version of each managed file |
 | Check script | `scripts/check.mjs` | `npm test`: sync, counts, frontmatter, permissions, paths, models, install and update regressions |
@@ -54,7 +54,7 @@ graph TD
 ## How the pieces load
 
 - **A command** is loaded by Claude Code when the user types it (or, for six of them, when the model chooses it). Claude Code substitutes `${CLAUDE_PLUGIN_ROOT}` in its body.
-- **A shared skill** such as `git-commit-flow` is read by a command with the Read tool. Nothing is substituted in a file read that way, so it refers to sibling skills by relative path.
+- **A shared skill** such as `git-commit-flow` or `flow-design` is read by a command with the Read tool (`/sk:prd` is a thin orchestrator over `product-brief`, `flow-design`, `architecture-design` and `prototype`, so other commands reuse the same procedures). Nothing is substituted in a file read that way, so it refers to sibling skills by relative path.
 - **A model-invoked skill** is listed to the model by its description and loaded when the model calls the Skill tool.
 - **An agent** is dispatched by type (`implementer`, or `sk:implementer` under the plugin). Its frontmatter sets its tools, its model and any skills preloaded into it.
 - **Three behaviour rules** (evidence before done, stop after three failed attempts, what "just do it" permits) are always on through the project's `CLAUDE.md`.

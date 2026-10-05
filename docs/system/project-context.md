@@ -53,7 +53,7 @@ sk/
 │   ├── .sk-baselines.json  GENERATED: release file hashes
 │   ├── CLAUDE.md           template for target projects (under 100 lines)
 │   ├── docs/               template documentation tree
-│   └── .claude/            commands (55), agents (9), skills (24)
+│   └── .claude/            commands (56), agents (9), skills (28)
 ├── .claude/                dogfood copy, written by npm run sync
 ├── docs/                   dogfood instance of the doc system (not shipped)
 └── dev-docs/               plans, reports, guides, evals (not shipped)
@@ -63,10 +63,10 @@ sk/
 
 | Category | Count | Location |
 |----------|-------|----------|
-| Slash commands | 55 | `pkg/.claude/commands/sk/` |
+| Slash commands | 56 | `pkg/.claude/commands/sk/` |
 | Agents | 9 | `pkg/.claude/agents/`: implementer, spec-reviewer, plan-reviewer, quality-reviewer, security-reviewer, perf-reviewer, architecture-reviewer, dependency-analyzer, debugger |
-| Skills | 24 | `pkg/.claude/skills/`: 11 model-invoked, 13 user-invoked or loaded by commands |
-| Doc templates | 26 | `pkg/docs/templates/` |
+| Skills | 28 | `pkg/.claude/skills/`: 11 model-invoked, 17 user-invoked or loaded by commands |
+| Doc templates | 27 | `pkg/docs/templates/` |
 | Convention docs | 7 | `pkg/docs/conventions/` |
 | SOPs | 2 | `pkg/docs/sop/` |
 
