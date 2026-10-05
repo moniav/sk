@@ -17,9 +17,9 @@ SK solves two problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 55 slash commands
+│   ├── commands/sk/             ← 56 slash commands
 │   ├── agents/                  ← 9 agents (implementer, reviewers, debugger, dependency-analyzer)
-│   └── skills/                  ← 24 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
+│   └── skills/                  ← 25 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
     ├── START-HERE.md            Human front door (role-based router)
     ├── README.md                Agent index
@@ -179,7 +179,8 @@ SK works with both new projects and existing codebases. The setup path differs.
 ```
 1. Install SK (see Installation above)
 2. /sk:kickoff                              # Answer questions, docs auto-generated (creates the docs/ scaffold if it is missing)
-3. /sk:brainstorm                           # Describe your first feature, get epic + tasks
+3. /sk:prd                                  # Grill the idea into a PRD: flows, architecture, then epics
+   (or /sk:brainstorm for a single feature)
 4. /sk:implement                            # Build it
 ```
 
@@ -194,6 +195,8 @@ SK works with both new projects and existing codebases. The setup path differs.
 - ADRs for your major stack choices
 
 `/sk:brainstorm` then takes your first feature idea, explores it through conversation, optionally researches domain patterns ("what do similar apps typically include?"), and produces a structured epic with tasks — ready for `/sk:implement`.
+
+For a whole product or a feature that needs several epics, `/sk:prd` goes further: it challenges the problem and success metric, walks every user flow and attacks each step (bad input, empty state, limits, permissions, failures, concurrency, RTL), offers clickable prototypes of the key flows, designs the architecture and questions each decision, writes ADRs for the hard-to-reverse ones, and only then cuts the PRD into epics.
 
 **No manual file editing required.** Both commands generate everything through conversation.
 
@@ -262,6 +265,7 @@ Claude starts only six commands by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | `/sk:scaffold` | Create `docs/` and `CLAUDE.md`, or refresh the shipped docs | Once per project when SK is installed as a plugin |
 | `/sk:kickoff` | Guided project setup + best-practice research | Starting a new (greenfield) project |
 | `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
+| `/sk:prd` | Grill an idea into a detailed PRD (problem, flows, architecture), then cut epics | A new product or a feature big enough for several epics |
 | `/sk:init-docs` | Auto-scan codebase, populate docs | Brownfield project or full rebuild |
 
 ### Lifecycle (Plan > Dev > Test)
@@ -388,7 +392,7 @@ sk/                              ← SK source repository
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 55 slash commands
+│       ├── commands/sk/         ← 56 slash commands
 │       ├── agents/              ← 9 agents: implementer, six reviewers, dependency-analyzer, debugger
 │       └── skills/              ← TDD, diagrams, escalation, legal, subagent-dev, verification, worktrees, copywriting, technical-writing, error-recovery, context-priming, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf
 └── .claude/                     ← Development copy (dogfooding, not shipped)

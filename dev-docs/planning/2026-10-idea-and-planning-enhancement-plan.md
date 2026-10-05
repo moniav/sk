@@ -1,6 +1,6 @@
 # Idea & Planning Phase Enhancement Plan
 
-> **Status 2026-10-05:** Proposal. Nothing implemented. Seven decisions (D1–D7) are open for the maintainer, each with a recommended answer.
+> **Status 2026-10-05:** Narrowed by the maintainer to the idea → PRD → epics stage and implemented as `/sk:prd` plus the `prototype` skill (see `CHANGELOG.md`, Unreleased). Decided: a new `/sk:prd` command; one PRD produces many epics; architecture lives in the PRD with ADRs for hard-to-reverse decisions; flows are drawn in Mermaid, attacked step by step, and prototyped as clickable variants. Of the waves below, A (brief), the ADR gate of B, and D (prototype, worst-case data) are covered inside `/sk:prd`; a project-wide glossary (B.1), frontier-only epics outside `/sk:prd` (C), and changes to `/sk:plan` remain open.
 > Scope: the stretch from "I have an idea" to "task is `ready` for DEV": `/sk:brainstorm`, `/sk:new-epic`, `/sk:new-task`, `/sk:plan`, `/sk:new-adr`, the `interviewing` skill, the `plan-reviewer` agent, and the `epic`, `task-prd` and `adr-decision` templates.
 > Builds on Wave 4.5 of `2026-10-best-practices-enhancement-plan.md` (the `interviewing` skill), which is already in place and is not repeated here.
 

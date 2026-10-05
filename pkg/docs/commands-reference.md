@@ -15,6 +15,7 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | `/sk:scaffold` | Create `docs/` and `CLAUDE.md`, or refresh the shipped docs | Once per project when SK is installed as a plugin |
 | `/sk:kickoff` | Guided project setup + research | Starting a new (greenfield) project |
 | `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
+| `/sk:prd` | Grill an idea into a detailed PRD (problem, flows, architecture), then cut epics | A new product or a feature big enough for several epics |
 | `/sk:implement` | Full lifecycle: Plan > Dev > Test | Build a feature end-to-end |
 | `/sk:new-task` | Create a new task file | Starting planned work (M complexity) |
 | `/sk:new-epic` | Create a new epic file | Starting large feature (L/XL complexity) |
@@ -72,6 +73,7 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | Command | Requires |
 |---------|----------|
 | /sk:brainstorm | project-context.md populated |
+| /sk:prd | Nothing (reads project docs if present; works greenfield) |
 | /sk:changelog | Conventional commits in git history |
 | /sk:code-review | code-style.md populated |
 | /sk:commit | git-workflow.md populated (optional) |
@@ -129,7 +131,8 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 Getting Started
 ├── /sk:help → which command fits the situation
 ├── /sk:kickoff (greenfield) → generates foundation docs
-│   └── /sk:brainstorm → explore idea, create epic + tasks
+│   ├── /sk:brainstorm → explore idea, create epic + tasks
+│   └── /sk:prd → problem, flows, architecture → PRD → epics
 └── /sk:init-docs (brownfield) → scan codebase, populate docs
 
 Lifecycle
@@ -208,6 +211,7 @@ Migration & Recovery
 | Single deliverable (M complexity) | `/sk:new-task` |
 | XS/S complexity | No task file: just do it and `/sk:commit` |
 | Have an idea, need to explore first | `/sk:brainstorm` → produces epic + tasks |
+| New product or multi-epic feature, needs flows and architecture pinned down | `/sk:prd` → PRD, then epics |
 
 ## Skill Interactions
 

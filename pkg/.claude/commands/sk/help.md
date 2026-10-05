@@ -19,6 +19,8 @@ Do not run any command from here. This command only points the way.
    explore           track it        break down    build        verify        review, commit, PR
 ```
 
+- **New product, or a feature needing several epics:** `/sk:prd` first. It grills the problem, the user flows and the architecture into a PRD, then writes the epics; continue with `/sk:plan` on the first task.
+
 - **Small change (XS or S):** skip the flow. Describe the change, then `/sk:commit`.
 - **One sitting, start to end:** `/sk:implement` runs plan, dev and test in one go.
 - **Large feature (several tasks):** `/sk:new-epic`, then a task per piece.

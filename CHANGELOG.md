@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- **`/sk:prd`** - a new command (56 in total) that takes a high-level idea to a detailed PRD and then cuts it into epics. It grills the idea in stages, each confirmed before it is written to `docs/prd/PRD-N-*.md`: Brief (problem statement check, success metric with baseline and target, non-goals, appetite, riskiest assumptions, personas, glossary), User flows (every flow drawn in Mermaid, every step attacked for bad input, empty state, limits, permissions, failed dependencies, abandon and return, concurrency, undo, notifications, RTL and accessibility, audit), Requirements (FRs traced to flow steps with Given/When/Then, NFRs with numbers), Architecture (components, data model, interfaces, integrations, access control, consistency, threats, traceability from every flow step to a component; ADRs for hard-to-reverse decisions; an architecture-reviewer pass), and Delivery (vertical-slice epics with a coverage check). The PRD file is the session state, so `/sk:prd PRD-N` resumes. Epics carry `prd: PRD-N`; task files are written for the first epic only.
+- **`prototype` skill** - (25 in total) loaded by `/sk:prd`: builds 3 to 5 genuinely different, clickable versions of one user flow in a self-contained HTML file behind a picker, with a worst-case data toggle, and records the user's choice as requirements.
+- New template `docs/templates/prd.md` and doc home `docs/prd/`; `epic.md` gains a `prd:` field. `/sk:brainstorm` and `/sk:help` point to `/sk:prd` for product-sized ideas.
+- Credits: staged grilling and glossary discipline adapted from [mattpocock/skills](https://github.com/mattpocock/skills) (`grilling`, `domain-modeling`); brief checks from [RefoundAI/lenny-skills](https://github.com/RefoundAI/lenny-skills) (`writing-prds`); prototype and worst-case data from [emilkowalski/skill](https://github.com/emilkowalski/skill) (`prototype`, `break-ui`). All MIT.
+
+**Upgrade notes:** run `/sk:scaffold update` (or `npx shipkit-cld update`) to get `docs/prd/` and `docs/templates/prd.md` in an existing project. Existing epics are unaffected.
+
 ## 2.4.0 (2026-10-04)
 
 - **`/sk:scaffold`** - a new command (55 in total) that creates `docs/` and `CLAUDE.md` in a project from inside Claude Code, so a plugin user no longer needs `npx shipkit-cld init`. It runs the script that now ships inside the plugin, so the scaffold always matches the plugin's version. `/sk:scaffold update` refreshes the shipped docs and keeps edited files. `/sk:kickoff` and `/sk:init-docs` create a missing scaffold themselves. Needs Node.js 18 or later.

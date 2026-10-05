@@ -13,7 +13,8 @@
 
 | Template | Creates | Command |
 |----------|---------|---------|
-| `epic.md` | An epic (multi-task feature) | `/sk:new-epic` |
+| `prd.md` | A PRD: brief, user flows, requirements, architecture, epics | `/sk:prd` |
+| `epic.md` | An epic (multi-task feature) | `/sk:new-epic`, `/sk:prd` |
 | `task-prd.md` | A task with Plan/Dev/Test phases | `/sk:new-task` |
 | `sop-procedure.md` | A standard operating procedure | `/sk:new-sop` |
 | `adr-decision.md` | An architecture decision record | `/sk:new-adr` |

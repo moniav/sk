@@ -1,6 +1,6 @@
 ---
 name: interviewing
-description: Shared procedure for questioning the user until no decision is left open — rounds of numbered questions, each with a recommended answer. Loaded by /sk:plan, /sk:brainstorm and the executive grill mode; not invoked directly.
+description: Shared procedure for questioning the user until no decision is left open — rounds of numbered questions, each with a recommended answer. Loaded by /sk:plan, /sk:brainstorm, /sk:prd and the executive grill mode; not invoked directly.
 disable-model-invocation: true
 user-invocable: false
 ---

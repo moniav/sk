@@ -8,6 +8,7 @@
 
 | Section | Purpose | When to Read |
 |---------|---------|--------------|
+| [PRDs](./prd/) | Product requirements: flows, requirements, architecture | Before cutting a big idea into epics |
 | [Tasks](./tasks/) | Task board, epics, PRDs & implementation plans | Before/during feature development |
 | [Architecture](./architecture/) | System design, component relationships, data flow | Before designing new features |
 | [Features](./features/) | Per-feature docs: what each does, how to extend | Building on or changing a feature |
@@ -41,6 +42,9 @@
 docs/
 |-- README.md                  <- You are here (master index, agent front door)
 |-- START-HERE.md              <- Human front door (role-based router)
+|-- prd/
+|   |-- README.md              <- PRD index
+|   +-- PRD-N-name.md          <- PRD: idea -> flows -> architecture -> epics
 |-- tasks/
 |   |-- README.md              <- Task board (pipeline view)
 |   |-- EPIC-N-name.md         <- Epic: large feature with multiple tasks

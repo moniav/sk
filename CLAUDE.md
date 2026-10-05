@@ -5,9 +5,9 @@
 ## What is SK
 
 SK is a documentation & lifecycle system for Claude Code. It ships as an npm package (`shipkit-cld`) that installs:
-- Slash commands (`.claude/commands/sk/`) — 55 lifecycle commands
+- Slash commands (`.claude/commands/sk/`) — 56 lifecycle commands
 - Agent definitions (`.claude/agents/`) — implementer, spec-reviewer, plan-reviewer, quality-reviewer, dependency-analyzer, architecture-reviewer, debugger, security-reviewer, perf-reviewer
-- Skills (`.claude/skills/`) — test-driven-development, escalation-rules, legal-advisor, technical-diagrams, subagent-driven-development, verification-before-completion, git-worktrees, copywriting, error-recovery, context-priming, technical-writing, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf, git-commit-flow, subtask-execution, research, headless-operation, executive-meeting, interviewing
+- Skills (`.claude/skills/`) — test-driven-development, escalation-rules, legal-advisor, technical-diagrams, subagent-driven-development, verification-before-completion, git-worktrees, copywriting, error-recovery, context-priming, technical-writing, plow-ahead, stay-within-limits, competitor-analysis, pricing-strategy, product-marketing-context, operations-advisor, create-pdf, git-commit-flow, subtask-execution, research, headless-operation, executive-meeting, interviewing, prototype
 - Doc templates and conventions (`pkg/docs/`) — structured documentation system
 - Template CLAUDE.md (`pkg/CLAUDE.md`) — bootstrap instructions for target projects
 
@@ -28,7 +28,7 @@ sk/
 │   ├── CLAUDE.md          ← Template CLAUDE.md for target projects
 │   ├── docs/              ← Template documentation tree
 │   └── .claude/           ← Commands, agents, skills
-│       ├── commands/sk/   ← 55 slash commands
+│       ├── commands/sk/   ← 56 slash commands
 │       ├── agents/        ← Agent definitions
 │       └── skills/        ← Skill definitions
 ├── .claude/               ← DEVELOPMENT copy (for dogfooding SK), written by `npm run sync`

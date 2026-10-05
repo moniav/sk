@@ -47,6 +47,8 @@ Identify what the user brought and pick the mode:
 | **A vague instinct** | "Something feels off about our data model" | Problem Exploration |
 | **A clear feature request** | "I want to add invoice management" | Solution Ideation |
 
+If the idea is a whole product, or a feature that will need several epics and its user flows and architecture pinned down, suggest the user run `/sk:prd` instead (brainstorm can still come first to pick a direction).
+
 State the mode, ask **one** clarifying question to frame the session, then start Step 3.
 
 ## Step 3: Explore (Frame, Diverge, Provoke)
@@ -195,6 +197,7 @@ Recommended build order:
 ```
 
 Suggest these next steps to the user, and if they want to adjust scope, tasks, or acceptance criteria, edit the files directly:
+- **Big enough to need flows and architecture pinned down?** `/sk:prd` turns this direction into a full PRD
 - **Ready to build?** `/sk:implement` to start with the first task
 - **Need more detail on a task?** `/sk:plan` to flesh out the plan phase
 - **Want to validate the riskiest assumption first?** Describe what research or prototype would help
