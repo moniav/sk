@@ -4,13 +4,13 @@
 
 **Last updated:** 2026-10-05
 **Lifecycle:** current
-**Source:** `pkg/cli.mjs`, `pkg/`, `.claude-plugin/`, `scripts/`
+**Source:** `pkg/cli.mjs`, `pkg/`, `.claude-plugin/`, `scripts/`, `package.json`
 
 ## Overview
 
-SK is a set of prompt files (commands, skills, agents), a documentation tree, and a small CLI that puts them in place.
+SK is a set of prompt files (commands, skills, agents), a documentation tree, and a small script that scaffolds the tree into a project.
 There is no runtime server, database or API.
-The same `pkg/` directory is delivered two ways: as a Claude Code plugin, or as files copied into a project.
+`pkg/` is the plugin root and the only thing that ships: Claude Code caches it, and a project holds only `docs/` and `CLAUDE.md` (ADR-003).
 
 ```mermaid
 graph TD
@@ -18,27 +18,24 @@ graph TD
 
     PKG -->|"Plugin channel<br/>claude plugin install sk@shipkit"| CACHE["Claude Code plugin cache<br/>commands, agents, skills<br/>outside the project"]
     PKG -->|"Plugin channel<br/>/sk:scaffold"| PDOCS["Project<br/>docs/ and CLAUDE.md"]
-    PKG -->|"File-copy channel<br/>npx shipkit-cld"| PALL["Project<br/>docs/, CLAUDE.md and .claude/"]
-    PKG -->|"Development<br/>npm run sync"| DOG["SK repository<br/>.claude/ dogfood copy"]
+    PKG -->|"Development<br/>npm run dev = claude --plugin-dir ./pkg"| DOG["Claude Code session<br/>with the working tree as the plugin"]
 
-    PDOCS --> MAN1["Manifest<br/>channel: plugin"]
-    PALL --> MAN2["Manifest<br/>channel: files, hash per file"]
+    PDOCS --> MAN1["Manifest .claude/.sk-manifest.json<br/>channel: plugin, hash per shipped doc"]
 ```
 
-## CLI Commands
+## Scaffold script (`pkg/cli.mjs`)
 
 | Command | Function |
 |---------|----------|
-| `npx shipkit-cld init [target] [--minimal]` | Scaffold `docs/` and `CLAUDE.md` only, for use with the plugin. Fills gaps, never replaces a file. `/sk:scaffold` runs the same code from the plugin: `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init .` |
-| `npx shipkit-cld [target] [--minimal]` | File-copy install: docs plus commands, agents and skills in `.claude/` |
-| `npx shipkit-cld update [target]` | Refresh SK-managed files one at a time, keeping user edits. Flags: `--dry-run`, `--yes`, `--force`, `--from <path>` |
-| `npx shipkit-cld remove [target]` | Remove SK's files and sidecars, keep `docs/` and the user's own files |
+| `node cli.mjs init [target] [--minimal]` | Scaffold `docs/` and `CLAUDE.md`. Fills gaps, never replaces a file. Run by `/sk:scaffold` as `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init .` |
+| `node cli.mjs update [target]` | Refresh the shipped docs one file at a time, keeping user edits. Flags: `--dry-run`, `--yes`, `--force`. Run by `/sk:scaffold update` |
+| `node cli.mjs migrate [target]` | Remove the commands, agents and skills SK 2.x copied into `.claude/`; keep the user's files, `docs/` and `CLAUDE.md`. Run by `/sk:scaffold migrate` |
 
 ## Component Index
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| CLI | `pkg/cli.mjs` | Install, update, remove, init. Zero dependencies. Ships in the plugin and in the npm package; the root `cli.mjs` only imports it |
+| Scaffold script | `pkg/cli.mjs` | init, update (docs), migrate. Zero dependencies; ships inside the plugin |
 | Payload and plugin root | `pkg/` | Everything that ships |
 | Plugin manifest | `pkg/.claude-plugin/plugin.json` | Name `sk`, version (equals `package.json`), component paths |
 | Marketplace | `.claude-plugin/marketplace.json` | Marketplace `shipkit`, installs `sk` from `./pkg` |
@@ -47,8 +44,7 @@ graph TD
 | Skills | `pkg/.claude/skills/` | 28 skills: 11 model-invoked, 17 user-invoked or loaded by commands (internal: research, interviewing, product-brief, flow-design, architecture-design, prototype, git-commit-flow, subtask-execution, executive-meeting, headless-operation) |
 | Doc templates | `pkg/docs/templates/` | 27 templates |
 | Conventions | `pkg/docs/conventions/` | Code style, coding behaviour, file structure, git workflow, testing, doc lifecycle, delegation policy |
-| Release baselines | `pkg/.sk-baselines.json` | Generated: the hash of every released version of each managed file |
-| Check script | `scripts/check.mjs` | `npm test`: sync, counts, frontmatter, permissions, paths, models, install and update regressions |
+| Check script | `scripts/check.mjs` | `npm test`: counts, frontmatter, gating, paths, models, plugin manifest, and init / update / migrate regressions |
 | Evals | `dev-docs/evals/`, `scripts/evals.mjs` | Trigger cases run on `claude plugin eval` |
 
 ## How the pieces load

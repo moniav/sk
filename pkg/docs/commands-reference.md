@@ -12,7 +12,7 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
 | `/sk:help` | Find the right command for a situation | Not sure where to start, or what comes next |
-| `/sk:scaffold` | Create `docs/` and `CLAUDE.md`, or refresh the shipped docs | Once per project when SK is installed as a plugin |
+| `/sk:scaffold` | Create `docs/` and `CLAUDE.md`; `update` refreshes the shipped docs; `migrate` removes files an SK 2.x install copied | Once per project |
 | `/sk:kickoff` | Engineering foundation for a new project: stack research, conventions, build commands, repo scaffold | After `/sk:prd` on a greenfield project |
 | `/sk:brainstorm` | Explore a problem from many angles, leave with one direction and a brief | Not sure yet what to build |
 | `/sk:prd` | Grill an idea into a detailed PRD (problem, flows, architecture), then cut epics | A new product or a feature big enough for several epics |
@@ -32,7 +32,6 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | `/sk:resume` | Resume from previous session | Starting a new session with active work |
 | `/sk:task-status` | Show task board overview | Check progress across all tasks |
 | `/sk:update-docs` | Sync docs with codebase | After changes, or periodic audit |
-| `/sk:update` | Update SK commands & templates | Get latest version of shipkit-cld |
 | `/sk:routines` | Set up scheduled maintenance routines (headless, policy-governed) | Automating audits, retros, dep sweeps |
 | `/sk:init-docs` | Bootstrap docs from existing codebase | Brownfield project or full rebuild |
 | `/sk:new-sop` | Create a new SOP | Document a recurring procedure |
@@ -122,7 +121,6 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | /sk:task-status | Nothing (reads task files automatically) |
 | /sk:test | Build Commands filled in, test runner installed |
 | /sk:ui-review | code-style.md populated |
-| /sk:update | Nothing (reads .sk-source automatically) |
 | /sk:update-docs | project-context.md populated |
 
 ## Command Workflow Map

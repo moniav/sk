@@ -1,6 +1,6 @@
 # ADR-002: Hybrid Distribution — Claude Code Plugin + npx Init Scaffold
 
-**Status:** Accepted — experimental plugin channel shipped 2026-07-05 (format verified
+**Status:** Superseded by [ADR-003](./ADR-003-plugin-only.md) on 2026-10-05: the file-copy channel was removed. Original status: Accepted — experimental plugin channel shipped 2026-07-05 (format verified
 against official docs; see `dev-docs/planning/plugin-split-plan.md` for remaining work)
 **Date:** 2026-07-05
 **Note:** Dogfood copy — records an SK product decision; not shipped to target projects.

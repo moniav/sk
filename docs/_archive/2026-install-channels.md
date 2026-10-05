@@ -1,7 +1,7 @@
 # Flow: Install channels
 
 **Last updated:** 2026-10-04
-**Lifecycle:** current
+**Lifecycle:** archived  <!-- SK 2.x: the file-copy channel was removed in 3.0 -->
 **Source:** `pkg/cli.mjs`, `.claude-plugin/marketplace.json`, `pkg/.claude-plugin/plugin.json`
 **Type:** Flowchart
 **Format:** Mermaid

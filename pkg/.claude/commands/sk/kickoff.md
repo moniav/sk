@@ -12,7 +12,7 @@ Turn a chosen stack into a working foundation: current best practices researched
 
 ## Step 1: Read Existing State
 
-If `docs/templates/` does not exist, the scaffold is missing. If `.claude/commands/sk/` does not exist in the project either (SK runs as a plugin), create it before anything else by running `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init . --yes` from the project root; it only fills gaps and never replaces a file.
+If `docs/templates/` does not exist, the scaffold is missing: create it before anything else by running `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init . --yes` from the project root; it only fills gaps and never replaces a file.
 
 Check what already exists:
 

@@ -60,7 +60,7 @@ one task:       /sk:new-task                       ┘   break down   build     
 | Handle legal and compliance | `/sk:legal-scan` |
 | Do go-to-market work | `/sk:positioning`, `/sk:competitor`, `/sk:pricing`, `/sk:copywrite`, `/sk:campaign`, `/sk:new-business-doc` |
 | Talk strategy with an executive seat | `/sk:ceo`, `/sk:cto`, `/sk:cmo`, `/sk:coo`; `/sk:founder` for the weekly packet |
-| Update SK itself | `/sk:update` |
+| Update SK itself | `claude plugin update sk@shipkit`, then `/sk:scaffold update` for the docs |
 
 ## Good to know
 

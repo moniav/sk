@@ -36,7 +36,7 @@ Do not report completion until each line holds. For the minimal profile, the dom
 
 ## Step 1: Scan Project
 
-If `docs/templates/` does not exist and `.claude/commands/sk/` does not exist in the project either (SK runs as a plugin), create the scaffold first by running `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init . --yes` from the project root; it only fills gaps and never replaces a file.
+If `docs/templates/` does not exist, create the scaffold first by running `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init . --yes` from the project root; it only fills gaps and never replaces a file.
 
 If `docs/system/project-context.md` exists, read it first. Stamp today's date into every index file you write in Step 3 (see Rules).
 

@@ -2,7 +2,7 @@
 
 > Capture the WHY behind key technical decisions so future-you (and future-Claude) don't have to guess.
 
-**Last updated:** 2026-03-23
+**Last updated:** 2026-10-05
 
 ## Decision Log
 
@@ -10,7 +10,9 @@
 
 | # | Decision | Status | Date |
 |---|----------|--------|------|
-| — | No ADRs recorded yet | — | — |
+| [ADR-001](./ADR-001-doc-system-model.md) | Doc system model | Accepted | 2026-07-05 |
+| [ADR-002](./ADR-002-plugin-distribution.md) | Hybrid distribution: plugin plus file-copy CLI | Superseded by ADR-003 | 2026-07-05 |
+| [ADR-003](./ADR-003-plugin-only.md) | Plugin is the only distribution channel | Accepted | 2026-10-05 |
 
 ### Decisions Made (not yet recorded as ADRs)
 
@@ -18,7 +20,6 @@ These decisions are documented in CLAUDE.md and code but don't have formal ADRs:
 
 - **Zero dependencies** — CLI uses only Node.js stdlib to minimize supply chain risk
 - **pkg/ separation** — Self-contained package directory vs project root for clean shipping
-- **Dual-edit pattern** — Root `.claude/` mirrors `pkg/.claude/` for dogfooding
 - **Language-agnostic commands** — Commands never assume specific tech stack
 - **ASCII-only CLI output** — Windows cp1255 compatibility over Unicode aesthetics
 

@@ -18,7 +18,7 @@ SK solves three problems:
 your-project/
 ├── CLAUDE.md                    ← Agent reads this first (slim, ~100 lines)
 ├── .claude/
-│   ├── commands/sk/             ← 56 slash commands
+│   ├── commands/sk/             ← 55 slash commands
 │   ├── agents/                  ← 9 agents (implementer, reviewers, debugger, dependency-analyzer)
 │   └── skills/                  ← 28 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
@@ -37,7 +37,7 @@ your-project/
     └── commands-reference.md    Full command table (loaded on demand)
 ```
 
-With the plugin, the `.claude/` folder is not created: the commands, agents and skills load from the plugin, and the project holds only `CLAUDE.md` and `docs/`.
+The commands, agents and skills load from the plugin; the project holds only `CLAUDE.md` and `docs/`.
 
 ## How It Works
 
@@ -67,17 +67,12 @@ Above the epic sits the **PRD** (`docs/prd/`): one per product or per feature bi
 
 ## Installation
 
-There are two ways to install SK. Pick one: with both, every command appears twice.
-
-### Recommended: the Claude Code plugin
-
-The plugin holds the commands, skills and agents. They live outside your project and update without touching it.
+SK is a Claude Code plugin. The commands, skills and agents live in the plugin, outside your project, and update without touching it. Your project holds only `docs/` and `CLAUDE.md`.
 
 ```bash
 # Once per machine:
 claude plugin marketplace add moniav/sk
 claude plugin install sk@shipkit
-
 ```
 
 Then, once per project, in Claude Code:
@@ -87,69 +82,33 @@ Then, once per project, in Claude Code:
 /sk:scaffold --minimal    # core doc homes only; the rest are created on demand
 ```
 
-The scaffold only fills gaps: it never replaces a file you already have.
-It runs the script that ships inside the plugin, so the docs always match the plugin's version. It needs Node.js 18 or later.
-Outside Claude Code, `npx shipkit-cld init` does the same.
-
-To get new releases, run `claude plugin update sk@shipkit`, or turn on auto-update for the `shipkit` marketplace under `/plugin` → Marketplaces. Auto-update is off by default.
+The scaffold only fills gaps: it never replaces a file you already have. It runs a script that ships inside the plugin, so the docs always match the plugin's version. It needs Node.js 18 or later.
 
 To share SK with everyone working in a repository, run `claude plugin marketplace add moniav/sk --scope project` there once and commit the `.claude/settings.json` it writes.
 
 Full walkthrough: [plugin install guide](https://github.com/moniav/sk/blob/main/docs/user-guides/install-as-plugin.md).
 
-### Alternative: copy the files into the project
+**Where it runs.** The whole plugin loads in the Claude Code CLI and in Cowork. In the Claude web and desktop chat, the skills and commands load but the agents do not, so the review, implement and orchestrate commands that dispatch agents work in the CLI and Cowork only.
 
-Use this when a project must pin its own SK version, because a plugin is one version per user.
+### Coming from SK 2.x (copied files)
 
-```bash
-npx shipkit-cld                       # from your project root
-npx shipkit-cld /path/to/my-project   # or a specific directory
-npx shipkit-cld --minimal             # core doc homes only
-```
-
-This copies the commands, skills and agents into the project's `.claude/` directory, next to the `docs/` scaffold.
-
-To move a project from copied files to the plugin: `npx shipkit-cld remove .` (keeps `docs/`), install the plugin, then `/sk:scaffold`.
+Until 2.4, `npx shipkit-cld` copied the commands, skills and agents into the project's `.claude/`. That channel is gone: the plugin is the only install. In such a project, install the plugin, then run `/sk:scaffold migrate`: it removes the copied SK files (your own agents, skills and every doc are kept) and `/sk:scaffold update` then refreshes the shipped docs. The `shipkit-cld` npm package is no longer published.
 
 ## Updating
 
-With the plugin, `claude plugin update sk@shipkit` updates commands, skills and agents.
-Then `/sk:scaffold update` in a project refreshes the shipped templates, SOPs and reference docs there (outside Claude Code: `npx shipkit-cld@latest update .`).
+- `claude plugin update sk@shipkit` updates the commands, skills and agents. Or turn on auto-update for the `shipkit` marketplace under `/plugin` → Marketplaces (off by default).
+- `/sk:scaffold update` in a project refreshes the shipped docs: templates, SOPs, reference docs, `docs/README.md`, `docs/commands-reference.md`, `docs/conventions/coding-behavior.md`, and `CLAUDE.md` while SK created it and you have not edited it.
 
-With copied files, there are three ways to update after SK has been changed:
+The docs update works one file at a time and **never overwrites your work**:
 
-```bash
-# 1. From npm (latest published version):
-npx shipkit-cld@latest update .
+- **Project content is not touched:** PRDs, tasks, conventions, system docs, architecture, decisions, flows, features.
+- **A shipped doc you edited is kept.** SK's new version is written beside it as `<name>.sk-new`. Merge what you want and delete the sidecar, or rename the sidecar over the file to take SK's version.
+- **Your own files are left alone**, including one that shares a name with a doc SK ships.
+- **`CLAUDE.md` is yours.** If you already have one when you scaffold, SK drops its template alongside as `CLAUDE.sk.md` for you to merge. If SK created it, updates refresh it only until you edit it.
 
-# 2. From a local SK checkout (explicit):
-npx shipkit-cld update . --from /path/to/sk
+`/sk:scaffold update` shows a dry run first. To take SK's version of every shipped doc, discarding edits, ask for `--force`.
 
-# 3. Automatic (if installed from local checkout, source path is remembered):
-npx shipkit-cld update .
-```
-
-Updates refresh SK system files (commands, agents, skills, templates, SOPs) one file at a time and **never overwrite your work**:
-
-- **Project content is not touched:** tasks, conventions, system docs, architecture, decisions, flows.
-- **A managed file you edited is kept.** SK's new version is written beside it as `<name>.sk-new`. Merge what you want and delete the sidecar, or rename the sidecar over the file to take SK's version.
-- **Your own files are left alone**, including an agent or skill that happens to share a name with one SK ships.
-- **`CLAUDE.md` is yours.** If you already have one when you install, SK drops its template alongside as `CLAUDE.sk.md` for you to merge. If SK created it, updates refresh it only until you edit it.
-
-```bash
-npx shipkit-cld@latest update . --dry-run   # show what would change, write nothing
-npx shipkit-cld@latest update . --yes       # no prompt, for scripts and CI
-npx shipkit-cld@latest update . --force     # take SK's version of every managed file (discards local edits)
-```
-
-To customise SK without creating update work, put project-specific rules in files SK never manages (`docs/conventions/`, `docs/business/brand-voice.md`, and your own skills and agents under their own names) rather than editing shipped files.
-
-The source path is saved to `.claude/.sk-source` during install, so subsequent updates find it automatically.
-
-```bash
-# Remove SK (keeps your docs/):
-npx shipkit-cld remove .
-```
+To customise SK without creating update work, put project-specific rules in files SK never manages (`docs/conventions/`, `docs/business/brand-voice.md`, and your own skills and agents under their own names) rather than editing shipped files. To change a command itself, fork the plugin: `claude --plugin-dir /path/to/your/fork/pkg` loads it from a directory.
 
 ## Models and cost
 
@@ -267,7 +226,7 @@ Claude starts only six commands by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
 | `/sk:help` | Find the right command for a situation | Not sure where to start, or what comes next |
-| `/sk:scaffold` | Create `docs/` and `CLAUDE.md`, or refresh the shipped docs | Once per project when SK is installed as a plugin |
+| `/sk:scaffold` | Create `docs/` and `CLAUDE.md`; `update` refreshes the shipped docs; `migrate` removes files an SK 2.x install copied | Once per project |
 | `/sk:kickoff` | Engineering foundation: stack research, conventions, build commands, repo scaffold | After `/sk:prd` on a greenfield project |
 | `/sk:brainstorm` | Explore a problem from many angles, leave with one direction and a brief | Not sure yet what to build |
 | `/sk:prd` | Grill an idea into a detailed PRD (problem, flows, architecture), then cut epics | A new product or a feature big enough for several epics |
@@ -343,7 +302,6 @@ Claude starts only six commands by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | `/sk:deps` | Dependency health check | Periodic audit or before release |
 | `/sk:retro` | Run a retrospective on completed work | Capture lessons, patterns, improvements |
 | `/sk:routines` | Scheduled maintenance routines — headless, policy-governed | Automating audits, retros, dependency sweeps |
-| `/sk:update` | Update SK commands & templates | Get latest version (npm or local) |
 
 ### Marketing, GTM & Legal
 
@@ -382,25 +340,24 @@ template. Full walkthrough: [Meet your executive team](https://github.com/moniav
 
 ## Package Structure
 
-SK separates the **product** (what gets installed) from **project files** (for developing SK itself):
+SK separates the **product** (`pkg/`, the plugin root) from **project files** (for developing SK itself). To work on SK, run `npm run dev`: it starts Claude Code with the plugin loaded from `pkg/`, and `/reload-plugins` picks up edits.
 
 ```
 sk/                              ← SK source repository
 ├── CLAUDE.md                    ← SK development instructions (NOT shipped)
-├── cli.mjs                      ← npm entry point: imports pkg/cli.mjs
 ├── .claude-plugin/              ← marketplace.json: installs the plugin from ./pkg
-├── scripts/                     ← Dev tooling (check, sync, baselines, evals), not shipped
-├── package.json                 ← npm package config
+├── scripts/                     ← Dev tooling (check, evals), not shipped
+├── package.json                 ← Private: version, npm test, npm run dev (claude --plugin-dir ./pkg)
 ├── pkg/                         ← Everything shipped to target projects; also the plugin root
-│   ├── cli.mjs                  ← CLI: install / update / remove / init; /sk:scaffold runs it under the plugin
+│   ├── cli.mjs                  ← The script behind /sk:scaffold: init, update (docs), migrate
 │   ├── .claude-plugin/          ← plugin.json
 │   ├── CLAUDE.md                ← Template CLAUDE.md installed into projects
 │   ├── docs/                    ← Template documentation tree
 │   └── .claude/                 ← Commands, agents, skills
-│       ├── commands/sk/         ← 56 slash commands
+│       ├── commands/sk/         ← 55 slash commands
 │       ├── agents/              ← 9 agents: implementer, six reviewers, dependency-analyzer, debugger
 │       └── skills/              ← 28 skills: 11 the model fires itself (TDD, verification, escalation, ...), the rest loaded by commands (research, interviewing, product-brief, flow-design, architecture-design, prototype, ...)
-└── .claude/                     ← Development copy (dogfooding, not shipped)
+└── docs/, dev-docs/             ← SK's own docs (dogfood instance) and planning notes, not shipped
 ```
 
 ## Key Design Decisions
@@ -421,8 +378,6 @@ sk/                              ← SK source repository
 
 **Self-contained tasks** — Every task is independently buildable, testable, and shippable. Claude Code can execute a task without needing context from other in-flight work.
 
-**Source path persistence** — `.claude/.sk-source` remembers where SK was installed from, so local development changes flow to target projects with a simple `update` command.
-
 **Worked examples over abstract docs** — The `examples/` folder shows exactly what a completed task looks like. Worth more than pages of explanation.
 
 **Templates over empty files** — Every doc type has a template. Copy, fill in, done. No blank page anxiety.
@@ -441,7 +396,7 @@ sk/                              ← SK source repository
 
 **Proof over claims.** Every phase gate ends on something that can be shown: a command that was run with its output, a file that exists, a count that matches. Each acceptance criterion is reported as passed, failed or untested, never left out. Reviewer findings say how far they were proven.
 
-**Updates never destroy your work.** The updater works one file at a time. A file you edited is kept, with SK's new version written beside it; a file of yours that shares a name with one of SK's is never touched.
+**Updates never destroy your work.** Commands, skills and agents update as a plugin bundle, outside the project. The shipped docs update one file at a time: a file you edited is kept, with SK's new version written beside it; a file of yours that shares a name with one of SK's is never touched.
 
 **Context is a budget.** A command or skill that Claude can start by itself puts its description in every turn. Only six commands and eleven skills do; the rest run when you type them. Three behaviour rules that used to depend on a skill firing (evidence before "done", stop after three failed attempts, what "just do it" permits) are always on through `CLAUDE.md`.
 
