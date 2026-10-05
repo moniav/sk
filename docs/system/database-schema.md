@@ -1,9 +1,9 @@
 # Database Schema
 
-**Last updated:** 2026-03-23
+**Last updated:** 2026-10-05
 
 ## Not Applicable
 
-SK is a stateless CLI tool that copies files. It has no database, no schema, and no migrations.
+SK is a plugin plus a scaffold script. It has no database, no schema, and no migrations.
 
-The only persistent state is the `.claude/.sk-source` file written in target projects, which stores the path to the SK source directory for future updates.
+The only persistent state in a target project is `.claude/.sk-manifest.json`: the SK version, who owns `CLAUDE.md` (`sk` or `user`), the doc profile (`full` or `minimal`), `channel: plugin`, and a hash per shipped doc so `update` can tell an untouched file from an edited one.

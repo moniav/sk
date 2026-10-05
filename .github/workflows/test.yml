@@ -2,9 +2,6 @@ name: test
 
 on:
   push:
-    # Branches only. A release tag points at the commit before its own baselines
-    # are generated (they are read from the tag), so the baselines check cannot
-    # pass on the tagged commit. The branch run of the next commit covers it.
     branches: ["**"]
   pull_request:
 
@@ -18,9 +15,6 @@ jobs:
         node: [18, 22]
     steps:
       - uses: actions/checkout@v4
-        with:
-          # The release-baselines check compares against every tag.
-          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}

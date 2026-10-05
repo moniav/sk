@@ -8,6 +8,7 @@
 
 | Section | Purpose | When to Read |
 |---------|---------|--------------|
+| [PRDs](./prd/) | Product requirements: flows, requirements, architecture | Before cutting a big idea into epics |
 | [Tasks](./tasks/) | Task board, epics, PRDs & implementation plans | Before/during feature development |
 | [Architecture](./architecture/) | System design, component relationships, data flow | Before designing new features |
 | [Features](./features/) | Per-feature docs: what each does, how to extend | Building on or changing a feature |
@@ -41,6 +42,10 @@
 docs/
 |-- README.md                  <- You are here (master index, agent front door)
 |-- START-HERE.md              <- Human front door (role-based router)
+|-- prd/
+|   |-- README.md              <- PRD index
+|   |-- PRD-N-name.md          <- PRD: brief -> flows -> requirements -> architecture -> epics
+|   +-- PRD-N-prototypes/      <- Clickable flow variants (HTML), one file per flow
 |-- tasks/
 |   |-- README.md              <- Task board (pipeline view)
 |   |-- EPIC-N-name.md         <- Epic: large feature with multiple tasks
@@ -74,6 +79,7 @@ docs/
 |-- system/
 |   |-- README.md              <- System state index
 |   |-- project-context.md     <- Dense project summary (read first)
+|   |-- glossary.md            <- Domain vocabulary: one word per concept, used in docs and code
 |   |-- tech-stack.md          <- Technologies & versions
 |   |-- database-schema.md     <- DB schema + relationships
 |   |-- api-reference.md       <- API endpoints & contracts
@@ -114,7 +120,7 @@ docs/
 |-- _archive/
 |   |-- README.md              <- Archive index
 |   +-- [retired-doc].md       <- Superseded docs (Lifecycle: archived)
-+-- templates/                 <- 24 doc templates: see templates/README.md for the full list + which command emits each
++-- templates/                 <- 27 doc templates: see templates/README.md for the full list + which command emits each
 ```
 
 ## Maintenance Rules
@@ -124,11 +130,15 @@ docs/
 | Event | Action |
 |-------|--------|
 | **New work starting** | Follow [Creating a Task SOP](./sop/creating-a-task.md) |
-| New feature planned | Create epic/task in `tasks/` using template |
+| New product, or a feature with new flows | `/sk:prd` writes the PRD in `prd/` and its epics |
+| Requirement changes while epics are open | `/sk:prd PRD-N amend`; affected tasks go back through `/sk:plan` |
+| PRD's last epic shipped | `/sk:finish` marks it delivered and copies its flows to `flows/` |
+| New feature planned, no PRD | Create epic/task in `tasks/` using template |
 | Task enters DEV phase | Update task frontmatter, start checking subtasks |
 | Task enters TEST phase | Verify acceptance criteria in the task doc |
 | Feature implemented | Update `system/`, `architecture/`, relevant `flows/` |
 | New pattern established | Add to `conventions/` |
+| A domain term settled or renamed | Update `system/glossary.md`; use the term in code |
 | Tech decision made | Create ADR in `decisions/` |
 | Small decision on an autonomous run | Append one line to `decisions/decision-log.md` |
 | Company goals set or changed | Update `business/goals.md`; link epics via `goal:` |

@@ -1,24 +1,31 @@
 flowchart TD
-    Start(["Install the SK plugin<br/>then: npx shipkit-cld init"]) --> Q{"New or existing<br/>codebase?"}
+    Start(["Install the SK plugin<br/>then: /sk:scaffold"]) --> Q{"New or existing<br/>codebase?"}
 
-    Q -->|"Greenfield<br/>(no code yet)"| GF1["/sk:kickoff<br/><i>guided setup + research</i>"]
-    GF1 --> GF2["/sk:brainstorm<br/><i>define first feature</i>"]
-    GF2 --> Impl
+    Q -->|"Greenfield<br/>(no code yet)"| GF1["/sk:prd<br/><i>brief, user flows, architecture,<br/>then epics</i>"]
+    GF1 --> GF2["/sk:kickoff<br/><i>stack research, conventions,<br/>build commands, repo scaffold</i>"]
+    GF2 --> Plan
 
-    Q -->|"Brownfield<br/>(existing code)"| BF1["/sk:init-docs<br/><i>auto-scan codebase<br/>+ detect build commands</i>"]
-    BF1 --> BF2["Review generated docs"]
-    BF2 --> BF3["/sk:new-task"]
-    BF3 --> Impl
+    Q -->|"Brownfield<br/>(existing code)"| BF1["/sk:init-docs<br/><i>docs, flow inventory, glossary<br/>from the code</i>"]
+    BF1 --> BF2{"Next change is…"}
+    BF2 -->|"a feature with<br/>new flows"| BF3["/sk:prd (feature)<br/><i>scoped PRD, 1–2 epics</i>"]
+    BF2 -->|"one task"| BF4["/sk:new-task"]
+    BF3 --> Plan
+    BF4 --> Plan
 
-    Impl["/sk:implement<br/><i>build it</i>"]
-    Impl --> Ship(["Ship it"])
+    Plan["/sk:plan → /sk:dev → /sk:test<br/><i>or /sk:implement for all three</i>"]
+    Plan --> Ship(["/sk:finish: review, commit, PR"])
+
+    BS["/sk:brainstorm<br/><i>when the direction is still open:<br/>ends with a brief</i>"] -.-> GF1
+    BS -.-> BF3
 
     style Start fill:#2d6a4f,color:#fff
     style Ship fill:#2d6a4f,color:#fff
     style Q fill:#264653,color:#fff
-    style Impl fill:#e76f51,color:#fff
+    style BF2 fill:#264653,color:#fff
+    style Plan fill:#e76f51,color:#fff
     style GF1 fill:#2a9d8f,color:#fff
     style GF2 fill:#2a9d8f,color:#fff
     style BF1 fill:#e9c46a,color:#000
-    style BF2 fill:#e9c46a,color:#000
     style BF3 fill:#e9c46a,color:#000
+    style BF4 fill:#e9c46a,color:#000
+    style BS fill:#f4f1ea,color:#000

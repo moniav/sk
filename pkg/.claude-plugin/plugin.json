@@ -1,9 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin.json",
   "name": "sk",
-  "displayName": "SK — ShipKit",
-  "version": "2.4.0",
-  "description": "Documentation and lifecycle system for Claude Code: a Plan, Dev, Test lifecycle with 55 commands, 24 skills, and 9 agents. Run /sk:scaffold once per project to create docs/ and CLAUDE.md.",
+  "displayName": "SK — Moni's Software Machine",
+  "version": "3.0.0",
+  "description": "From idea to production with a disciplined workflow: PRD, epics, Plan > Dev > Test with proof at every gate, and a documentation tree that keeps a large codebase under control. 55 commands, 28 skills, 9 agents. Run /sk:scaffold once per project.",
   "author": {
     "name": "moniav",
     "url": "https://github.com/moniav"

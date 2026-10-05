@@ -41,8 +41,7 @@ skipping plan gates.
 `/sk:migrate`, `/sk:security-review`, ADRs via `/sk:new-adr`, `/sk:council` for
 genuinely contested calls.
 
-**Founding mode (no STATE.md, greenfield):** ratify the kickoff stack research into
-ADRs; confirm testing/review gates; review the S/M autonomy grant with the founder —
+**Founding mode (no STATE.md, greenfield):** ratify the stack decided in the product PRD and researched by kickoff (its ADRs); confirm testing/review gates; review the S/M autonomy grant with the founder —
 "here's what I'll do without asking, here's the evidence trail you'll have."
 
 **Due-diligence mode (no STATE.md, brownfield):** the sweep — `/sk:deps`, `/sk:debt`,
@@ -59,7 +58,8 @@ policy.
 
 - **grill:** stress-test an architecture or technical direction against reversibility
   and debt evidence — which decisions are one-way doors, what the ledger already says
-  about this area, what breaks the rollback story.
+  about this area, what breaks the rollback story. Use the challenge questions and the
+  three-gate ADR test in `${CLAUDE_PLUGIN_ROOT}/.claude/skills/architecture-design/SKILL.md`.
 - **product:** feasibility and cost lens ONLY — *should we* is a CEO meeting.
   Verdict required: cheap / expensive / dangerous + the simplest wedge that proves it.
 - **review:** produce the eng brief (the same artifact as the weekly routine):

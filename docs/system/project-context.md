@@ -6,7 +6,7 @@
 
 ## What is SK
 
-SK (shipkit-cld) is a documentation and lifecycle system for Claude Code.
+SK (ShipKit) is a documentation and lifecycle system for Claude Code.
 It gives Claude a structured Plan > Dev > Test workflow, a doc tree to keep current, and review, debugging, release and go-to-market commands.
 It ships two ways: as a Claude Code plugin (commands, skills and agents live outside the project), or as files copied into a project's `.claude/`. Either way the project owns its `docs/` tree and `CLAUDE.md`.
 
@@ -15,15 +15,14 @@ It ships two ways: as a Claude Code plugin (commands, skills and agents live out
 - **Runtime:** Node.js >= 18
 - **Language:** JavaScript (ES modules, no TypeScript)
 - **Dependencies:** none (stdlib only: `fs`, `path`, `readline`, `url`, `crypto`)
-- **Distribution:** Claude Code plugin `sk` from the `shipkit` marketplace (this repo); npm package `shipkit-cld`
+- **Distribution:** Claude Code plugin `sk` from the `shipkit` marketplace (this repo). The npm package `shipkit-cld` is no longer published (ADR-003)
 
 ## Build Commands
 
 ```yaml
-dev:       # No dev server: CLI tool
+dev:       npm run dev         # claude --plugin-dir ./pkg; /reload-plugins after edits
 build:     # No build step: plain ES modules
 test:      npm test            # scripts/check.mjs
-sync:      npm run sync        # mirror pkg/.claude into the dogfood copy
 evals:     npm run evals       # trigger evals on claude plugin eval; costs money
 lint:      # No linter configured
 typecheck: # No TypeScript
@@ -32,29 +31,27 @@ typecheck: # No TypeScript
 ## Key Patterns
 
 - **`pkg/` is everything that ships, and the plugin root.** `pkg/.claude-plugin/plugin.json` version must equal `package.json`.
-- **Single-file CLI** (`pkg/cli.mjs`): `install`, `update`, `remove`, `init`. `init` scaffolds `docs/` and `CLAUDE.md` only, for plugin users. It ships inside the plugin, where `/sk:scaffold` runs it, and in the npm package, where the root `cli.mjs` imports it.
-- **Safe update:** the manifest (`.claude/.sk-manifest.json`) records a hash per shipped file. An edited file is kept and the new version is written beside it as `<name>.sk-new`. `pkg/.sk-baselines.json` (generated from release tags) holds the hashes of every released version.
-- **Two channels, one source:** commands reference shared skills as `${CLAUDE_PLUGIN_ROOT}/.claude/...`; `cli.mjs` rewrites the prefix to `.claude/` when copying into a project. Skills read with the Read tool use paths relative to their own file.
+- **Plugin only.** Commands, agents and skills load from the plugin cache and are never written into a project. `pkg/cli.mjs` (zero dependencies, ships inside the plugin, run by `/sk:scaffold`) has three jobs: `init` scaffolds `docs/` and `CLAUDE.md`, `update` refreshes the shipped docs, `migrate` removes the files SK 2.x copied into `.claude/`.
+- **Safe docs update:** the manifest (`.claude/.sk-manifest.json`) records a hash per shipped doc. An edited file is kept and the new version is written beside it as `<name>.sk-new`.
+- **Paths:** commands reference shared skills as `${CLAUDE_PLUGIN_ROOT}/.claude/...`, which Claude Code resolves to the plugin cache. Skills read with the Read tool use paths relative to their own file.
 - **Invocation:** six commands are model-invocable (`debug`, `resume`, `task-status`, `new-task`, `plan`, `review`); the other 49 run only when typed. A gated command or skill cannot be invoked by the model.
 - **Models:** an agent's frontmatter is the only place its model is set. Commands and skills never set one.
-- **Root `.claude/` is generated** by `npm run sync`. Edit `pkg/.claude/` only.
+- **Dogfooding:** `npm run dev` starts Claude Code with the plugin loaded from `pkg/`. The repo's `.claude/` holds only `settings.json`.
 
 ## Project Structure
 
 ```
 sk/
-├── cli.mjs                 npm entry point: imports pkg/cli.mjs
 ├── package.json            npm package config
 ├── .claude-plugin/         marketplace.json (installs the plugin from ./pkg)
-├── scripts/                check, sync, baselines, evals, eval-summary (not shipped)
+├── scripts/                check, evals, eval-summary (not shipped)
 ├── pkg/                    everything that ships; also the plugin root
-│   ├── cli.mjs             CLI: install / update / remove / init; run by /sk:scaffold under the plugin
+│   ├── cli.mjs             the script behind /sk:scaffold: init, update (docs), migrate
 │   ├── .claude-plugin/     plugin.json
-│   ├── .sk-baselines.json  GENERATED: release file hashes
 │   ├── CLAUDE.md           template for target projects (under 100 lines)
 │   ├── docs/               template documentation tree
-│   └── .claude/            commands (55), agents (9), skills (24)
-├── .claude/                dogfood copy, written by npm run sync
+│   └── .claude/            commands (56), agents (9), skills (28)
+├── .claude/                settings.json only
 ├── docs/                   dogfood instance of the doc system (not shipped)
 └── dev-docs/               plans, reports, guides, evals (not shipped)
 ```
@@ -63,17 +60,17 @@ sk/
 
 | Category | Count | Location |
 |----------|-------|----------|
-| Slash commands | 55 | `pkg/.claude/commands/sk/` |
+| Slash commands | 56 | `pkg/.claude/commands/sk/` |
 | Agents | 9 | `pkg/.claude/agents/`: implementer, spec-reviewer, plan-reviewer, quality-reviewer, security-reviewer, perf-reviewer, architecture-reviewer, dependency-analyzer, debugger |
-| Skills | 24 | `pkg/.claude/skills/`: 11 model-invoked, 13 user-invoked or loaded by commands |
-| Doc templates | 26 | `pkg/docs/templates/` |
+| Skills | 28 | `pkg/.claude/skills/`: 11 model-invoked, 17 user-invoked or loaded by commands |
+| Doc templates | 27 | `pkg/docs/templates/` |
 | Convention docs | 7 | `pkg/docs/conventions/` |
 | SOPs | 2 | `pkg/docs/sop/` |
 
 ## Gotchas
 
 - `pkg/cli.mjs` must stay zero-dependency.
-- Never edit `pkg/.sk-baselines.json` or root `.claude/` by hand: regenerate with `npm run baselines` and `npm run sync`.
+- There is no dogfood copy of the commands any more: `npm run dev` loads `pkg/` as a plugin.
 - A release bumps `package.json` and `pkg/.claude-plugin/plugin.json` together. Plugin users only receive an update when the plugin version changes.
 - `pkg/CLAUDE.md` is for target projects; root `CLAUDE.md` is for SK development.
 - ASCII-only CLI output, for Windows consoles.
@@ -82,6 +79,6 @@ sk/
 
 ## Current State
 
-- **Version:** 2.4.0 (`/sk:scaffold` on top of the four waves of `dev-docs/planning/2026-10-best-practices-enhancement-plan.md`).
+- **Version:** 3.0.0: plugin-only distribution (ADR-003), `/sk:prd` and the idea-to-epics flow, templates reviewed.
 - **Status:** active development.
-- **Next:** run the trigger evals for Waves 3 and 4 (still open). Decide on the project-local verify skill (`dev-docs/planning/2026-10-verify-skill-design-note.md`).
+- **Next:** run `/sk:prd` on a real idea and tune the stages; trigger evals for the new and changed commands; consider listing SK in Claude Code's official marketplace; the open items in `dev-docs/planning/2026-10-idea-and-planning-enhancement-plan.md` (project-wide glossary use in `/sk:plan`, frontier-only epics outside `/sk:prd`).

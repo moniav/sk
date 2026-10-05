@@ -1,13 +1,13 @@
 # Component: [Name]
 
-**Last updated:** YYYY-MM-DD  
+**Last updated:** YYYY-MM-DD
 **Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
-**Location:** `src/path/to/component`  
-**Owner:** Team/Person  
+**Location:** `src/path/to/component`
+**Owner:** Team/Person
 
 ## Purpose
 
-<!-- What does this component do? What problem does it solve? -->
+<!-- What this component does and which problem it solves. One paragraph. Terms from docs/system/glossary.md. -->
 
 ## Architecture
 
@@ -19,13 +19,22 @@ graph LR
     Component --> Dep2[Dependency 2]
 ```
 
-## Public API
+## Owns
 
-### Key Functions/Methods
+<!-- The data and the decisions this component is the source of truth for; other components reference them by id. -->
 
-```typescript
-// Main entry point
-function processOrder(order: Order): Promise<OrderResult>
+## Interfaces
+
+<!-- What it exposes and what it consumes. Contract summary, not the full API: link the reference. -->
+
+| Interface | Kind (HTTP / event / job / function) | Direction (in / out) | Contract | Idempotent |
+|-----------|--------------------------------------|----------------------|----------|------------|
+| | | | | |
+
+### Entry point
+
+```
+// language of the project: the main entry point, its signature, one line on what it returns
 ```
 
 ### Configuration
@@ -36,13 +45,13 @@ function processOrder(order: Order): Promise<OrderResult>
 
 ## Data Flow
 
-<!-- How does data move in and out? -->
+<!-- How data moves in and out, and where state lives. -->
 
-## Dependencies
+## Dependencies and failure modes
 
-| Dependency | Why | Can We Replace It? |
-|-----------|-----|-------------------|
-| Redis | Caching | Yes, any KV store |
+| Dependency | Why | When it fails | Fallback | Replaceable by |
+|------------|-----|---------------|----------|----------------|
+| Redis | Caching | reads go to the database | none needed | any KV store |
 
 ## Known Limitations
 
@@ -53,3 +62,4 @@ function processOrder(order: Order): Promise<OrderResult>
 
 - [Architecture overview](../architecture/README.md)
 - [Flow diagram](../flows/relevant-flow.md)
+- <!-- ADRs that shaped this component -->

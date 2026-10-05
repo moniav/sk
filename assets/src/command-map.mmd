@@ -1,8 +1,8 @@
 flowchart TB
     subgraph flow [" "]
         direction LR
-        GS["<b>Start</b><br/>/sk:help<br/>/sk:kickoff<br/>/sk:init-docs<br/>/sk:brainstorm"]
-        CR["<b>Create work</b><br/>/sk:new-epic<br/>/sk:new-task"]
+        GS["<b>Start</b><br/>/sk:help, /sk:scaffold<br/>/sk:brainstorm<br/>/sk:kickoff, /sk:init-docs"]
+        CR["<b>Define work</b><br/>/sk:prd (PRD → epics)<br/>/sk:new-epic<br/>/sk:new-task"]
         LC["<b>Build</b><br/>/sk:plan, /sk:dev, /sk:test<br/>/sk:implement (all three)<br/>/sk:orchestrate (parallel)"]
         QA["<b>Review</b><br/>/sk:review (all at once)<br/>/sk:code-review<br/>/sk:security-review<br/>/sk:perf-review<br/>/sk:ui-review<br/>/sk:recap"]
         SH["<b>Ship</b><br/>/sk:finish<br/>/sk:commit, /sk:pr<br/>/sk:changelog, /sk:release<br/>/sk:announce"]

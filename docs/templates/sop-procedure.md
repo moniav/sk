@@ -2,13 +2,17 @@
 
 **Last updated:** YYYY-MM-DD  
 **Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
-**Criticality:** High | Medium | Low  
+**Criticality:** High | Medium | Low
+**Runs as:** manual | `/sk:routines` (headless) | on demand by `/sk:{command}`
+**Takes:** <!-- rough duration -->
 
 ## Purpose
 
 <!-- One sentence: When do you follow this SOP? -->
 
 ## Pre-flight Checklist
+
+<!-- Access, credentials location (never the secret), inputs, the state the system must be in. -->
 
 - [ ] Prerequisite 1
 - [ ] Prerequisite 2
@@ -29,7 +33,7 @@
 
 ### 3. Verify
 
-<!-- How to confirm it worked -->
+<!-- The command or check that proves it worked, and what its output looks like when it did. -->
 
 ### 4. Update Docs
 
@@ -38,7 +42,7 @@
 
 ## Rollback
 
-<!-- How to undo if something goes wrong -->
+<!-- How to undo, step by step, and the point after which rollback is no longer possible. -->
 
 ## Common Pitfalls
 

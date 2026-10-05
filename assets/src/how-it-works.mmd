@@ -1,8 +1,8 @@
 graph TD
-    A["CLAUDE.md<br/><i>agent entry point, read automatically</i>"] --> B[".claude/commands/sk/<br/><i>55 slash commands</i>"]
-    A --> B2[".claude/skills/<br/><i>24 skills: TDD, legal, ops, PDF, ...</i>"]
+    P["SK plugin (outside the project)<br/><i>55 commands · 28 skills · 9 agents</i>"] --> A
+    A["CLAUDE.md<br/><i>agent entry point, read automatically</i>"] --> C
     SH["docs/START-HERE.md<br/><i>human front door (role router)</i>"] --> C
-    B --> C["docs/README.md<br/><i>agent index</i>"]
+    C["docs/README.md<br/><i>agent index</i>"]
 
     C --> D["LIFECYCLE"]
     C --> E["WHAT"]
@@ -10,15 +10,14 @@ graph TD
     C --> F["WHY"]
     C --> H["AUDIENCES"]
 
-    D --> D1["tasks/: Plan > Dev > Test"]
-    E --> E1["architecture/ · system/<br/>features/ · flows/"]
+    D --> D1["prd/ → tasks/<br/>PRD > epics > Plan > Dev > Test"]
+    E --> E1["architecture/ · system/ (+ glossary)<br/>features/ · flows/"]
     G --> G1["conventions/ · sop/<br/>operations/"]
     F --> F1["decisions/"]
     H --> H1["user-guides/ (customers)<br/>business/ (GTM) · legal/ (compliance)"]
 
+    style P fill:#1b4332,color:#fff
     style A fill:#2d6a4f,color:#fff
-    style B fill:#40916c,color:#fff
-    style B2 fill:#40916c,color:#fff
     style SH fill:#52b788,color:#fff
     style C fill:#52b788,color:#fff
     style D fill:#264653,color:#fff

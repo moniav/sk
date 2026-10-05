@@ -4,6 +4,7 @@
 **Lifecycle:** current  <!-- current | stale | deprecated | archived (see conventions/doc-lifecycle.md) -->
 **Decision owner:** [who decides]
 **Reversibility:** [one-way door | two-way door]
+**Decide by:** YYYY-MM-DD <!-- and what it costs to miss it -->
 
 ## Decision to make
 
@@ -30,4 +31,6 @@
 
 ## Decision
 
-<!-- Filled when made: chosen option, date, who. -->
+<!-- Filled when made: chosen option, date, who. One-way door: also record it as an ADR. -->
+
+**Revisit if:** <!-- the condition that would reopen this -->

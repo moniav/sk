@@ -30,12 +30,13 @@ Do not report completion until each line holds. For the minimal profile, the dom
 - [ ] Every link in `docs/README.md` (agent index) resolves to an existing file
 - [ ] `docs/START-HERE.md` (human router) exists with role lanes
 - [ ] A search of the index files for `YYYY-MM-DD` returns nothing
+- [ ] `docs/flows/` has one file per user-facing flow found in the code, and `docs/system/glossary.md` names the domain terms the code uses
 - [ ] Domain homes exist, each with a stub index: features/, user-guides/, business/, legal/, operations/, _archive/
 - [ ] `docs/templates/` contains every template listed in step 3d
 
 ## Step 1: Scan Project
 
-If `docs/templates/` does not exist and `.claude/commands/sk/` does not exist in the project either (SK runs as a plugin), create the scaffold first by running `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init . --yes` from the project root; it only fills gaps and never replaces a file.
+If `docs/templates/` does not exist, create the scaffold first by running `node "${CLAUDE_PLUGIN_ROOT}/cli.mjs" init . --yes` from the project root; it only fills gaps and never replaces a file.
 
 If `docs/system/project-context.md` exists, read it first. Stamp today's date into every index file you write in Step 3 (see Rules).
 
@@ -116,6 +117,11 @@ Generate these files in order, from the Step 1 scan.
 ### 3b. Architecture Docs
 
 6. **`docs/architecture/README.md`**: component diagram mapping source subdirectories to components, plus the data flow patterns and cross-cutting concerns found in code
+
+### 3b². Flow inventory and glossary (the baseline a feature PRD compares against)
+
+- **`docs/flows/`**: one short file per user-facing flow found in the code (routes, screens, handlers): persona, trigger, steps, end state as a Mermaid flowchart, and the edge cases the code already handles. No invented behaviour; a step the code does not handle is listed as `not handled`. Index them in `docs/flows/README.md`.
+- **`docs/system/glossary.md`**: the domain terms as the code names them (models, tables, main types), one or two sentences each, with the synonyms found in the code under *Avoid* when two names exist for one thing. Project-specific terms only.
 
 ### 3c. Convention Docs (from observed patterns)
 

@@ -17,7 +17,7 @@
 - **Why now:** <!-- 1-2 sentences -->
 - **Measure:** <!-- how progress is checked, and where the number comes from -->
 - **Status:** on-track | at-risk | behind | done
-- **Epics serving this goal:** <!-- links added as epics are created: EPIC-N, ... -->
+- **PRDs and epics serving this goal:** <!-- links added as they are created: PRD-N, EPIC-N, ... -->
 
 ### G2: [Goal name]
 
@@ -25,7 +25,7 @@
 - **Why now:**
 - **Measure:**
 - **Status:** on-track
-- **Epics serving this goal:**
+- **PRDs and epics serving this goal:**
 
 ## Explicitly Not Doing
 

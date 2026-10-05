@@ -43,6 +43,10 @@ Ask the user what to diagram, then choose the output format (present the choice 
 | Data model / ER | Mermaid | `erDiagram` |
 | Quick sketch | Mermaid | any |
 
+## Step 3b: User flows
+
+When the diagram is a user-facing flow (not a code path), follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/flow-design/SKILL.md`: walk it, attack each step, and record the decided edge cases under the diagram. A PRD flow that has been delivered belongs here, copied from `docs/prd/` with the edge-case table.
+
 ## Step 4: Trace the Code
 
 **Do not guess — read the actual code.**

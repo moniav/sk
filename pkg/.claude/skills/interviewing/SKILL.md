@@ -1,11 +1,13 @@
 ---
 name: interviewing
-description: Shared procedure for questioning the user until no decision is left open — rounds of numbered questions, each with a recommended answer. Loaded by /sk:plan, /sk:brainstorm and the executive grill mode; not invoked directly.
+description: Shared procedure for questioning the user until no decision is left open — rounds of numbered questions, each with a recommended answer. Loaded by /sk:plan, /sk:brainstorm, /sk:prd and the executive grill mode; not invoked directly.
 disable-model-invocation: true
 user-invocable: false
 ---
 
 # Interviewing
+
+Adapted from the `grilling` skill in [mattpocock/skills](https://github.com/mattpocock/skills) (MIT): the design tree, the frontier, rounds with a recommended answer, and facts-versus-decisions.
 
 How to question the user until a plan, an idea or a decision has nothing left open, without wasting their time.
 

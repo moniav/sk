@@ -1,7 +1,7 @@
 # SK Development Docs
 
 > Meta documentation about **building SK itself** — plans, analyses, and contributor guides.
-> These are **not** part of the SK product and **never ship**. Only `cli.mjs` + `pkg/` are packed.
+> These are **not** part of the SK product and **never ship**. Only `pkg/` is the plugin.
 
 ## Why this is separate from `docs/`
 

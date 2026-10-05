@@ -2,7 +2,7 @@
 // scripts/check.mjs: repo consistency checks for SK (dev-only, never shipped).
 // Usage:
 //   node scripts/check.mjs            Run every check
-//   node scripts/check.mjs --static   Skip the checks that run cli.mjs or the claude CLI
+//   node scripts/check.mjs --static   Skip the checks that run pkg/cli.mjs or the claude CLI
 //
 // Errors fail the run. Warnings are known gaps scheduled in
 // dev-docs/planning/2026-10-best-practices-enhancement-plan.md; each names its item.
@@ -72,29 +72,7 @@ const skillNames = readdirSync(skillsDir, { withFileTypes: true })
   .map((e) => e.name)
   .sort();
 
-// --- 1. Root .claude is pkg/.claude as a project install would hold it ---
-
-// Shipped files point at each other through the plugin root; a project install
-// (and the dogfood copy) gets that prefix rewritten to .claude/ (plan item 2.4).
-const PLUGIN_PREFIX = "${CLAUDE_PLUGIN_ROOT}/.claude/";
-// A copied-file install has no plugin root: the bundled CLI becomes the npm one.
-const PLUGIN_CLI = 'node "${CLAUDE_PLUGIN_ROOT}/cli.mjs"';
-const rendered = (text) => text.split(PLUGIN_PREFIX).join(".claude/").split(PLUGIN_CLI).join("npx shipkit-cld");
-
-for (const sub of ["commands/sk", "agents", "skills"]) {
-  const a = join(PKG, ".claude", sub);
-  const b = join(ROOT, ".claude", sub);
-  const aFiles = listFilesRel(a);
-  const bFiles = new Set(listFilesRel(b));
-  for (const rel of aFiles) {
-    if (!bFiles.has(rel)) err("sync", `.claude/${sub}/${rel} missing from the root copy -- run: npm run sync`);
-    else if (rendered(read(join(a, rel))) !== read(join(b, rel))) err("sync", `.claude/${sub}/${rel} differs between pkg/ and root -- run: npm run sync`);
-    bFiles.delete(rel);
-  }
-  for (const rel of bFiles) err("sync", `.claude/${sub}/${rel} exists in the root copy but not in pkg/`);
-}
-
-// --- 1b. Paths work in both install channels (plan item 2.4) ---
+// --- 1. Paths resolve from the plugin root ---
 
 for (const rel of listFilesRel(PKG)) {
   if (!rel.endsWith(".md")) continue;
@@ -102,7 +80,7 @@ for (const rel of listFilesRel(PKG)) {
   const where = `pkg/${rel}`;
   // A path into SK's own files is only valid when it goes through the plugin root.
   for (const m of text.matchAll(/(?<![\w${}/])\.claude\/(skills\/[a-z-]+\/[\w./-]+|agents\/[a-z-]+\.md|commands\/sk\/[a-z-]+\.md)/g)) {
-    err("paths", `${where}: bare path "${m[0]}" breaks when SK is installed as a plugin`);
+    err("paths", `${where}: bare path "${m[0]}"; SK files live in the plugin cache, go through \${CLAUDE_PLUGIN_ROOT}`);
   }
   // Only commands are loaded by Claude Code itself; a file read with the Read tool gets no substitution.
   if (text.includes("${CLAUDE_PLUGIN_ROOT}") && !rel.startsWith(".claude/commands/")) {
@@ -254,7 +232,7 @@ for (const name of READ_ONLY) {
 // Skills loaded by commands, never by hand: hidden from both the model and the / menu.
 // headless-operation is the exception on the model side: a scheduled prompt is stored
 // outside SK and cannot carry an install path, so it reaches the skill by name.
-const INTERNAL_SKILLS = ["git-commit-flow", "subtask-execution", "research", "headless-operation", "executive-meeting", "interviewing"];
+const INTERNAL_SKILLS = ["git-commit-flow", "subtask-execution", "research", "headless-operation", "executive-meeting", "interviewing", "prototype", "product-brief", "flow-design", "architecture-design"];
 const REACHED_BY_NAME = ["headless-operation"];
 for (const name of INTERNAL_SKILLS) {
   const path = join(skillsDir, name, "SKILL.md");
@@ -327,7 +305,7 @@ for (const name of skillNames) {
 
 // stdin is empty on purpose: every run passes --yes or --dry-run, so a prompt would hang the test.
 function runCli(args, cwd) {
-  return spawnSync(process.execPath, [join(ROOT, "cli.mjs"), ...args], { cwd, input: "", encoding: "utf-8", timeout: 120000 });
+  return spawnSync(process.execPath, [join(PKG, "cli.mjs"), ...args], { cwd, input: "", encoding: "utf-8", timeout: 120000 });
 }
 
 function scratch(fn) {
@@ -350,134 +328,7 @@ const readManifest = (dir) => JSON.parse(read(join(dir, ".claude", ".sk-manifest
 const writeManifest = (dir, m) => writeFileSync(join(dir, ".claude", ".sk-manifest.json"), JSON.stringify(m, null, 2) + "\n");
 
 if (!staticOnly) {
-  // Install lays down every shipped file and records a hash for each.
-  scratch((tmp) => {
-    const install = runCli([".", "--yes"], tmp);
-    if (install.status !== 0) return err("install", `cli.mjs install exited ${install.status}: ${install.stderr.trim()}`);
-    for (const sub of [".claude/commands/sk", ".claude/agents", ".claude/skills"]) {
-      for (const rel of listFilesRel(join(PKG, sub))) {
-        if (!existsSync(join(tmp, sub, rel))) err("install", `${sub}/${rel} was not installed`);
-      }
-    }
-    if (!existsSync(join(tmp, ".claude", ".sk-manifest.json"))) return err("install", "no manifest written");
-    const manifest = readManifest(tmp);
-    if (!manifest.files || !manifest.files[".claude/commands/sk/plan.md"]) err("install", "manifest has no per-file hashes");
-    if (existsSync(join(tmp, ".claude-plugin")) || existsSync(join(tmp, ".sk-baselines.json"))) err("install", "packaging files leaked into the project");
-    for (const rel of listFilesRel(join(tmp, ".claude"))) {
-      if (rel.endsWith(".md") && read(join(tmp, ".claude", rel)).includes("CLAUDE_PLUGIN_ROOT")) err("install", `.claude/${rel} still contains a plugin path variable`);
-    }
-    if (!existsSync(join(tmp, ".claude", "skills", "git-commit-flow", "SKILL.md")) || !read(join(tmp, ".claude", "commands", "sk", "commit.md")).includes("`.claude/skills/git-commit-flow/SKILL.md`")) err("install", "commit.md does not point at the installed git-commit-flow skill");
-
-    // Safe update (plan item 1.8): user work must survive an update.
-    const editedSkill = join(tmp, ".claude", "skills", "git-worktrees", "SKILL.md");
-    const ownAgent = join(tmp, ".claude", "agents", "my-own.md");
-    const ownTask = join(tmp, "docs", "tasks", "TASK-1.md");
-    const sharedDoc = join(tmp, "docs", "README.md");
-    appendFileSync(editedSkill, "\nUSER EDIT\n");
-    writeFileSync(ownAgent, "my agent\n");
-    writeFileSync(ownTask, "user task\n");
-    appendFileSync(sharedDoc, "\nUSER ROW\n");
-
-    // CLAUDE.md is created by SK on a greenfield install, then filled in by the user.
-    const claudeMd = join(tmp, "CLAUDE.md");
-    appendFileSync(claudeMd, "\nUSER BUILD COMMANDS\n");
-
-    // --dry-run reports the same outcome and writes nothing.
-    const before = snapshot(tmp);
-    const dry = runCli(["update", ".", "--from", ROOT, "--dry-run"], tmp);
-    if (dry.status !== 0) err("update", `--dry-run exited ${dry.status}: ${dry.stderr.trim()}`);
-    if (JSON.stringify(snapshot(tmp)) !== JSON.stringify(before)) err("update", "--dry-run changed files");
-    if (!/git-worktrees\/SKILL\.md has local changes/.test(dry.stdout)) err("update", "--dry-run did not report the edited skill");
-
-    const update = runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
-    if (update.status !== 0) err("update", `cli.mjs update exited ${update.status}: ${update.stderr.trim()}`);
-
-    if (!existsSync(ownAgent)) err("update", "a user-added agent was deleted");
-    if (!existsSync(ownTask) || read(ownTask) !== "user task\n") err("update", "a user task file was changed");
-    if (!read(editedSkill).includes("USER EDIT")) err("update", "a locally edited shipped skill was overwritten");
-    else if (!existsSync(editedSkill + SIDECAR)) err("update", "an edited shipped skill was kept but no sidecar was written");
-    else if (read(editedSkill + SIDECAR) !== read(join(PKG, ".claude", "skills", "git-worktrees", "SKILL.md"))) err("update", "the sidecar is not SK's current version");
-    if (!read(sharedDoc).includes("USER ROW")) err("update", "a user edit to docs/README.md was overwritten");
-    else if (!existsSync(sharedDoc + SIDECAR)) err("update", "docs/README.md was kept but no sidecar was written");
-    if (!read(claudeMd).includes("USER BUILD COMMANDS")) err("update", "a user edit to an SK-created CLAUDE.md was overwritten");
-    else if (!existsSync(join(tmp, "CLAUDE.sk.md"))) err("update", "an edited CLAUDE.md was kept but no CLAUDE.sk.md was written");
-    if (listFilesRel(tmp).filter((f) => f.endsWith(SIDECAR)).length !== 2) err("update", "sidecars were written for files the user did not edit");
-
-    // Accepting a sidecar makes the file pristine again: the next update clears nothing and writes no sidecar.
-    writeFileSync(editedSkill, readFileSync(editedSkill + SIDECAR));
-    rmSync(editedSkill + SIDECAR);
-    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
-    if (existsSync(editedSkill + SIDECAR)) err("update", "a sidecar reappeared after the user accepted SK's version");
-
-    // --force takes SK's version of an edited file and removes its sidecar.
-    runCli(["update", ".", "--from", ROOT, "--yes", "--force"], tmp);
-    if (read(sharedDoc).includes("USER ROW")) err("update", "--force did not replace an edited file");
-    if (existsSync(sharedDoc + SIDECAR)) err("update", "--force left a stale sidecar behind");
-
-    // A managed file SK stops shipping: removed when untouched, kept when edited.
-    const manifest2 = readManifest(tmp);
-    const gone = join(tmp, ".claude", "commands", "sk", "retired.md");
-    const goneEdited = join(tmp, ".claude", "commands", "sk", "retired-edited.md");
-    writeFileSync(gone, "old command\n");
-    writeFileSync(goneEdited, "old command, edited by the user\n");
-    manifest2.files[".claude/commands/sk/retired.md"] = createHash("sha256").update("old command\n", "latin1").digest("hex").slice(0, 16);
-    manifest2.files[".claude/commands/sk/retired-edited.md"] = "0000000000000000";
-    writeManifest(tmp, manifest2);
-    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
-    if (existsSync(gone)) err("update", "an untouched file SK no longer ships was not removed");
-    if (!existsSync(goneEdited)) err("update", "an edited file SK no longer ships was deleted");
-
-    // remove deletes SK's files and sidecars, keeps the user's.
-    appendFileSync(editedSkill, "\nUSER EDIT\n");
-    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
-    const removed = runCli(["remove", ".", "--yes"], tmp);
-    if (removed.status !== 0) err("remove", `cli.mjs remove exited ${removed.status}: ${removed.stderr.trim()}`);
-    if (existsSync(editedSkill + SIDECAR)) err("remove", "a sidecar was left behind");
-    if (!existsSync(ownAgent)) err("remove", "a user-added agent was deleted");
-    if (!existsSync(ownTask)) err("remove", "docs/ was not preserved");
-  });
-
-  // A project's own file that shares a name with a shipped one is never overwritten:
-  // not on install, not on update, and it stays out of the manifest.
-  scratch((tmp) => {
-    const collide = join(tmp, ".claude", "agents", "debugger.md");
-    mkdirSync(dirname(collide), { recursive: true });
-    writeFileSync(collide, "mine\n");
-    runCli([".", "--yes"], tmp);
-    if (read(collide) !== "mine\n") err("install", "a pre-existing user agent sharing a name with a shipped agent was overwritten");
-    if (".claude/agents/debugger.md" in (readManifest(tmp).files || {})) err("install", "a user file was recorded as SK-managed");
-    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
-    if (read(collide) !== "mine\n") err("update", "a user agent sharing a name with a shipped agent was overwritten");
-    runCli(["remove", ".", "--yes"], tmp);
-    if (!existsSync(collide)) err("remove", "a user agent sharing a name with a shipped agent was deleted");
-  });
-
-  // An install from before per-file hashes: an untouched older release of a file is
-  // recognised through pkg/.sk-baselines.json and updated; an edited one is kept.
-  scratch((tmp) => {
-    const tag = spawnSync("git", ["tag", "--list", "v*", "--sort=-version:refname"], { cwd: ROOT, encoding: "utf-8" }).stdout.split("\n")[0];
-    const rel = ".claude/skills/git-worktrees/SKILL.md";
-    const released = tag ? spawnSync("git", ["show", `${tag}:pkg/${rel}`], { cwd: ROOT, encoding: "utf-8" }) : null;
-    if (!released || released.status !== 0) return console.log("[INFO] no release tag with pkg/ -- skipped the pre-hash upgrade check");
-    if (released.stdout.replace(/\r\n/g, "\n") === read(join(PKG, rel))) return console.log("[INFO] probe file unchanged since the last release -- skipped the pre-hash upgrade check");
-
-    runCli([".", "--yes"], tmp);
-    const manifest = readManifest(tmp);
-    delete manifest.files;
-    writeManifest(tmp, manifest);
-    writeFileSync(join(tmp, rel), released.stdout);
-    const edited = join(tmp, ".claude", "commands", "sk", "plan.md");
-    appendFileSync(edited, "\nUSER EDIT\n");
-
-    runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
-    if (read(join(tmp, rel)) !== read(join(PKG, rel))) err("update", "an untouched file from an older release was not updated on a pre-hash install");
-    if (existsSync(join(tmp, rel) + SIDECAR)) err("update", "an untouched file from an older release got a sidecar");
-    if (!read(edited).includes("USER EDIT")) err("update", "an edited file on a pre-hash install was overwritten");
-    if (!readManifest(tmp).files) err("update", "the manifest was not upgraded with per-file hashes");
-  });
-
-  // init (plan item 2.8): docs/ and CLAUDE.md only, for projects that use the plugin.
-  // It fills gaps, never replaces a file, and is safe to re-run.
+  // init: docs/ and CLAUDE.md only. It fills gaps, never replaces a file, and is safe to re-run.
   scratch((tmp) => {
     const ownDoc = join(tmp, "docs", "README.md");
     mkdirSync(dirname(ownDoc), { recursive: true });
@@ -485,66 +336,133 @@ if (!staticOnly) {
 
     const init = runCli(["init", "."], tmp);
     if (init.status !== 0) return err("init", `cli.mjs init exited ${init.status}: ${init.stderr.trim()}`);
-    if (existsSync(join(tmp, ".claude", "commands")) || existsSync(join(tmp, ".claude", "skills")) || existsSync(join(tmp, ".claude", "agents"))) {
-      err("init", "init copied commands, skills or agents into the project");
+    for (const sub of ["commands", "skills", "agents"]) {
+      if (existsSync(join(tmp, ".claude", sub))) err("init", `init copied ${sub} into the project`);
     }
     if (read(ownDoc) !== "mine\n") err("init", "init replaced a doc the project already had");
-    if (!existsSync(join(tmp, "docs", "templates", "task-prd.md"))) err("init", "init did not scaffold docs/templates");
+    for (const rel of listFilesRel(join(PKG, "docs"))) {
+      if (!existsSync(join(tmp, "docs", rel))) err("init", `docs/${rel} was not scaffolded`);
+    }
     if (!existsSync(join(tmp, "CLAUDE.md"))) err("init", "init did not create CLAUDE.md");
     const manifest = readManifest(tmp);
     if (manifest.channel !== "plugin") err("init", "manifest does not record the plugin channel");
+    if (manifest.version !== JSON.parse(read(join(ROOT, "package.json"))).version) err("init", `manifest version ${manifest.version} is not the package version`);
     if ("docs/README.md" in manifest.files) err("init", "a doc the project already had was recorded as SK-managed");
-    if (Object.keys(manifest.files).some((f) => f.startsWith(".claude/"))) err("init", "manifest lists .claude/ files in a plugin-channel project");
+    if (!manifest.files["docs/templates/task-prd.md"]) err("init", "manifest has no per-file hashes for the shipped docs");
+    if (Object.keys(manifest.files).some((f) => f.startsWith(".claude/"))) err("init", "manifest lists .claude/ files");
 
     const before = snapshot(join(tmp, "docs"));
     const again = runCli(["init", "."], tmp);
     if (again.status !== 0 || JSON.stringify(snapshot(join(tmp, "docs"))) !== JSON.stringify(before)) err("init", "re-running init changed docs/");
 
-    // update keeps working for the shipped docs, and still leaves the project's own files alone.
-    appendFileSync(join(tmp, "docs", "templates", "task-prd.md"), "\nUSER EDIT\n");
-    const update = runCli(["update", ".", "--from", ROOT, "--yes"], tmp);
-    if (update.status !== 0) err("init", `update after init exited ${update.status}: ${update.stderr.trim()}`);
-    if (read(ownDoc) !== "mine\n") err("init", "update replaced a doc the project already had");
-    if (!read(join(tmp, "docs", "templates", "task-prd.md")).includes("USER EDIT")) err("init", "update after init overwrote an edited template");
-    if (existsSync(join(tmp, ".claude", "commands"))) err("init", "update after init copied commands into a plugin-channel project");
-    if (readManifest(tmp).channel !== "plugin") err("init", "update dropped the plugin channel from the manifest");
+    // update: refreshes untouched shipped docs, keeps edited ones with a sidecar, leaves the project's own alone.
+    const edited = join(tmp, "docs", "templates", "task-prd.md");
+    const untouched = join(tmp, "docs", "sop", "creating-a-task.md");
+    appendFileSync(edited, "\nUSER EDIT\n");
+    writeFileSync(untouched, "an older release of this SOP\n");
+    const m1 = readManifest(tmp);
+    m1.files["docs/sop/creating-a-task.md"] = createHash("sha256").update("an older release of this SOP\n", "latin1").digest("hex").slice(0, 16);
+    m1.files["docs/sop/retired.md"] = createHash("sha256").update("old sop\n", "latin1").digest("hex").slice(0, 16);
+    writeFileSync(join(tmp, "docs", "sop", "retired.md"), "old sop\n");
+    writeManifest(tmp, m1);
+    appendFileSync(join(tmp, "CLAUDE.md"), "\nUSER BUILD COMMANDS\n");
+
+    const dry = runCli(["update", ".", "--dry-run"], tmp);
+    if (dry.status !== 0) err("update", `dry run exited ${dry.status}: ${dry.stderr.trim()}`);
+    if (!read(untouched).includes("older release")) err("update", "--dry-run wrote a file");
+
+    const update = runCli(["update", ".", "--yes"], tmp);
+    if (update.status !== 0) err("update", `update exited ${update.status}: ${update.stderr.trim()}`);
+    if (read(ownDoc) !== "mine\n") err("update", "update replaced a doc the project already had");
+    if (!read(edited).includes("USER EDIT")) err("update", "update overwrote an edited template");
+    if (!existsSync(edited + SIDECAR)) err("update", "no sidecar was written for an edited template");
+    if (read(untouched) !== read(join(PKG, "docs", "sop", "creating-a-task.md"))) err("update", "an untouched older doc was not refreshed");
+    if (existsSync(untouched + SIDECAR)) err("update", "a sidecar was written for a file the user did not edit");
+    if (existsSync(join(tmp, "docs", "sop", "retired.md"))) err("update", "an untouched doc SK no longer ships was not removed");
+    if (!read(join(tmp, "CLAUDE.md")).includes("USER BUILD COMMANDS")) err("update", "an edited CLAUDE.md was overwritten");
+    else if (!existsSync(join(tmp, "CLAUDE.sk.md"))) err("update", "an edited CLAUDE.md was kept but no CLAUDE.sk.md was written");
+    for (const sub of ["commands", "skills", "agents"]) {
+      if (existsSync(join(tmp, ".claude", sub))) err("update", `update copied ${sub} into the project`);
+    }
+    const m2 = readManifest(tmp);
+    if (m2.channel !== "plugin") err("update", "update dropped the plugin channel");
+    if ("docs/README.md" in m2.files) err("update", "update recorded the project's own doc as SK-managed");
+
+    // Accepting a sidecar makes the file pristine again.
+    writeFileSync(edited, readFileSync(edited + SIDECAR));
+    rmSync(edited + SIDECAR);
+    runCli(["update", ".", "--yes"], tmp);
+    if (existsSync(edited + SIDECAR)) err("update", "a sidecar reappeared after the user accepted SK's version");
+
+    // --force takes SK's version of an edited file.
+    appendFileSync(edited, "\nUSER EDIT\n");
+    runCli(["update", ".", "--yes", "--force"], tmp);
+    if (read(edited).includes("USER EDIT")) err("update", "--force did not replace an edited file");
+    if (existsSync(edited + SIDECAR)) err("update", "--force left a stale sidecar behind");
   });
 
-  // init refuses to mix channels: a file-copy install has to be removed first.
+  // migrate: a project where SK <= 2.x copied commands, agents and skills into .claude/.
+  // SK's files go, the user's stay, docs/ and CLAUDE.md are untouched, and update works after.
   scratch((tmp) => {
-    runCli([".", "--yes"], tmp);
-    const init = runCli(["init", "."], tmp);
-    if (init.status === 0) err("init", "init ran on top of a file-copy install");
+    for (const sub of ["commands/sk", "agents", "skills"]) cpSync(join(PKG, ".claude", sub), join(tmp, ".claude", sub), { recursive: true });
+    cpSync(join(PKG, "docs"), join(tmp, "docs"), { recursive: true });
+    cpSync(join(PKG, "CLAUDE.md"), join(tmp, "CLAUDE.md"));
+    const ownAgent = join(tmp, ".claude", "agents", "my-own.md");
+    const ownTask = join(tmp, "docs", "tasks", "TASK-1.md");
+    writeFileSync(ownAgent, "my agent\n");
+    writeFileSync(ownTask, "my task\n");
+    writeFileSync(join(tmp, ".claude", ".sk-source"), "/somewhere/sk\n");
+    const edited = join(tmp, "docs", "templates", "task-prd.md");
+    appendFileSync(edited, "\nUSER EDIT\n");
+    // A 2.x manifest: channel files, per-file hashes, including the pre-edit hash of the edited template.
+    const files = {};
+    for (const sub of [".claude/commands/sk", ".claude/agents", ".claude/skills", "docs/templates", "docs/sop", "docs/reference"]) {
+      for (const rel of listFilesRel(join(PKG, sub))) files[`${sub}/${rel}`] = createHash("sha256").update(read(join(PKG, sub, rel)), "latin1").digest("hex").slice(0, 16);
+    }
+    files["CLAUDE.md"] = createHash("sha256").update(read(join(PKG, "CLAUDE.md")), "latin1").digest("hex").slice(0, 16);
+    writeManifest(tmp, { version: "2.4.0", claudeMd: "sk", profile: "full", channel: "files", files });
+
+    const blocked = runCli(["init", "."], tmp);
+    if (blocked.status === 0) err("migrate", "init ran on top of a file-copy install instead of asking for migrate");
+
+    const migrate = runCli(["migrate", ".", "--yes"], tmp);
+    if (migrate.status !== 0) return err("migrate", `cli.mjs migrate exited ${migrate.status}: ${migrate.stderr.trim()}`);
+    if (existsSync(join(tmp, ".claude", "commands", "sk"))) err("migrate", ".claude/commands/sk/ was not removed");
+    if (existsSync(join(tmp, ".claude", "skills", "git-worktrees"))) err("migrate", "SK's skills were not removed");
+    if (!existsSync(ownAgent)) err("migrate", "a user-added agent was deleted");
+    if (!existsSync(ownTask) || !read(edited).includes("USER EDIT")) err("migrate", "docs/ was not preserved");
+    if (!existsSync(join(tmp, "CLAUDE.md"))) err("migrate", "CLAUDE.md was deleted");
+    if (existsSync(join(tmp, ".claude", ".sk-source"))) err("migrate", ".sk-source was left behind");
+    const m = readManifest(tmp);
+    if (m.channel !== "plugin") err("migrate", "manifest does not record the plugin channel");
+    if (Object.keys(m.files).some((f) => f.startsWith(".claude/"))) err("migrate", "manifest still lists .claude/ files");
+
+    const again = runCli(["migrate", ".", "--yes"], tmp);
+    if (again.status !== 0) err("migrate", "re-running migrate on a migrated project failed");
+    const update = runCli(["update", ".", "--yes"], tmp);
+    if (update.status !== 0) err("migrate", `update after migrate exited ${update.status}: ${update.stderr.trim()}`);
+    if (!read(edited).includes("USER EDIT")) err("migrate", "update after migrate overwrote an edited template");
+    if (!existsSync(edited + SIDECAR)) err("migrate", "update after migrate did not write a sidecar for the edited template");
   });
 
-  // The plugin ships the CLI (pkg/cli.mjs), so /sk:scaffold can run it from the plugin
+  // The plugin ships the CLI (pkg/cli.mjs), so /sk:scaffold runs it from the plugin
   // cache, where only the contents of pkg/ exist: no package.json, no enclosing pkg/ folder.
   scratch((cache) => {
     cpSync(PKG, cache, { recursive: true });
     scratch((tmp) => {
-      const init = spawnSync(process.execPath, [join(cache, "cli.mjs"), "init", ".", "--yes"], { cwd: tmp, input: "", encoding: "utf-8", timeout: 120000 });
+      const run = (args) => spawnSync(process.execPath, [join(cache, "cli.mjs"), ...args], { cwd: tmp, input: "", encoding: "utf-8", timeout: 120000 });
+      const init = run(["init", ".", "--yes"]);
       if (init.status !== 0) return err("plugin-cli", `cli.mjs init from a plugin-layout copy exited ${init.status}: ${(init.stderr || init.stdout || "").trim().slice(0, 300)}`);
       if (!existsSync(join(tmp, "docs", "templates", "task-prd.md"))) err("plugin-cli", "init from the plugin copy did not scaffold docs/templates");
       if (!existsSync(join(tmp, "CLAUDE.md"))) err("plugin-cli", "init from the plugin copy did not create CLAUDE.md");
-      if (existsSync(join(tmp, ".claude", "commands"))) err("plugin-cli", "init from the plugin copy copied commands into the project");
-      const manifest = readManifest(tmp);
       const expectedVersion = JSON.parse(read(join(ROOT, "package.json"))).version;
-      if (manifest.channel !== "plugin") err("plugin-cli", "manifest does not record the plugin channel");
-      if (manifest.version !== expectedVersion) err("plugin-cli", `manifest version is ${manifest.version}, expected ${expectedVersion}`);
-
-      // update from the plugin copy refreshes shipped docs and keeps an edited one.
+      if (readManifest(tmp).version !== expectedVersion) err("plugin-cli", `manifest version is ${readManifest(tmp).version}, expected ${expectedVersion}`);
       appendFileSync(join(tmp, "docs", "templates", "task-prd.md"), "\nUSER EDIT\n");
-      const update = spawnSync(process.execPath, [join(cache, "cli.mjs"), "update", ".", "--yes"], { cwd: tmp, input: "", encoding: "utf-8", timeout: 120000 });
+      const update = run(["update", ".", "--yes"]);
       if (update.status !== 0) err("plugin-cli", `update from the plugin copy exited ${update.status}: ${(update.stderr || "").trim().slice(0, 300)}`);
       if (!read(join(tmp, "docs", "templates", "task-prd.md")).includes("USER EDIT")) err("plugin-cli", "update from the plugin copy overwrote an edited template");
     });
   });
-
-  // The release baselines are generated; they must match the tags.
-  {
-    const baselines = spawnSync(process.execPath, [join(ROOT, "scripts", "baselines.mjs"), "--check"], { cwd: ROOT, encoding: "utf-8" });
-    if (baselines.status !== 0) err("baselines", "pkg/.sk-baselines.json is out of date -- run: npm run baselines");
-  }
 
   // The git-worktrees skill's setup command must actually work (plan item 1.1):
   // run the documented `git worktree add` line in a scratch repository.

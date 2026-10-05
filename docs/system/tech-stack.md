@@ -1,6 +1,6 @@
 # Tech Stack
 
-**Last updated:** 2026-03-23
+**Last updated:** 2026-10-05
 
 ## Core
 
@@ -17,7 +17,7 @@
 
 | Service | Provider | Purpose |
 |---------|----------|---------|
-| Package registry | npm | Distribution as `shipkit-cld` |
+| Plugin marketplace | GitHub (`moniav/sk`, `.claude-plugin/marketplace.json`) | Distribution: `claude plugin marketplace add moniav/sk` |
 | Source code | GitHub | Version control |
 
 ## Dev Tools

@@ -14,6 +14,7 @@ Delete any lane your project doesn't need.
 | If you're a… | Start with | Then |
 |--------------|-----------|------|
 | **New engineer** | [system/project-context.md](./system/project-context.md): what this is | [conventions/](./conventions/) → [architecture/](./architecture/) |
+| **Defining what to build** | [prd/](./prd/): the PRDs, each with its flows, requirements and architecture | [system/glossary.md](./system/glossary.md) → [decisions/](./decisions/) |
 | **Building a feature** | [features/](./features/): how subsystems work | [tasks/](./tasks/) → [flows/](./flows/) |
 | **On-call / operating prod** | [operations/](./operations/): runbooks, postmortems | [system/](./system/) |
 | **End user / customer** | [user-guides/](./user-guides/): how to use the product | - |
