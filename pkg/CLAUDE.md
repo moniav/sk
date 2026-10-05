@@ -1,28 +1,27 @@
 # CLAUDE.md — Agent Instructions
 
-> This file is read automatically by Claude Code at the start of every session.
+> Read automatically by Claude Code at the start of every session.
 
 ## Session Continuity
 
-On session start, check `docs/tasks/.current` for active work context.
-Commands update this file automatically. Use `/sk:resume` to get a briefing.
-
-## Memory Integration
-
-Save user preferences and project gotchas to Claude Code memory; technical decisions, conventions and architecture to docs; current work state to the task file.
+On session start, check `docs/tasks/.current` for active work; `/sk:resume` gives a briefing. Save user preferences and project gotchas to Claude Code memory; decisions, conventions and architecture to docs; current work state to the task file.
 
 ## Development Lifecycle: Plan > Dev > Test
 
 Most work is XS/S complexity — just describe what you want and go. No task file needed; follow Plan > Dev > Test mentally; when done, tell the user to run `/sk:commit`.
 
-**For M+ complexity, use the formal lifecycle:**
+**For M+ complexity, use the formal lifecycle.** `/sk:help` maps any situation to a command.
 
 ### Starting New Work
 
-1. **Decide scope:** Epic (L/XL) > Task (M) > Quick Path (XS/S)
-2. **Follow the SOP:** `docs/sop/creating-a-task.md`
-3. **Use templates:** Epic (`docs/templates/epic.md`) or Task (`docs/templates/task-prd.md`)
-4. **See worked example:** `docs/tasks/examples/TASK-user-registration-api.md`
+| Size | Path |
+|------|------|
+| A product, or a feature with new flows or architecture | `/sk:prd` writes the PRD (`docs/prd/`) and the epics; greenfield, then `/sk:kickoff` for the stack |
+| A feature of several tasks, no PRD needed | `/sk:new-epic`, then a task per piece |
+| One deliverable (M) | `/sk:new-task` → `/sk:plan` → `/sk:dev` → `/sk:test` → `/sk:finish` |
+| Direction still open | `/sk:brainstorm` first; it ends with a brief |
+
+SOP: `docs/sop/creating-a-task.md`. Worked example: `docs/tasks/examples/TASK-user-registration-api.md`.
 
 ### [PLAN] Phase (before writing code)
 
@@ -64,21 +63,10 @@ Rules 1-5 have examples in `docs/conventions/coding-behavior.md`; rules 6-8 each
 
 **Always consult docs before coding.** Full command and prerequisites reference: `docs/commands-reference.md`.
 
-### Before Implementation
-
-Read: `docs/system/project-context.md` (project summary), `docs/system/glossary.md` (use its terms), `docs/README.md` (doc map), `docs/conventions/` (code style, structure, patterns), relevant `docs/sop/` and `docs/architecture/`.
-
-### During Implementation
-
-Follow `docs/conventions/code-style.md`, `file-structure.md`, and `testing.md`. Reference `docs/system/` for schema, APIs, integrations.
-
-### After Implementation
-
-Update any docs that changed: `docs/system/` (schema, APIs, tech stack, project context), `docs/architecture/`, `docs/flows/`, `docs/tasks/`, `docs/decisions/`.
-
-### Creating New Docs
-
-Use templates from `docs/templates/`: `prd.md`, `epic.md`, `task-prd.md`, `sop-procedure.md`, `adr-decision.md`, `flow-diagram.md`, `component-doc.md`, `feature-doc.md`, `user-guide.md`, `postmortem.md`. Business/GTM: `positioning.md`, `competitor-profile.md`, `pricing-strategy.md`, `business-plan.md`, `financial-model.md`, `cap-table.md`, `investor-update.md`, `decision-memo.md`, `goals.md`, `brand-voice.md`, `campaign.md`, `metrics.md`, `executive-charter.md`.
+- **Before:** `docs/system/project-context.md` (project summary), `docs/system/glossary.md` (use its terms, in code too), `docs/README.md` (doc map), `docs/conventions/`, the relevant `docs/sop/`, `docs/architecture/` and `docs/flows/`.
+- **During:** follow `docs/conventions/code-style.md`, `file-structure.md` and `testing.md`; `docs/system/` for schema, APIs, integrations.
+- **After:** update whatever changed: `docs/system/`, `docs/architecture/`, `docs/flows/`, `docs/tasks/`, `docs/decisions/`, the glossary.
+- **New docs:** start from `docs/templates/` (index in `docs/templates/README.md`, with the command that emits each).
 
 ## Build Commands
 
@@ -93,7 +81,5 @@ typecheck: # e.g., npm run typecheck
 ```
 
 ## Key Constraints
-
-<!-- Add project-specific constraints below (e.g., "no raw SQL", "all text must support i18n") -->
 
 - Never commit `.env` files or secrets
