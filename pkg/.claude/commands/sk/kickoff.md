@@ -1,13 +1,14 @@
 ---
-description: Bootstrap a new project — guided setup with best-practice research
+description: Set up the engineering foundation for a new project — stack research, conventions, build commands, optional repo scaffold
 disable-model-invocation: true
 ---
 
 # Project Kickoff
 
-Set up a new project from scratch through guided conversation and current best-practice research. Generates all foundation docs so you can start building immediately.
+Turn a chosen stack into a working foundation: current best practices researched, conventions and build commands written, and (if wanted) the repo scaffolded. The product itself (problem, flows, requirements, architecture) is decided in `/sk:prd`, not here.
 
-**Use when:** Starting a greenfield project. Replaces manually filling in tech-stack.md, project-context.md, code-style.md, and CLAUDE.md build commands.
+**Use when:** Starting a greenfield project. Run it after `/sk:prd` has approved the product PRD; it reads the stack from the PRD's ADRs. Without a PRD it asks only for the stack.
+**Not for:** An existing codebase (`/sk:init-docs` derives the same docs from the code).
 
 ## Step 1: Read Existing State
 
@@ -15,47 +16,15 @@ If `docs/templates/` does not exist, the scaffold is missing. If `.claude/comman
 
 Check what already exists:
 
-1. If `docs/system/project-context.md` exists, read it
-2. If `docs/system/tech-stack.md` exists, read it
-3. Use **Glob** to check for: `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`
-4. If a manifest file exists, read it — the project isn't fully greenfield, pre-fill answers from it. If multiple package manifests exist (workspaces / monorepo), ask the user which package to target — or cover the workspace root — before proceeding.
+1. `docs/prd/README.md`: the approved product PRD, if any. Read its Architecture section and the ADRs it lists in `docs/decisions/`: they name the stack, the components and the NFR targets this foundation must serve.
+2. `docs/system/project-context.md` and `docs/system/tech-stack.md`, if filled in.
+3. Use **Glob** to check for `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`. If one exists the project is not fully greenfield: pre-fill from it. If several exist (workspaces / monorepo), ask which package to target, or the workspace root, before proceeding.
 
-## Step 2: Guided Conversation
+## Step 2: Confirm the Stack
 
-Ask the user these questions. Adapt based on answers — skip what's obvious, dig deeper where it matters. For the multiple-choice decisions (platform, stack options), present them via AskUserQuestion; keep open-ended questions conversational.
+**With a PRD:** restate the stack from its ADRs in one line (language, framework, database, data layer, auth, styling, hosting) and ask only for what the PRD left open. Do not reopen decided ADRs; a change to the stack goes through `/sk:prd PRD-N amend`.
 
-### Round 1: The Basics
-
-Ask all of these together:
-
-1. **What are you building?** (one sentence — e.g., "A SaaS invoicing platform", "A CLI tool for database migrations")
-2. **Who is it for?** (e.g., "small businesses", "developers", "internal team")
-3. **What platform?** (web app, API, CLI, mobile, desktop, library/package)
-
-### Round 2: Stack
-
-Based on the platform answer, either:
-
-**A) Suggest a stack** if the user hasn't decided:
-- Present 2-3 options with tradeoffs based on the project type
-- e.g., for a web app: "Next.js (full-stack, React) vs SvelteKit (lighter, faster) vs Remix (nested routing, progressive enhancement)"
-
-**B) Confirm the stack** if the user already knows:
-- "You mentioned Next.js — what about: database (Postgres? SQLite?), ORM (Prisma? Drizzle?), auth (NextAuth? Clerk?), styling (Tailwind? CSS modules?)?"
-
-Ask about:
-- Language / framework
-- Database (if applicable)
-- ORM / data layer (if applicable)
-- Auth approach (if applicable)
-- Styling / UI (if frontend)
-- Hosting target (Vercel, AWS, self-hosted, etc.)
-
-### Round 3: Scope and Constraints
-
-Ask:
-- **What are the 3-5 core features?** (the MVP — what must work for this to be useful)
-- **Any hard constraints?** (e.g., must be offline-capable, must support multi-tenancy, no vendor lock-in, must use specific DB)
+**Without a PRD:** say that the product decisions will be thinner for it, then ask for the platform (web app, API, CLI, mobile, desktop, library) and the stack via AskUserQuestion, offering 2–3 options with trade-offs when the user has not decided (e.g. "Next.js vs SvelteKit vs Remix"), and the usual parts: language and framework, database, data layer, auth, styling, hosting. Ask for the 3–5 core features in one line each, and any hard constraints (offline, multi-tenant, data residency, a mandated database).
 
 ## Step 3: Research Current Best Practices
 
@@ -75,7 +44,7 @@ dependency versions (with source links), and stack-specific pitfalls.
 
 ## Step 4: Generate Foundation Docs
 
-Using the conversation answers AND research results, generate these files:
+Using the stack, the PRD (if any) AND the research results, generate these files:
 
 ### 4a. `docs/system/tech-stack.md`
 
@@ -94,6 +63,7 @@ Fill in with:
 - Project structure (from research — recommended layout for this stack)
 - Gotchas (from research — common pitfalls)
 - Current state: "Greenfield — no code yet"
+- Link to the product PRD (if any)
 
 ### 4c. `docs/conventions/code-style.md`
 
@@ -121,7 +91,7 @@ typecheck: npx tsc --noEmit   # if applicable
 
 ### 4f. ADRs (1-2)
 
-Create ADR files for the most significant stack choices:
+If the PRD already recorded the stack choices as ADRs, add the researched versions and any pitfall that changes the decision to those ADRs; do not create duplicates. Otherwise create ADR files for the most significant stack choices:
 - `docs/decisions/ADR-001-{framework-choice}.md` — Why this framework over alternatives
 - `docs/decisions/ADR-002-{database-choice}.md` — Why this database (if applicable)
 
@@ -174,7 +144,7 @@ Research applied:
   - {key finding from research}
   - {key finding from research}
 
-Next step: Run /sk:brainstorm to define your first feature
+Next step: {with a PRD: /sk:plan on the first task of EPIC-1 | without: /sk:prd to define the product, or /sk:new-task for a first task}
 ```
 
 Ask (AskUserQuestion): **"Stand up your executive team?"** — if yes, suggest the
@@ -182,4 +152,4 @@ founding order for greenfield: `/sk:ceo` first (mission, goals, anti-goals), the
 `/sk:cto` (ratify the stack research, confirm the autonomy grant). The CMO joins
 pre-launch.
 
-Then ask: **"Want to brainstorm your first feature now? (/sk:brainstorm)"**
+Then ask (with a PRD): **"Start planning the first task of EPIC-1? (/sk:plan)"**; without one: **"Define the product with /sk:prd now?"**

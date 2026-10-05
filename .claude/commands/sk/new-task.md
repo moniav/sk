@@ -61,7 +61,7 @@ Fill in the YAML frontmatter with actual values (id, title, priority, epic, date
 **Critical requirements for task creation:**
 
 ### PLAN Section (fill completely)
-- **What**: One paragraph max — problem + why
+- **What**: One paragraph max — problem + why, opened by the three-line mini brief (Problem, Success metric, Non-goals) from `.claude/skills/product-brief/SKILL.md`, and the problem line checked against its problem-statement check
 - **Acceptance Criteria**: 3-5 testable conditions (yes/no verifiable)
 - **Approach**: Technical approach referencing project conventions
 - **Affected Areas**: Table with exact file paths (scan codebase to confirm they exist)

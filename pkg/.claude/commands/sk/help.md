@@ -15,15 +15,18 @@ Do not run any command from here. This command only points the way.
 ## The main flow: idea to shipped
 
 ```
-/sk:brainstorm  ->  /sk:new-task  ->  /sk:plan  ->  /sk:dev  ->  /sk:test  ->  /sk:finish
-   explore           track it        break down    build        verify        review, commit, PR
+new product:    /sk:prd (product) -> /sk:kickoff   ┐
+existing code:  /sk:init-docs -> /sk:prd (feature) ├-> /sk:plan -> /sk:dev -> /sk:test -> /sk:finish
+one task:       /sk:new-task                       ┘   break down   build      verify     review, commit, PR
 ```
 
-- **New product, or a feature needing several epics:** `/sk:prd` first. It grills the problem, the user flows and the architecture into a PRD, then writes the epics; continue with `/sk:plan` on the first task.
+- **Not sure what to build:** `/sk:brainstorm` first; it ends with one direction and a brief that `/sk:prd` reads.
+- **`/sk:prd`** grills the problem, the user flows and the architecture into a PRD, then writes the epics. `/sk:prd PRD-N` resumes; `/sk:prd PRD-N amend` changes an approved one.
+- **`/sk:kickoff`** turns the PRD's stack into the engineering foundation (research, conventions, build commands, repo scaffold).
 
 - **Small change (XS or S):** skip the flow. Describe the change, then `/sk:commit`.
 - **One sitting, start to end:** `/sk:implement` runs plan, dev and test in one go.
-- **Large feature (several tasks):** `/sk:new-epic`, then a task per piece.
+- **Large feature without a PRD:** `/sk:new-epic` by hand, then a task per piece.
 - **Many independent subtasks:** `/sk:orchestrate` runs them as a parallel agent team.
 
 ## Starting points
@@ -31,8 +34,8 @@ Do not run any command from here. This command only points the way.
 | You are... | Start with |
 |------------|------------|
 | In a project with no `docs/` tree yet | `/sk:scaffold`, then one of the next two |
-| Starting a new project | `/sk:kickoff` |
-| Adding SK to an existing codebase | `/sk:init-docs` |
+| Starting a new project | `/sk:prd` to define it, then `/sk:kickoff` to set up the stack |
+| Adding SK to an existing codebase | `/sk:init-docs`, then `/sk:prd` for the next feature |
 | Coming back to work in progress | `/sk:resume`, or `/sk:task-status` for the whole board |
 | Looking at something broken | `/sk:debug` |
 | Unsure which way to go on a decision | `/sk:council`, then `/sk:new-adr` to record it |

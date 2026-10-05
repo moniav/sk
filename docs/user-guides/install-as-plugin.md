@@ -6,7 +6,7 @@
 
 ## What you'll accomplish
 
-SK's 56 commands, 25 skills and 9 agents installed once per machine and updated by Claude Code, while each project owns only its `docs/` tree and `CLAUDE.md`.
+SK's 56 commands, 28 skills and 9 agents installed once per machine and updated by Claude Code, while each project owns only its `docs/` tree and `CLAUDE.md`.
 
 This is the recommended way to install SK.
 Copy the files into the project instead (`npx shipkit-cld`) only when the project must pin its own SK version, because a plugin is one version per user.

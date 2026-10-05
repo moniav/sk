@@ -19,7 +19,7 @@ your-project/
 ├── .claude/
 │   ├── commands/sk/             ← 56 slash commands
 │   ├── agents/                  ← 9 agents (implementer, reviewers, debugger, dependency-analyzer)
-│   └── skills/                  ← 25 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
+│   └── skills/                  ← 28 skills (TDD, legal, ops, PDF, copywriting, diagrams, ...)
 └── docs/                        ← Documentation hub (multi-audience)
     ├── START-HERE.md            Human front door (role-based router)
     ├── README.md                Agent index
@@ -178,13 +178,12 @@ SK works with both new projects and existing codebases. The setup path differs.
 
 ```
 1. Install SK (see Installation above)
-2. /sk:kickoff                              # Answer questions, docs auto-generated (creates the docs/ scaffold if it is missing)
-3. /sk:prd                                  # Grill the idea into a PRD: flows, architecture, then epics
-   (or /sk:brainstorm for a single feature)
-4. /sk:implement                            # Build it
+2. /sk:prd                                  # Grill the idea into a PRD: brief, flows, architecture, epics (creates the docs/ scaffold if missing)
+3. /sk:kickoff                              # Stack research, conventions, build commands, repo scaffold, from the PRD's stack
+4. /sk:plan                                 # Plan the first task of EPIC-1, then /sk:dev, /sk:test, /sk:finish
 ```
 
-`/sk:kickoff` is a guided conversation that asks what you're building, what stack you want, and what the core features are. It then **researches current best practices** for your chosen stack (latest versions, recommended project structure, naming conventions, common pitfalls) and generates all foundation docs automatically:
+`/sk:prd` decides what you're building and which stack it needs. `/sk:kickoff` then **researches current best practices** for that stack (latest versions, recommended project structure, naming conventions, common pitfalls) and generates all foundation docs automatically:
 
 - `docs/system/tech-stack.md` — with current stable versions from research
 - `docs/system/project-context.md` — dense project summary
@@ -194,9 +193,9 @@ SK works with both new projects and existing codebases. The setup path differs.
 - `CLAUDE.md` Build Commands — filled in for your stack
 - ADRs for your major stack choices
 
-`/sk:brainstorm` then takes your first feature idea, explores it through conversation, optionally researches domain patterns ("what do similar apps typically include?"), and produces a structured epic with tasks — ready for `/sk:implement`.
+When you are not sure what to build, `/sk:brainstorm` comes first: it explores the problem from many angles and ends with one direction and a brief that `/sk:prd` picks up.
 
-For a whole product or a feature that needs several epics, `/sk:prd` goes further: it challenges the problem and success metric, walks every user flow and attacks each step (bad input, empty state, limits, permissions, failures, concurrency, RTL), offers clickable prototypes of the key flows, designs the architecture and questions each decision, writes ADRs for the hard-to-reverse ones, and only then cuts the PRD into epics.
+`/sk:prd` challenges the problem and success metric, walks every user flow and attacks each step (bad input, empty state, limits, permissions, failures, concurrency, RTL), offers clickable prototypes of the key flows, designs the architecture and questions each decision, writes ADRs for the hard-to-reverse ones, and only then cuts the PRD into epics.
 
 **No manual file editing required.** Both commands generate everything through conversation.
 
@@ -263,8 +262,8 @@ Claude starts only six commands by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 |---------|---------|-------------|
 | `/sk:help` | Find the right command for a situation | Not sure where to start, or what comes next |
 | `/sk:scaffold` | Create `docs/` and `CLAUDE.md`, or refresh the shipped docs | Once per project when SK is installed as a plugin |
-| `/sk:kickoff` | Guided project setup + best-practice research | Starting a new (greenfield) project |
-| `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
+| `/sk:kickoff` | Engineering foundation: stack research, conventions, build commands, repo scaffold | After `/sk:prd` on a greenfield project |
+| `/sk:brainstorm` | Explore a problem from many angles, leave with one direction and a brief | Not sure yet what to build |
 | `/sk:prd` | Grill an idea into a detailed PRD (problem, flows, architecture), then cut epics | A new product or a feature big enough for several epics |
 | `/sk:init-docs` | Auto-scan codebase, populate docs | Brownfield project or full rebuild |
 

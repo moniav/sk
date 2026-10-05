@@ -66,7 +66,7 @@ Rules 1-5 have examples in `docs/conventions/coding-behavior.md`; rules 6-8 each
 
 ### Before Implementation
 
-Read: `docs/system/project-context.md` (project summary), `docs/README.md` (doc map), `docs/conventions/` (code style, structure, patterns), relevant `docs/sop/` and `docs/architecture/`.
+Read: `docs/system/project-context.md` (project summary), `docs/system/glossary.md` (use its terms), `docs/README.md` (doc map), `docs/conventions/` (code style, structure, patterns), relevant `docs/sop/` and `docs/architecture/`.
 
 ### During Implementation
 

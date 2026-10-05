@@ -1,12 +1,12 @@
 ---
-description: Brainstorm a feature — explore an idea and produce an epic with tasks
+description: Brainstorm — explore a problem or idea from many angles and leave with one direction and a brief
 argument-hint: "[feature description]"
 disable-model-invocation: true
 ---
 
 # Brainstorm
 
-Explore a product or feature idea through conversation, then produce a structured epic with tasks ready for `/sk:implement`.
+Explore a product or feature idea through conversation and converge on one direction, written up as a brief. Defining and building it is the next command's job: `/sk:prd` for a product or a multi-epic feature, `/sk:new-epic` or `/sk:new-task` for smaller work.
 
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
@@ -21,8 +21,8 @@ Copy the steps below into your todo list before starting. A step you decide not 
 - **Diverge before evaluating.** While generating options (3b), do not evaluate feasibility.
 - **Match energy.** If the user is excited about an idea, explore it before poking holes, even if it is risky.
 - **Techniques are tools, not checklists.** Use the ideation techniques only when the conversation stalls or a thread is exhausted.
-- **Brainstorm is not the decision.** It generates options and a starting point; the user may edit scope, tasks, or acceptance criteria afterwards.
-- **Exit gate.** Done when the epic/task files exist in `docs/tasks/`, `docs/tasks/README.md` lists them, `docs/tasks/.current` points at the new work, and the Step 7 summary has been shown.
+- **Brainstorm is not the spec.** It ends with a chosen direction and a brief; flows, requirements, architecture and tasks are written by the next command.
+- **Exit gate.** Done when the brief exists in `docs/research/`, the user has confirmed it, and the Step 7 summary names the next command.
 
 ## Step 1: Read Project Context
 
@@ -47,7 +47,7 @@ Identify what the user brought and pick the mode:
 | **A vague instinct** | "Something feels off about our data model" | Problem Exploration |
 | **A clear feature request** | "I want to add invoice management" | Solution Ideation |
 
-If the idea is a whole product, or a feature that will need several epics and its user flows and architecture pinned down, suggest the user run `/sk:prd` instead (brainstorm can still come first to pick a direction).
+If the user already knows what they want to build and only needs it defined, suggest the user run `/sk:prd` directly; brainstorm is for when the direction itself is open.
 
 State the mode, ask **one** clarifying question to frame the session, then start Step 3.
 
@@ -129,77 +129,38 @@ Every recommendation that could change the design needs a cited source (primary-
 
 **Done when** the user has confirmed one direction and you have written down: the top 2-3 ideas worth pursuing, the riskiest assumption for the chosen direction, and the parked ideas (interesting, but not now).
 
-## Step 6: Structure into Epic + Tasks
+## Step 6: Write the Brief
 
-The exploration above is a conversation. Settling the decisions the epic depends on is not: before writing any file, list the decisions still open for the chosen direction (scope edges, what is in the first task, what is explicitly out) and resolve them following `.claude/skills/interviewing/SKILL.md`, in rounds, each question with your recommended answer.
+Write the chosen direction as a brief following `.claude/skills/product-brief/SKILL.md`: every field, the problem-statement check, the brief gate. Add the parked ideas and the alternatives rejected, with why, so the next command does not reopen them.
 
-Scope: **L/XL (3+ tasks)** gets an Epic + Tasks; **M (single deliverable)** gets a standalone Task and no Epic.
+Save it as `docs/research/YYYY-MM-DD-{topic}-brief.md` (the `research-doc.md` template, with the brief as its findings). If Step 4 research was done, include the search queries, key findings and sources in the same file.
 
-### 6a. Create the Epic (if L/XL)
+Show the brief and get a yes before Step 7.
 
-Scan `docs/tasks/` for the highest existing EPIC number and use the next.
-Create `docs/tasks/EPIC-{N}-{name}.md` using the template from `docs/templates/epic.md`:
-- Fill in the YAML frontmatter (schema, type, id, title, phase, status, priority, dates)
-- Problem statement (from the conversation)
-- Acceptance criteria (testable, yes/no verifiable)
-- Task breakdown with complexity estimates
-- The **riskiest assumption** and how to validate it
+## Step 7: Summary and Hand-off
 
-### 6b. Create Tasks
+Size the direction and name the next command:
 
-For each task in the breakdown, scan for the highest existing TASK number and use the next.
-Create `docs/tasks/TASK-{N}-{E{epicN}|S}-{name}.md` using the template from `docs/templates/task-prd.md`:
-- YAML frontmatter (phase: plan, status: planning)
-- Problem statement scoped to this task
-- Acceptance criteria specific to this task
-- Subtasks (each S complexity)
-- **Phase Analysis > Technical Decisions** pre-populated with any research findings relevant to this task
-
-### 6c. Update Task Board
-
-Update `docs/tasks/README.md`: add the Epic to the "Active Epics" table (if created) and all Tasks to the "[PLAN] Planning" section.
-
-## Step 6.5: Save Research (only if Step 4 research was done)
-
-Ask: **"Save research findings to `docs/research/YYYY-MM-DD-{topic}.md`?"**
-If yes, save using the template from `docs/templates/research-doc.md`. Include search queries used, key findings, comparison tables, and decision reasoning.
-
-## Step 7: Summary
-
-Write `docs/tasks/.current` pointing at the new epic (`task: EPIC-{N}`, `phase: plan`; format in `docs/tasks/README.md`) so `/sk:resume` picks up the freshly scoped work.
-Then present the result:
+| Direction is | Next |
+|--------------|------|
+| A product, or a feature needing 3+ epics, or new user flows and architecture | `/sk:prd` (it reads the brief) |
+| A feature of 1–2 epics without new architecture | `/sk:new-epic` |
+| One deliverable | `/sk:new-task` |
+| Worth testing before building | describe the cheapest test of the riskiest assumption |
 
 ```
 [BRAINSTORM COMPLETE]
 
-Feature: {feature name}
-Scope:   {complexity} — {N} tasks
-
-Direction: {one-sentence summary of chosen approach}
-Riskiest assumption: {what could kill this if wrong}
-
-Epic: EPIC-{N}-{name}.md
-  {acceptance criteria summary}
-
-Tasks:
-  TASK-{N}-E{epicN}-{name}.md  [{complexity}] {one-line description}
-  TASK-{N}-E{epicN}-{name}.md  [{complexity}] {one-line description}
-
-Research applied:
-  - {key finding or "no research requested"}
+Direction: {one sentence}
+Problem:   {the one-sentence problem statement}
+Success:   {metric: baseline → target}
+Riskiest assumption: {what kills this if wrong} — cheapest test: {…}
 
 Parked ideas:
-  - {interesting ideas set aside for later, or "none"}
+  - {interesting, not now, or "none"}
 
-Recommended build order:
-  1. {task name} (no dependencies)
-  2. {task name} (depends on 1)
+Brief: docs/research/YYYY-MM-DD-{topic}-brief.md
+Next:  {command} {argument}
 ```
 
-Suggest these next steps to the user, and if they want to adjust scope, tasks, or acceptance criteria, edit the files directly:
-- **Big enough to need flows and architecture pinned down?** `/sk:prd` turns this direction into a full PRD
-- **Ready to build?** `/sk:implement` to start with the first task
-- **Need more detail on a task?** `/sk:plan` to flesh out the plan phase
-- **Want to validate the riskiest assumption first?** Describe what research or prototype would help
-
-**Reply:** the `[BRAINSTORM COMPLETE]` block filled in, with the path of every file created or updated (epic, tasks, `docs/tasks/README.md`, `docs/tasks/.current`, research doc if saved), followed by the three suggested next steps.
+**Reply:** the `[BRAINSTORM COMPLETE]` block filled in, with the path of the brief, followed by the suggested next command.

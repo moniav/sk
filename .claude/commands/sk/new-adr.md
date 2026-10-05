@@ -15,7 +15,7 @@ Write the text to the rules in `.claude/skills/technical-writing/references/plai
 
 ## When to Use
 
-Create an ADR when:
+Apply the three-gate test in `.claude/skills/architecture-design/SKILL.md` (section 5): hard to reverse, surprising without context, a real trade-off. When one gate fails, say so and record the decision where it was made instead. Typical cases:
 - Choosing between multiple viable technologies or approaches
 - Deviating from an established pattern in the codebase
 - Making a decision that's hard to reverse

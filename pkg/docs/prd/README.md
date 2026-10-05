@@ -26,4 +26,7 @@ Hard-to-reverse architecture decisions also go to `docs/decisions/` as ADRs and 
 |-----|-------|--------|-------|
 | | | | |
 
-`status`: `draft` while `/sk:prd` is working on it (`/sk:prd PRD-N` resumes), `approved` once reviewed, `superseded` when replaced.
+`kind`: `product` (the whole product) or `feature` (a change to it, scoped to the flows it adds or touches).
+`status`: `draft` while `/sk:prd` is working on it (`/sk:prd PRD-N` resumes), `approved` once reviewed, `delivered` when `/sk:finish` closes its last epic, `superseded` when replaced.
+
+A delivered PRD is a record of what was decided at the time. The current truth lives in `docs/flows/` (its flows are copied there on delivery) and `docs/system/glossary.md`. A later change goes through a new feature PRD, or `/sk:prd PRD-N amend` while the epics are still open.

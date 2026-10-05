@@ -13,12 +13,12 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 |---------|---------|-------------|
 | `/sk:help` | Find the right command for a situation | Not sure where to start, or what comes next |
 | `/sk:scaffold` | Create `docs/` and `CLAUDE.md`, or refresh the shipped docs | Once per project when SK is installed as a plugin |
-| `/sk:kickoff` | Guided project setup + research | Starting a new (greenfield) project |
-| `/sk:brainstorm` | Explore idea, produce epic + tasks | Have an idea, need to break it down |
+| `/sk:kickoff` | Engineering foundation for a new project: stack research, conventions, build commands, repo scaffold | After `/sk:prd` on a greenfield project |
+| `/sk:brainstorm` | Explore a problem from many angles, leave with one direction and a brief | Not sure yet what to build |
 | `/sk:prd` | Grill an idea into a detailed PRD (problem, flows, architecture), then cut epics | A new product or a feature big enough for several epics |
 | `/sk:implement` | Full lifecycle: Plan > Dev > Test | Build a feature end-to-end |
 | `/sk:new-task` | Create a new task file | Starting planned work (M complexity) |
-| `/sk:new-epic` | Create a new epic file | Starting large feature (L/XL complexity) |
+| `/sk:new-epic` | Create an epic by hand | L work without a PRD; otherwise `/sk:prd` writes the epics |
 | `/sk:plan` | Complete PLAN phase | Break down and prepare a task |
 | `/sk:dev` | Execute DEV phase | Implement subtasks for a task |
 | `/sk:test` | Execute TEST phase | Verify acceptance criteria |
@@ -73,7 +73,7 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | Command | Requires |
 |---------|----------|
 | /sk:brainstorm | project-context.md populated |
-| /sk:prd | Nothing (reads project docs if present; works greenfield) |
+| /sk:prd | Nothing; reads `docs/flows/` and `glossary.md` when they exist (`/sk:init-docs` creates them) |
 | /sk:changelog | Conventional commits in git history |
 | /sk:code-review | code-style.md populated |
 | /sk:commit | git-workflow.md populated (optional) |
@@ -130,10 +130,9 @@ Claude starts only six of these by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 ```
 Getting Started
 ├── /sk:help → which command fits the situation
-├── /sk:kickoff (greenfield) → generates foundation docs
-│   ├── /sk:brainstorm → explore idea, create epic + tasks
-│   └── /sk:prd → problem, flows, architecture → PRD → epics
-└── /sk:init-docs (brownfield) → scan codebase, populate docs
+├── /sk:brainstorm (optional) → one direction + brief
+├── Greenfield: /sk:prd (product) → PRD + epics → /sk:kickoff → foundation from the PRD's stack
+└── Brownfield: /sk:init-docs → docs, flow inventory, glossary → /sk:prd (feature) → epics
 
 Lifecycle
 ├── /sk:implement → full Plan > Dev > Test
@@ -210,8 +209,9 @@ Migration & Recovery
 | Large feature (L/XL) with multiple tasks | `/sk:new-epic` |
 | Single deliverable (M complexity) | `/sk:new-task` |
 | XS/S complexity | No task file: just do it and `/sk:commit` |
-| Have an idea, need to explore first | `/sk:brainstorm` → produces epic + tasks |
-| New product or multi-epic feature, needs flows and architecture pinned down | `/sk:prd` → PRD, then epics |
+| Not sure what to build | `/sk:brainstorm` → one direction + brief |
+| New product, or a feature whose flows and architecture need pinning down | `/sk:prd` → PRD, then epics |
+| A change to a PRD whose epics are in progress | `/sk:prd PRD-N amend` |
 
 ## Skill Interactions
 

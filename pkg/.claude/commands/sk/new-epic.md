@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Create New Epic
 
-Create an epic file in `docs/tasks/` for features that span multiple tasks (L/XL complexity).
+Create an epic file in `docs/tasks/` for features that span multiple tasks (L/XL complexity), by hand. For a product, a feature that needs several epics, or anything whose user flows and architecture are not yet pinned down, suggest the user run `/sk:prd`: it writes the epics from an approved PRD.
 
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
@@ -96,7 +96,7 @@ graph LR
 
 Save to `docs/tasks/EPIC-{N}-{kebab-name}.md` using the template from `docs/templates/epic.md`.
 
-Fill in the YAML frontmatter with actual values. Fill in the Problem Statement, Goal, Success Criteria, Solution Overview, Dependency Graph, and Risks sections. For the Task Breakdown table, fill in task names, complexity, priority, and dependencies — file links will be filled in Step 8.
+Fill in the YAML frontmatter with actual values. Write the Problem Statement and Goal following `${CLAUDE_PLUGIN_ROOT}/.claude/skills/product-brief/SKILL.md` (problem-statement check, a success metric, at least one non-goal under Scope). Fill in the Success Criteria, Solution Overview, Dependency Graph, and Risks sections. For the Task Breakdown table, fill in task names, complexity, priority, and dependencies — file links will be filled in Step 8.
 
 ## Step 8: Create Separate Task Files
 

@@ -123,6 +123,10 @@ Apply the S complexity rule. For each subtask:
 3. Describe what to implement (not just "build the thing")
 4. Order by dependency (top-to-bottom execution)
 
+### Edge cases for a UI or flow task
+
+If the task adds or changes a user-facing flow, read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/flow-design/SKILL.md` and run its attack table over the flow's steps (and the worst-case data list it points to). Each decided behaviour becomes an acceptance criterion; each undecided one goes into Open Questions with a recommended answer.
+
 ### Resolve Open Questions
 - List every uncertainty
 - Research each one (check codebase, docs, conventions)
@@ -146,6 +150,8 @@ For high-stakes work — architecture, backend, data-model, migration, or multi-
 4. **Obvious missing decisions** — error handling, edge cases, rollout/migration order.
 
 Route every unresolved judgment call into the Open Questions table **with a recommended answer** — never silently assume. Do not exit PLAN with a known decision left implicit.
+
+For each hard-to-reverse decision, apply the three-gate ADR test in `${CLAUDE_PLUGIN_ROOT}/.claude/skills/architecture-design/SKILL.md` (section 5): when all three hold, write the ADR now and link it from Technical Decisions; otherwise the decision stays in the task file.
 
 Done when each of the four failure classes has a written finding or `none found`, and, if a reviewer agent was dispatched, its verdict is quoted.
 

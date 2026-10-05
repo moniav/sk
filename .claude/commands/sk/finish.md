@@ -74,7 +74,8 @@ If a task file was identified in Step 2:
 ```
 
 4. Delete `docs/tasks/.current` if it exists (work is shipped)
-5. If task is part of an epic: update epic progress count
+5. If task is part of an epic: update epic progress count. When that was the epic's last task, set the epic `status: done`.
+6. If the epic has `prd:` and every epic in that PRD's Delivery table is done: set the PRD `status: delivered`, copy each of its flows into `docs/flows/` (diagram plus the edge-case table, named after the flow) and index them in `docs/flows/README.md`, and merge any glossary terms the PRD settled into `docs/system/glossary.md`. From now on `docs/flows/` and the glossary are the current truth; the PRD is the record of what was decided.
 
 Done when the task frontmatter reads `status: done`, the task appears under "Recently Completed" in `docs/tasks/README.md`, and `docs/tasks/.current` no longer exists.
 

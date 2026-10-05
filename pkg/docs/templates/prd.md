@@ -3,7 +3,9 @@ schema: v1
 type: prd
 id: PRD-{N}
 title: "{Product or feature name}"
-status: draft      # draft | review | approved | superseded
+kind: product      # product | feature
+version: 1         # bumped by /sk:prd PRD-N amend
+status: draft      # draft | review | approved | delivered | superseded
 stage: brief       # brief | flows | requirements | architecture | delivery | review | done; the next stage /sk:prd works on
 goal:              # G{N} from docs/business/goals.md (blank if no goals doc)
 created: YYYY-MM-DD
@@ -66,8 +68,7 @@ updated: YYYY-MM-DD
 
 ### Glossary
 
-<!-- Project-specific terms only. One or two sentences: what it IS. Pick one word per concept; list the rejected ones under Avoid.
-     Use these terms everywhere below, and in code. -->
+<!-- Terms settled in this PRD, also written to docs/system/glossary.md (the project-wide list). -->
 
 | Term | Definition | Avoid |
 |------|------------|-------|
@@ -81,6 +82,8 @@ updated: YYYY-MM-DD
      first use / onboarding, invite and roles, settings, notifications, billing, export and delete, admin/support. -->
 
 ### F-1: {Flow name}
+
+<!-- Feature PRD: for an existing flow, link its file in docs/flows/ and describe only what changes. -->
 
 **Persona:** · **Trigger:** · **Preconditions:** · **End state:**
 
