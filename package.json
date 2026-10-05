@@ -1,7 +1,7 @@
 {
   "name": "shipkit-cld",
   "version": "3.0.0",
-  "description": "Documentation & lifecycle system for Claude Code, shipped as a plugin: a Plan, Dev, Test workflow with 55 slash commands, 28 skills, and 9 agents",
+  "description": "SK, Moni's software machine: idea to production and large-codebase maintenance with a disciplined workflow. A Claude Code plugin with 55 slash commands, 28 skills, and 9 agents",
   "type": "module",
   "scripts": {
     "test": "node scripts/check.mjs",

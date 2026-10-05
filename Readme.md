@@ -1,6 +1,8 @@
-# SK — ShipKit for Claude Code
+# SK — Moni's Software Machine
 
-**A Claude Code plugin that takes an idea to shipped software with the same discipline every time: a PRD that has been argued with, epics cut from it, a Plan > Dev > Test lifecycle with proof at every gate, and a documentation system the agent reads before it writes a line.**
+**How to go from idea to production, and keep a large codebase under control, with a disciplined workflow and processes that Claude Code follows every time.**
+
+SK is a Claude Code plugin. An idea goes in; what comes out is a PRD that has been argued with, epics cut from it, a Plan > Dev > Test lifecycle with proof at every gate, and a documentation tree the agent reads before it writes a line and keeps current as the code grows. The same machine runs the rest of the company: reviews, releases, operations, marketing, an executive team, and routines that work while nobody is watching.
 
 55 slash commands, 28 skills and 9 agents, installed once per machine. Your project keeps only `docs/` and `CLAUDE.md`.
 
