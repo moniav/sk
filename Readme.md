@@ -435,3 +435,18 @@ sk/                              ← SK source repository
 | Mark criteria as "works" or "done" | Verify with specific evidence ("returns 201 with {id, email}") |
 | Start an epic from a one-line idea | Run `/sk:prd` first; let the flows and the architecture decide the epics |
 | Write "handle errors" in a spec | Decide the message, the recovery path and what is preserved, per step |
+
+## Credits
+
+SK stands on other people's work. Each borrowed piece carries a credit line in its file; this is the list.
+
+| Source | License | What SK took from it |
+|--------|---------|----------------------|
+| [mattpocock/skills](https://github.com/mattpocock/skills) | MIT | `grilling` → the `interviewing` skill (design tree, frontier, rounds with a recommended answer, facts versus decisions); `domain-modeling` → the glossary discipline and the three-gate ADR test in `architecture-design`; `wayfinder` → writing later epics' tasks only when they start; its plugin layout and invocation rules shaped SK's |
+| [RefoundAI/lenny-skills](https://github.com/RefoundAI/lenny-skills) (`writing-prds`) | MIT | the `product-brief` skill: the brief fields, the five-attribute problem-statement check, non-goals, appetite, the warning against the word "just" and premature high-fidelity mocks |
+| [emilkowalski/skill](https://github.com/emilkowalski/skill) | MIT | `prototype` → the `prototype` skill (divergent variants on a named axis behind a picker); `break-ui` → the worst-case data list used by `prototype` and `flow-design` |
+| [cursor/plugins (pstack)](https://github.com/cursor/plugins/tree/main/pstack) | MIT | `unslop` → the plain-writing rules in `technical-writing`; the evidence ladder in `verification-before-completion` and `/sk:test`; blinded evals; transcript lenses in `/sk:retro` |
+| [michaelshimeles/skills](https://github.com/michaelshimeles/skills) | MIT | the worktree flow in `git-worktrees`; the evidence protocol merged into `verification-before-completion` |
+
+SK itself is MIT licensed (see [LICENSE](./LICENSE)).
+

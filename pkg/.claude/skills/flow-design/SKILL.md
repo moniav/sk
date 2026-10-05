@@ -7,6 +7,8 @@ user-invocable: false
 
 # Flow Design
 
+The worst-case rows draw on the `break-ui` skill in [emilkowalski/skill](https://github.com/emilkowalski/skill) and the scenario probing on `domain-modeling` in [mattpocock/skills](https://github.com/mattpocock/skills) (both MIT).
+
 A flow is settled when a reader can follow it from trigger to end state and knows what happens at every step when things go wrong. "Handle errors" is not a decision; the message, the recovery path and what is preserved are.
 
 ## 1. List the flows

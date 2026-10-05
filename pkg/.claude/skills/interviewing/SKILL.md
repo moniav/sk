@@ -7,6 +7,8 @@ user-invocable: false
 
 # Interviewing
 
+Adapted from the `grilling` skill in [mattpocock/skills](https://github.com/mattpocock/skills) (MIT): the design tree, the frontier, rounds with a recommended answer, and facts-versus-decisions.
+
 How to question the user until a plan, an idea or a decision has nothing left open, without wasting their time.
 
 ## Decisions are the user's. Facts are yours.
