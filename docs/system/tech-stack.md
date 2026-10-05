@@ -17,7 +17,7 @@
 
 | Service | Provider | Purpose |
 |---------|----------|---------|
-| Package registry | npm | Distribution as `shipkit-cld` |
+| Plugin marketplace | GitHub (`moniav/sk`, `.claude-plugin/marketplace.json`) | Distribution: `claude plugin marketplace add moniav/sk` |
 | Source code | GitHub | Version control |
 
 ## Dev Tools

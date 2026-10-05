@@ -6,7 +6,7 @@
 
 ## What is SK
 
-SK (shipkit-cld) is a documentation and lifecycle system for Claude Code.
+SK (ShipKit) is a documentation and lifecycle system for Claude Code.
 It gives Claude a structured Plan > Dev > Test workflow, a doc tree to keep current, and review, debugging, release and go-to-market commands.
 It ships two ways: as a Claude Code plugin (commands, skills and agents live outside the project), or as files copied into a project's `.claude/`. Either way the project owns its `docs/` tree and `CLAUDE.md`.
 
@@ -15,7 +15,7 @@ It ships two ways: as a Claude Code plugin (commands, skills and agents live out
 - **Runtime:** Node.js >= 18
 - **Language:** JavaScript (ES modules, no TypeScript)
 - **Dependencies:** none (stdlib only: `fs`, `path`, `readline`, `url`, `crypto`)
-- **Distribution:** Claude Code plugin `sk` from the `shipkit` marketplace (this repo); npm package `shipkit-cld`
+- **Distribution:** Claude Code plugin `sk` from the `shipkit` marketplace (this repo). The npm package `shipkit-cld` is no longer published (ADR-003)
 
 ## Build Commands
 

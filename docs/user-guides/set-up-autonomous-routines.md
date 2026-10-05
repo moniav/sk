@@ -12,7 +12,7 @@ control.
 
 ## Before you start
 
-- SK v1.9.0+ installed in your project (`npx shipkit-cld`)
+- The SK plugin installed, and `/sk:scaffold` run in the project
 - A scheduler you can use: Claude Code scheduled agents, CI cron (e.g. GitHub
   Actions), or your OS scheduler — or none (you can still generate the runbook)
 
