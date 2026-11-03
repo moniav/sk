@@ -102,6 +102,7 @@ Compliance (Steps 3–5) checks whether the UI is *correct*; this step checks wh
 - **Color** — deliberate palette with one accent; not default-purple, not rainbow
 - **Restraint** — shadow/blur/gradient/motion used with intent, not everywhere
 - **AI-slop & category fit** — match the **product type** against the anti-patterns reference (e.g. B2B SaaS should not look like a consumer AI demo). Cite the row number and the specific fix.
+- **Landing pages**: for a marketing or landing page, also check the landing page rows of the anti-patterns reference (product above the fold, CTA on the first phone screen, sign-up friction, competing actions).
 - **Design-system adherence** — if `docs/design/DESIGN.md` exists, flag deviations from its canonical tokens.
 
 Fold findings into the Step 8 tables (Critical/Warning/Suggestion) using the reference severities.

@@ -38,7 +38,9 @@ If the brief already answers these, start writing.
 
 ## By format
 
-**Landing page.** Hero (headline with the single strongest outcome, a one or two sentence subheadline, primary CTA, one line of proof), then in this order: proof bar, problem, solution, how it works in three steps, proof with names and numbers, objections, final CTA. Headline formulas and page structures are in `references/frameworks.md` in this skill's directory.
+**Landing page.** Read `references/landing-page.md` in this skill's directory first: the 5-second test, each section's job and common mistake, and the page-level rules. Hero (headline with the single strongest outcome and the customer, a one or two sentence subheadline, primary CTA with one line of proof beside it and the risk reversal under it), then in this order: proof bar, problem, how it works in three steps, benefits, demo of the real product, proof with names and numbers, pricing when the page sells a plan, FAQ answering real objections, final CTA. Check the hero against the 5-second test before delivering it, and add the page-level rules that apply as build notes. Headline formulas and page structures are in `references/frameworks.md`.
+
+**Landing page audit.** Score an existing page against the audit checklist in `references/landing-page.md`, with evidence for each check, then offer to rewrite what failed.
 
 **Email.** Subject line of four to seven words that the body delivers on. One idea and one CTA per email. Short paragraphs. For a sequence, state the trigger, the timing and the goal of each email; blueprints are in `references/frameworks.md`.
 
@@ -54,4 +56,4 @@ Deliver copy that is ready to use, not an outline, under clear section labels so
 
 ## Out of scope
 
-Layout and design specs, keyword research, defining brand positioning from nothing (use the positioning command first), and translation.
+Visual design specs: layout grids, colour, type and spacing (`/sk:ui-review` checks the built page). Keyword research, defining brand positioning from nothing (use the positioning command first), and translation.

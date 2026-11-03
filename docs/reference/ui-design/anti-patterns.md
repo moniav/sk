@@ -37,8 +37,23 @@ Severity: **HIGH** (blocks or visibly cheapens the product) · **MED** (degrades
 | 16 | Destructive action with no confirmation | HIGH | Confirm or make easily undoable (undo toast) before irreversible delete |
 | 17 | Color as the *only* signal (red/green with no icon or text) | HIGH | Pair color with an icon/label so it survives color-blindness and grayscale |
 
+## Landing Page Anti-Patterns
+
+For marketing and landing pages. The copy side of the same checks is `/sk:copywrite`'s landing page audit.
+
+| # | Anti-pattern | Severity | Fix |
+|---|--------------|----------|-----|
+| 18 | No product above the fold: stock photo, abstract illustration or nothing | HIGH | A real screenshot, short clip or interactive preview in the hero |
+| 19 | Primary CTA, CTA label or one line of proof pushed below the first phone screen | HIGH | Hero, CTA and one line of proof fit the first screen at 375px wide |
+| 20 | Sign-up form asks for more than is needed to start (phone, company size, a card for a trial) | HIGH | Email alone, or social/SSO sign-in; collect the rest after sign-up |
+| 21 | Proof that cannot be real shipped live: placeholder logos, unattributed testimonials | HIGH | Real logos and named quotes, or no proof strip until there are some |
+| 22 | Nav links, secondary offers or several CTA labels competing with the primary action | MED | One primary action per page; remove or demote the rest |
+| 23 | Primary CTA not repeated at the bottom of the page | MED | Repeat the same button, same label, after the last section |
+| 24 | CTA label that says nothing ("Submit", "Get started", "Learn more") | MED | Say what happens: "Start my free trial", "Join the waitlist" |
+
 ## How to use in a review
 
 - Match the product type (from `project-context.md`) to the category rows above.
+- For a marketing or landing page, also check rows 18 to 24.
 - Cite the row number in findings and give the specific fix, not generic advice.
 - Treat HIGH rows as Critical/Warning; LOW as Suggestion.
