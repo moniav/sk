@@ -30,7 +30,8 @@ Then confirm with the user:
 
 | Format | What you'll get |
 |--------|----------------|
-| **Landing page** | Full page: hero, problem, solution, proof, CTA |
+| **Landing page** | Full page: hero, proof, problem, how it works, benefits, demo, pricing, FAQ, final CTA, plus build notes |
+| **Landing page audit** | Pass/fail on each checklist item with evidence, the worst gaps first, then a rewrite offer (user gives the copy, a file or a URL) |
 | **Hero section** | Headline + subheadline + CTA + social proof line |
 | **Email** | Single email with subject line + body |
 | **Email sequence** | Multi-email flow with timing and goals |
@@ -53,6 +54,11 @@ For landing pages, email sequences, or full rewrites, also read:
 
 Use the relevant headline formulas, page structures, and persuasion frameworks — don't use them all, pick what fits.
 
+For a landing page, a hero section or a landing page audit, also read:
+`${CLAUDE_PLUGIN_ROOT}/.claude/skills/copywriting/references/landing-page.md`
+
+For an audit given as a URL, fetch the page if a web tool is available; otherwise ask for the copy. Checks that need the live page or its code are marked Not checked, not guessed.
+
 ## Step 4: Write the Copy
 
 Write it as the skill directs: ready-to-use copy under clear section labels, with numbered variants for headlines and CTAs.
@@ -62,6 +68,8 @@ Write it as the skill directs: ready-to-use copy under clear section labels, wit
 Present the copy with section labels. Then ask:
 
 > **How does this feel?** I can adjust tone, try different angles, or rework specific sections.
+
+For a landing page or hero, also offer the two follow-ups in `landing-page.md`: a hero rewrite against the 5-second test, and a redo of the section most likely to lose readers.
 
 If the user wants changes:
 - Rework the specific sections they flag

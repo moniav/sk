@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **Landing pages.** `/sk:copywrite` gains a landing page reference (`copywriting/references/landing-page.md`): the 5-second test, each section's job and common mistake, page-level rules (one action, the product above the fold, proof beside the button, risk reversal, sign-up friction, mobile first, one metric at a time) and a 13-point audit checklist. New **Landing page audit** format scores an existing page with evidence; landing pages now include benefits, demo, pricing and FAQ sections, a 5-second check on the hero, build notes, and two follow-ups (hero rewrite, weakest-section redo). `/sk:ui-review` anti-patterns gain seven landing page rows (18 to 24). Credit: adapted from Higgsfield's SaaS landing page guide.
+
+**Upgrade notes:** `/sk:scaffold update` brings the new rows in `docs/reference/ui-design/anti-patterns.md`.
+
 ## 3.0.0 (2026-10-05)
 
 **Plugin only.** The file-copy install (`npx shipkit-cld`) is gone; the Claude Code plugin is the only channel (ADR-003). Commands, agents and skills are never written into a project. `pkg/cli.mjs` stays inside the plugin with three jobs behind `/sk:scaffold`: `init`, `update` (the shipped docs) and the new `migrate`, which removes what SK 2.x copied into `.claude/` and keeps the user's own agents, skills, `docs/` and `CLAUDE.md`. Removed: `install`, `remove`, `--from`, `.claude/.sk-source`, `pkg/.sk-baselines.json` and its generator, the root `cli.mjs` and `bin`, `npm run sync` and the dogfood copy under `.claude/` (`npm run dev` loads `pkg/` with `claude --plugin-dir`), and the `/sk:update` command (55 commands): `claude plugin update sk@shipkit` then `/sk:scaffold update` replace it. The npm package is private and no longer published.
