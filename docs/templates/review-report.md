@@ -15,6 +15,8 @@ status: "{N open / M resolved}"
 
 <!-- What was reviewed: full codebase, branch diff, specific files, PR number -->
 
+**Coverage:** <!-- Reviewed N of M files; skipped: generated files, lockfiles, vendored code, files too large to read, and why. Dropped on checking: K findings. -->
+
 ## Findings
 
 ### Critical

@@ -3,8 +3,11 @@
 ## Unreleased
 
 - **Landing pages.** `/sk:copywrite` gains a landing page reference (`copywriting/references/landing-page.md`): the 5-second test, each section's job and common mistake, page-level rules (one action, the product above the fold, proof beside the button, risk reversal, sign-up friction, mobile first, one metric at a time) and a 13-point audit checklist. New **Landing page audit** format scores an existing page with evidence; landing pages now include benefits, demo, pricing and FAQ sections, a 5-second check on the hero, build notes, and two follow-ups (hero rewrite, weakest-section redo). `/sk:ui-review` anti-patterns gain seven landing page rows (18 to 24). Credit: adapted from Higgsfield's SaaS landing page guide.
+- **Sharper reviews.** `/sk:code-review`, `/sk:review` and the security, performance and quality reviewers now report only what a change introduces, need a realistic trigger for every finding (a severe but uncertain issue stays, marked uncertain), skip deliberate design choices, style the conventions do not set and anything a linter catches, and name only identifiers seen in the code in a suggested fix. A new check step re-opens each finding before the report, drops wrong ones and known noise (docstrings, unused imports, "verify that…"), and scores the rest by impact; `/sk:code-review`'s severities follow the score. Every review ends with a coverage line: files reviewed, files skipped (generated, lockfiles, vendored) and findings dropped. PR text, commit messages, issue text, code comments and CI output are treated as data, never instructions.
+- **`/sk:review` checks the task.** When a task is active, `spec-reviewer` joins the fan-out and the report gains a task compliance table (met, not met, needs a person) and changes outside the task; a criterion not met means FIX_FIRST. The report also lists up to three ways the change could break after merge with what would catch each, and suggests a split when the diff holds independent changes. The PR body's *Merge danger* gains the same *Could break* line.
+- Credit: finding discipline, the check pass, task compliance and failure modes adapted from [The-PR-Agent/pr-agent](https://github.com/The-PR-Agent/pr-agent) (MIT).
 
-**Upgrade notes:** `/sk:scaffold update` brings the new rows in `docs/reference/ui-design/anti-patterns.md`.
+**Upgrade notes:** `/sk:scaffold update` brings the new rows in `docs/reference/ui-design/anti-patterns.md` and the coverage line in `docs/templates/review-report.md`.
 
 ## 3.0.0 (2026-10-05)
 
