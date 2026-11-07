@@ -31,6 +31,7 @@ Before implementing:
 - **Silent interpretation:** Choosing one interpretation of ambiguous requirements without flagging it
 - **Best-practice bloat:** Adding things "because they're good practice" when not in the requirements
 - **Cargo-culting:** Copying patterns from other projects without checking if they apply here
+- **Silent compliance:** Building the requested approach when a simpler one would meet the goal, without saying so first. Pushing back is part of the job; agreeing to avoid friction is not.
 
 ## 2. Do Exactly What Was Asked (No More, No Less)
 
@@ -68,6 +69,11 @@ Implementation:
 - **Speculative features:** "They'll probably need this next, so I'll add it now"
 - **Gold plating:** Adding extra error handling, logging, or configuration beyond what's needed
 - **Premature abstraction:** Creating generic utilities for a single use case
+- **Orphan litter:** Leaving behind imports, helpers or variables that your own change made unused. Remove them in the same change.
+- **Deleting what you don't understand:** Removing pre-existing code or comments because they look unused. Mention them instead; they may matter in a way the diff does not show.
+- **Style drift:** Writing new code in a different style from the file around it (naming, quoting, error handling).
+
+**The test:** every changed line traces to the request. A line that does not is either orphan cleanup from this change or it comes out.
 
 ## 3. Keep the Solution as Simple as Possible
 
@@ -121,6 +127,8 @@ Before writing code, walk down this ladder and **stop at the first step that wor
 6. **Minimal working code.**
 
 **Non-negotiables, never simplified away:** input validation, error handling, security, accessibility, and anything the user explicitly asked for. Lazy means *efficient*, not careless.
+
+**Where error handling belongs:** at the boundaries, where input arrives, I/O happens or an external call can fail. Not for states the types or the code's own invariants already rule out: a check for the impossible is gold plating.
 
 ### Anti-Patterns
 - **Over-engineering:** Building for requirements that don't exist yet
@@ -177,3 +185,5 @@ const total = cents / 100;
 - **Marker as TODO dump:** Using it for aspirational features rather than a real, bounded shortcut you just made.
 
 Run `/sk:debt` to harvest all markers into a ranked ledger.
+
+*Silent compliance, orphan litter, deleting what you don't understand, and where error handling belongs are adapted from [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT, per its manifest) and [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) (MIT).*
