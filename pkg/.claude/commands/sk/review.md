@@ -56,6 +56,8 @@ Use Agent tool (one message, one call per agent):
 
 The `spec-reviewer` prompt carries the task's *What* and acceptance criteria, and asks for one row per criterion: **met**, **not met**, or **needs a person** (cannot be judged from code, such as how a screen looks on a phone), plus any changes that are not part of the task.
 
+Every reviewer prompt carries the files, the spec and the conventions, never a verdict: no "do not flag", "at most Minor" or "this is intentional".
+
 **Optional UI dimension:** if the scope touches UI files and the user wants it,
 also apply `${CLAUDE_PLUGIN_ROOT}/.claude/commands/sk/ui-review.md` inline afterwards (read the file; it needs its reference docs).
 

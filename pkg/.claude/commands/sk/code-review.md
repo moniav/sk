@@ -10,7 +10,7 @@ disable-model-invocation: true
 
 Perform a thorough code review across correctness, conventions, performance, maintainability, and testing.
 
-Finding rules and the check pass adapted from [The-PR-Agent/pr-agent](https://github.com/The-PR-Agent/pr-agent) (MIT).
+Finding rules and the check pass adapted from [The-PR-Agent/pr-agent](https://github.com/The-PR-Agent/pr-agent) (MIT); the lowered-bar check from [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) and [affaan-m/ECC](https://github.com/affaan-m/ECC) (MIT).
 
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
@@ -112,6 +112,14 @@ Reference `docs/conventions/code-style.md` and `docs/conventions/file-structure.
 - Mock appropriateness — mocking too much (testing mocks) or too little
 - Edge case coverage — tests for error paths, not just happy paths
 - Assertion quality — specific assertions, not just "no error thrown"
+
+**Lowered bar.** Agents reach a passing check by weakening the check. Flag any of these in the diff:
+- A test skipped (`.skip`, `xit`, `@Disabled`, `@pytest.mark.skip`, `t.Skip`), deleted, or with assertions removed or loosened
+- A new suppression comment (`@ts-ignore`, `eslint-disable`, `# noqa`, `# type: ignore`, `//nolint`, `#[allow(...)]`, `istanbul ignore`, `nosemgrep`)
+- A lowered threshold, or a loosened lint, type, format, coverage or test config
+- An empty `catch`/`except`, or a stub that returns a fixed value to satisfy a test
+
+Each is a Warning unless the task asked for it; a removed or skipped test with no stated reason is Critical.
 
 ### 4f: Scope & Simplicity
 

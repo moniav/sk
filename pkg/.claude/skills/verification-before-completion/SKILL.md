@@ -16,6 +16,8 @@ Before saying a task is done:
 3. **Map** each acceptance criterion to the evidence for it: what you ran and what it returned.
 4. **State the revision** the evidence is for: the commit hash and branch, or "uncommitted changes on `<branch>`".
 
+**The bar was not lowered to get here.** No test skipped, deleted or weakened, no new suppression comment, no loosened config, unless the task asked for it and the report says so.
+
 "It works", "tests pass", "looks good", "verified" and "confirmed" are claims. On their own they are never evidence.
 
 ## How far each claim was proven

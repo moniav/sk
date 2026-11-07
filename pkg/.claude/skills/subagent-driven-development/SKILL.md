@@ -33,7 +33,7 @@ Use the Agent tool to dispatch the `implementer` agent. The implementer reports:
 
 ### 3. Two-Stage Review
 
-**Stage 1 — Spec Compliance:** Dispatch the `spec-reviewer` agent. Does code match what the subtask asked for? → PASS or FAIL.
+**Stage 1 — Spec Compliance:** Dispatch the `spec-reviewer` agent. Does code match what the subtask asked for? → PASS, FAIL, or CANNOT_VERIFY (the requirement depends on code the diff does not show).
 
 **Stage 2 — Code Quality** (only if Stage 1 passes): Dispatch the `quality-reviewer` agent. Checks conventions, test quality, simplicity → Critical / Important / Suggestions.
 
@@ -43,7 +43,8 @@ Use the Agent tool to dispatch the `implementer` agent. The implementer reports:
 
 - Both pass → check off subtask, move to next
 - Spec fails → feed findings back, re-dispatch (max 2 retries)
-- Quality has Critical → fix and re-review
+- Spec cannot verify → read the code it names yourself and decide; if it still depends on a run, record the criterion as untested
+- Quality has Critical → fix and re-review, at most 2 rounds; then stop and follow the `escalation-rules` skill
 - Quality has only Suggestions → note them, proceed
 
 ## Model Selection
@@ -55,9 +56,12 @@ The two exceptions are in the `escalation-rules` skill: one tier up after repeat
 
 - Sequential implementers only — no parallel dispatch
 - Never skip either review stage
+- **Never pre-judge a review.** A reviewer's prompt carries the spec, the files and the conventions, never a verdict: no "do not flag", "at most Minor", "the plan chose this" or "this is intentional"
 - Fresh context per implementer — no accumulated state
 - Orchestrator owns the task file, not subagents
 
 ## Brownfield Principle
 
 A brownfield subagent must match existing patterns, not ideal patterns. If the codebase uses callbacks, don't introduce promises. Match what exists unless the task explicitly says to migrate.
+
+The review-integrity rules (no pre-judged reviews, CANNOT_VERIFY, a capped fix loop) are adapted from [obra/superpowers](https://github.com/obra/superpowers) (MIT).
