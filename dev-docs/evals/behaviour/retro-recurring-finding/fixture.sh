@@ -5,9 +5,21 @@
 set -euo pipefail
 git init -q -b main
 git config user.email eval@example.com && git config user.name eval
-mkdir -p src docs/reviews/code docs/conventions docs/tasks
+mkdir -p src test .github/workflows docs/reviews/code docs/conventions docs/tasks
 cat > package.json <<'J'
-{ "name": "shop-api", "version": "1.0.0", "scripts": { "test": "node --test", "lint": "eslint src" } }
+{ "name": "shop-api", "version": "1.0.0", "scripts": { "test": "node --test", "lint": "eslint src" }, "devDependencies": { "eslint": "8.57.0" } }
+J
+cat > .github/workflows/ci.yml <<'J'
+name: ci
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
 J
 cat > .eslintrc.json <<'J'
 { "root": true, "env": { "node": true, "es2022": true }, "rules": { "no-unused-vars": "error" } }
@@ -17,6 +29,7 @@ cat > docs/conventions/code-style.md <<'J'
 
 - Plain CommonJS modules, one per resource in `src/`.
 - Validate input at the route boundary.
+- Export one object per module (`module.exports = { ... }`), not named `exports.x` assignments.
 J
 for r in orders invoices customers; do
 cat > src/$r.js <<J
@@ -41,6 +54,12 @@ const rows = [];
 const MAX_PAGE = 100;
 function list${r^}(limit = 50, offset = 0) { return rows.slice(offset, offset + Math.min(limit, MAX_PAGE)); }
 module.exports = { list${r^} };
+J
+cat > test/$r.test.js <<J
+const test = require("node:test");
+const assert = require("node:assert");
+const { list${r^} } = require("../src/$r");
+test("list${r^} caps the page size", () => { assert.ok(list${r^}(1000).length <= 100); });
 J
 git add -A && git commit -qm "$r: cap list page size (review finding: unbounded list)"
 if [ "$r" = orders ]; then
