@@ -17,7 +17,7 @@
 | [Flows](./flows/) | Visual diagrams (Mermaid) for key processes | When understanding system behavior |
 | [Decisions](./decisions/) | ADRs - why we made key technical choices | When questioning "why is it done this way?" |
 | [System](./system/) | Current state: stack, schema, integrations, APIs | For reference during development |
-| [Reference](./reference/) | Curated reference material (e.g. UI design standards) | Stable lookups; used by `/sk:ui-review` |
+| [Reference](./reference/) | Curated reference material (UI design standards, stack signals) | Stable lookups; used by `/sk:ui-review` and the scanning commands |
 | [User Guides](./user-guides/) | Customer-facing, task-oriented help | Writing/maintaining end-user docs |
 | [Business](./business/) | Positioning, competitors, pricing, business docs | GTM / business work |
 | [Legal](./legal/) | Agreements, policies, compliance scans | Legal/compliance work (`/sk:legal-scan`) |

@@ -14,7 +14,7 @@ Copy the steps below into your todo list before starting. A step you decide not 
 ## Rules
 
 - Every generated doc describes what the code actually does: no placeholder text, no aspirational conventions.
-- If multiple package manifests exist (workspaces / monorepo), ask the user which package to target, or whether to cover the workspace root, before proceeding.
+- **Every package, every language.** Detection follows the stack signals reference (Step 1). A repository with several packages gets the shared picture at the root and one section per package; with more than eight packages, ask which to cover first.
 - `CLAUDE.md` Build Commands are filled in from detection, each with a comment naming its source. A command that could not be detected keeps the placeholder comment plus `# [NOT DETECTED] - fill in manually`.
 - **Never read secrets.** Do not open `.env`, `.env.*` (except `.env.example`, `.env.sample`, `.env.template`, `.env.dist`), `*.pem`, `*.key`, `id_*`, `.npmrc`, `.pypirc`, `.netrc` or `.git-credentials`. Environment variable *names* come from a template file or from the places the code reads them; no value from the project ever goes into a doc. Skip lockfiles and generated or vendored directories, and list what was skipped in the Step 7 report.
 - In every index file you create or keep, replace the `Last updated: YYYY-MM-DD` placeholder with today's date. Otherwise `/sk:docs-audit` reports the fresh scaffold as unfilled stubs.
@@ -27,6 +27,8 @@ Do not report completion until each line holds. For the minimal profile, the dom
 - [ ] Every dependency in `docs/system/tech-stack.md` appears in a dependency manifest
 - [ ] No secret file was read, and no doc contains a value taken from an env or credential file
 - [ ] Every path in `docs/conventions/file-structure.md` exists on disk
+- [ ] Every top-level source folder (of every package) belongs to exactly one component in `docs/architecture/README.md`, or is listed under *Not covered* with a reason
+- [ ] Each package found has its stack in `docs/system/tech-stack.md`, and the API and schema docs cover every ecosystem present, not only the first one found
 - [ ] Each convention doc cites at least one existing file that shows the pattern
 - [ ] `CLAUDE.md` Build Commands have a command or a `[NOT DETECTED]` marker on every line
 - [ ] Every link in `docs/README.md` (agent index) resolves to an existing file
@@ -42,15 +44,15 @@ If `docs/templates/` does not exist, create the scaffold first by running `node 
 
 If `docs/system/project-context.md` exists, read it first. Stamp today's date into every index file you write in Step 3 (see Rules).
 
-**Identity.** Glob for `package.json`, `pyproject.toml`, `requirements.txt`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`, `build.gradle`, and read the manifest found.
+**Stack signals.** Read `docs/reference/stacks/signals.md` (the project's copy, which may carry its own rows; if it is missing, read `${CLAUDE_PLUGIN_ROOT}/docs/reference/stacks/signals.md`). It says where to look for each ecosystem.
 
-**Structure.** Glob `src/**/*` (source), `tests/**/*`, `**/*.test.*`, `**/*.spec.*`, `**/test_*` (tests), and `*.config.*`, `.env.example`, `.env.sample`, `.env.template`, `tsconfig*`, `docker*` (config). Never a real `.env` (see Rules).
+**Packages.** Check the workspace signals first. Each package found is scanned on its own below; a repository without them is one package.
 
-**Dependencies.** Read the dependency manifest: `package.json` (dependencies and devDependencies), `requirements.txt` or `pyproject.toml`, `Cargo.toml`, `go.mod`.
-
-**Key patterns.** Grep:
-- Routes/endpoints: `"router|app.get|app.post|export.*GET|export.*POST|@app\.|@router\."` in `*.ts`, `*.tsx`, `*.py`
-- Models/schema: `"createTable|model|Schema|BaseModel"` in `*.ts`, `*.py`
+**Per package:**
+- **Identity and dependencies:** find the ecosystem by its manifest and read the manifest.
+- **Structure:** the entry points and source folders the signals name for that ecosystem, its tests by the test globs, and config (`*.config.*`, `.env.example`, `.env.sample`, `.env.template`, `docker*`). Never a real `.env` (see Rules). Skip the folders under *Always skip* and list them as skipped.
+- **Routes and data:** Grep the ecosystem's route and data patterns in that package's source files.
+- **Unknown ecosystem:** read the manifest and README, find the entry point by name, and note the gap in the Step 7 report.
 
 ### Build Commands Detection
 
@@ -110,15 +112,15 @@ Generate these files in order, from the Step 1 scan.
 
 ### 3a. System Docs (source of truth)
 
-1. **`docs/system/tech-stack.md`**: from the dependency manifests
+1. **`docs/system/tech-stack.md`**: from the dependency manifests; with several packages, a shared table plus one section per package
 2. **`docs/system/database-schema.md`**: from schema/model files
 3. **`docs/system/api-reference.md`**: from route files (if applicable)
 4. **`docs/system/integrations.md`**: from external service imports and the environment variable *names* the code reads (never their values)
-5. **`docs/system/project-context.md`**: dense project summary; put the detected build commands in its Build Commands section
+5. **`docs/system/project-context.md`**: dense project summary; put the detected build commands in its Build Commands section, per package when they differ
 
 ### 3b. Architecture Docs
 
-6. **`docs/architecture/README.md`**: component diagram mapping source subdirectories to components, plus the data flow patterns and cross-cutting concerns found in code
+6. **`docs/architecture/README.md`**: component diagram mapping source subdirectories to components, plus the data flow patterns and cross-cutting concerns found in code. Fill **Reading order** (the entry points, then 5 to 10 files in the order a newcomer should read them, following what each imports) and **Hubs** (the 3 to 5 modules most imported or referenced across the source, counted with Grep). Every statement cites a `path:line`, or is marked *(inferred)*; what the code does not settle goes under **Open questions**
 
 ### 3b². Flow inventory and glossary (the baseline a feature PRD compares against)
 

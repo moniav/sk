@@ -13,6 +13,8 @@
 <!-- Mirror from CLAUDE.md for quick reference -->
 <!-- e.g., dev: npm run dev, test: npm test, lint: npm run lint -->
 
+<!-- Several packages: list each package's commands under its own name when they differ from the root. -->
+
 ## Key Patterns
 
 <!-- e.g., Repository pattern, middleware chain, Zod validation -->
