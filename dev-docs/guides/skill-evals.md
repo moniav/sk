@@ -86,3 +86,4 @@ They need `Bash`, so they run on Linux, macOS, WSL2 or CI.
 - Put the before and after scores in the changelog entry.
 - For behaviour cases: `node scripts/eval-summary.mjs before.json after.json` labels each case improved, regressed, stable or persistent fail, and exits 1 on any regression. A regression blocks the merge.
 - Pin `--model` (and `--judge-model` when it matters) so two results are comparable, and leave a partial result (`partial: true`) out of any comparison.
+- Expect noise: with 3 runs a case moves by a third when one run flips. Treat a move of one run on one case as noise; a regression is a case that drops from passing (80% or more) to failing on a rerun too. The baseline `behaviour-3.0-sonnet.json` (3 runs, Sonnet, Sonnet judge, $3.63) is the reference for 3.1.0.
