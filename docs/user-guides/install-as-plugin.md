@@ -51,6 +51,12 @@ The plugin is the only way to install SK since 3.0. Where it runs: everything in
 
 5. **Start working.** Run `/sk:prd` for a new product or feature, or `/sk:init-docs` in an existing codebase.
 
+## The session briefing
+
+SK ships one hook. When a session starts, and again after `/clear` or `/compact`, it reads `docs/tasks/.current` and, if a task is active, adds a short note for Claude: the task, its status and phase, the next subtask, and the task file. The note says it is for reference only, so Claude does not resume work unless you ask. With no active task it adds nothing.
+
+It never blocks anything, stays under 1,500 characters, and needs Node 18 or later (as `/sk:scaffold` does). To turn it off, set `SK_SESSION_BRIEF=off` in your environment or in the `env` block of your Claude Code settings.
+
 ## Keeping it up to date
 
 - **Commands, skills and agents:** `claude plugin update sk@shipkit`.

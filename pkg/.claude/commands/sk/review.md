@@ -22,6 +22,17 @@ If they already answer a question this command would ask, use them and skip that
 **Use when:** A branch or feature is about to ship and you want full coverage in one pass.
 **Use `/sk:code-review`, `/sk:security-review`, `/sk:perf-review` individually when:** You want one deep dimension inline instead of the parallel sweep.
 
+## Preloaded state
+
+Filled in when the command loads, so the first steps need not run these again:
+
+- Branch: !`git branch --show-current 2>/dev/null || true`
+- Default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true`
+- Uncommitted: !`git status --short 2>/dev/null | head -20 || true`
+- Recent commits: !`git log --oneline -10 2>/dev/null || true`
+
+If a line above is empty or still shows its command (shell injection is off, or this is not a git repository), gather that fact with the steps below.
+
 ## Step 1: Determine Scope
 
 If this isn't a git repository or has no commits yet, ask the user for explicit file

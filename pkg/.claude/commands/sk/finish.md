@@ -2,6 +2,7 @@
 description: Finish feature work — review, commit, push, PR, update task board
 argument-hint: "[TASK-N (optional — defaults to .current)]"
 disable-model-invocation: true
+allowed-tools: Bash(git branch --show-current), Bash(git symbolic-ref *), Bash(git status *), Bash(git log *), Bash(cat docs/tasks/.current)
 ---
 
 # Finish — Ship Completed Work
@@ -15,6 +16,18 @@ Copy the steps below into your todo list before starting. A step you decide not 
 
 **Use when:** Feature work is done (all tests pass, all ACs verified), ready to ship.
 **Use `/sk:commit` instead when:** You just want the git part without review or task board updates.
+
+## Preloaded state
+
+Filled in when the command loads, so the first steps need not run these again:
+
+- Branch: !`git branch --show-current 2>/dev/null || true`
+- Default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true`
+- Uncommitted: !`git status --short 2>/dev/null | head -20 || true`
+- Recent commits: !`git log --oneline -10 2>/dev/null || true`
+- Active task: !`cat docs/tasks/.current 2>/dev/null || true`
+
+If a line above is empty or still shows its command (shell injection is off, or this is not a git repository), gather that fact with the steps below.
 
 ## Step 1: Read Context
 

@@ -284,6 +284,32 @@ for (const [label, path] of [
   }
 }
 
+// Shell injection (!`cmd`) runs when a command loads, before the user sees anything, so it is
+// limited to read-only commands that cannot fail the load (post-3.0 plan A2; agnix CC-SK-028).
+{
+  const READ_ONLY_GIT = ["branch", "symbolic-ref", "rev-parse", "status", "log", "diff"];
+  const ALLOWED = /^(git|date|ls|cat docs\/tasks\/\.current)\b/;
+  for (const file of commandFiles) {
+    const text = read(join(commandsDir, file));
+    // Claude Code runs !`cmd` only where the ! starts a line or follows whitespace; `!` in prose is not run.
+    for (const m of text.matchAll(/(^|\s)!`([^`]+)`/gm)) {
+      const label = `commands/sk/${file}: !\`${m[2].slice(0, 50)}\``;
+      const cmd = m[2].replace(/^\(/, "");
+      if (!ALLOWED.test(cmd)) err("preload", `${label} runs a command outside the read-only set`);
+      for (const g of cmd.matchAll(/\bgit\s+([a-z-]+)/g)) if (!READ_ONLY_GIT.includes(g[1])) err("preload", `${label} runs git ${g[1]}, which is not read-only`);
+      if (!/\|\|\s*(true|echo\b[^`]*)\s*$/.test(m[2])) err("preload", `${label} must end with || true so a failure cannot abort the command`);
+      if (/[;&]|>(?!\/dev\/null)/.test(m[2].replace(/\|\|/g, "").replace(/2>\/dev\/null/g, ""))) err("preload", `${label} chains or redirects; keep it one read-only command`);
+      if (/^\(/.test(m[2])) err("preload", `${label} opens with a ( group, which the permission check cannot read; the command aborts`);
+      // An injection the command does not grant fails its permission check and aborts the command
+      // in headless runs, so every injected command needs a matching allowed-tools entry.
+      const head = m[2].split(/\s*(?:\|\||\||2>)/)[0].trim();
+      const grants = [...(frontmatter(text)?.fields["allowed-tools"] || "").matchAll(/Bash\(([^)]*)\)/g)].map((g) => g[1]);
+      const granted = grants.some((g) => (g.endsWith(" *") ? head === g.slice(0, -2) || head.startsWith(g.slice(0, -1)) : head === g));
+      if (!granted) err("preload", `${label}: "${head}" has no matching allowed-tools entry, so the command would abort in a headless run`);
+    }
+  }
+}
+
 // --- 4. allowed-tools must not pre-approve a whole binary (plan item 1.2) ---
 
 // Binaries whose every invocation is read-only.
@@ -427,6 +453,82 @@ for (const name of skillNames) {
       let tagged = null;
       try { tagged = JSON.parse(git("show", `${tag}:package.json`).stdout).version; } catch { /* no package.json at the tag */ }
       if (changed && tagged === pkgVersion) err("release", `pkg/ changed since ${tag} but the version is still ${pkgVersion}; bump package.json and plugin.json`);
+    }
+  }
+}
+
+// --- 6b. Session-start hook (post-3.0 plan A1) ---
+// It runs in every session of every user, so it must be silent without a task, bounded,
+// deterministic, quiet on stderr, and exit 0 whatever happens. CI runs this on Node 18.
+
+{
+  const hooksPath = join(PKG, "hooks", "hooks.json");
+  const script = join(PKG, "hooks", "session-start.mjs");
+  if (existsSync(hooksPath)) {
+    const hooks = JSON.parse(read(hooksPath));
+    const ROOT_KEYS = ["hooks", "description"];
+    const GROUP_KEYS = ["matcher", "hooks"];
+    const HANDLER_KEYS = ["type", "command", "args", "timeout"];
+    for (const k of Object.keys(hooks)) if (!ROOT_KEYS.includes(k)) err("hook", `hooks.json: unknown top-level key "${k}"`);
+    for (const [event, groups] of Object.entries(hooks.hooks || {})) {
+      if (event !== "SessionStart") err("hook", `hooks.json: only SessionStart is allowed (decision N1), found ${event}`);
+      for (const g of groups) {
+        for (const k of Object.keys(g)) if (!GROUP_KEYS.includes(k)) err("hook", `hooks.json: unknown group key "${k}"`);
+        for (const h of g.hooks || []) {
+          for (const k of Object.keys(h)) if (!HANDLER_KEYS.includes(k)) err("hook", `hooks.json: unknown handler key "${k}"`);
+          if (h.command !== "node" || !String(h.args?.[0] || "").startsWith("${CLAUDE_PLUGIN_ROOT}/")) {
+            err("hook", "hooks.json: use exec form, command \"node\" with args [\"${CLAUDE_PLUGIN_ROOT}/hooks/…\"]");
+          }
+        }
+      }
+    }
+  }
+  if (existsSync(script)) {
+    const MAX = 1500;
+    const dir = mkdtempSync(join(tmpdir(), "sk-hook-"));
+    try {
+      // A bare copy: the plugin cache has no package.json and no parent folder.
+      cpSync(script, join(dir, "session-start.mjs"));
+      const run = (cwd, env = {}) => spawnSync(process.execPath, [join(dir, "session-start.mjs")], {
+        cwd, encoding: "utf-8", input: "", timeout: 10000, env: { PATH: process.env.PATH, ...env },
+      });
+      const project = (name, current, task) => {
+        const p = join(dir, name);
+        mkdirSync(join(p, "docs", "tasks"), { recursive: true });
+        if (current !== null) writeFileSync(join(p, "docs", "tasks", ".current"), current);
+        if (task) writeFileSync(join(p, "docs", "tasks", "TASK-7-export.md"), task);
+        return p;
+      };
+      const empty = join(dir, "empty");
+      mkdirSync(empty);
+      const task = "---\ntype: task\nid: TASK-7\ntitle: \"CSV export\"\nstatus: in-progress\n---\n# TASK-7\n";
+      const cases = [
+        ["no docs/", empty, {}, false],
+        ["no .current", project("none", null, null), {}, false],
+        ["SK_SESSION_BRIEF=off", project("off", "task: TASK-7\n", task), { SK_SESSION_BRIEF: "off" }, false],
+        ["malformed .current", project("bad", "\u0000\u0001garbage\n", null), {}, false],
+        ["active task", project("ok", "task: TASK-7\nname: CSV export\nphase: dev\nsubtask: 2/4\nnext: Stream rows\n", task), {}, true],
+        ["oversized fields", project("big", `task: TASK-7\nname: ${"n".repeat(5000)}\nnext: ${"x\u0007".repeat(5000)}\nlast: ${"y".repeat(9000)}\n`, task), {}, true],
+      ];
+      for (const [label, cwd, env, expectOutput] of cases) {
+        const a = run(cwd, env);
+        const b = run(cwd, env);
+        if (a.status !== 0) err("hook", `session-start (${label}) exited ${a.status}`);
+        if (a.stderr) err("hook", `session-start (${label}) wrote to stderr: ${a.stderr.slice(0, 120)}`);
+        if (a.stdout !== b.stdout) err("hook", `session-start (${label}) output differs between two runs`);
+        if (!expectOutput) {
+          if (a.stdout) err("hook", `session-start (${label}) printed output where it must stay silent`);
+          continue;
+        }
+        let ctx = "";
+        try { ctx = JSON.parse(a.stdout).hookSpecificOutput.additionalContext; } catch { err("hook", `session-start (${label}) did not print one JSON object with additionalContext`); continue; }
+        if (ctx.length > MAX) err("hook", `session-start (${label}) briefing is ${ctx.length} characters (limit ${MAX})`);
+        if (!/^For reference only/.test(ctx)) err("hook", `session-start (${label}) briefing must open with the reference-only line`);
+        if (!ctx.includes("TASK-7") || !ctx.includes("docs/tasks/TASK-7-export.md")) err("hook", `session-start (${label}) briefing lacks the task id or file`);
+        if (/[\u0000-\u0008\u000b-\u001f]/.test(ctx)) err("hook", `session-start (${label}) briefing carries control characters`);
+      }
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
     }
   }
 }

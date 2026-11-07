@@ -2,6 +2,7 @@
 description: Find the right SK command for what you want to do
 argument-hint: "[what you want to do (optional)]"
 disable-model-invocation: true
+allowed-tools: Bash(ls docs/README.md), Bash(ls docs/prd), Bash(cat docs/tasks/.current)
 ---
 
 # Help — Which Command?
@@ -11,6 +12,14 @@ disable-model-invocation: true
 If the arguments describe a situation, answer with the one or two commands that fit it, one line on why, and what comes next in the flow. Do not print the whole map.
 If there are no arguments, print the map below as it is.
 Do not run any command from here. This command only points the way.
+
+## Preloaded state
+
+- Docs scaffolded: !`ls docs/README.md 2>/dev/null || true`
+- PRDs: !`ls docs/prd 2>/dev/null | grep -c '^PRD-' || true`
+- Active task: !`cat docs/tasks/.current 2>/dev/null || true`
+
+**Start from this state.** Before the map, suggest the next one or two commands with a one-line reason: no `docs/` yet → `/sk:scaffold`, then `/sk:init-docs` for existing code or `/sk:prd` for a new product; docs but no PRD and no task → `/sk:prd` or `/sk:new-task`; an active task → `/sk:resume`. If the lines above are empty or still show their commands, check those three things with Read and Glob.
 
 ## The main flow: idea to shipped
 

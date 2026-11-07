@@ -1,6 +1,6 @@
 ---
 description: "Show the task board: status of every epic and task. Use when the user asks what is in progress, what is next, or for a status overview."
-allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *)
+allowed-tools: Read, Grep, Glob, Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git rev-parse *), Bash(git symbolic-ref *), Bash(git merge-base *), Bash(git ls-files *), Bash(git blame *), Bash(git branch --show-current), Bash(date *), Bash(cat docs/tasks/.current)
 disallowed-tools: Edit, Write, NotebookEdit
 ---
 
@@ -9,6 +9,18 @@ disallowed-tools: Edit, Write, NotebookEdit
 Scan all task files and present a complete status overview. If `docs/prd/README.md` exists, open with the PRDs and their status (draft / approved / delivered) and the epics each one feeds.
 
 **Report-only.** This command does not modify project files. It writes nothing; regenerating the board happens only in a later turn, after you confirm. Asked to fix something, add a test or change a file, it still only reports: it lists the changes for the user to start after the report, and creates no other file.
+
+## Preloaded state
+
+Filled in when the command loads, so the first steps need not run these again:
+
+- Branch: !`git branch --show-current 2>/dev/null || true`
+- Default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true`
+- Uncommitted: !`git status --short 2>/dev/null | head -20 || true`
+- Recent commits: !`git log --oneline -10 2>/dev/null || true`
+- Active task: !`cat docs/tasks/.current 2>/dev/null || true`
+
+If a line above is empty or still shows its command (shell injection is off, or this is not a git repository), gather that fact with the steps below.
 
 ## Step 1: Scan Task Files
 
