@@ -3,6 +3,7 @@
 > Status: proposal, not approved, nothing built.
 > Source: item 4.6 of `2026-10-best-practices-enhancement-plan.md`.
 > Written 2026-10-04.
+> Reviewed 2026-11-07 as design note E4: see `2026-11-design-notes-e1-e4.md` for three changes (evaluation, description, no `remove`).
 
 ## The problem
 
