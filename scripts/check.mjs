@@ -350,6 +350,8 @@ for (const name of READ_ONLY) {
   if (!existsSync(path)) continue;
   const denied = frontmatter(read(path))?.fields["disallowed-tools"] || "";
   if (!/\bEdit\b/.test(denied)) err("read-only", `commands/sk/${name}.md is report-only but does not disallow Edit`);
+  // Write stays open for the report, so the body must say a request to fix is still only reported.
+  if (!/still only reports/.test(read(path))) err("read-only", `commands/sk/${name}.md does not say that a request to fix is still only reported`);
 }
 
 // Skills loaded by commands, never by hand: hidden from both the model and the / menu.

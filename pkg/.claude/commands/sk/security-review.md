@@ -15,7 +15,7 @@ If they already answer a question this command would ask, use them and skip that
 
 Copy the steps below into your todo list before starting. A step you decide not to do stays on the list as "skip: <reason>".
 
-**Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/security/`.
+**Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/security/`. Asked to fix something, add a test or change a file, it still only reports: it lists the changes for the user to start after the report, and creates no other file.
 
 ## Rules
 
