@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin.json",
   "name": "sk",
   "displayName": "SK — Moni's Software Machine",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "From idea to production with a disciplined workflow: PRD, epics, Plan > Dev > Test with proof at every gate, and a documentation tree that keeps a large codebase under control. 55 commands, 28 skills, 9 agents. Run /sk:scaffold once per project.",
   "author": {
     "name": "moniav",

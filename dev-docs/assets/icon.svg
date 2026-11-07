@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22305A"/>
+      <stop offset="1" stop-color="#131B33"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <!-- document sheet with folded corner -->
+  <path d="M300 200 H614 L744 330 V824 H300 Z" fill="#F4F6FB"/>
+  <path d="M614 200 V330 H744 Z" fill="#C9D1E6"/>
+  <!-- three steps: plan, dev, test -->
+  <rect x="372" y="400" width="300" height="40" rx="20" fill="#8A97B8"/>
+  <rect x="372" y="490" width="240" height="40" rx="20" fill="#8A97B8"/>
+  <rect x="372" y="580" width="180" height="40" rx="20" fill="#8A97B8"/>
+  <!-- proof check -->
+  <circle cx="704" cy="724" r="150" fill="#2FBF71" stroke="#131B33" stroke-width="28"/>
+  <path d="M638 726 L688 776 L776 676" fill="none" stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
