@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Requires fresh command output as evidence before any claim that work is done, complete or passing, and checks the result against the original request. Use before reporting a task finished or confirming that something works.
+description: Requires fresh command output as evidence before any claim that work is done, fixed, passing or ready, and checks the result against the original request. Use whenever you are about to report a task or fix as complete, mark work done, or say that something works, and whenever the user asks for proof.
 ---
 
 # Verification Before Completion

@@ -1,6 +1,6 @@
 ---
 name: technical-writing
-description: Writes technical documentation, such as READMEs, API docs, guides, onboarding and architecture overviews, checked against the code. Use when creating or substantially rewriting developer documentation. Not for marketing copy.
+description: Writes or substantially rewrites developer documentation (READMEs, setup and onboarding guides, API references, architecture overviews, runbooks) and checks every command, path and claim against the code. Use whenever such a document must be created or corrected. Not for marketing copy.
 ---
 
 # Technical Writing

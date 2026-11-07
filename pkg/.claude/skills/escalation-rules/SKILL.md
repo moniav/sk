@@ -1,6 +1,6 @@
 ---
 name: escalation-rules
-description: Stops retrying after three failed attempts at the same problem and presents structured options to the user. Use when a fix, test or subtask has failed repeatedly, or the work is going in circles.
+description: Stops after three failed attempts at the same problem and gives the user structured options instead of a fourth try. Use whenever a fix, test, build or command has failed again after earlier attempts, the same error keeps returning, or the work is going in circles.
 ---
 
 # Escalation Rules
