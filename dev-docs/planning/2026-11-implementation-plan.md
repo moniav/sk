@@ -334,6 +334,8 @@ Also: `release.md` Step 1 runs `node scripts/check.mjs --release`.
 **Done when:** a scratch feature PRD that adds one requirement, modifies one and removes one merges correctly, and a deliberately broken merge stops the delivery.
 **Credit:** Fission-AI/OpenSpec (MIT).
 
+> **Outcome (2026-11-07):** built as planned, with two additions: `/sk:finish` confirms every MODIFIED and REMOVED target exists before merging anything, so a broken PRD never leaves docs half-merged, and `/sk:new-feature-doc` fills the contract from the code (`B-n` rows before any PRD). Behaviour cases `finish-contract-merge` and `finish-contract-broken` (Sonnet, 3 runs): 52% and 33% before, 100% and 100% after; cost per run with the plugin +29% and -15%. Spend: about $4.
+
 ### PR13 Docs stay true · M · after PR10 and PR12
 
 **Items:** R12, C3.
