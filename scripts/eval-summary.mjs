@@ -81,7 +81,13 @@ function loadCases(path) {
     const withoutRuns = valid("without");
     const score = withRuns.length ? mean(withRuns.map((r) => r.score ?? 0)) : NaN;
     const delta = withoutRuns.length && withRuns.length ? score - mean(withoutRuns.map((r) => r.score ?? 0)) : undefined;
-    cases[c.name] = { score, delta };
+    // Cost, turns and time per run: the median of the runs that reached the model.
+    const median = (xs) => {
+      const s = xs.filter((x) => typeof x === "number").sort((p, q) => p - q);
+      return s.length ? s[Math.floor((s.length - 1) / 2)] : NaN;
+    };
+    const perf = (runs) => ({ cost: median(runs.map((r) => r.costUsd)), turns: median(runs.map((r) => r.turns)) });
+    cases[c.name] = { score, delta, with: perf(withRuns), without: perf(withoutRuns) };
   }
   if (voided) console.log(`[WARN] ${path}: ${voided} run(s) never reached the model and are excluded.`);
   return { cases, cost: result.costUsd, partial: result.partial };
@@ -115,8 +121,39 @@ if (isBehaviour(beforePath)) {
     if (last && typeof last.delta === "number" && last.delta <= 0) line += "   (no better than without the plugin)";
     console.log(line);
   }
+  // Performance: what a run costs with the plugin against without it, and (given two files)
+  // how the cost with the plugin moved. Ratios are summarised as a geometric mean over cases.
+  const geo = (xs) => {
+    const v = xs.filter((x) => Number.isFinite(x) && x > 0);
+    return v.length ? Math.exp(v.reduce((s, x) => s + Math.log(x), 0) / v.length) : NaN;
+  };
+  const signed = (r) => (Number.isFinite(r) ? `${r >= 1 ? "+" : ""}${Math.round((r - 1) * 100)}%` : "-");
+  const usd = (v) => (Number.isFinite(v) ? `$${v.toFixed(3)}` : "    -  ");
+  console.log(`\n${"cost per run (median)".padEnd(30)}   with  without${a ? "     with  without   change with" : ""}`);
+  const ratios = { b: [], a: [], moved: [], bt: [], at: [] };
+  for (const name of [...new Set([...Object.keys(b.cases), ...Object.keys(a?.cases || {})])].sort()) {
+    const x = b.cases[name];
+    const y = a ? a.cases[name] : undefined;
+    let line = `${name.padEnd(30)} ${usd(x?.with.cost)} ${usd(x?.without.cost)}`;
+    if (x) {
+      ratios.b.push(x.with.cost / x.without.cost);
+      ratios.bt.push(x.with.turns / x.without.turns);
+    }
+    if (a) {
+      line += `   ${usd(y?.with.cost)} ${usd(y?.without.cost)}   ${x && y ? signed(y.with.cost / x.with.cost) : "-"}`;
+      if (y) {
+        ratios.a.push(y.with.cost / y.without.cost);
+        ratios.at.push(y.with.turns / y.without.turns);
+      }
+      if (x && y) ratios.moved.push(y.with.cost / x.with.cost);
+    }
+    console.log(line);
+  }
+  let summary = `with the plugin vs without: cost ${signed(geo(ratios.b))}, turns ${signed(geo(ratios.bt))}`;
+  if (a) summary += `; then cost ${signed(geo(ratios.a))}, turns ${signed(geo(ratios.at))}; cost with the plugin moved ${signed(geo(ratios.moved))}`;
+  console.log(summary);
   const money = (r) => `$${r.cost?.toFixed(2)}${r.partial ? " (partial run)" : ""}`;
-  console.log(`cost: ${money(b)}${a ? `, then ${money(a)}` : ""}`);
+  console.log(`total: ${money(b)}${a ? `, then ${money(a)}` : ""}`);
   if (regressed) console.log(`[ERROR] ${regressed} case(s) regressed`);
   process.exit(regressed ? 1 : 0);
 }

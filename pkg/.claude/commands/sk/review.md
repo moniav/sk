@@ -9,6 +9,7 @@ disallowed-tools: Edit, NotebookEdit
 
 Run security, performance, and quality reviews **in parallel subagents** and merge
 the results into one report with a ship/no-ship verdict. The "before I ship" command.
+A small change gets the same coverage in one pass instead (Step 1.5).
 
 Finding rules and the check pass adapted from [The-PR-Agent/pr-agent](https://github.com/The-PR-Agent/pr-agent) (MIT).
 
@@ -34,6 +35,27 @@ paths instead — don't error out.
 - If the diff is empty, inform the user and stop.
 - **Skip, and list as skipped:** generated files, lockfiles, vendored or minified code, and binary files. The report says what was not reviewed.
 - **Task:** if `docs/tasks/.current` names an active task, or the user named one, read its *What* and acceptance criteria for the task compliance check.
+
+## Step 1.5: Choose the Depth
+
+A small change does not need four agents: their prompts cost more than the change takes to read.
+
+- **Small** (at most 3 changed files and about 150 changed lines, skipped files not counted), and the user did not ask for a full or deep review: review it yourself in one pass (Step 2a), then go to Step 3.
+- **Otherwise:** dispatch the reviewers (Step 2).
+
+Say in the report which depth was used and why.
+
+## Step 2a: One Pass (small changes)
+
+Read the diff and each changed file in full, then cover every dimension the agents would:
+
+- **Correctness and callers:** logic errors, edge cases (empty, zero, last item, time zones), swallowed errors. When the change alters a function's signature, return value, thrown errors or behaviour, grep every caller outside the diff and check each one still works; a caller the change breaks is Critical.
+- **Security:** injection, missing authorization, secrets, unsafe deserialization or URL fetches. Every Critical or High finding names its attack scenario.
+- **Performance:** work inside loops, queries per item, unbounded lists. Each finding says what it scales with.
+- **Quality:** the project's conventions, a lowered bar (a skipped or weakened test, a new suppression, a loosened config), and risky new logic without a test.
+- **Task compliance** (when a task was found): one row per acceptance criterion, met, not met or needs a person, and any change that is not part of the task.
+
+The same finding rules apply as for the agents: report what the change introduces, each finding with a realistic trigger, no style preferences or linter noise.
 
 ## Step 2: Dispatch Reviewers (parallel)
 
@@ -72,6 +94,7 @@ also apply `${CLAUDE_PLUGIN_ROOT}/.claude/commands/sk/ui-review.md` inline after
 ## Review: {branch or path}, {date}
 
 ### Verdict: SHIP | FIX_FIRST | BLOCK
+Depth: one pass (small change) | four reviewers
 (BLOCK if any security Critical; FIX_FIRST if any Critical/High anywhere or a task criterion is not met)
 
 ### Task compliance (when a task was found)
