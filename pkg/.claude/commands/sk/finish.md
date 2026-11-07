@@ -74,8 +74,16 @@ If a task file was identified in Step 2:
 ```
 
 4. Delete `docs/tasks/.current` if it exists (work is shipped)
-5. If task is part of an epic: update epic progress count. When that was the epic's last task, set the epic `status: done`.
-6. If the epic has `prd:` and every epic in that PRD's Delivery table is done: set the PRD `status: delivered`, copy each of its flows into `docs/flows/` (diagram plus the edge-case table, named after the flow) and index them in `docs/flows/README.md`, and merge any glossary terms the PRD settled into `docs/system/glossary.md`. From now on `docs/flows/` and the glossary are the current truth; the PRD is the record of what was decided.
+5. If task is part of an epic: update epic progress count. When that was the epic's last task, run the requirement coverage gate below for the epic, then set the epic `status: done`.
+6. If the epic has `prd:` and every epic in that PRD's Delivery table is done: run the requirement coverage gate for the whole PRD, then set the PRD `status: delivered`, copy each of its flows into `docs/flows/` (diagram plus the edge-case table, named after the flow) and index them in `docs/flows/README.md`, and merge any glossary terms the PRD settled into `docs/system/glossary.md`. From now on `docs/flows/` and the glossary are the current truth; the PRD is the record of what was decided.
+
+**Requirement coverage gate.** Before an epic is set done or a PRD delivered, build this table from the PRD's requirements, each task's `delivers:` field, and each task's Verification table:
+
+| Requirement | Priority | Delivered by | Criteria result |
+|-------------|----------|--------------|-----------------|
+| FR-3 | Must | TASK-12 (done) | passed |
+
+A **Must** requirement that no done task delivers, or whose delivering task has a failed or untested criterion, blocks the status change. List each one and why, leave the epic or PRD status as it is, and suggest the user run `/sk:prd PRD-N amend` (to change the requirement) or a follow-up task (to build or prove it). Should and Could requirements that are not covered are listed but do not block. Show the table in the Step 7 summary.
 
 Done when the task frontmatter reads `status: done`, the task appears under "Recently Completed" in `docs/tasks/README.md`, and `docs/tasks/.current` no longer exists.
 

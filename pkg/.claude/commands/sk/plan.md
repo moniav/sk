@@ -176,7 +176,7 @@ State the count (`PLAN gate: N/10`). Do not go to Step 7 with a box unchecked: f
 
 ## Step 7: Update Status
 
-1. Update YAML frontmatter: set `phase: dev`, `status: ready`, `complexity`, `delivers` (the PRD FR ids, if any), update `updated` date
+1. Update YAML frontmatter: set `phase: dev`, `status: ready`, `complexity`, `delivers` (the PRD FR ids, if any), `areas` (the modules or directories from the Affected Areas table), update `updated` date
 2. Update `docs/tasks/README.md` — move from Planning to "ready for dev"
 3. Write `docs/tasks/.current` pointing at this task (`phase: dev`, `subtask: 0/{total}` — format in `docs/tasks/README.md`) so `/sk:resume` sees the freshly planned work
 4. Add entry to task's Progress Log:

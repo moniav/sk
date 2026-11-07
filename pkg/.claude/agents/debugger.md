@@ -64,6 +64,7 @@ Each Evidence line starts with how far you proved it:
 
 ## Rules
 
+- **Large output.** Filter at the source: ask the test runner for failures only, pipe long output through `tail` or a search, and re-run narrowed rather than reading a whole log. Read a file over about 500 lines by range around a search hit, not whole.
 - No hypothesis before a reproduction run in this session, with its command and output shown. A failure you haven't seen is a failure you don't understand
 - Never propose a fix for a symptom; trace to the mechanism
 - Run experiments with Bash (tests, git log/bisect, focused scripts) — but do NOT edit source files

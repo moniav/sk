@@ -9,6 +9,7 @@ priority: P1      # P0 critical/blocking | P1 this sprint | P2 valuable | P3 nic
 complexity: M     # XS | S | M | L — a task is M at most; L means split it
 epic: E{N} | standalone
 delivers:     # PRD requirement ids this task delivers (FR-3, NFR-1); blank if there is no PRD
+areas:        # modules or directories this task touches (src/billing, api/orders); filled by /sk:plan, searched when planning similar work
 claimed_by:   # agent/session working this task (blank = unclaimed); see tasks/README.md claim convention
 claimed_at:   # YYYY-MM-DD HH:MM (claim goes stale when `updated` is >24h old)
 created: YYYY-MM-DD
@@ -152,6 +153,8 @@ Revision: <commit hash> on <branch>
 ---
 
 ## Progress Log
+
+<!-- One row per phase change or session end. Note format: done: <what> · learned: <what> · next: <what> -->
 
 | Date | Phase | Note |
 |------|-------|------|
