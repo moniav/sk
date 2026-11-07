@@ -37,6 +37,16 @@ Transient, event-stamped docs (tasks, epics, research, reviews) do **not** take 
 `Lifecycle`: their existing date and `status` fields already express their state,
 and "staleness" is meaningless for a finished task.
 
+## Verified at: drift since the last check
+
+Docs that describe code (`system/` API, schema, environment, integrations and stack docs, `architecture/`, feature and component docs) carry, beside `Last updated`:
+
+```
+**Verified at:** a1b2c3d
+```
+
+the short commit (`git rev-parse --short HEAD`) at which their content was last checked against the code. `/sk:init-docs` and `/sk:update-docs` set it on every doc they verify. A date says when someone looked; the commit says what they looked at, so `/sk:docs-audit` can ask git exactly what changed since (`git diff --name-only <sha> HEAD`) and re-check only the claims that cite those files. A doc without the stamp falls back to the date comparison below and is reported once as unstamped.
+
 ## Doc-to-code freshness (the `Source:` field)
 
 Evergreen docs may declare **which code they describe** so staleness can be detected
@@ -50,7 +60,7 @@ Comma-separated paths or globs, relative to the repo root. Existing field names 
 as the same signal: feature docs use `**Code:**`, component docs use `**Location:**`.
 `/sk:docs-audit` reads any of the three.
 
-When the field is present, `/sk:docs-audit` compares the last commit date of those
+When the field is present and the doc has no `Verified at`, `/sk:docs-audit` compares the last commit date of those
 paths (`git log -1 --format=%cs -- <paths>`) against the doc's `Last updated`. Code
 newer than the doc → flagged **code-drift**, a much stronger signal than the 180-day
 timer. `/sk:update-docs` uses the same comparison to build its priority queue and

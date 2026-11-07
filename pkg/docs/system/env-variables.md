@@ -1,6 +1,7 @@
 # Environment Variables
 
 **Last updated:** YYYY-MM-DD
+**Verified at:** <!-- short commit sha the content was last checked against the code (git rev-parse --short HEAD); /sk:docs-audit re-checks claims whose files changed since -->
 
 <!-- Names and purposes only. The Example column holds a made-up placeholder, never a value from this project's .env or secret store. -->
 

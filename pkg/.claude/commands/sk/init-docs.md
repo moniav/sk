@@ -18,6 +18,7 @@ Copy the steps below into your todo list before starting. A step you decide not 
 - `CLAUDE.md` Build Commands are filled in from detection, each with a comment naming its source. A command that could not be detected keeps the placeholder comment plus `# [NOT DETECTED] - fill in manually`.
 - **Never read secrets.** Do not open `.env`, `.env.*` (except `.env.example`, `.env.sample`, `.env.template`, `.env.dist`), `*.pem`, `*.key`, `id_*`, `.npmrc`, `.pypirc`, `.netrc` or `.git-credentials`. Environment variable *names* come from a template file or from the places the code reads them; no value from the project ever goes into a doc. Skip lockfiles and generated or vendored directories, and list what was skipped in the Step 7 report.
 - In every index file you create or keep, replace the `Last updated: YYYY-MM-DD` placeholder with today's date. Otherwise `/sk:docs-audit` reports the fresh scaffold as unfilled stubs.
+- In every doc you write from the code (`system/`, `architecture/`, feature docs), set `Verified at` to `git rev-parse --short HEAD` (leave it as the placeholder when the repository has no commits).
 
 ## Exit Gate
 

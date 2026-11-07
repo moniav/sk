@@ -102,11 +102,11 @@ For each section in scope, compare code against docs. Every check that fails is 
 
 ### Lifecycle Pass (all evergreen docs)
 
-For every evergreen doc touched, refresh `Last updated` and confirm its `Lifecycle` (`current` / `stale` / `deprecated` / `archived`) per `docs/conventions/doc-lifecycle.md`.
+For every evergreen doc touched, refresh `Last updated`, set `Verified at` to `git rev-parse --short HEAD` on each doc whose claims you checked against the code (not on a doc you only re-dated), and confirm its `Lifecycle` (`current` / `stale` / `deprecated` / `archived`) per `docs/conventions/doc-lifecycle.md`.
 
-**Doc-to-code linkage:** docs with a `Source:` / `Code:` / `Location:` field whose paths changed since their `Last updated` are the priority queue: update those first. When touching a doc that lacks the field but clearly describes specific code, add `**Source:** <paths>` so future audits can detect drift automatically.
+**Doc-to-code linkage:** docs whose cited or `Source:` / `Code:` / `Location:` paths changed since their `Verified at` commit (`git diff --name-only <sha> HEAD -- <paths>`; without a stamp, since their `Last updated` date) are the priority queue: update those first. When touching a doc that lacks the field but clearly describes specific code, add `**Source:** <paths>` so future audits can detect drift automatically.
 
-- [ ] `Last updated` bumped on docs that changed
+- [ ] `Last updated` bumped on docs that changed; `Verified at` set on docs checked against the code
 - [ ] Docs whose code changed but content didn't downgraded to `Lifecycle: stale`
 - [ ] Retired docs moved to `docs/_archive/` and set to `Lifecycle: archived`
 - [ ] Both front doors (README.md + START-HERE.md) reflect the current section set
