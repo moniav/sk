@@ -65,13 +65,13 @@ git diff --stat HEAD~10
 git status
 ```
 
-**3b. Structure.** Glob `src/**/*.ts`, `src/**/*.tsx`, `src/**/*.py` (source), `**/migrations/*`, `**/schema*` (schema/migrations), and `package.json`, `requirements.txt`, `pyproject.toml` (manifests).
+**3b. Stack signals and structure.** Read `docs/reference/stacks/signals.md` (or `${CLAUDE_PLUGIN_ROOT}/docs/reference/stacks/signals.md` if the project has no copy). Find the packages, then for each one its ecosystem, entry points, source folders and tests, skipping the folders under *Always skip*.
 
-**3c. Dependencies.** Read the manifests: `package.json` (dependencies and devDependencies), `requirements.txt` or `pyproject.toml`.
+**3c. Dependencies.** Read each package's manifest.
 
-**3d. API.** Grep `"route|router|app.get|app.post|@app|export.*GET|export.*POST"` in `*.ts`, `*.tsx`, `*.py`.
+**3d. API.** Grep each ecosystem's route patterns in that package's source.
 
-**3e. Schema.** Grep `"createTable|model|class.*Model|class.*Schema|BaseModel"` in `*.ts`, `*.py`.
+**3e. Schema.** Grep each ecosystem's data patterns and list its migration folders.
 
 ## Step 4: Identify Gaps
 
@@ -80,7 +80,7 @@ For each section in scope, compare code against docs. Every check that fails is 
 ### System Docs (`docs/system/`)
 
 - **project-context.md**: description accurate; key features list current; stack summary matches tech-stack.md; current status / phase up to date; gotchas and constraints still relevant
-- **tech-stack.md**: dependencies match `package.json` / `requirements.txt`; versions current; new tools/libraries documented; removed dependencies cleaned up
+- **tech-stack.md**: dependencies match each package's manifest; every package has its section; versions current; new tools/libraries documented; removed dependencies cleaned up
 - **database-schema.md**: tables match the schema files; relationships accurate; indexes documented; migration history current; ER diagram matches
 - **api-reference.md** (if exists): all endpoints documented; request/response formats accurate; new endpoints added; removed endpoints cleaned up; auth requirements noted
 - **integrations.md** (if exists): external services listed; the env var *names* each one needs documented (never values); webhook endpoints listed
@@ -89,7 +89,7 @@ For each section in scope, compare code against docs. Every check that fails is 
 
 | Section | Checks |
 |---------|--------|
-| Architecture (`docs/architecture/`) | Component diagram reflects the current system; new components documented; removed components cleaned up; cross-cutting concerns current (auth, logging, errors) |
+| Architecture (`docs/architecture/`) | Component diagram reflects the current system; every top-level source folder belongs to exactly one component or is under *Not covered*; new components documented; removed components cleaned up; Reading order and Hubs still name existing files; cross-cutting concerns current (auth, logging, errors) |
 | Conventions (`docs/conventions/`) | Code style matches actual codebase patterns; file structure matches actual layout; newly adopted patterns documented; git workflow still accurate |
 | Decisions (`docs/decisions/`) | Recent tech decisions have ADRs; superseded decisions marked; no undocumented significant decision in git log |
 | Flows (`docs/flows/`) | Diagrams match actual code flow; new features have flows; removed features' flows cleaned up |

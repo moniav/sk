@@ -27,8 +27,8 @@ Build understanding layer by layer. Stop when you have enough context for the ta
 
 ### Layer 2: Architecture (read for M+ tasks)
 4. `docs/architecture/README.md` — system design, module boundaries
-5. Entry points — `src/index.*`, `src/main.*`, `app.*`, `cli.*`
-6. Directory structure — `ls` the top-level src directory to understand module layout
+5. Entry points: the **Reading order** and **Hubs** in `docs/architecture/README.md`, read in that order; if they are missing, the entry files `docs/reference/stacks/signals.md` names for the project's stack
+6. Directory structure: `ls` the top-level source folders of each package to understand module layout
 
 ### Layer 3: Conventions (read before writing code)
 7. `docs/conventions/code-style.md` — naming, patterns, import order

@@ -55,6 +55,27 @@ graph TD
 - **An agent** is dispatched by type (`implementer`, or `sk:implementer` under the plugin). Its frontmatter sets its tools, its model and any skills preloaded into it.
 - **Three behaviour rules** (evidence before done, stop after three failed attempts, what "just do it" permits) are always on through the project's `CLAUDE.md`.
 
+## Reading Order
+
+1. `pkg/.claude-plugin/plugin.json`: what the plugin declares (commands, agents, skills, version)
+2. `pkg/.claude/commands/sk/help.md`: the map of every command and the idea-to-shipped flow
+3. `pkg/CLAUDE.md`: the template every project gets; the rules commands rely on
+4. `pkg/hooks/session-start.mjs`: the one hook, briefing the active task from `docs/tasks/.current`
+5. `pkg/.claude/commands/sk/plan.md`, `dev.md`, `test.md`, `finish.md`: the lifecycle commands, in order
+6. `pkg/.claude/skills/verification-before-completion/SKILL.md`: the evidence rule most commands load
+7. `pkg/cli.mjs`: the scaffold script behind `/sk:scaffold` (`init`, `update`, `migrate`)
+8. `scripts/check.mjs`: what `npm test` enforces (development only)
+
+## Hubs
+
+| Module | Referenced by | Why it matters |
+|--------|---------------|----------------|
+| `docs/tasks/.current` (format in `docs/tasks/README.md`) | 18 files (commands, skills, the hook) | The active-task pointer every lifecycle step reads or writes |
+| `skills/verification-before-completion` | 9 commands, skills and agents | The evidence rule; changing it changes what "done" means everywhere |
+| `skills/technical-writing` | 8 | Writing rules for every doc a command produces |
+| `skills/escalation-rules` | 7 | When work stops and hands the decision to the user |
+| `docs/templates/task-prd.md` | 6 | The task file every lifecycle command reads |
+
 ## Key Design Principles
 
 1. **Zero dependencies.** The CLI uses only the Node.js standard library.

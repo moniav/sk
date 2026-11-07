@@ -16,6 +16,14 @@
 | Cache | <!-- Redis / Memcached / none --> | - | Session store, caching |
 | Auth | <!-- NextAuth / Passport / Django Auth / custom JWT / etc. --> | - | Authentication |
 
+## Packages
+
+<!-- Only for a repository with several packages (workspaces, monorepo): one row per package. The tables above hold what they share. -->
+
+| Package | Path | Language / framework | Build and test |
+|---------|------|----------------------|----------------|
+| - | - | - | - |
+
 ## Infrastructure
 
 | Service | Provider | Purpose |

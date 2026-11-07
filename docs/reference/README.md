@@ -15,5 +15,6 @@ Unlike `system/` (this project's current state) or `architecture/` (this project
 |------|-----|---------|
 | UI design | [ui-design/visual-design.md](./ui-design/visual-design.md) | `/sk:ui-review` (aesthetic / visual standards) |
 | UI design | [ui-design/anti-patterns.md](./ui-design/anti-patterns.md) | `/sk:ui-review` (AI-slop / anti-pattern checks) |
+| Stacks | [stacks/signals.md](./stacks/signals.md) | `/sk:init-docs`, `/sk:update-docs`, `/sk:docs-audit` (where to find packages, entry points, routes, data, tests) |
 
 Add new reference material as its own subfolder (e.g. `reference/<topic>/`) and link it here.
