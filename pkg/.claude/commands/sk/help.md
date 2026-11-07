@@ -12,6 +12,10 @@ If the arguments describe a situation, answer with the one or two commands that 
 If there are no arguments, print the map below as it is.
 Do not run any command from here. This command only points the way.
 
+## Start from the project's state
+
+Before the map, check three things with Glob and Read: whether `docs/README.md` exists, whether `docs/prd/` holds a `PRD-*.md`, and whether `docs/tasks/.current` names a task. Then suggest the next one or two commands with a one-line reason: no `docs/` yet → `/sk:scaffold`, then `/sk:init-docs` for existing code or `/sk:prd` for a new product; docs but no PRD and no task → `/sk:prd` or `/sk:new-task`; an active task → `/sk:resume`.
+
 ## The main flow: idea to shipped
 
 ```

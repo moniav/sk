@@ -4,7 +4,7 @@
 
 ## Session Continuity
 
-On session start, check `docs/tasks/.current` for active work; `/sk:resume` gives a briefing. Save user preferences and project gotchas to Claude Code memory; decisions, conventions and architecture to docs; current work state to the task file.
+`docs/tasks/.current` points at the active task; SK briefs it at session start, and `/sk:resume` gives the full picture. Save user preferences and project gotchas to Claude Code memory; decisions, conventions and architecture to docs; current work state to the task file.
 
 ## Development Lifecycle: Plan > Dev > Test
 

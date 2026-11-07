@@ -21,6 +21,11 @@ Read `docs/tasks/.current` if it exists (canonical format defined in `docs/tasks
 
 If the file doesn't exist, that's fine — the other checks below still run either way (`.current` is a hint, not a gate).
 
+If it names a task, also read from that task file:
+- **Open Questions** whose status is not Verified or Decided
+- the newest row of the **Verification** table (what was last proven, at which revision)
+- the latest `learned:` notes in the **Progress Log** and any failed attempts in **Dev Notes**
+
 ### 1b. Recent Git Activity
 ```bash
 git log --oneline -10
@@ -57,10 +62,15 @@ Present a concise briefing (aim for 5-8 lines):
 **Last activity:** 2 hours ago — implemented JWT middleware
 **Uncommitted:** 3 files modified (auth.ts, middleware.ts, auth.test.ts)
 **Next:** Subtask 5 — Add refresh token endpoint
+**Open questions:** 1 open: token lifetime for mobile clients (recommended: 30 days)
+**Last proven:** AC-1 and AC-2 passed at a1b2c3d; AC-3 untested
+**Learned:** the session store ignores the `secure` flag in tests; failed attempt 2 on refresh rotation
 
 **Other active work:**
 - TASK-5 — Dashboard (PLAN phase, ready for dev)
 ```
+
+The briefing answers five questions: where am I (branch, task, phase), where am I going (next subtask), what is the goal (the task's title and open questions), what have I learned (notes and failed attempts), and what have I done (last activity and what was proven). Leave out a line only when there is nothing to put in it.
 
 If no active work is found:
 ```

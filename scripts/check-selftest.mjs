@@ -31,6 +31,13 @@ const CASES = [
   ["references", (d) => appendFileSync(join(d, "pkg/.claude/skills/plow-ahead/SKILL.md"), "\nSee `../no-such-skill/SKILL.md`.\n")],
   ["positional-args", (d) => appendFileSync(join(d, "pkg/.claude/commands/sk/recap.md"), "\n```bash\nawk '{print $1}' file\n```\n")],
   ["size", (d) => appendFileSync(join(d, "pkg/.claude/commands/sk/recap.md"), "\n" + "x".repeat(19 * 1024) + "\n")],
+  ["preload", (d) => appendFileSync(join(d, "pkg/.claude/commands/sk/recap.md"), "\n- Deps: !`npm install || true`\n")],
+  ["preload", (d) => appendFileSync(join(d, "pkg/.claude/commands/sk/recap.md"), "\n- Log: !`git log --oneline -5`\n")],
+  ["hook", (d) => edit(d, "pkg/hooks/hooks.json", '"SessionStart"', '"PreToolUse"')],
+  ["preload", (d) => appendFileSync(join(d, "pkg/.claude/commands/sk/recap.md"), "\n- Task: !`cat docs/tasks/.current 2>/dev/null || true`\n")],
+  ["preload", (d) => appendFileSync(join(d, "pkg/.claude/commands/sk/recap.md"), "\n- Status: !`git status --short 2>/dev/null | head -5 || true`\n")],
+  ["hook", (d) => edit(d, "pkg/hooks/session-start.mjs", "For reference only:", "Resume now:")],
+  ["read-only", (d) => edit(d, "pkg/.claude/commands/sk/recap.md", "still only reports", "only reports")],
 ];
 
 let failed = 0;
