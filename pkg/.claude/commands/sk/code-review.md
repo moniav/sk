@@ -25,7 +25,7 @@ Filled in when the command loads, so the first steps need not run these again:
 
 - Branch: !`git branch --show-current 2>/dev/null || true`
 - Default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true`
-- Uncommitted: !`git status --short 2>/dev/null | head -20 || true`
+- Uncommitted: !`git status --short 2>/dev/null || true`
 - Recent commits: !`git log --oneline -10 2>/dev/null || true`
 
 If a line above is empty or still shows its command (shell injection is off, or this is not a git repository), gather that fact with the steps below.

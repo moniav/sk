@@ -16,7 +16,7 @@ Do not run any command from here. This command only points the way.
 ## Preloaded state
 
 - Docs scaffolded: !`ls docs/README.md 2>/dev/null || true`
-- PRDs: !`ls docs/prd 2>/dev/null | grep -c '^PRD-' || true`
+- PRDs: !`ls docs/prd 2>/dev/null || true`
 - Active task: !`cat docs/tasks/.current 2>/dev/null || true`
 
 **Start from this state.** Before the map, suggest the next one or two commands with a one-line reason: no `docs/` yet → `/sk:scaffold`, then `/sk:init-docs` for existing code or `/sk:prd` for a new product; docs but no PRD and no task → `/sk:prd` or `/sk:new-task`; an active task → `/sk:resume`. If the lines above are empty or still show their commands, check those three things with Read and Glob.

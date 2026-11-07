@@ -35,6 +35,7 @@ const CASES = [
   ["preload", (d) => appendFileSync(join(d, "pkg/.claude/commands/sk/recap.md"), "\n- Log: !`git log --oneline -5`\n")],
   ["hook", (d) => edit(d, "pkg/hooks/hooks.json", '"SessionStart"', '"PreToolUse"')],
   ["preload", (d) => edit(d, "pkg/.claude/commands/sk/resume.md", "Bash(cat docs/tasks/.current)", "Read")],
+  ["preload", (d) => edit(d, "pkg/.claude/commands/sk/resume.md", "!`git status --short 2>/dev/null || true`", "!`git status --short 2>/dev/null | head -5 || true`")],
   ["hook", (d) => edit(d, "pkg/hooks/session-start.mjs", "For reference only:", "Resume now:")],
   ["read-only", (d) => edit(d, "pkg/.claude/commands/sk/recap.md", "still only reports", "only reports")],
 ];

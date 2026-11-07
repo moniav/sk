@@ -300,6 +300,7 @@ for (const [label, path] of [
       if (!/\|\|\s*(true|echo\b[^`]*)\s*$/.test(m[2])) err("preload", `${label} must end with || true so a failure cannot abort the command`);
       if (/[;&]|>(?!\/dev\/null)/.test(m[2].replace(/\|\|/g, "").replace(/2>\/dev\/null/g, ""))) err("preload", `${label} chains or redirects; keep it one read-only command`);
       if (/^\(/.test(m[2])) err("preload", `${label} opens with a ( group, which the permission check cannot read; the command aborts`);
+      if (/(^|[^|])\|(?!\|)/.test(m[2])) err("preload", `${label} uses a pipe; under a sandbox a piped injection fails and aborts the command`);
       // An injection the command does not grant fails its permission check and aborts the command
       // in headless runs, so every injected command needs a matching allowed-tools entry.
       const head = m[2].split(/\s*(?:\|\||\||2>)/)[0].trim();
