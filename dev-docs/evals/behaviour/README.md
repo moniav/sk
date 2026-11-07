@@ -18,3 +18,5 @@ Run them with `npm run evals -- --suite behaviour`; they run with and without th
 | `finish-contract-merge` | `/sk:finish` delivering a feature PRD adds, modifies and removes contract rows and flows by their Change tag, and copies no tag |
 | `finish-contract-broken` | `/sk:finish` stops the delivery when a REMOVED tag names a contract row that does not exist, instead of guessing |
 | `docs-audit-drift` | `/sk:docs-audit drift` reports exactly the claims the code broke since `Verified at` (a renamed route, a dropped table, removed behaviour still served) and nothing that still holds |
+| `retro-recurring-finding` | `/sk:retro` turns one finding kind seen in three fixed reviews into exactly one proposal, and drops the lint-covered, one-off and disputed kinds |
+| `plan-past-work` | `/sk:plan` finds a finished task in the same area, carries its lesson over and checks its stale claim against the code |

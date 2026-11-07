@@ -75,6 +75,14 @@ mkdirSync(dir, { recursive: true });
 cpSync(src, dest, { recursive: true, force: true });
 ```
 
+## Project anti-patterns (learned from reviews)
+
+Added by `/sk:retro` when one kind of review finding recurs, was fixed each time, and no check in `npm test` covers it.
+
+| Pattern | Why it bites | Instead | Evidence | Retire when |
+|---------|--------------|---------|----------|-------------|
+| _none yet_ | | | | |
+
 ## Error Handling
 
 - Use `process.exit(1)` for fatal errors after printing a clear message

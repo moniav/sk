@@ -360,6 +360,8 @@ Also: `release.md` Step 1 runs `node scripts/check.mjs --release`.
 **Done when:** three fixture review reports sharing one finding kind produce exactly one proposed row; planning a task similar to the worked example cites it.
 **Credit:** EveryInc/compound-engineering-plugin (MIT).
 
+> **Outcome (2026-11-07):** built as planned; rows live in a *Project anti-patterns* table in `code-style.md`, where `quality-reviewer` already reads. Cases (Sonnet, 3 runs): `plan-past-work` (a finished task in the same area with a lesson the code does not show and a claim a migration made false) 0/3 before, 3/3 after. `retro-recurring-finding` (three fixed reports sharing one kind, plus a lint-covered, a one-off and a disputed kind) failed every run at first, with and without SK: the fixture's lint rule was not wired into CI and its export convention was unwritten, so proposing both was right, and the grader asked for more than the done-when. After fixing the fixture and holding the grader to "exactly one row for the kind, nothing for the others": 1/3 before, 2/3 after; the remaining run proposed a check instead of a row, which the retro's own rules allow, and noticed that the fixture's tests seed no rows (a fixture flaw left in place, since it is a fair finding). Spend: about $5.
+
 ---
 
 ## Design notes track

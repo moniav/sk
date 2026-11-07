@@ -7,6 +7,7 @@ phase: done
 status: done
 priority: P0
 epic: E1
+areas: src/app/api/auth, src/services/auth.ts, src/lib/db, src/lib/queue
 created: 2025-02-10
 updated: 2025-02-11
 ---
