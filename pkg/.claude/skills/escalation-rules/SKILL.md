@@ -1,6 +1,6 @@
 ---
 name: escalation-rules
-description: Load when an approach has already failed and you are about to try another fix for the same problem: after three failed attempts you stop and give the user structured options instead of a fourth try. Applies to repeated test, build, migration, deploy or command failures, and to work going in circles.
+description: Stops retrying after three failed attempts at the same problem and presents structured options to the user. Use when a fix, test or subtask has failed repeatedly, or the work is going in circles.
 ---
 
 # Escalation Rules

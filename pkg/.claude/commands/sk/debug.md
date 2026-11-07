@@ -14,6 +14,7 @@ Copy the steps below into your todo list before starting. A step you decide not 
 
 ## Rules and Gates
 
+- **A broken repository is not a code bug.** If the problem is git, dependency or deploy state (merge or rebase conflicts, lost commits or branches, a corrupted index, a broken lockfile or install, a failed release), follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/error-recovery/SKILL.md` instead: diagnose before changing anything, so no work is lost.
 - **Reproduce first.** No hypotheses and no code changes until a reproduction has actually been run in this session and seen to fail (Step 4).
 - **No blind fixes.** If you cannot build a repeatable pass/fail signal (no repro, no access, no observable signal), halt and request the missing access or artifacts.
 - **Hypotheses are falsifiable.** 3 to 5, ranked, each with a prediction that could prove it wrong (Step 5).

@@ -1,6 +1,6 @@
 ---
 name: stay-within-limits
-description: Load before launching more than a few subagents, or any run expected to take hours or many subtasks: you plan bounded waves, check usage between them, and write a resume prompt before the usage limit cuts the run off.
+description: Keeps long or parallel agent runs from exhausting the usage limit mid-task, using bounded waves of subagents, a check between waves, and a resume prompt before pausing. Use when fanning out many subagents or starting a run that will last hours.
 ---
 
 # Stay Within Limits — Budget Governance

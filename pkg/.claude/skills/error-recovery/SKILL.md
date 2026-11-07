@@ -1,6 +1,6 @@
 ---
 name: error-recovery
-description: Load before changing anything when git, dependencies or a deploy are in a state nobody intended: merge or rebase conflicts, lost commits or branches, a corrupted index, a broken lockfile or install, a failed release. You diagnose first, so the fix loses no work.
+description: Guides recovery from a broken state, such as merge or rebase conflicts, a corrupted git state, a build that broke after a dependency change, lockfile conflicts or a failed deploy. Use when something is broken and needs diagnosing before any fix is tried.
 ---
 
 # Error Recovery

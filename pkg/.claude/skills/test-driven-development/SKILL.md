@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-description: Load before you write or edit production code to fix a bug or change behaviour: you write and run a failing test first, then the code that makes it pass. Applies to every code change, including one-line fixes and rushed requests; skipping it is how regressions ship. Not needed for edits to tests alone or for questions about testing.
+description: Enforces red-green-refactor, where a failing test is written and run before the production code. Use when implementing a feature, fixing a bug, or when the user mentions TDD or test first.
 ---
 
 # Test-Driven Development

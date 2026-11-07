@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Load before you tell the user that anything is done, fixed, passing, deployed or working: you run the check in this session and show its output for each requirement, and report anything unproven as untested. Applies every time work is about to be reported complete, and whenever the user asks for proof.
+description: Requires fresh command output as evidence before any claim that work is done, complete or passing, and checks the result against the original request. Use before reporting a task finished or confirming that something works.
 ---
 
 # Verification Before Completion
