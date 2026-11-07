@@ -5,7 +5,7 @@ git init -q -b main
 git config user.email eval@example.com && git config user.name eval
 mkdir -p src
 cat > package.json <<'J'
-{ "name": "shop", "version": "1.0.0", "scripts": { "test": "node --test" } }
+{ "name": "shop", "version": "1.0.0", "scripts": { "test": "node --test", "lint": "eslint src" } }
 J
 cat > src/discount.js <<'J'
 function applyDiscount(total, code) {
@@ -13,6 +13,9 @@ function applyDiscount(total, code) {
   return total;
 }
 module.exports = { applyDiscount };
+J
+cat > .eslintrc.json <<'J'
+{ "root": true, "env": { "node": true, "es2022": true }, "rules": { "no-unused-vars": "error" } }
 J
 git add -A && git commit -qm "discount: VIP code"
 git switch -q -c feature/staff-discount
