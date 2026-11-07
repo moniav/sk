@@ -285,6 +285,8 @@ Also: `release.md` Step 1 runs `node scripts/check.mjs --release`.
 
 ### PR9 Measured settings · S · after PR3 and PR8 · gate N2
 
+> **Outcome (2026-11-07): skipped by decision.** No behaviour case exercises the commands and agents B2 would tune (`task-status`, `resume`, `recap`, `debugger`, `architecture-reviewer`, `plan-reviewer`), and eval fixtures never load a project CLAUDE.md, so B3 (`omitClaudeMd`) cannot be measured either. The plan keeps a setting only where evals hold or improve, so neither ships. Revisit when cases for those commands exist.
+
 **Items:** B2, B3.
 
 - `effort: low` on `task-status`, `resume`, `recap`; `effort: high` on `debugger`, `architecture-reviewer`, `plan-reviewer`, `security-reviewer`. Each kept only where its cases hold or improve.
