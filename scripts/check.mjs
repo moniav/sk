@@ -206,6 +206,10 @@ for (const file of commandFiles) {
   }
   if (/\(project\)\s*$/.test(f.description || "")) err("frontmatter", `commands/sk/${file}: drop the "(project)" suffix from the description`);
   if (f["argument-hint"] && !text.includes("$ARGUMENTS")) err("frontmatter", `commands/sk/${file} takes arguments but never places $ARGUMENTS`);
+  // Arguments are user data: placed in backticks so the model reads them as a value, not as instructions.
+  for (const m of text.slice(frontmatter(text)?.bodyStart || 0).matchAll(/(?<!`)\$ARGUMENTS\b/g)) {
+    err("arguments", `commands/sk/${file}: $ARGUMENTS outside backticks near "${text.slice(Math.max(0, m.index - 30), m.index + 20).replace(/\n/g, " ")}"`);
+  }
 
   // The Skill tool cannot reach a gated command, so one command must not tell the model to run another.
   // "Suggest the user run /sk:x" is fine: the user types it.
@@ -218,6 +222,15 @@ for (const file of commandFiles) {
   if (existsSync(join(commandsDir, "help.md")) && name !== "help" && !new RegExp("/sk:" + name + "\\b").test(read(join(commandsDir, "help.md")))) {
     err("help", `commands/sk/help.md does not mention /sk:${name}`);
   }
+}
+
+// Commands that scan a project must never read secret files into the model or the docs.
+for (const name of ["init-docs", "update-docs"]) {
+  const path = join(commandsDir, `${name}.md`);
+  if (!existsSync(path)) continue;
+  const text = read(path);
+  if (!/\*\*Never read secrets\.\*\*/.test(text)) err("secrets", `commands/sk/${name}.md has no "Never read secrets" rule`);
+  if (/`\.env\*`/.test(text)) err("secrets", `commands/sk/${name}.md globs \`.env*\`, which matches real secret files`);
 }
 
 // Report-only commands: must not be able to edit the project.

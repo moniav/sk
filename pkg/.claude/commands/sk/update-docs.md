@@ -18,6 +18,7 @@ Copy the steps below into your todo list before starting. A step you decide not 
 - Only update docs that have been populated. Skip files that are empty or contain only template placeholders, and do not modify unfilled templates.
 - The code is the source of truth: read the code before changing the doc that describes it.
 - Fix gaps in priority order, P0 first.
+- **Never read secrets.** Do not open `.env`, `.env.*` (except `.env.example`, `.env.sample`, `.env.template`, `.env.dist`), `*.pem`, `*.key`, `id_*`, `.npmrc`, `.pypirc`, `.netrc` or `.git-credentials`. Environment variable *names* come from a template file or from the places the code reads them; no value from the project ever goes into a doc. Skip lockfiles and generated or vendored directories.
 - Show the report to the user; do not save it unless asked.
 - If the user only wants a read-only coherence check (orphans, staleness, broken links) without rewriting content, suggest `/sk:docs-audit` instead.
 
@@ -29,6 +30,7 @@ Do not report completion until each line holds:
 - [ ] Every doc changed in this run carries today's date in its last-updated field
 - [ ] Every link to or from a changed doc resolves to an existing file
 - [ ] Every doc created in this run is listed in its section README
+- [ ] No secret file was read, and no doc contains a value taken from an env or credential file
 - [ ] The report has been shown to the user
 
 ## Step 1: Read Current Documentation
@@ -81,7 +83,7 @@ For each section in scope, compare code against docs. Every check that fails is 
 - **tech-stack.md**: dependencies match `package.json` / `requirements.txt`; versions current; new tools/libraries documented; removed dependencies cleaned up
 - **database-schema.md**: tables match the schema files; relationships accurate; indexes documented; migration history current; ER diagram matches
 - **api-reference.md** (if exists): all endpoints documented; request/response formats accurate; new endpoints added; removed endpoints cleaned up; auth requirements noted
-- **integrations.md** (if exists): external services listed; API keys / env vars documented; webhook endpoints listed
+- **integrations.md** (if exists): external services listed; the env var *names* each one needs documented (never values); webhook endpoints listed
 
 ### Other Sections
 

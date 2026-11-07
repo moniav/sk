@@ -2,6 +2,8 @@
 
 **Last updated:** YYYY-MM-DD
 
+<!-- Names and purposes only. The Example column holds a made-up placeholder, never a value from this project's .env or secret store. -->
+
 ## Required Variables
 
 <!-- Variables the application will not start without -->

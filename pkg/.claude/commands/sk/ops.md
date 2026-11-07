@@ -26,7 +26,7 @@ production readiness. All output lands in `docs/operations/`.
 | `readiness` | Production-readiness review against the operational checklist |
 | *(empty)* or `scan` | Operational-posture scan (observability, alerting, deploy safety, backups, scaling) |
 
-**Mode: $ARGUMENTS** (default: scan)
+**Mode:** `$ARGUMENTS` (default: scan)
 
 ## Step 1: Load the Skill
 
