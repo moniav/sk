@@ -375,6 +375,8 @@ Each is a short note in `dev-docs/planning/`, decided before anything is built. 
 | E3 Run and cost log | Who writes it: `claude -p --output-format json` for headless runs, or a report-only reader of on-disk transcripts; never a Stop hook | ECC, superpowers | 3.3.0 or later |
 | E4 Verify skill | Approve or reject `2026-10-verify-skill-design-note.md` | cc-sdd smoke boot, planning-with-files | After 3.2.0 |
 
+> **Outcome (2026-11-07):** all four written in `2026-11-design-notes-e1-e4.md`, each with a recommendation awaiting the user's decision: E1 defer (commands are merged into skills, not deprecated; revisit on a named trigger); E2 stay deferred, and if split, separate folders with plugin `dependencies`; E3 a run log appended by the routines runbook from `claude -p --output-format json`, 3.3.0, size S; E4 approve with three changes (a behaviour case, a launcher-friendly description, no `remove` test).
+
 ---
 
 ## Eval budget
