@@ -319,6 +319,8 @@ Also: `release.md` Step 1 runs `node scripts/check.mjs --release`.
 **Done when:** on a scratch repository over the threshold, the merged docs list every source directory and the coverage table shows no silent partial reads.
 **Credit:** Graphify (Apache-2.0, ideas), JuliusBrussee/caveman (Apache-2.0, ideas).
 
+> **Outcome (2026-11-07):** R11 built. Trial on a generated repository of 176 files (Go service with 10 domain packages, Next.js app with 10 features; three facts planted in filler files), `/sk:init-docs` on Haiku, one run per arm: both the pre-PR11 and the chunked scan documented 30/30 routes and 10/10 tables and found all three planted facts; the chunked scan read 173/173 files in 8 to 9 Explore chunks over three waves against 31 to 45 files read directly, at the same cost ($0.70 to $0.74). Kept for verifiable coverage at no extra cost; an accuracy gain is unproven, because the old scan's careful grep filtered the fixture's generated filler. Re-measure on a real large repository when one is available. **C2 cut:** per the Claude Code docs the `LSP` tool is inactive until a code-intelligence plugin is installed, is never started in cloud sessions, and a command has no documented way to detect it; subagents inherit it when present, but none of this can be tested in the cloud environment the evals run in.
+
 ### PR12 Behaviour contract · M
 
 **Items:** F9 (R10).
