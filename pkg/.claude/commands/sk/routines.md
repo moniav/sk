@@ -29,6 +29,7 @@ Present the recommended set (use AskUserQuestion, multi-select):
 | Routine | Cadence | Command | Report lands in |
 |---------|---------|---------|-----------------|
 | Docs health | Nightly or weekly | `/sk:docs-audit` | `docs/reviews/` |
+| Docs drift | Weekly, or after merges to the default branch | `/sk:docs-audit drift` (only the drift check: claims whose code changed since `Verified at`) | `docs/reviews/` |
 | Dependency sweep | Weekly | `/sk:deps` | `docs/reviews/deps/` |
 | Debt harvest | Weekly | `/sk:debt` | `docs/reviews/` |
 | Retro | Weekly | `/sk:retro` | `docs/reviews/` |

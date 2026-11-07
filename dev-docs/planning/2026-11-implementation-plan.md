@@ -348,6 +348,8 @@ Also: `release.md` Step 1 runs `node scripts/check.mjs --release`.
 **Upgrade note:** docs without a stamp are reported once as unstamped and fall back to the date check.
 **Credit:** Egonex-AI/Understand-Anything, Fission-AI/OpenSpec (MIT).
 
+> **Outcome (2026-11-07):** built as planned. Behaviour case `docs-audit-drift` (Sonnet, 3 runs): the first run scored 33% after against 67% before, with every run finding all three drifts; both versions also listed the still-served export route as undocumented, which the judge counted as a fourth drift. Two changes: "undocumented" now means added by the diff, with one finding per cause, and the grader counts that route under the export finding (the same grader for both versions). Rerun: 67% before, 100% after, cost unchanged. Caveat: the fixture carries `Verified at` stamps, which the old command also used unprompted; on a real project the old command never writes them, so its audit would fall back to dates. Spend: about $2.5.
+
 ### PR14 Learning loop · S to M · after PR5's fields have been in use
 
 **Items:** D1, D2.

@@ -1,6 +1,7 @@
 # API Reference
 
 **Last updated:** YYYY-MM-DD
+**Verified at:** <!-- short commit sha the content was last checked against the code (git rev-parse --short HEAD); /sk:docs-audit re-checks claims whose files changed since -->
 
 ## Endpoints
 

@@ -17,3 +17,4 @@ Run them with `npm run evals -- --suite behaviour`; they run with and without th
 | `review-broken-caller` | `/sk:review` finds a caller outside the diff that the change breaks |
 | `finish-contract-merge` | `/sk:finish` delivering a feature PRD adds, modifies and removes contract rows and flows by their Change tag, and copies no tag |
 | `finish-contract-broken` | `/sk:finish` stops the delivery when a REMOVED tag names a contract row that does not exist, instead of guessing |
+| `docs-audit-drift` | `/sk:docs-audit drift` reports exactly the claims the code broke since `Verified at` (a renamed route, a dropped table, removed behaviour still served) and nothing that still holds |
