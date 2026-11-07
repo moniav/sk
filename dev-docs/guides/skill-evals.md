@@ -79,6 +79,30 @@ They need `Bash`, so they run on Linux, macOS, WSL2 or CI.
 - Compare across Haiku, Sonnet and Opus: a description that only works on the largest model is too subtle, and SK dispatches subagents on the smaller ones.
 - One run tells you little. Use the default three runs before drawing a conclusion.
 
+## Tuning a description
+
+1. Tune on Haiku (about $1.70 for the whole trigger suite at 3 runs); validate the result once on Sonnet (about $25 for the suite, or a few dollars with `--tag <skill>`).
+2. At most two edits to one description per round. Read the failures of the training cases only.
+3. Keep a change only on a strict held-out gain, and only if no other skill's quiet score drops. With 9 held-out runs per skill and kind, one run is 11 points: a single-run move on one skill is noise (it shows up on unchanged descriptions too).
+4. Describe the moment to load the skill and what skipping it costs; never copy a case's wording.
+5. A skill that stays under about 50% on held-out cases after tuning gets its rule delivered another way, recorded here.
+
+**Status after the 3.2 tuning** (held-out fire; Haiku / Sonnet):
+
+| Skill | Haiku | Sonnet | Delivered also by |
+|-------|-------|--------|-------------------|
+| create-pdf | 56-67% | 100% | description |
+| technical-diagrams | 56-78% | 100% | description |
+| technical-writing | 22% | 100% | description (tuned) |
+| git-worktrees | 22% | 67% | description (tuned) |
+| subagent-driven-development | 22% | 67% | `/sk:dev`, `/sk:implement`, `/sk:orchestrate` |
+| escalation-rules | 0% | 33% | CLAUDE.md rule 7; `/sk:test`, `/sk:debug`, `/sk:refactor`, `/sk:orchestrate`, `debugger` |
+| stay-within-limits | 0% | 33% | `/sk:orchestrate` |
+| plow-ahead | 0% | 56% | CLAUDE.md rule 8 |
+| error-recovery | 0% | 11% | `/sk:debug` (broken repository, dependency or deploy state) |
+| test-driven-development | 0% | 0% | `subtask-execution`, `implementer`, `/sk:debug`; session briefing in dev |
+| verification-before-completion | 0% | 0% | CLAUDE.md rule 6; eight commands; `implementer`; session briefing in dev and test |
+
 ## Rules for changing SK
 
 - Record a baseline before changing descriptions or shortening prompts.
