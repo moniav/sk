@@ -39,6 +39,9 @@ Ask the user which task to plan, or:
 Work through 3a to 3d for this task. The analysis is done when you can name, as real paths: every file that will change, the existing feature whose pattern you will follow, and the tests that cover the area (or `none`).
 
 ### 3a. Map the Feature Area
+
+**Past work first.** Grep `areas:` and `title:` across `docs/tasks/` (including `docs/tasks/examples/`) for the modules and terms this task touches. Read the header and *What* of each match, then read the two or three closest finished ones (`status: done`) in full: their plan, Dev Notes and Progress Log. Cite each one you use in **Technical Decisions** (`TASK-N: what it settled or what went wrong`). A past task's claim about the code (a path, a table, a helper) is checked against the code before it is used; where they disagree, the code wins and the conflict goes into Assumptions. No match: say `Past work: none found`.
+
 ```
 - Grep for related terms in the codebase
 - Find existing similar patterns/features
@@ -171,7 +174,7 @@ Run the PLAN exit gate checklist:
 - [ ] No subtask depends on one listed after it
 - [ ] Open Questions table has an answer in every row
 - [ ] Affected Areas table has a Docs row naming each doc to update, or `none`
-- [ ] Technical Decisions names the existing file or pattern the approach follows
+- [ ] Technical Decisions names the existing file or pattern the approach follows, and the past tasks used (or `Past work: none found`)
 - [ ] Approach is the simplest that satisfies acceptance criteria: every subtask traces to a criterion (no speculative features)
 - [ ] Adversarial self-review done: each of the four failure classes has a written finding or `none found`, and every hard-to-reverse decision is listed in Technical Decisions or Open Questions
 ```
