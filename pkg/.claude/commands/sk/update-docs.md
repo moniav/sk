@@ -67,6 +67,8 @@ git status
 
 **3b. Stack signals and structure.** Read `docs/reference/stacks/signals.md` (or `${CLAUDE_PLUGIN_ROOT}/docs/reference/stacks/signals.md` if the project has no copy). Find the packages, then for each one its ecosystem, entry points, source folders and tests, skipping the folders under *Always skip*.
 
+For a large repository (more than about 150 source files), read the code the way `${CLAUDE_PLUGIN_ROOT}/.claude/commands/sk/init-docs.md` does under *Large repositories: chunked scan*, limited to the packages and folders in scope.
+
 **3c. Dependencies.** Read each package's manifest.
 
 **3d. API.** Grep each ecosystem's route patterns in that package's source.

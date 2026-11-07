@@ -27,6 +27,7 @@ Do not report completion until each line holds. For the minimal profile, the dom
 - [ ] Every dependency in `docs/system/tech-stack.md` appears in a dependency manifest
 - [ ] No secret file was read, and no doc contains a value taken from an env or credential file
 - [ ] Every path in `docs/conventions/file-structure.md` exists on disk
+- [ ] In a chunked scan, every source file was read in full or is listed under *Not covered*
 - [ ] Every top-level source folder (of every package) belongs to exactly one component in `docs/architecture/README.md`, or is listed under *Not covered* with a reason
 - [ ] Each package found has its stack in `docs/system/tech-stack.md`, and the API and schema docs cover every ecosystem present, not only the first one found
 - [ ] Each convention doc cites at least one existing file that shows the pattern
@@ -53,6 +54,24 @@ If `docs/system/project-context.md` exists, read it first. Stamp today's date in
 - **Structure:** the entry points and source folders the signals name for that ecosystem, its tests by the test globs, and config (`*.config.*`, `.env.example`, `.env.sample`, `.env.template`, `docker*`). Never a real `.env` (see Rules). Skip the folders under *Always skip* and list them as skipped.
 - **Routes and data:** Grep the ecosystem's route and data patterns in that package's source files.
 - **Unknown ecosystem:** read the manifest and README, find the entry point by name, and note the gap in the Step 7 report.
+
+### Large repositories: chunked scan
+
+When the source is large (more than about 150 source files, or several packages with more than 50 each), do not read it all in this conversation: a long read skims, and what it skims never reaches the docs. Split it and read it with read-only subagents instead.
+
+1. **List and size.** Per package, list the source files (`git ls-files`, filtered to the ecosystem's source extensions, minus *Always skip*) with their line counts.
+2. **Chunk.** Group by package, then by top-level folder. A chunk holds at most about 25 files and 6,000 lines; a file over 2,000 lines is a chunk on its own (Read stops at 2,000 lines unless given a range).
+3. **Dispatch in waves** of three or four built-in `Explore` subagents, following `${CLAUDE_PLUGIN_ROOT}/.claude/skills/stay-within-limits/SKILL.md`. Each prompt carries the chunk's file list, the ecosystem's signals, and these instructions: read every file in full (by range above 2,000 lines); never read secret files and report environment variable names only; cite `path:line` for every claim; return only this:
+
+   ```
+   | Component | Responsibility | Entry points | Depends on | Routes | Data models | Env var names | Evidence |
+   Coverage:
+   | File | Lines read | Lines total |
+   ```
+4. **Check coverage.** Compare lines read with each file's total. Send a file read short once more on its own; if it is still short, list it under *Not covered*.
+5. **Merge** the tables into Step 3: components into the architecture doc (one component per folder, merged across chunks), routes into the API reference, models into the schema doc, variable names into integrations.
+
+A repository below the threshold is read directly, as above.
 
 ### Build Commands Detection
 
@@ -197,6 +216,8 @@ Files created: {count}
   docs/architecture/    {list}
   docs/decisions/       {list}
   CLAUDE.md             (build commands filled in)
+
+Scan: {direct | chunked: N chunks in M waves}; files read in full {n}/{total}; re-read {k}; not covered: {list or none}
 
 Recommendations:
   - {missing tests, undocumented APIs, etc.}
