@@ -249,6 +249,8 @@ Also: `release.md` Step 1 runs `node scripts/check.mjs --release`.
 
 ### PR7 Reliable starts · M · gates N1, N3
 
+> **Outcome (2026-11-07):** A1, A3, A4 and N3 built and measured. **A2 dropped after testing:** every `` !`cmd` `` injection, even a single granted read-only `git` call, aborts the whole command when Claude Code cannot write its shell temp file, which happened for every injection inside `claude plugin eval`'s sandbox (and an ungranted or piped one aborts in other setups too). The saved turns are not worth a command that can become unusable. A4 kept its state-first suggestion using Read and Glob. The `check.mjs` preload rules stay for any future injection.
+
 **Items:** A1, A2, A3, A4, N3.
 
 | File | Change |
