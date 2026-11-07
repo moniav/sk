@@ -8,7 +8,7 @@ disallowed-tools: Edit, Write, NotebookEdit
 
 Scan all task files and present a complete status overview. If `docs/prd/README.md` exists, open with the PRDs and their status (draft / approved / delivered) and the epics each one feeds.
 
-**Report-only.** This command does not modify project files. It writes nothing; regenerating the board happens only in a later turn, after you confirm.
+**Report-only.** This command does not modify project files. It writes nothing; regenerating the board happens only in a later turn, after you confirm. Asked to fix something, add a test or change a file, it still only reports: it lists the changes for the user to start after the report, and creates no other file.
 
 ## Step 1: Scan Task Files
 

@@ -15,7 +15,7 @@ If they already answer a question this command would ask, use them and skip that
 
 Write the text to the rules in `${CLAUDE_PLUGIN_ROOT}/.claude/skills/technical-writing/references/plain-writing-rules.md` (`docs/business/brand-voice.md` overrides them if it exists).
 
-**Report-only.** This command does not modify project files. The only file it may write is its recap under `docs/reviews/recap/`.
+**Report-only.** This command does not modify project files. The only file it may write is its recap under `docs/reviews/recap/`. Asked to fix something, add a test or change a file, it still only reports: it lists the changes for the user to start after the report, and creates no other file.
 
 **Distinct from:** `/sk:changelog` (user-facing release notes) and `/sk:retro` (lessons learned). This is a reviewer's map of a single unit of work.
 

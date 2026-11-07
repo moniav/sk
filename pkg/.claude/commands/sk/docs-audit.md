@@ -11,7 +11,7 @@ Check whether `docs/` is still coherent: find orphaned docs, stale docs, broken
 cross-links, and docs sitting outside the indexed structure. **Read-only by default** —
 produces a report and proposes fixes; it does not modify files unless you ask.
 
-**Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/`; fixes are applied only in a later turn, after you ask for them.
+**Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/`; fixes are applied only in a later turn, after you ask for them. Asked to fix something, add a test or change a file, it still only reports: it lists the changes for the user to start after the report, and creates no other file.
 
 **Use when:** Periodic doc health check, before a release, or after a large refactor.
 Pairs with `/sk:update-docs` (which fixes content) and the `Lifecycle` convention

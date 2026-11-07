@@ -128,7 +128,7 @@ Use Agent tool:
     Subtask spec: {spec}
     Acceptance criteria: {relevant ACs}
     Files changed: {list from implementer report}
-    Read the actual code and verify it matches the spec. Output PASS or FAIL.
+    Read the actual code and verify it matches the spec. Output PASS, FAIL or CANNOT_VERIFY.
 ```
 
 **Stage 2: Code Quality (only if Stage 1 passes)**
@@ -145,7 +145,10 @@ Use Agent tool:
 
 **Stage 3: Architecture (conditional).** When a subtask spans modules or adds a new dependency between them, also dispatch the `architecture-reviewer` agent, which returns FITS / CONCERNS / REDESIGN. Single-file subtasks skip this stage. Treat REDESIGN like a Spec FAIL (re-dispatch with the recommended approach).
 
+A reviewer's prompt carries the spec, the files and the conventions, never a verdict: no "do not flag", "at most Minor", "the plan chose this" or "this is intentional".
+
 **Handle review results:**
+- Spec CANNOT_VERIFY: read the code it names and decide; if it still depends on a run, record the criterion as untested
 - Spec PASS + Quality clean: mark subtask done
 - Spec PASS + Quality suggestions only: note suggestions, mark done
 - Spec PASS + Quality critical, or Spec FAIL: re-dispatch implementer with findings (max 2 retries)

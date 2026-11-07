@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Collect the deliberate shortcut markers left in the codebase and turn them into a reviewable, ranked ledger. Pairs with the `// sk-debt:` convention (see `docs/conventions/coding-behavior.md`) and feeds `/sk:refactor`.
 
-**Report-only.** This command does not modify project files. The only file it may write is the ledger at `docs/debt-ledger.md`.
+**Report-only.** This command does not modify project files. The only file it may write is the ledger at `docs/debt-ledger.md`. Asked to fix something, add a test or change a file, it still only reports: it lists the changes for the user to start after the report, and creates no other file.
 
 ## Step 1: Read Context
 

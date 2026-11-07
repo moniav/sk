@@ -13,7 +13,7 @@ Analyze UI code for accessibility, responsive design, design consistency, perfor
 **Arguments:** `$ARGUMENTS`
 If they already answer a question this command would ask, use them and skip that question. If empty, use the defaults below and ask only for what cannot be inferred.
 
-**Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/ui/`.
+**Report-only.** This command does not modify project files. The only file it may write is its report under `docs/reviews/ui/`. Asked to fix something, add a test or change a file, it still only reports: it lists the changes for the user to start after the report, and creates no other file.
 
 ## Step 1: Read Context
 
