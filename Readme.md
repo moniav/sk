@@ -80,7 +80,7 @@ Every piece of work flows through three phases with explicit exit gates:
 
 ![Task Lifecycle](https://raw.githubusercontent.com/moniav/sk/main/assets/task-lifecycle.png)
 
-**Quick Path (XS/S):** most work needs no task file. Describe what you want; Claude Code follows Plan > Dev > Test mentally and commits when done.
+**Quick Path (XS/S):** most work needs no task file. Describe what you want; for multi-step work Claude Code states a short plan with a check per step, does it, and suggests `/sk:commit` when done.
 
 **Formal lifecycle (M and up):** a task file, each phase with its exit gate, and evidence recorded at the end: what was run, what it showed, at which revision.
 
@@ -89,6 +89,14 @@ Every piece of work flows through three phases with explicit exit gates:
 ![Task Hierarchy](https://raw.githubusercontent.com/moniav/sk/main/assets/task-hierarchy.png)
 
 A PRD covers a product or a feature big enough to need several epics. Epics link back to it (`prd: PRD-N`), tasks name the requirements they deliver (`delivers: FR-3`), subtasks are capped at single-concern size. Task files for a later epic are written when that epic starts, so they are planned against the code as it is then.
+
+### What Keeps the Work Honest
+
+- **Requirements stay delivered.** `/sk:finish` will not close an epic or mark a PRD delivered while a Must requirement has no finished task or an unproven criterion. `/sk:dev` never loosens a criterion that traces to a PRD; it points you to `/sk:prd PRD-N amend`.
+- **A behaviour contract per feature.** Each feature doc lists what the feature promises, as Given / When / Then rows keyed by the requirement they came from. A PRD tags every flow and requirement ADDED, MODIFIED or REMOVED, and when the PRD is delivered `/sk:finish` applies those changes to `docs/flows/` and the contracts, then checks the result.
+- **Docs that say what they were checked against.** Docs that describe code carry `Verified at: <commit>`. `/sk:docs-audit drift` asks git what changed since that commit and re-checks only the claims that cite those files: a renamed route, a dropped table, removed behaviour that is still served.
+- **Reviews that find what matters.** `/sk:review` checks a small change in one pass and sends its reviewer agents only for larger ones. `/sk:review`, `/sk:code-review` and the quality reviewer look for callers outside the diff that a change breaks and flag a lowered bar (a skipped test, a new suppression, a loosened config), and every finding comes with a realistic trigger. The report-only commands never edit your code, even when told to.
+- **Lessons that stick.** `/sk:retro` turns a finding that recurs across reviews into one row of project anti-patterns in your code-style conventions, which the quality reviewer reads. `/sk:plan` reads similar finished tasks first and checks their claims against today's code.
 
 ## Installation
 
@@ -121,6 +129,7 @@ Until 2.4.0, `npx shipkit-cld` copied the commands, skills and agents into the p
 
 - `claude plugin update sk@shipkit` updates the commands, skills and agents. Or turn on auto-update for the `shipkit` marketplace under `/plugin` → Marketplaces (off by default).
 - `/sk:scaffold update` in a project refreshes the shipped docs: templates, SOPs, reference docs, `docs/README.md`, `docs/commands-reference.md`, `docs/conventions/coding-behavior.md`, and `CLAUDE.md` while SK created it and you have not edited it.
+- Then `/sk:update-docs` brings your own docs up to date: it re-checks them against the code and adds what a release introduces there, such as the `Verified at` stamps and the architecture sections in 3.2.0. `/sk:init-docs` is only for a project SK has not documented yet.
 
 The docs update works one file at a time and **never overwrites your work**:
 
@@ -129,7 +138,7 @@ The docs update works one file at a time and **never overwrites your work**:
 - **Your own files are left alone**, including one that shares a name with a doc SK ships.
 - **`CLAUDE.md` is yours.** If you already have one when you scaffold, SK drops its template alongside as `CLAUDE.sk.md` for you to merge. If SK created it, updates refresh it only until you edit it.
 
-`/sk:scaffold update` shows a dry run first. To take SK's version of every shipped doc, discarding edits, ask for `--force`.
+`/sk:scaffold update` shows a dry run first. To take SK's version of every shipped doc, discarding edits, ask for `--force`; or ask Claude to merge each `.sk-new` into its file.
 
 To customise SK without creating update work, put project-specific rules in files SK never manages (`docs/conventions/`, `docs/business/brand-voice.md`, and your own skills and agents under their own names) rather than editing shipped files. To change a command itself, fork the plugin: `claude --plugin-dir /path/to/your/fork/pkg` loads it from a directory.
 
@@ -196,20 +205,22 @@ When you are not sure what to build, `/sk:brainstorm` comes first: it explores t
 5. /sk:plan, /sk:dev, /sk:test, /sk:finish  # Build it (/sk:implement runs the three phases in one go)
 ```
 
-`/sk:init-docs` scans your codebase and generates:
-- `docs/system/tech-stack.md` — from `package.json`, `pyproject.toml`, etc.
+`/sk:init-docs` reads the code in any of ten ecosystems (JavaScript and TypeScript, Python, Go, Rust, Java and Kotlin, .NET, Ruby, PHP, Elixir, Swift), finds every package in a monorepo, and generates:
+- `docs/system/tech-stack.md` — per package, from the manifests
 - `docs/system/project-context.md` — dense project summary
-- `docs/system/database-schema.md` — from schema/model files
-- `docs/system/api-reference.md` — from route definitions
+- `docs/system/database-schema.md` — from models and migrations
+- `docs/system/api-reference.md` — from route declarations, each citing `path:line`
 - `docs/conventions/code-style.md` — from observed naming and formatting patterns
 - `docs/conventions/file-structure.md` — from actual project layout
-- `docs/architecture/README.md` — component map from directory structure
+- `docs/architecture/README.md` — components, a reading order for newcomers, the most-used modules, and anything it did not cover
 - `docs/flows/` — one file per user-facing flow found in the code, and `docs/system/glossary.md` with the terms the code uses: the baseline a feature PRD compares against
 - ADRs for 2-3 major tech choices it discovers
 
+Where to look in each ecosystem lives in `docs/reference/stacks/signals.md`; add rows for a stack it does not know. Above about 150 source files it reads the code in chunks with read-only subagents and reports how many files it read in full. It never opens `.env` or key files, and writes variable names only.
+
 **Build commands are auto-detected** from `package.json` scripts, `Makefile` targets, `pyproject.toml` tools, `Cargo.toml`, `go.mod`, and CI workflows. You only need to fill in commands marked `[NOT DETECTED]`.
 
-**Tip:** Run `/sk:update-docs` periodically to keep docs in sync as your codebase evolves.
+**Already documented by SK?** Skip `/sk:init-docs`. `/sk:update-docs` re-checks your docs against the code and stamps each one it verified, and `/sk:docs-audit drift` lists exactly the claims the code has broken since.
 
 ### Autonomous & Multi-Agent Operation
 
@@ -231,7 +242,8 @@ SK works unattended and at fleet scale, governed by files you control:
 SK tracks your active work across sessions:
 
 - **`docs/tasks/.current`** — automatically updated by lifecycle commands with your active task, phase, and subtask progress
-- **`/sk:resume`** — start a new session with a briefing: what you were working on, what's next, any uncommitted changes
+- **Session briefing** — when a task is active, SK adds a short note at session start and after `/clear` or `/compact`: the task, its phase and the next subtask. It never resumes work on its own. Set `SK_SESSION_BRIEF=off` to turn it off.
+- **`/sk:resume`** — the full picture: where you are, where you are going, what was learned and what was done, with the newest proof
 - **Claude Code memory** — user preferences and workflow patterns persist across sessions automatically
 
 ## Command Map
@@ -288,7 +300,7 @@ Claude starts only six commands by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 
 | Command | Purpose | Output |
 |---------|---------|--------|
-| `/sk:review` | Parallel multi-dimension review — security, perf, quality subagents | Merged report with ship/no-ship verdict |
+| `/sk:review` | Security, performance and quality in one review: one pass for a small change, parallel reviewer agents for a larger one | Report with a ship/no-ship verdict |
 | `/sk:code-review` | Analyze code for bugs, conventions, quality | Report (conversation) |
 | `/sk:security-review` | OWASP Top 10, secrets, dependency audit | Report (conversation) |
 | `/sk:ui-review` | Accessibility, responsive design, UX | Report (conversation) |
@@ -320,7 +332,7 @@ Claude starts only six commands by itself: `/sk:debug`, `/sk:resume`, `/sk:task-
 | `/sk:resume` | Session briefing + context restore | Starting a new session with active work |
 | `/sk:task-status` | Show task board overview | Check progress across all tasks |
 | `/sk:update-docs` | Sync docs with codebase | After changes, or periodic audit |
-| `/sk:docs-audit` | Audit doc coherence — orphans, staleness, broken links, lifecycle | Periodic doc health check, before release |
+| `/sk:docs-audit` | Audit doc coherence — orphans, staleness, broken links, lifecycle, and drift from the code since each doc was verified (`drift` runs only that) | Periodic doc health check, before release, after merges |
 | `/sk:ops` | Operations/SRE expert — incidents, runbooks, postmortems, SLOs, readiness | Running prod, on-call, reliability work |
 | `/sk:deps` | Dependency health check | Periodic audit or before release |
 | `/sk:retro` | Run a retrospective on completed work | Capture lessons, patterns, improvements |
@@ -379,7 +391,7 @@ sk/                              ← SK source repository
 │   └── .claude/                 ← Commands, agents, skills
 │       ├── commands/sk/         ← 55 slash commands
 │       ├── agents/              ← 9 agents: implementer, six reviewers, dependency-analyzer, debugger
-│       └── skills/              ← 28 skills: 11 the model fires itself (TDD, verification, escalation, ...), the rest loaded by commands (research, interviewing, product-brief, flow-design, architecture-design, prototype, ...)
+│       └── skills/              ← 28 skills: 12 the model fires itself (TDD, verification, escalation, ...), the rest loaded by commands (research, interviewing, product-brief, flow-design, architecture-design, prototype, ...)
 └── docs/, dev-docs/             ← SK's own docs (dogfood instance) and planning notes, not shipped
 ```
 
@@ -409,9 +421,9 @@ sk/                              ← SK source repository
 
 **SOPs for procedures** — AI agents follow explicit steps better than vague guidelines. SOPs eliminate improvisation on critical tasks.
 
-**Parallel orchestration** — `/sk:orchestrate` analyzes subtask dependencies, builds a file-conflict graph, groups independent subtasks into waves, and dispatches parallel subagents with worktree isolation. Two-stage review (spec + quality) runs per agent. Merges wave results sequentially with conflict detection. Caps at 4 parallel agents (research-backed sweet spot).
+**Parallel orchestration** — `/sk:orchestrate` analyzes subtask dependencies, builds a file-conflict graph, groups independent subtasks into waves, and dispatches parallel subagents with worktree isolation. Two-stage review (spec + quality) runs per agent. Merges wave results sequentially with conflict detection. Caps at 4 parallel agents per wave and checks usage between waves.
 
-**Advisory council** — `/sk:council` convenes 3-5 AI personas with genuinely incompatible value systems (pragmatist vs architect vs adversary) to debate strategic questions. Structured rounds: independent positions (zero cross-visibility), challenge, optional rebuttal, synthesis. Produces a decision report with recommendation, confidence, dissent, and conditions for reversal. A plan-arbiter mode resolves competing plans via a ranked tiebreaker instead of blending them. Research shows multi-agent debate reduces hallucinations by 30%+ and improves factual accuracy.
+**Advisory council** — `/sk:council` convenes 3-5 AI personas with genuinely incompatible value systems (pragmatist vs architect vs adversary) to debate strategic questions. Structured rounds: independent positions (zero cross-visibility), challenge, optional rebuttal, synthesis. Produces a decision report with recommendation, confidence, dissent, and conditions for reversal. A plan-arbiter mode resolves competing plans via a ranked tiebreaker instead of blending them.
 
 **Behavioral guardrails** — LLMs over-engineer, make hidden assumptions, and drift from scope. Five principles (surface assumptions, do exactly what's asked, keep it simple, verify with evidence, track deliberate shortcuts via `sk-debt` markers) are embedded in every lifecycle command to counteract this. See `docs/conventions/coding-behavior.md`.
 
@@ -419,7 +431,22 @@ sk/                              ← SK source repository
 
 **Updates never destroy your work.** Commands, skills and agents update as a plugin bundle, outside the project. The shipped docs update one file at a time: a file you edited is kept, with SK's new version written beside it; a file of yours that shares a name with one of SK's is never touched.
 
-**Context is a budget.** A command or skill that Claude can start by itself puts its description in every turn. Only six commands and eleven skills do; the rest run when you type them. Three behaviour rules that used to depend on a skill firing (evidence before "done", stop after three failed attempts, what "just do it" permits) are always on through `CLAUDE.md`.
+**Context is a budget.** A command or skill that Claude can start by itself puts its description in every turn. Only six commands and twelve skills do; the rest run when you type them. Three behaviour rules that used to depend on a skill firing (evidence before "done", stop after three failed attempts, what "just do it" permits) are always on through `CLAUDE.md`.
+
+## How SK Is Tested
+
+`npm test` checks every command, skill and agent for the failures Claude Code does not report: unknown frontmatter keys, paths that do not resolve, counts that disagree, commands the model could start by itself, files over the size limit. It also runs the scaffold's install, update and migrate against fixtures, and breaks each rule in a copy to prove the check catches it.
+
+Behaviour is measured with `claude plugin eval`. Each case builds a small repository, runs a command with and without the plugin, and a judge scores the result. Some of the cases (Sonnet, three runs each):
+
+| Case | Without SK | With SK |
+|------|-----------|---------|
+| `/sk:dev` is asked to loosen a criterion that traces to a PRD | 0% | 100% |
+| A report-only review is told to "just fix it" | 50% | 100% |
+| `/sk:finish` delivers a PRD that adds, changes and removes behaviour | 33% | 100% |
+| `/sk:docs-audit drift` finds a renamed route, a dropped table and removed behaviour still served, and nothing else | 0% | 100% |
+
+`/sk:review` costs about half what it did before the one-pass path, at the same scores. Where SK does not help yet: told there is no time for tests or verification, the agent skips them as often with SK as without. The cases and baselines are in `dev-docs/evals/`.
 
 ## Anti-Patterns to Avoid
 
@@ -447,6 +474,26 @@ SK stands on other people's work. Each borrowed piece carries a credit line in i
 | [emilkowalski/skill](https://github.com/emilkowalski/skill) | MIT | `prototype` → the `prototype` skill (divergent variants on a named axis behind a picker); `break-ui` → the worst-case data list used by `prototype` and `flow-design` |
 | [cursor/plugins (pstack)](https://github.com/cursor/plugins/tree/main/pstack) | MIT | `unslop` → the plain-writing rules in `technical-writing`; the evidence ladder in `verification-before-completion` and `/sk:test`; blinded evals; transcript lenses in `/sk:retro` |
 | [michaelshimeles/skills](https://github.com/michaelshimeles/skills) | MIT | the worktree flow in `git-worktrees`; the evidence protocol merged into `verification-before-completion` |
+| [The-PR-Agent/pr-agent](https://github.com/The-PR-Agent/pr-agent) | MIT | finding discipline in every review (what the change introduces, a realistic trigger, no style noise), the check pass before a report, task compliance, failure modes |
+| [obra/superpowers](https://github.com/obra/superpowers) | MIT | reviewers that cannot be steered, the CANNOT_VERIFY verdict, the fix-round limit, the TDD excuses table, the lowered-bar check |
+| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) | MIT | the lowered-bar check, review integrity, working-behaviour rules, `npm test` guard rails |
+| [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT | the lowered-bar check; rules for the session hook |
+| [gotalab/cc-sdd](https://github.com/gotalab/cc-sdd) | MIT | the requirement coverage gate in `/sk:finish`, criteria `/sk:dev` may not change, failed attempts kept in Dev Notes |
+| [Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec) | MIT | the behaviour contract and its ADDED / MODIFIED / REMOVED merge; behaviour drift in `/sk:docs-audit` |
+| [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | MIT | memory that survives compaction (Dev Notes, Progress Log, `next:`), the five questions in `/sk:resume`, rules for the session hook |
+| [Egonex-AI/Understand-Anything](https://github.com/Egonex-AI/Understand-Anything) | MIT | architecture docs with a reading order, hubs and `path:line` evidence; drift since `Verified at` |
+| [EveryInc/compound-engineering-plugin](https://github.com/EveryInc/compound-engineering-plugin) | MIT | the learning loop: recurring review findings become project anti-patterns, and `/sk:plan` reads past tasks |
+| [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | MIT | the one-pass path in `/sk:review`, the callers check, per-run cost in the evals |
+| [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | MIT | working-behaviour rules in the CLAUDE.md template and `coding-behavior.md` |
+| [agent-sh/agnix](https://github.com/agent-sh/agnix) | MIT or Apache-2.0 | the silent-failure checks in `npm test` |
+| [wshobson/agents](https://github.com/wshobson/agents) | MIT | the silent-failure checks in `npm test` |
+| [anthropics/skills](https://github.com/anthropics/skills) | Apache-2.0 | the method for the trigger evals (`skill-creator`) |
+| [microsoft/SkillOpt](https://github.com/microsoft/SkillOpt) | MIT | description tuning on held-out cases, keeping only strict gains |
+| [mksglu/context-mode](https://github.com/mksglu/context-mode) | ideas only | filtering large output at the source; rules for the session hook |
+| [thedotmack/claude-mem](https://github.com/thedotmack/claude-mem) | ideas only | rules for the session hook |
+| [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) | Apache-2.0, ideas only | the secret-file skip list; the chunked scan for large repositories |
+| [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) | Apache-2.0, ideas only | the chunked scan for large repositories |
+| Higgsfield's SaaS landing page guide | not stated | the landing page reference and audit in `/sk:copywrite` |
 
 SK itself is MIT licensed (see [LICENSE](./LICENSE)).
 

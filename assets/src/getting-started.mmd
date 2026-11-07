@@ -5,15 +5,18 @@ flowchart TD
     GF1 --> GF2["/sk:kickoff<br/><i>stack research, conventions,<br/>build commands, repo scaffold</i>"]
     GF2 --> Plan
 
-    Q -->|"Brownfield<br/>(existing code)"| BF1["/sk:init-docs<br/><i>docs, flow inventory, glossary<br/>from the code</i>"]
+    Q -->|"Brownfield<br/>(existing code)"| BF0{"Docs already<br/>written by SK?"}
+    BF0 -->|"no"| BF1["/sk:init-docs<br/><i>docs, flow inventory, glossary<br/>from the code</i>"]
+    BF0 -->|"yes"| BFU["/sk:scaffold update, then /sk:update-docs<br/><i>refresh the templates,<br/>check the docs against the code</i>"]
     BF1 --> BF2{"Next change is…"}
+    BFU --> BF2
     BF2 -->|"a feature with<br/>new flows"| BF3["/sk:prd (feature)<br/><i>scoped PRD, 1–2 epics</i>"]
     BF2 -->|"one task"| BF4["/sk:new-task"]
     BF3 --> Plan
     BF4 --> Plan
 
     Plan["/sk:plan → /sk:dev → /sk:test<br/><i>or /sk:implement for all three</i>"]
-    Plan --> Ship(["/sk:finish: review, commit, PR"])
+    Plan --> Ship(["/sk:finish: review, commit, PR<br/><i>closes an epic only when its<br/>Must requirements are proven</i>"])
 
     BS["/sk:brainstorm<br/><i>when the direction is still open:<br/>ends with a brief</i>"] -.-> GF1
     BS -.-> BF3
@@ -22,6 +25,8 @@ flowchart TD
     style Ship fill:#2d6a4f,color:#fff
     style Q fill:#264653,color:#fff
     style BF2 fill:#264653,color:#fff
+    style BF0 fill:#264653,color:#fff
+    style BFU fill:#e9c46a,color:#000
     style Plan fill:#e76f51,color:#fff
     style GF1 fill:#2a9d8f,color:#fff
     style GF2 fill:#2a9d8f,color:#fff
