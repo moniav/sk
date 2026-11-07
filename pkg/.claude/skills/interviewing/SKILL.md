@@ -20,6 +20,8 @@ Before asking anything, sort what you do not know:
 
 If a fact will take a while to find, start finding it and ask the questions that do not depend on it in the meantime.
 
+Ask a decision only when its answer changes what gets built. Process choices (where a file goes, how a note is worded, the order of work) are yours: make them and say what you chose.
+
 ## Ask in rounds
 
 Think of the open decisions as a tree: some can only be asked once others are answered.
@@ -49,3 +51,5 @@ Nothing is assumed silently. An assumption you had to make is listed, with why.
 A question the user does not answer is not dropped. Record it as open in the place the calling command names (the task's Open Questions table, the executive's `STATE.md`), and ask it again next time.
 
 Before acting on the result, state the decisions back in a short list and get a yes.
+
+The rule on process choices is adapted from [obra/superpowers](https://github.com/obra/superpowers) (MIT).

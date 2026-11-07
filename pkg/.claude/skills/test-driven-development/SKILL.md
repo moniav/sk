@@ -64,6 +64,17 @@ In that case you may skip the test, on two conditions:
 
 "It is too simple to test" and "it is only configuration" are not reasons. If it changes behaviour, it can be checked.
 
+## Excuses and what is true
+
+| Excuse | What is true |
+|--------|--------------|
+| "Write it now, add tests later" | Later rarely comes, and a test written after the code is shaped to pass it. The failing test takes minutes. |
+| "I already tested it by hand" | A manual check proves one run today. The test proves every run after this one. |
+| "It is too simple to test" | Simple code is the cheapest to test, and simple changes break too. |
+| "The user is in a hurry" | Say the test comes first and why, in one line, then write it. A fast fix that breaks later is slower. |
+| "Deleting the code I already wrote is wasteful" | Keep it aside, write the failing test, then bring the code back to make it pass. |
+| "I will keep the old code as a reference" | Reference code becomes the implementation. Write from the test, not from the draft. |
+
 ## What a good test is
 
 - It calls the code the way its users do and asserts on the result. It still passes after a refactor that keeps the behaviour.
@@ -77,3 +88,5 @@ See `references/anti-patterns.md` in this skill's directory. The four that matte
 - Writing all the tests first, then all the code (tests written in bulk describe imagined behaviour; work one test at a time)
 - Testing implementation details or mocks instead of behaviour
 - A test that cannot fail
+
+The excuses table is adapted from [obra/superpowers](https://github.com/obra/superpowers) (MIT), whose measurements showed removing it weakened test-first behaviour under pressure.

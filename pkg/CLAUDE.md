@@ -8,7 +8,7 @@ On session start, check `docs/tasks/.current` for active work; `/sk:resume` give
 
 ## Development Lifecycle: Plan > Dev > Test
 
-Most work is XS/S complexity — just describe what you want and go. No task file needed; follow Plan > Dev > Test mentally; when done, tell the user to run `/sk:commit`.
+Most work is XS/S complexity — just describe what you want and go. No task file needed; for multi-step work state a short plan with a check per step; when done, tell the user to run `/sk:commit`.
 
 **For M+ complexity, use the formal lifecycle.** `/sk:help` maps any situation to a command.
 
@@ -50,8 +50,8 @@ SOP: `docs/sop/creating-a-task.md`. Worked example: `docs/tasks/examples/TASK-us
 
 Rules 1-5 have examples in `docs/conventions/coding-behavior.md`; rules 6-8 each have a skill with the detail.
 
-1. **Surface Assumptions Before Writing Code** — State beliefs, verify by reading code/docs, flag ambiguity before proceeding.
-2. **Do Exactly What Was Asked** — No drive-by refactoring, no speculative features, no gold plating. Note improvements as follow-ups.
+1. **Surface Assumptions Before Writing Code** — State beliefs, verify by reading code/docs, flag ambiguity before proceeding. If a simpler approach than the one asked for exists, say so first.
+2. **Do Exactly What Was Asked** — No drive-by refactoring, no speculative features, no gold plating; match the existing style. Clean up what your change orphaned; mention, don't delete, dead code you found. Note improvements as follow-ups.
 3. **Keep the Solution as Simple as Possible** — Simplest solution that satisfies all criteria. Walk the simplicity ladder (stdlib → native → existing dep → one-liner); justify complexity with a specific requirement.
 4. **Verify Goals After Implementation** — Re-read each criterion, verify with evidence, run actual checks.
 5. **Track Deliberate Shortcuts** — Mark intentional shortcuts with `// sk-debt: <ceiling>, <upgrade trigger>`; harvest them with `/sk:debt`.

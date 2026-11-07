@@ -127,6 +127,10 @@ Apply the S complexity rule. For each subtask:
 
 If the task adds or changes a user-facing flow, read `${CLAUDE_PLUGIN_ROOT}/.claude/skills/flow-design/SKILL.md` and run its attack table over the flow's steps (and the worst-case data list it points to). Each decided behaviour becomes an acceptance criterion; each undecided one goes into Open Questions with a recommended answer.
 
+### Implied inputs for any other task
+
+For a task with no user-facing flow, list up to five inputs or failure modes the requirement implies but no criterion names: an empty or missing value, the largest allowed value, a duplicate, a dependency that fails or times out, a concurrent call. Each one becomes an acceptance criterion with a `[TEST]` subtask, or an Open Question with a recommended answer. Implementers all ship the same crash on an input the spec implied and never named (adapted from [obra/superpowers](https://github.com/obra/superpowers), MIT).
+
 ### Resolve Open Questions
 - List every uncertainty
 - Research each one (check codebase, docs, conventions)
