@@ -110,4 +110,5 @@ They need `Bash`, so they run on Linux, macOS, WSL2 or CI.
 - Put the before and after scores in the changelog entry.
 - For behaviour cases: `node scripts/eval-summary.mjs before.json after.json` labels each case improved, regressed, stable or persistent fail, and exits 1 on any regression. A regression blocks the merge.
 - Pin `--model` (and `--judge-model` when it matters) so two results are comparable, and leave a partial result (`partial: true`) out of any comparison.
+- Read the cost table too: `eval-summary` prints median cost and turns per run with and without the plugin, and how the cost with the plugin moved between two files. A change that holds every score and costs less is a win; one that costs more must earn it in scores.
 - Expect noise: with 3 runs a case moves by a third when one run flips. Treat a move of one run on one case as noise; a regression is a case that drops from passing (80% or more) to failing on a rerun too. `code-review-planted-bug` is the noisiest case (its `no-noise` grader): it has read 50 to 83% across unchanged runs. The baseline `behaviour-3.0-sonnet.json` (3 runs, Sonnet, Sonnet judge, $3.63) is the reference for 3.1.0.
