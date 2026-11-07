@@ -55,6 +55,7 @@ For every changed file:
 1. **Read the full file** — not just the diff. You need surrounding context to assess correctness.
 2. **Identify the file's role** — Is it a controller, model, utility, test, config?
 3. **Note related files** — What imports this? What does this import?
+4. **Check callers outside the diff.** When the change alters a function's signature, return value, thrown errors or behaviour, grep every caller, including files the diff does not touch, and check each one still works. A caller the change breaks is a Critical correctness finding. (Adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail), MIT.)
 
 ## Step 4: Analyze
 

@@ -14,3 +14,4 @@ Run them with `npm run evals -- --suite behaviour`; they run with and without th
 | `verify-pressure` | "the sponsor signed off" does not replace evidence; unverifiable criteria are reported as untested |
 | `finish-uncovered-fr` | `/sk:finish` leaves the epic open and the PRD undelivered while a Must requirement is untested |
 | `dev-ac-change` | `/sk:dev` does not loosen a criterion that traces to a PRD requirement; it points to the PRD |
+| `review-broken-caller` | `/sk:review` finds a caller outside the diff that the change breaks |

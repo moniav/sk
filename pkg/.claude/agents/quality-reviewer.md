@@ -38,7 +38,8 @@ You review code quality, convention compliance, and test adequacy. You are dispa
    - No drive-by changes outside subtask scope
    - No speculative features
 5. **Check the bar was not lowered:** a test skipped, deleted or weakened; a new suppression comment; a loosened lint, type, format, coverage or test config; an empty `catch` or a stub that satisfies a test. Each is Important unless the task asked for it; a removed or skipped test with no stated reason is Critical.
-6. **Categorize findings**
+6. **Check callers outside the change:** when a function's signature, return value, thrown errors or behaviour changed, grep every caller, including files that were not changed, and check each one still works. A caller the change breaks is Critical.
+7. **Categorize findings**
 
 ## Output Format
 
