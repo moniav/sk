@@ -44,7 +44,7 @@ Three rules keep these apart:
 ```yaml
 dev:       npm run dev                 # claude --plugin-dir ./pkg
 build:     # No build step — plain ES modules
-test:      npm test                    # scripts/check.mjs: counts, frontmatter, gating, paths, plugin manifest, init/update/migrate regression
+test:      npm test                    # scripts/check.mjs: counts, frontmatter, gating, paths, silent failures, plugin manifest, init/update/migrate regression; then check-selftest.mjs
            node pkg/cli.mjs init /tmp/sk-test --yes   # Manual scaffold into a temp dir
 lint:      # No linter configured
 typecheck: # No TypeScript — plain JavaScript
@@ -71,6 +71,7 @@ Fix the cause, not the check.
 - **Report-only commands** (`code-review`, `perf-review`, `security-review`, `ui-review`, `docs-audit`, `debt`, `recap`, `task-status`, `review`) disallow `Edit`.
 - **Internal skills** (procedures loaded by commands: `git-commit-flow`, `subtask-execution`, `research`, `executive-meeting`, `interviewing`, `prototype`, `product-brief`, `flow-design`, `architecture-design`) set `disable-model-invocation: true` and `user-invocable: false`, so they cost no per-turn context. `headless-operation` stays model-invocable because scheduled prompts reach it by name. A new internal skill is added to `INTERNAL_SKILLS` in `scripts/check.mjs`.
 - **Secrets and arguments.** `init-docs` and `update-docs` carry the "Never read secrets" rule and never glob `.env*`; `$ARGUMENTS` in a command body sits inside backticks.
+- **Silent failures.** Frontmatter keys come from an allowlist per file type (Claude Code ignores unknown keys, and plugin agents ignore `hooks`, `mcpServers`, `permissionMode`, `initialPrompt`); an agent's `skills:` exist and are not gated; every `${CLAUDE_PLUGIN_ROOT}/…`, `../x/…` and `references/…` path resolves; no `$1`-`$9` inside a code block; a command or skill stays under 18 KB. Overlapping model-invocable descriptions are a warning. `scripts/check-selftest.mjs` breaks each rule in a copy and expects its error.
 - **Frontmatter.** Skill names are lowercase and match their directory; descriptions are under 1024 characters; a skill body is under 500 lines; a reference file over 100 lines opens with a contents list.
 - **Agents.** Each names its model by alias; `debugger`, `architecture-reviewer` and `plan-reviewer` inherit, so they are never weaker than the session.
 - **Scaffold regression.** `init` lands every doc and never replaces one; `update` keeps edits (sidecar) and the user's own files; `migrate` removes only SK's copies from a 2.x project; the script runs from a plugin-layout copy of `pkg/`.
@@ -105,7 +106,7 @@ The deciding question: *could the model usefully reach for this on its own?* If 
 
 1. Update version in `package.json` **and** `pkg/.claude-plugin/plugin.json` (they must match; plugin users only receive an update when the plugin version changes)
 2. Update changelog (or use `/sk:changelog`): rename `Unreleased` to the version, keep an `**Upgrade notes:**` block if users must act
-3. `npm test`, and `claude plugin validate . --strict` where the claude CLI is available
+3. `npm test`, `node scripts/check.mjs --release` (fails if `pkg/` changed since the last tag but the version did not), and `claude plugin validate . --strict` where the claude CLI is available
 4. Commit, tag `vX.Y.Z`, `git push --tags`. The marketplace points at this repository, so the tag is the release; nothing is published to npm.
 
 ## Session Continuity
