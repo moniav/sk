@@ -1,6 +1,6 @@
 {
   "name": "shipkit-cld",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "SK, Moni's software machine: idea to production and large-codebase maintenance with a disciplined workflow. A Claude Code plugin with 55 slash commands, 28 skills, and 9 agents",
   "type": "module",
   "scripts": {
