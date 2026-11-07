@@ -30,6 +30,16 @@
 
 <!-- Where to add to it, what to be careful of, the seams designed for extension. -->
 
+## Behaviour contract
+
+<!-- What this feature promises, one row per requirement, verified against the code. The ID is the requirement
+     the row came from (PRD-N/FR-n), or B-n for behaviour documented before any PRD. /sk:finish adds, replaces and
+     removes rows when a PRD is delivered; change a row by hand only to match the code, and say so in Delivered by. -->
+
+| ID | Requirement | Acceptance (Given / When / Then) | Delivered by |
+|----|-------------|----------------------------------|--------------|
+| | | Given … When … Then … | <!-- PRD-N, TASK-N --> |
+
 ## Edge cases & limitations
 
 <!-- The decided behaviour on bad input, empty state, limits, permissions, a dependency down, concurrency. Known constraints,

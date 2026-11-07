@@ -15,3 +15,5 @@ Run them with `npm run evals -- --suite behaviour`; they run with and without th
 | `finish-uncovered-fr` | `/sk:finish` leaves the epic open and the PRD undelivered while a Must requirement is untested |
 | `dev-ac-change` | `/sk:dev` does not loosen a criterion that traces to a PRD requirement; it points to the PRD |
 | `review-broken-caller` | `/sk:review` finds a caller outside the diff that the change breaks |
+| `finish-contract-merge` | `/sk:finish` delivering a feature PRD adds, modifies and removes contract rows and flows by their Change tag, and copies no tag |
+| `finish-contract-broken` | `/sk:finish` stops the delivery when a REMOVED tag names a contract row that does not exist, instead of guessing |

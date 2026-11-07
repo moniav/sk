@@ -85,6 +85,8 @@ updated: YYYY-MM-DD
 
 <!-- Feature PRD: for an existing flow, link its file in docs/flows/ and describe only what changes. -->
 
+**Change:** ADDED <!-- ADDED (a new flow) | MODIFIED docs/flows/<file>.md | REMOVED docs/flows/<file>.md; /sk:finish merges by this tag -->
+
 **Persona:** · **Trigger:** · **Preconditions:** · **End state:**
 
 <!-- Above ~15 nodes add %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%% as the first line. Add a sequenceDiagram for a step
@@ -116,11 +118,13 @@ flowchart TD
 
 ### Functional
 
-<!-- Every row traces to a flow step or the Brief. Must = the PRD fails without it. -->
+<!-- Every row traces to a flow step or the Brief. Must = the PRD fails without it.
+     Change: where the requirement lands in docs/features/ when the PRD is delivered.
+     ADDED <doc> (a new promise) | MODIFIED <doc> PRD-N/FR-n (replaces that contract row) | REMOVED <doc> PRD-N/FR-n (the promise goes away). -->
 
-| ID | Requirement | Priority | Traces to | Acceptance (Given / When / Then) |
-|----|-------------|----------|-----------|----------------------------------|
-| FR-1 | | Must | F-1 #1 | Given … When … Then … |
+| ID | Requirement | Priority | Traces to | Acceptance (Given / When / Then) | Change |
+|----|-------------|----------|-----------|----------------------------------|--------|
+| FR-1 | | Must | F-1 #1 | Given … When … Then … | ADDED docs/features/<feature>.md |
 
 ### Non-functional
 

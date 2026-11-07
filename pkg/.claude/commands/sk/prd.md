@@ -35,7 +35,7 @@ Then pick the mode and say which:
 |------|------|--------|
 | **product** | A new product, or no code and no PRD yet; or a feature that needs 3+ epics | All, in full |
 | **feature** | Code or an approved PRD exists, and the change is 1–2 epics | All, scoped to the change: new flows plus the **existing flows it changes**; architecture as a delta (new or changed components, migration and backfill, API compatibility, feature flag and rollout) |
-| **amend** | `PRD-N amend`: the PRD is approved and its epics are in progress | Only the stages the change touches; then list every epic and task the change affects and mark each `needs-replan` in its file; bump `version:` and log the change |
+| **amend** | `PRD-N amend`: the PRD is approved and its epics are in progress | Only the stages the change touches; new and changed flows and FRs carry their Change tag; then list every epic and task the change affects and mark each `needs-replan` in its file; bump `version:` and log the change |
 | **task-sized** | One deliverable, no new flow | Stop and suggest the user run `/sk:new-task` |
 
 New PRD: scan `docs/prd/PRD-*.md` for the highest N and use the next; create the file from `docs/templates/prd.md` (`status: draft`, `stage: brief`, `kind:` product or feature) and add it to `docs/prd/README.md`. An existing PRD that overlaps is a conflict to raise, not to duplicate.
@@ -51,6 +51,8 @@ Follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/product-brief/SKILL.md`: every fiel
 
 Follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/flow-design/SKILL.md` for every flow: list, walk, attack, prototype. In feature mode, start from the existing flows in `docs/flows/` and mark what changes in each.
 
+Tag every flow with its **Change** line, which `/sk:finish` merges by when the PRD is delivered: **ADDED** (a new flow), **MODIFIED** `docs/flows/<file>.md` (an existing flow this PRD changes; describe only the change), or **REMOVED** `docs/flows/<file>.md` (a flow that goes away). In product mode every flow is ADDED. A MODIFIED or REMOVED file that does not exist is a gap to settle now.
+
 **Gate 2:** show the flow list with each flow's decided edge cases in one line; get a yes; write the section, one subsection per flow.
 
 ## Stage 3: Requirements
@@ -58,6 +60,7 @@ Follow `${CLAUDE_PLUGIN_ROOT}/.claude/skills/flow-design/SKILL.md` for every flo
 - **Functional:** consolidate every FR from the flows: id, priority (Must / Should / Could), the flow step it traces to, acceptance as Given / When / Then. Merge duplicates; split any row with "and" in it.
 - **Non-functional:** propose a number for each category that applies: performance (latency at a percentile, throughput), availability, data volume and growth, security, privacy and data residency, compliance, accessibility level, locales and RTL, browsers and devices, observability, cost ceiling. "It should be fast" is not done until it has a target and a way to verify it.
 - Check both directions: every flow step has an FR or is covered by one; every FR traces back. Close the gaps with the user.
+- **Change tag:** every FR names where it lands in the feature docs' *Behaviour contract* (`docs/features/<feature>.md`, a table keyed by `PRD-N/FR-n`). **ADDED** `<doc>` is a new promise (the doc may be new). **MODIFIED** `<doc> <ID>` replaces that contract row; **REMOVED** `<doc> <ID>` takes it away (keep the FR row, with what is removed and why, so the record stays). Read each named doc's contract to find the ID. Behaviour the code has but no contract records yet is ADDED, with what it replaces said in the requirement. In product mode every FR is ADDED.
 
 **Gate 3:** show the Must list and the NFR targets; get a yes; write the section.
 
@@ -85,8 +88,9 @@ Check the whole PRD:
 5. Glossary terms are used consistently; no word from an Avoid column appears.
 6. No Must FR depends on an open question; every open item has a recommended answer.
 7. No "TBD", "etc." or "handle errors" remains.
+8. Every flow and FR has a Change tag, and every MODIFIED or REMOVED target (file, or contract row by ID) exists.
 
-State `PRD review: N/7`; fix each failure with the user. Then set `status: approved`, `stage: done`, update `updated`, log it.
+State `PRD review: N/8`; fix each failure with the user. Then set `status: approved`, `stage: done`, update `updated`, log it.
 
 ## Stage 7: Write the epics
 

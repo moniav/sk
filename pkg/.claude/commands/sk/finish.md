@@ -75,7 +75,7 @@ If a task file was identified in Step 2:
 
 4. Delete `docs/tasks/.current` if it exists (work is shipped)
 5. If task is part of an epic: update epic progress count. When that was the epic's last task, run the requirement coverage gate below for the epic, then set the epic `status: done`.
-6. If the epic has `prd:` and every epic in that PRD's Delivery table is done: run the requirement coverage gate for the whole PRD, then set the PRD `status: delivered`, copy each of its flows into `docs/flows/` (diagram plus the edge-case table, named after the flow) and index them in `docs/flows/README.md`, and merge any glossary terms the PRD settled into `docs/system/glossary.md`. From now on `docs/flows/` and the glossary are the current truth; the PRD is the record of what was decided.
+6. If the epic has `prd:` and every epic in that PRD's Delivery table is done: run the requirement coverage gate for the whole PRD, then the contract merge below, then set the PRD `status: delivered` and merge any glossary terms the PRD settled into `docs/system/glossary.md`. From now on `docs/flows/`, the feature docs' contracts and the glossary are the current truth; the PRD is the record of what was decided.
 
 **Requirement coverage gate.** Before an epic is set done or a PRD delivered, build this table from the PRD's requirements, each task's `delivers:` field, and each task's Verification table:
 
@@ -84,6 +84,16 @@ If a task file was identified in Step 2:
 | FR-3 | Must | TASK-12 (done) | passed |
 
 A **Must** requirement that no done task delivers, or whose delivering task has a failed or untested criterion, blocks the status change. List each one and why, leave the epic or PRD status as it is, and suggest the user run `/sk:prd PRD-N amend` (to change the requirement) or a follow-up task (to build or prove it). Should and Could requirements that are not covered are listed but do not block. Show the table in the Step 7 summary.
+
+**Contract merge.** First confirm every MODIFIED and REMOVED target exists (the flow file, or the contract row by ID); a missing one stops the delivery before anything is merged (see below). Then apply each flow and FR by its Change tag (an untagged one, from a PRD written before tags, is ADDED to the flow's own file or to the feature doc the epic names):
+
+| Tag | Flow (`docs/flows/`) | FR (the named feature doc's *Behaviour contract*) |
+|-----|----------------------|----------------------------------------------------|
+| ADDED | New file named after the flow: diagram plus the edge-case table; index it in `docs/flows/README.md` | New row `PRD-N/FR-n` with requirement, acceptance and `Delivered by: PRD-N, TASK-…`; a missing doc is created from `docs/templates/feature-doc.md` and indexed in `docs/features/README.md` |
+| MODIFIED | Apply the change to the named file; keep what the PRD did not change | Replace the named row's requirement and acceptance; keep its ID; add `PRD-N` to Delivered by |
+| REMOVED | Set the named file's `Lifecycle: deprecated` with a line naming the PRD | Delete the named row |
+
+Then check the result against the PRD, file by file: every ADDED flow file and row exists with the PRD's text; every MODIFIED row reads as the PRD says; every REMOVED row is gone and every REMOVED flow is deprecated; no `ADDED`, `MODIFIED` or `REMOVED` tag was copied into a doc. Show it as `Contract merge: N added · N modified · N removed · checked N/N`. A missing target, or a check that still fails after one fix, stops the delivery: leave the PRD status as it is, list each mismatch, and suggest the user run `/sk:prd PRD-N amend`.
 
 Done when the task frontmatter reads `status: done`, the task appears under "Recently Completed" in `docs/tasks/README.md`, and `docs/tasks/.current` no longer exists.
 
@@ -100,6 +110,7 @@ Present to user:
 - Branch: {pushed to remote?}
 - PR: {URL if created}
 - Task: {updated to done, or "no task file"}
+- Delivery: {coverage gate and contract merge results, when an epic or PRD closed}
 - Review: {verdict summary}
 - Follow-up: {deferred warnings/suggestions, if any}
 

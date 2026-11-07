@@ -55,6 +55,7 @@ If `docs/features/` doesn't exist yet (minimal install), create it with a stub R
   `in-progress` / `planned`.
 - Cite real code as `path:symbol`. Link to `architecture/` and `flows/` rather than
   duplicating them.
+- Fill *Behaviour contract* with what Step 3 verified, one row per promise: `PRD-N/FR-n` when a delivered PRD names it, otherwise `B-1`, `B-2`.
 
 ## Step 5: Update Index
 
