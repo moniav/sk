@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: review-task-compliance
+tags: [behaviour, review]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Agent]

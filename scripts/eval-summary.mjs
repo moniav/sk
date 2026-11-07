@@ -6,6 +6,11 @@
 //
 // "fire" is the share of runs in which the skill was invoked when it should be;
 // "quiet" is the share in which it stayed out when it should.
+//
+// Behaviour results (cases tagged behaviour) are summarised per case instead: the with-plugin
+// score, the change against the run without the plugin, and with two files each case's
+// transition (improved, regressed, stable, persistent fail). Any regression exits 1. A case
+// where the plugin scores no better than the run without it does not discriminate, and is flagged.
 
 import { readFileSync } from "fs";
 
@@ -48,6 +53,52 @@ function loadCounted(path) {
   total_runs = 0;
   return load(path);
 }
+// --- Behaviour results: one row per case ---
+const VOID = /session limit|usage limit|rate.?limit|overloaded|authentication/i;
+function loadCases(path) {
+  const result = JSON.parse(readFileSync(path, "utf-8"));
+  const cases = {};
+  for (const c of result.cases || []) {
+    const runs = Array.isArray(c.arms?.with) ? c.arms.with.filter((r) => !VOID.test(r.error || "")) : [];
+    cases[c.name] = { score: c.aggregates?.score ?? mean(runs.map((r) => r.score ?? 0)), delta: c.aggregates?.delta };
+  }
+  return { cases, cost: result.costUsd, partial: result.partial };
+}
+function isBehaviour(path) {
+  const result = JSON.parse(readFileSync(path, "utf-8"));
+  return (result.cases || []).some((c) => /behaviour/.test(String(c.dir || "")) || (c.tags || []).includes("behaviour"));
+}
+if (isBehaviour(beforePath)) {
+  const PASS = 0.8;
+  const b = loadCases(beforePath);
+  const a = afterPath ? loadCases(afterPath) : null;
+  const vsNone = (v) => (v === undefined || v === null ? "   - " : `${v >= 0 ? "+" : ""}${Math.round(v * 100)}`.padStart(5));
+  let regressed = 0;
+  console.log(`${"case".padEnd(30)} score  vs none${a ? "    score  vs none   transition" : ""}`);
+  for (const name of [...new Set([...Object.keys(b.cases), ...Object.keys(a?.cases || {})])].sort()) {
+    const x = b.cases[name];
+    let line = `${name.padEnd(30)} ${x ? pct(x.score) : "  - "}  ${vsNone(x?.delta)}`;
+    if (a) {
+      const y = a.cases[name];
+      let transition = "new";
+      if (x && y) {
+        const was = x.score >= PASS;
+        const is = y.score >= PASS;
+        transition = was && is ? "stable" : is ? "improved" : was ? "REGRESSED" : "persistent fail";
+        if (was && !is) regressed++;
+      } else if (!y) transition = "removed";
+      line += `    ${y ? pct(y.score) : "  - "}  ${vsNone(y?.delta)}   ${transition}`;
+    }
+    const last = (a && a.cases[name]) || x;
+    if (last && typeof last.delta === "number" && last.delta <= 0) line += "   (no better than without the plugin)";
+    console.log(line);
+  }
+  const money = (r) => `$${r.cost?.toFixed(2)}${r.partial ? " (partial run)" : ""}`;
+  console.log(`cost: ${money(b)}${a ? `, then ${money(a)}` : ""}`);
+  if (regressed) console.log(`[ERROR] ${regressed} case(s) regressed`);
+  process.exit(regressed ? 1 : 0);
+}
+
 const before = loadCounted(beforePath);
 const after = afterPath ? loadCounted(afterPath) : null;
 
