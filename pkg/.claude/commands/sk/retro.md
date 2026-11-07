@@ -31,7 +31,7 @@ Gather, skipping files that are empty or still templates:
 
 1. The task or epic file: plan, Progress Log, Verification section, Dev Notes
 2. `git log` for the scope, and the diff where a finding needs it (skip the git steps if this is not a repository)
-3. Review reports under `docs/reviews/` for the scope
+3. Review reports under `docs/reviews/` for the scope, and for the recurring pass in Step 2, every review report there (any scope)
 4. `docs/decisions/decision-log.md` rows and `status: blocked` items for the scope
 5. This conversation, if the work was done in it
 
@@ -47,6 +47,14 @@ Read the evidence three times, each time for one thing:
 | **Tooling** | A mistake an automated check could have caught; a check that exists but is not wired in; a command that was slow, noisy or had to be retried; information the agent needed and could not find |
 | **Divergence** | Where what was built differs from what was asked, and where instructions in `CLAUDE.md` or the conventions were not followed, or changed nothing |
 
+**Recurring findings** (a fourth pass, across all of `docs/reviews/`): group findings by kind, the mistake rather than its file. A kind becomes a proposed **project anti-pattern** row only if all four hold:
+1. **Counterfactual:** someone reading the final code, without the review, would plausibly write it again.
+2. **Fixed:** at least one report shows it fixed (a resolved finding, or a fix commit that names it), so it was a real mistake, not a disputed opinion.
+3. **Uncovered:** no lint rule, test, CI job or existing convention line already catches it.
+4. **Durable:** it can be stated without file, function or variable names that may change.
+
+A kind that fails any test is dropped, with the test it failed. A mechanical kind (one a tool could detect) becomes a proposed check instead of a row (Step 3). Seen only once is an incident, not a pattern.
+
 For autonomous runs, also count from the sources in Step 1: escalations, blocked items, first-pass review results against rework, gates passed under policy against gates that asked.
 
 ## Step 3: Route Each Finding
@@ -56,7 +64,7 @@ Classify each candidate and name the change. Use the strongest mechanism the pro
 | The mistake was... | Route it to | Example |
 |--------------------|-------------|---------|
 | **Mechanical:** a fixed pattern a tool can detect | A check: a lint rule, a pre-commit hook, a CI job, a test, a type | "Imports from `internal/` outside the package" becomes a lint rule |
-| **A judgement call** a reviewer should have caught | One line in the convention file the reviewer reads (`docs/conventions/code-style.md`, `testing.md`, `file-structure.md`) | "Prefer the existing retry helper over a new loop" |
+| **A judgement call** a reviewer should have caught | One line in the convention file the reviewer reads (`docs/conventions/code-style.md`, `testing.md`, `file-structure.md`); a recurring kind that passed the four tests becomes a row in `code-style.md`'s *Project anti-patterns* table: pattern, why it bites, instead, evidence (the report paths), and an optional *Retire when* | "Prefer the existing retry helper over a new loop" |
 | **Missing information** | A pointer where the agent looks first: `CLAUDE.md` (sparingly), `docs/README.md`, `docs/system/project-context.md`, or the doc that was wrong | The test command was not in Build Commands |
 | **An instruction that was ignored or changed nothing** | Delete it, or replace it with a check | A `CLAUDE.md` line the diff shows was not followed |
 | **A decision that will recur** | `docs/conventions/delegation-policy.md` (widen or tighten, citing the counts), or an ADR | Policy asked every time for something always approved |
@@ -66,6 +74,8 @@ Classify each candidate and name the change. Use the strongest mechanism the pro
 Coding standards are enforced at review, not during implementation: the implementer has the most to hold in mind, the reviewer reads a diff. So a new standard goes where the `quality-reviewer` reads it, not into `CLAUDE.md`.
 
 If a check covers the finding, propose only the check. Do not also add a sentence.
+
+Also review the existing *Project anti-patterns* rows: propose removing a row only when its premise is gone (its *Retire when* holds, or the code it guards no longer exists), with the evidence. A row is not removed for being old or for not recurring.
 
 ## Step 4: Propose
 
@@ -91,7 +101,7 @@ Ask which proposals to apply (use AskUserQuestion, multi-select).
 
 ## Step 5: Apply What Was Approved
 
-Make each approved change. For a check, add it and run it once to show that it passes on the current code and would have caught the finding. For a convention line, add the line and nothing else.
+Make each approved change. For a check, add it, run it on the current code (it passes), then show it fails on the defect's shape: reproduce the mistake in a throwaway copy (a scratch file or a temporary copy of the repository, never the working tree) and run the check there. A check that does not fail on the defect is not added. For a convention line, add the line and nothing else.
 
 Done when every approved proposal is either applied, with the file changed and any check run, or marked "not applied: <reason>".
 

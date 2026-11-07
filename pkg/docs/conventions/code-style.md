@@ -97,6 +97,16 @@ except Exception:
     pass                         # Bad: at minimum, log the error
 ```
 
+### Project anti-patterns (learned from reviews)
+
+<!-- Added by /sk:retro when one kind of finding recurs across review reports, was fixed each time, no check
+     covers it, and someone reading the final code would repeat it. Stated without file or function names.
+     Remove a row only when its premise is gone (the "Retire when" condition holds). -->
+
+| Pattern | Why it bites | Instead | Evidence | Retire when |
+|---------|--------------|---------|----------|-------------|
+| | | | <!-- review reports or fix commits --> | <!-- optional --> |
+
 ## Error Handling
 
 <!-- Adapt to your language -->
