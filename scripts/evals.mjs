@@ -11,6 +11,7 @@
 // --suite behaviour  the behaviour cases: each case's fixture.sh builds its repository (--scaffold),
 //                    Bash, Edit, Write and Agent are granted, and every case also runs without the
 //                    plugin (--ablation with-without), so the result shows what SK contributed.
+//                    The judge defaults to Sonnet: Haiku misjudged long reports in testing.
 //
 // The suite always runs against a frozen copy of the plugin, never the live tree:
 // a run takes minutes, and a tree that is edited meanwhile gives a result that
@@ -110,7 +111,7 @@ if (version && (Number(version[1]) < 2 || (Number(version[1]) === 2 && Number(ve
 // The fixture scripts are this repository's own files, so --scaffold only runs code we wrote.
 const suiteArgs =
   suite === "behaviour"
-    ? ["--tag", "behaviour", "--ablation", "with-without", "--scaffold", "--allow-tools", "Bash", "Edit", "Write", "Agent"]
+    ? ["--tag", "behaviour", "--ablation", "with-without", "--scaffold", ...(passthrough.includes("--judge-model") ? [] : ["--judge-model", "sonnet"]), "--allow-tools", "Bash", "Edit", "Write", "Agent"]
     : suite === "trigger"
       ? ["--tag", "trigger", "--ablation", "none"]
       : ["--ablation", "none"];
