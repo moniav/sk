@@ -110,14 +110,14 @@ For each doc with a `**Verified at:** <sha>` stamp (`docs/conventions/doc-lifecy
 
 | Doc | Re-check when | Against |
 |-----|---------------|---------|
-| `system/api-reference.md` | a route file changed | every documented endpoint still declared with that method and path; a new route in a changed file is undocumented |
-| `system/database-schema.md` | a migration, model or schema file changed | every documented table and column still created and not dropped by a later migration; a new table is undocumented |
-| `system/env-variables.md` | a changed file reads an environment variable | each documented name still read; a new name is undocumented (names only; never open a secret file) |
+| `system/api-reference.md` | a route file changed | every documented endpoint still declared with that method and path; a route the diff adds is undocumented |
+| `system/database-schema.md` | a migration, model or schema file changed | every documented table and column still created and not dropped by a later migration; a table the diff adds is undocumented |
+| `system/env-variables.md` | a changed file reads an environment variable | each documented name still read; a name the diff adds is undocumented (names only; never open a secret file) |
 | `CLAUDE.md` Build Commands | a manifest or CI file changed | each command still defined in the scripts or run in CI |
 | `architecture/` | any path it cites changed or is gone | the cited path exists; the component still does what the doc says |
 | feature doc *Behaviour contract* | its `Code:` paths changed | each row still holds in the code and a test exercises it; behaviour a delivered PRD tagged REMOVED is gone from the code |
 
-3. **Verdict per claim:** **holds**, **drifted** (what the doc says, what the code says, both `path:line`), or **unverified** (a claim marked *(inferred)*, or one the code cannot settle). Drifted claims are findings; unverified ones are listed, not counted.
+3. **Verdict per claim:** **holds**, **drifted** (what the doc says, what the code says, both `path:line`), or **unverified** (a claim marked *(inferred)*, or one the code cannot settle). Drifted claims are findings, one per cause: removed behaviour still served is one finding, not also an undocumented route. Unverified claims are listed, not counted.
 
 ## Step 3: Report
 
