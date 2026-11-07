@@ -20,6 +20,7 @@ Assemble for the implementer:
 - Relevant acceptance criteria
 - Code style and testing conventions from `docs/conventions/`
 - For brownfield: full existing files, related tests, 2-3 pattern examples
+- Dev Notes entries that touch this subtask's files: failed attempts and learnings from earlier subtasks
 
 ### 2. Dispatch Implementer
 
@@ -41,7 +42,9 @@ Use the Agent tool to dispatch the `implementer` agent. The implementer reports:
 
 ### 4. Handle Results
 
+- A report with no status line → re-dispatch once asking for it; never infer the status from the prose
 - Both pass → check off subtask, move to next
+- After a re-dispatch, a concern, or a CANNOT_VERIFY, append one line to the task's Dev Notes: what was learned, so the next implementer gets it
 - Spec fails → feed findings back, re-dispatch (max 2 retries)
 - Spec cannot verify → read the code it names yourself and decide; if it still depends on a run, record the criterion as untested
 - Quality has Critical → fix and re-review, at most 2 rounds; then stop and follow the `escalation-rules` skill
@@ -57,7 +60,7 @@ The two exceptions are in the `escalation-rules` skill: one tier up after repeat
 - Sequential implementers only — no parallel dispatch
 - Never skip either review stage
 - **Never pre-judge a review.** A reviewer's prompt carries the spec, the files and the conventions, never a verdict: no "do not flag", "at most Minor", "the plan chose this" or "this is intentional"
-- Fresh context per implementer — no accumulated state
+- Fresh context per implementer: no accumulated conversation, only the task file and its Dev Notes
 - Orchestrator owns the task file, not subagents
 
 ## Brownfield Principle

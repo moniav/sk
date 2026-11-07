@@ -27,6 +27,7 @@ name: User Authentication
 phase: plan                         # plan | dev | test
 subtask: 4/7                        # done/total (0/N during PLAN)
 last: Implemented JWT middleware    # one line: last completed step
+next: Add refresh-token rotation     # optional: the next unticked subtask
 updated: 2026-07-05 14:30
 ```
 

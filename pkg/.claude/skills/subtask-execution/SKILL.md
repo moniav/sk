@@ -34,6 +34,10 @@ Process subtasks **top-to-bottom, one at a time**. For each feature unit, execut
 
 If a subtask fails 3+ times, follow the `escalation-rules` skill: STOP, evaluate options, ask the user.
 
+## Large Output
+
+Filter at the source: ask the test runner for failures only, pipe long output through `tail` or a search, and re-run narrowed rather than reading a whole log. Read a file over about 500 lines by range around a search hit, not whole.
+
 ## Per-Type Checklists
 
 ### For each `[DEV]` subtask:

@@ -61,6 +61,7 @@ Blocked by (if BLOCKED):
 
 ## Rules
 
+- **Large output.** Filter at the source: ask the test runner for failures only, pipe long output through `tail` or a search, and re-run narrowed rather than reading a whole log. Read a file over about 500 lines by range around a search hit, not whole.
 - Implement ONLY what the subtask describes — no more, no less
 - Follow the conventions EXACTLY — match existing patterns
 - Do NOT modify files outside your subtask scope

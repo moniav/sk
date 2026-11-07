@@ -119,17 +119,19 @@ Inform user: **"DEV phase complete. All subtasks implemented. Moving to TEST pha
 
 ## Error Recovery
 
+**Acceptance criteria are the user's.** A criterion that traces to a PRD requirement (the task's `delivers:` field names it) is never changed, narrowed, deferred or removed here: stop, show what you found, and suggest the user run `/sk:prd PRD-N amend`. Any other change to a criterion is shown to the user with the reason before you continue.
+
 ### Plan Was Wrong (subtask reveals incorrect approach)
 1. Stop implementation
 2. Document what was discovered in Implementation Notes
-3. Update the affected acceptance criteria if needed
+3. If an acceptance criterion must change, follow the rule above
 4. Revise subtask list (add/remove/modify subtasks)
 5. Log the deviation in Progress Log
 6. Continue from the revised plan
 
 ### Acceptance Criterion is Untestable
-1. Rewrite the AC to be testable (yes/no verifiable)
-2. If the AC is truly unnecessary, remove it with justification
+1. Propose a testable wording (yes/no verifiable), or that the criterion be dropped, with the reason
+2. Apply it only as the rule above allows: never alone for a criterion that traces to a PRD requirement
 3. Log the change in Progress Log
 
 ### Dependency Discovered Mid-Dev

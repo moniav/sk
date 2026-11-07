@@ -24,6 +24,16 @@ If you've tried 3 different approaches and none solved the problem:
 
 4. **Let the user decide.** Do not pick an option yourself.
 
+## Keep the count on disk
+
+The count and the approaches tried must survive `/compact` and a new session. When a task file is active, write each failed attempt to its Dev Notes before trying the next one, and read those notes before any retry:
+
+```
+- Attempt 2 on <problem>: <approach> → <result>
+```
+
+Never retry an approach the notes already record as failed.
+
 ## What Counts as a Failure
 
 An attempt that doesn't solve the problem:
