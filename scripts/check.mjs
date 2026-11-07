@@ -14,7 +14,8 @@ import { fileURLToPath } from "url";
 import { spawnSync } from "child_process";
 import { tmpdir } from "os";
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+// SK_CHECK_ROOT points the checks at a copy of the repository (used by scripts/check-selftest.mjs).
+const ROOT = process.env.SK_CHECK_ROOT ? resolve(process.env.SK_CHECK_ROOT) : resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PKG = join(ROOT, "pkg");
 const staticOnly = process.argv.includes("--static");
 
@@ -174,6 +175,115 @@ for (const file of agentFiles) {
   if (!fm.fields.description) err("frontmatter", `agents/${file} has no description`);
 }
 
+// --- 3c. Silent failures Claude Code does not report (post-3.0 plan F8) ---
+// Adapted from agnix (MIT or Apache-2.0), wshobson/agents and addyosmani/agent-skills (MIT).
+
+// Unknown frontmatter keys are ignored without a word, so a typo silently drops a setting.
+const SKILL_KEYS = ["name", "description", "when_to_use", "argument-hint", "arguments", "disable-model-invocation", "user-invocable",
+  "allowed-tools", "disallowed-tools", "model", "effort", "context", "agent", "background", "hooks", "paths", "shell", "metadata", "license", "compatibility"];
+const COMMAND_KEYS = SKILL_KEYS.filter((k) => k !== "name" && k !== "paths");
+const AGENT_KEYS = ["name", "description", "tools", "disallowedTools", "model", "effort", "maxTurns", "memory", "isolation", "background",
+  "skills", "color", "autoCompactWindow", "omitClaudeMd", "experimental"];
+const AGENT_KEYS_IGNORED_IN_PLUGINS = ["hooks", "mcpServers", "permissionMode", "initialPrompt"];
+function checkKeys(label, fm, allowed, ignored = []) {
+  for (const key of Object.keys(fm?.fields || {})) {
+    if (ignored.includes(key)) err("frontmatter-keys", `${label}: "${key}" is ignored for plugin agents; ship it at the plugin level instead`);
+    else if (!allowed.includes(key)) err("frontmatter-keys", `${label}: unknown key "${key}" (Claude Code ignores it silently)`);
+  }
+}
+for (const file of commandFiles) checkKeys(`commands/sk/${file}`, frontmatter(read(join(commandsDir, file))), COMMAND_KEYS);
+for (const name of skillNames) checkKeys(`skills/${name}`, frontmatter(read(join(skillsDir, name, "SKILL.md"))), SKILL_KEYS);
+for (const file of agentFiles) checkKeys(`agents/${file}`, frontmatter(read(join(agentsDir, file))), AGENT_KEYS, AGENT_KEYS_IGNORED_IN_PLUGINS);
+
+// A skill preloaded into an agent must exist and be model-invocable, or Claude Code skips it with only a debug log.
+for (const file of agentFiles) {
+  const listed = (frontmatter(read(join(agentsDir, file)))?.fields.skills || "").split(/[\s,[\]]+/).filter((s) => s && s !== "-");
+  for (const skill of listed) {
+    if (!skillNames.includes(skill)) err("agent-skills", `agents/${file} preloads "${skill}", which does not exist`);
+    else if (frontmatter(read(join(skillsDir, skill, "SKILL.md")))?.fields["disable-model-invocation"] === "true") {
+      err("agent-skills", `agents/${file} preloads "${skill}", which is gated with disable-model-invocation and would be skipped`);
+    }
+  }
+}
+
+// Every reference to a shipped file resolves: ${CLAUDE_PLUGIN_ROOT}/... in commands, ../x/... and references/... in skills and agents.
+for (const file of commandFiles) {
+  for (const m of read(join(commandsDir, file)).matchAll(/\$\{CLAUDE_PLUGIN_ROOT\}\/([\w./-]+[\w/])/g)) {
+    if (!existsSync(join(PKG, m[1]))) err("references", `commands/sk/${file}: \${CLAUDE_PLUGIN_ROOT}/${m[1]} does not exist`);
+  }
+}
+for (const [label, path] of [
+  ...skillNames.map((n) => [`skills/${n}/SKILL.md`, join(skillsDir, n, "SKILL.md")]),
+  ...agentFiles.map((f) => [`agents/${f}`, join(agentsDir, f)]),
+]) {
+  const text = read(path);
+  for (const m of text.matchAll(/(?<![\w/.])((?:\.\.\/)+[\w./-]+\.md)/g)) {
+    if (!existsSync(resolve(dirname(path), m[1]))) err("references", `${label}: ${m[1]} does not exist`);
+  }
+  if (label.startsWith("skills/")) {
+    for (const line of text.split("\n")) {
+      for (const m of line.matchAll(/(?<![\w/.])(references\/[\w./-]+\.md)/g)) {
+        if (existsSync(join(dirname(path), m[1]))) continue;
+        // Prose may point at another skill's file: "the `plow-ahead` skill's `references/x.md`".
+        if (skillNames.some((s) => line.includes(s) && existsSync(join(skillsDir, s, m[1])))) continue;
+        err("references", `${label}: ${m[1]} does not exist`);
+      }
+    }
+  }
+}
+
+// $1 to $9 are substituted everywhere in a body, so awk '{print $1}' would receive an argument.
+for (const [label, text] of [
+  ...commandFiles.map((f) => [`commands/sk/${f}`, read(join(commandsDir, f))]),
+  ...skillNames.map((n) => [`skills/${n}/SKILL.md`, read(join(skillsDir, n, "SKILL.md"))]),
+]) {
+  for (const block of text.matchAll(/^[ \t]*```[^\n]*\n([\s\S]*?)^[ \t]*```/gm)) {
+    const hit = block[1].match(/\$[1-9](?!\d)/);
+    if (hit) err("positional-args", `${label}: "${hit[0]}" inside a code block is replaced by an argument; escape it as \\${hit[0]}`);
+  }
+}
+
+// A skill or command re-attached after compaction is cut at about 20,000 characters; keep a margin.
+const SIZE_LIMIT = 18 * 1024;
+for (const [label, path] of [
+  ...commandFiles.map((f) => [`commands/sk/${f}`, join(commandsDir, f)]),
+  ...skillNames.map((n) => [`skills/${n}/SKILL.md`, join(skillsDir, n, "SKILL.md")]),
+]) {
+  const bytes = Buffer.byteLength(read(path));
+  if (bytes > SIZE_LIMIT) err("size", `${label} is ${bytes} bytes (limit ${SIZE_LIMIT}); move detail into a reference file`);
+}
+
+// Two model-invocable descriptions that share most of their words compete for the same requests.
+{
+  const STOP = new Set("a an and are as at be by can for from has in into is it its of on or that the this to use used uses when where which with you your user users".split(" "));
+  const docs = [];
+  for (const file of commandFiles) {
+    const f = frontmatter(read(join(commandsDir, file)))?.fields || {};
+    if (f["disable-model-invocation"] !== "true") docs.push([`/sk:${file.replace(/\.md$/, "")}`, f.description || ""]);
+  }
+  for (const name of skillNames) {
+    const f = frontmatter(read(join(skillsDir, name, "SKILL.md")))?.fields || {};
+    if (f["disable-model-invocation"] !== "true") docs.push([name, f.description || ""]);
+  }
+  const tokens = docs.map(([, d]) => d.toLowerCase().match(/[a-z][a-z-]+/g)?.filter((w) => !STOP.has(w)) || []);
+  const df = new Map();
+  for (const t of tokens) for (const w of new Set(t)) df.set(w, (df.get(w) || 0) + 1);
+  const vec = tokens.map((t) => {
+    const v = new Map();
+    for (const w of t) v.set(w, (v.get(w) || 0) + Math.log(docs.length / df.get(w)));
+    return v;
+  });
+  const norm = (v) => Math.sqrt([...v.values()].reduce((s, x) => s + x * x, 0)) || 1;
+  for (let i = 0; i < docs.length; i++) {
+    for (let j = i + 1; j < docs.length; j++) {
+      let dot = 0;
+      for (const [w, x] of vec[i]) if (vec[j].has(w)) dot += x * vec[j].get(w);
+      const cos = dot / (norm(vec[i]) * norm(vec[j]));
+      if (cos >= 0.5) warn("description-overlap", `${docs[i][0]} and ${docs[j][0]} descriptions overlap (cosine ${cos.toFixed(2)})`);
+    }
+  }
+}
+
 // --- 4. allowed-tools must not pre-approve a whole binary (plan item 1.2) ---
 
 // Binaries whose every invocation is read-only.
@@ -303,6 +413,20 @@ for (const name of skillNames) {
     if (entry.version) err("plugin", "marketplace.json must not set a version; plugin.json is the single source");
   }
   if (existsSync(join(ROOT, ".claude-plugin", "plugin.json"))) err("plugin", "a second plugin.json at the repository root would shadow pkg/");
+
+  // At release: shipped files changed since the last tag means the version must have moved,
+  // or plugin users never receive the change (post-3.0 plan F14; adapted from wshobson/agents, MIT).
+  if (process.argv.includes("--release")) {
+    const git = (...args) => spawnSync("git", args, { cwd: ROOT, encoding: "utf-8" });
+    const tag = git("describe", "--tags", "--abbrev=0").stdout.trim();
+    if (!tag) warn("release", "no tag found; version bump not checked");
+    else {
+      const changed = git("diff", "--name-only", tag, "HEAD", "--", "pkg").stdout.trim();
+      let tagged = null;
+      try { tagged = JSON.parse(git("show", `${tag}:package.json`).stdout).version; } catch { /* no package.json at the tag */ }
+      if (changed && tagged === pkgVersion) err("release", `pkg/ changed since ${tag} but the version is still ${pkgVersion}; bump package.json and plugin.json`);
+    }
+  }
 }
 
 // --- 7. Ratchets: reported so they only go down ---

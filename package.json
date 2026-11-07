@@ -4,7 +4,7 @@
   "description": "SK, Moni's software machine: idea to production and large-codebase maintenance with a disciplined workflow. A Claude Code plugin with 55 slash commands, 28 skills, and 9 agents",
   "type": "module",
   "scripts": {
-    "test": "node scripts/check.mjs",
+    "test": "node scripts/check.mjs && node scripts/check-selftest.mjs",
     "evals": "node scripts/evals.mjs",
     "dev": "claude --plugin-dir ./pkg"
   },

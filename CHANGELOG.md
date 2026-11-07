@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Guard rails in `npm test` (development only).** `scripts/check.mjs` now catches failures Claude Code does not report: unknown frontmatter keys (and keys plugin agents ignore), a preloaded agent skill that is missing or gated, a `${CLAUDE_PLUGIN_ROOT}`, `../` or `references/` path that does not resolve, `$1`-`$9` inside a code block, a command or skill over 18 KB, and overlapping model-invocable descriptions (warning). `--release` fails when `pkg/` changed since the last tag but the version did not. `scripts/check-selftest.mjs` breaks each rule in a copy and expects its error. Adapted from [agent-sh/agnix](https://github.com/agent-sh/agnix) (MIT or Apache-2.0), [wshobson/agents](https://github.com/wshobson/agents) and [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) (MIT).
+
 ## 3.1.0 (2026-11-07)
 
 - **Landing pages.** `/sk:copywrite` gains a landing page reference (`copywriting/references/landing-page.md`): the 5-second test, each section's job and common mistake, page-level rules (one action, the product above the fold, proof beside the button, risk reversal, sign-up friction, mobile first, one metric at a time) and a 13-point audit checklist. New **Landing page audit** format scores an existing page with evidence; landing pages now include benefits, demo, pricing and FAQ sections, a 5-second check on the hero, build notes, and two follow-ups (hero rewrite, weakest-section redo). `/sk:ui-review` anti-patterns gain seven landing page rows (18 to 24). Credit: adapted from Higgsfield's SaaS landing page guide.
