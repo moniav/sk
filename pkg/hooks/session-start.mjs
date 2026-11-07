@@ -67,12 +67,22 @@ function briefing(projectDir) {
     cur.last && `last: ${clean(cur.last)}`,
   ].filter(Boolean);
 
+  // Discipline skills rarely fire on their own (they read as things Claude can do unaided),
+  // so the briefing names the one that applies to the task's phase.
+  const phase = clean(cur.phase).toLowerCase();
+  const discipline =
+    phase === "dev"
+      ? "In this phase: write and run a failing test before changing code (test-driven-development), and show command output before calling anything done (verification-before-completion)."
+      : phase === "test"
+        ? "In this phase: every criterion ends passed, failed or untested, with fresh command output as evidence (verification-before-completion)."
+        : "";
   const lines = [
     "For reference only: the active SK task in this project, from docs/tasks/.current. Do not resume work unless the user asks; check `git status` first.",
     facts.join(" · "),
+    discipline,
     file ? `Task file: ${file}. /sk:resume gives the full briefing.` : "/sk:resume gives the full briefing.",
   ];
-  const text = lines.join("\n");
+  const text = lines.filter(Boolean).join("\n");
   return text.length > MAX ? text.slice(0, MAX - 1) + "…" : text;
 }
 

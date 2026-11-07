@@ -270,6 +270,8 @@ Also: `release.md` Step 1 runs `node scripts/check.mjs --release`.
 
 ### PR8 Triggering rebuild · M · gate N2
 
+> **Outcome (2026-11-07):** suite rebuilt (176 cases, 66 held out). Baseline held-out fire: Haiku 13%, Sonnet 51%; quiet 100%. Two Haiku tuning rounds kept two descriptions (technical-writing, git-worktrees); the rest did not move, because discipline skills read to Claude as things it can do unaided. Those get their rule from commands, agents, CLAUDE.md rules and the session briefing; the table is in `dev-docs/guides/skill-evals.md`. Spend: about $37 for PR8.
+
 **Items:** R3 (with B1).
 
 1. For each of the 11 model-invoked skills, write 8 detailed fire prompts and 8 genuine near misses without looking at the description; source wording from SK's own dogfood sessions where possible. Tag 40% `holdout`.
@@ -282,6 +284,8 @@ Also: `release.md` Step 1 runs `node scripts/check.mjs --release`.
 **Credit:** anthropics/skills `skill-creator` (Apache-2.0), microsoft/SkillOpt (MIT).
 
 ### PR9 Measured settings · S · after PR3 and PR8 · gate N2
+
+> **Outcome (2026-11-07): skipped by decision.** No behaviour case exercises the commands and agents B2 would tune (`task-status`, `resume`, `recap`, `debugger`, `architecture-reviewer`, `plan-reviewer`), and eval fixtures never load a project CLAUDE.md, so B3 (`omitClaudeMd`) cannot be measured either. The plan keeps a setting only where evals hold or improve, so neither ships. Revisit when cases for those commands exist.
 
 **Items:** B2, B3.
 

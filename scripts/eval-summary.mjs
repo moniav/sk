@@ -12,7 +12,17 @@
 // transition (improved, regressed, stable, persistent fail). Any regression exits 1. A case
 // where the plugin scores no better than the run without it does not discriminate, and is flagged.
 
-import { readFileSync } from "fs";
+import { existsSync, readFileSync } from "fs";
+import { dirname, join, resolve } from "path";
+import { fileURLToPath } from "url";
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+// A case tagged holdout is never used to tune a description; its score is the honest one.
+// Tags are not in the result file, so they are read from the case in this repository.
+function isHoldout(dir) {
+  const path = join(ROOT, "dev-docs", String(dir || "").replace(/\\/g, "/"), "prompt.md");
+  return existsSync(path) && /^tags:.*\bholdout\b/m.test(readFileSync(path, "utf-8"));
+}
 
 function load(path) {
   const result = JSON.parse(readFileSync(path, "utf-8"));
@@ -22,7 +32,8 @@ function load(path) {
     const skill = parts.length > 1 ? parts[parts.length - 2] : c.name;
     const kind = (c.graders || []).some((g) => g.name === "stayed-quiet") ? "quiet" : "fire";
     const runs = Array.isArray(c.arms?.with) ? c.arms.with : [];
-    const row = (skills[skill] ||= { fire: [], quiet: [] });
+    const row = (skills[skill] ||= { fire: [], quiet: [], fireHeld: [], quietHeld: [] });
+    const bucket = isHoldout(c.dir) ? `${kind}Held` : kind;
     for (const run of runs) {
       // A run that never reached the model says nothing about the skill. Hitting the
       // turn cap or the timeout is a real outcome; an account or rate limit is not.
@@ -31,7 +42,7 @@ function load(path) {
         continue;
       }
       total_runs++;
-      row[kind].push(run.score ?? 0);
+      row[bucket].push(run.score ?? 0);
     }
   }
   return { skills, cost: result.costUsd, partial: result.partial, voided: void_runs, scored: total_runs };
@@ -146,5 +157,25 @@ let total = `${"ALL".padEnd(32)} ${pct(mean(totals.bf))}  ${pct(mean(totals.bq))
 if (after) total += `    ${pct(mean(totals.af))}  ${pct(mean(totals.aq))}`;
 console.log(total);
 console.log(`cost: $${before.cost?.toFixed(2)}${before.partial ? " (partial run)" : ""}${after ? `, then $${after.cost?.toFixed(2)}${after.partial ? " (partial run)" : ""}` : ""}`);
+
+// Held-out cases are never used to tune a description, so they are the score to trust.
+if (names.some((n) => before.skills[n]?.fireHeld?.length || after?.skills[n]?.fireHeld?.length)) {
+  console.log(`\n${"held-out (the honest score)".padEnd(32)} fire  quiet${after ? "    fire  quiet" : ""}`);
+  const held = { bf: [], bq: [], af: [], aq: [] };
+  for (const name of names) {
+    const b = before.skills[name] || {};
+    let line = `${name.padEnd(32)} ${pct(mean(b.fireHeld || []))}  ${pct(mean(b.quietHeld || []))}`;
+    held.bf.push(...(b.fireHeld || []));
+    held.bq.push(...(b.quietHeld || []));
+    if (after) {
+      const a = after.skills[name] || {};
+      held.af.push(...(a.fireHeld || []));
+      held.aq.push(...(a.quietHeld || []));
+      line += `    ${pct(mean(a.fireHeld || []))}  ${pct(mean(a.quietHeld || []))}`;
+    }
+    console.log(line);
+  }
+  console.log(`${"ALL".padEnd(32)} ${pct(mean(held.bf))}  ${pct(mean(held.bq))}${after ? `    ${pct(mean(held.af))}  ${pct(mean(held.aq))}` : ""}`);
+}
 
 if (invalid) process.exit(2);

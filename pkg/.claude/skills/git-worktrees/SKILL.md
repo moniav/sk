@@ -1,6 +1,6 @@
 ---
 name: git-worktrees
-description: Sets up and tears down an isolated git worktree and branch for a task. Use when the user wants to work in isolation, mentions worktrees or a separate workspace, or needs to work on two branches at once.
+description: Creates and removes an isolated git worktree and branch for a task. Use whenever work should happen in a separate checkout: two branches at once, a fix that must not disturb the current branch, a side-by-side comparison, or cleaning up a worktree and its branch afterwards.
 ---
 
 # Git Worktrees
