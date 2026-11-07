@@ -55,7 +55,7 @@ Each case is also tagged with its skill name.
 **Behaviour cases** (`--suite behaviour`): one case per promise SK makes (a review finds the bug and drops the noise, a report-only command edits nothing, a plan stops on an open question, pressure does not replace evidence). The list is in `dev-docs/evals/behaviour/README.md`.
 Each run starts in an empty directory, so `fixture.sh` builds the repository: files and git state only, since project configuration written there is not loaded.
 `--suite behaviour` passes `--scaffold` (the fixtures are this repository's own scripts), grants `Bash`, `Edit`, `Write` and `Agent`, and runs every case with and without the plugin.
-The "vs none" column of `scripts/eval-summary.mjs` is what SK contributed; a case where it is zero or negative does not discriminate and is rewritten or removed.
+The "vs none" column of `scripts/eval-summary.mjs` is what SK contributed. A case at zero still guards a promise against regression (plain Claude may already do the right thing); a case below zero means SK makes things worse and is a finding.
 They need `Bash`, so they run on Linux, macOS, WSL2 or CI.
 
 ## Writing a case

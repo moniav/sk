@@ -54,14 +54,25 @@ function loadCounted(path) {
   return load(path);
 }
 // --- Behaviour results: one row per case ---
-const VOID = /session limit|usage limit|rate.?limit|overloaded|authentication/i;
+// A run that never reached the model (an account limit, a missing sandbox, a failed fixture)
+// says nothing about SK; its graders can even "pass" on an empty workspace.
+const VOID = /session limit|usage limit|rate.?limit|overloaded|authentication|sandbox|scaffold failed/i;
 function loadCases(path) {
   const result = JSON.parse(readFileSync(path, "utf-8"));
   const cases = {};
+  let voided = 0;
   for (const c of result.cases || []) {
-    const runs = Array.isArray(c.arms?.with) ? c.arms.with.filter((r) => !VOID.test(r.error || "")) : [];
-    cases[c.name] = { score: c.aggregates?.score ?? mean(runs.map((r) => r.score ?? 0)), delta: c.aggregates?.delta };
+    const valid = (arm) => (Array.isArray(c.arms?.[arm]) ? c.arms[arm] : []).filter((r) => {
+      if (VOID.test(r.error || "")) { voided++; return false; }
+      return true;
+    });
+    const withRuns = valid("with");
+    const withoutRuns = valid("without");
+    const score = withRuns.length ? mean(withRuns.map((r) => r.score ?? 0)) : NaN;
+    const delta = withoutRuns.length && withRuns.length ? score - mean(withoutRuns.map((r) => r.score ?? 0)) : undefined;
+    cases[c.name] = { score, delta };
   }
+  if (voided) console.log(`[WARN] ${path}: ${voided} run(s) never reached the model and are excluded.`);
   return { cases, cost: result.costUsd, partial: result.partial };
 }
 function isBehaviour(path) {
