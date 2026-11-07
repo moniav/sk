@@ -45,7 +45,7 @@ Then confirm with the user:
 3. **Goal** — What action should the reader take? (sign up, buy, book demo, etc.)
 4. **Audience** — Any specifics beyond the default SaaS buyer?
 
-If the user provided $ARGUMENTS, use that as the brief and only ask what's missing.
+If the user provided arguments (`$ARGUMENTS`), use them as the brief and only ask what's missing.
 
 ## Step 3: Load Frameworks (if needed)
 

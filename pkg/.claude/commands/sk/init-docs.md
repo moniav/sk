@@ -16,6 +16,7 @@ Copy the steps below into your todo list before starting. A step you decide not 
 - Every generated doc describes what the code actually does: no placeholder text, no aspirational conventions.
 - If multiple package manifests exist (workspaces / monorepo), ask the user which package to target, or whether to cover the workspace root, before proceeding.
 - `CLAUDE.md` Build Commands are filled in from detection, each with a comment naming its source. A command that could not be detected keeps the placeholder comment plus `# [NOT DETECTED] - fill in manually`.
+- **Never read secrets.** Do not open `.env`, `.env.*` (except `.env.example`, `.env.sample`, `.env.template`, `.env.dist`), `*.pem`, `*.key`, `id_*`, `.npmrc`, `.pypirc`, `.netrc` or `.git-credentials`. Environment variable *names* come from a template file or from the places the code reads them; no value from the project ever goes into a doc. Skip lockfiles and generated or vendored directories, and list what was skipped in the Step 7 report.
 - In every index file you create or keep, replace the `Last updated: YYYY-MM-DD` placeholder with today's date. Otherwise `/sk:docs-audit` reports the fresh scaffold as unfilled stubs.
 
 ## Exit Gate
@@ -24,6 +25,7 @@ Do not report completion until each line holds. For the minimal profile, the dom
 
 - [ ] Every `docs/system/` doc names real files, dependencies or endpoints from this codebase, and a search of `docs/system/` for template placeholder text returns nothing
 - [ ] Every dependency in `docs/system/tech-stack.md` appears in a dependency manifest
+- [ ] No secret file was read, and no doc contains a value taken from an env or credential file
 - [ ] Every path in `docs/conventions/file-structure.md` exists on disk
 - [ ] Each convention doc cites at least one existing file that shows the pattern
 - [ ] `CLAUDE.md` Build Commands have a command or a `[NOT DETECTED]` marker on every line
@@ -42,7 +44,7 @@ If `docs/system/project-context.md` exists, read it first. Stamp today's date in
 
 **Identity.** Glob for `package.json`, `pyproject.toml`, `requirements.txt`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`, `build.gradle`, and read the manifest found.
 
-**Structure.** Glob `src/**/*` (source), `tests/**/*`, `**/*.test.*`, `**/*.spec.*`, `**/test_*` (tests), and `*.config.*`, `.env*`, `tsconfig*`, `docker*` (config).
+**Structure.** Glob `src/**/*` (source), `tests/**/*`, `**/*.test.*`, `**/*.spec.*`, `**/test_*` (tests), and `*.config.*`, `.env.example`, `.env.sample`, `.env.template`, `tsconfig*`, `docker*` (config). Never a real `.env` (see Rules).
 
 **Dependencies.** Read the dependency manifest: `package.json` (dependencies and devDependencies), `requirements.txt` or `pyproject.toml`, `Cargo.toml`, `go.mod`.
 
@@ -111,7 +113,7 @@ Generate these files in order, from the Step 1 scan.
 1. **`docs/system/tech-stack.md`**: from the dependency manifests
 2. **`docs/system/database-schema.md`**: from schema/model files
 3. **`docs/system/api-reference.md`**: from route files (if applicable)
-4. **`docs/system/integrations.md`**: from env vars and external service imports
+4. **`docs/system/integrations.md`**: from external service imports and the environment variable *names* the code reads (never their values)
 5. **`docs/system/project-context.md`**: dense project summary; put the detected build commands in its Build Commands section
 
 ### 3b. Architecture Docs
