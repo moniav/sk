@@ -12,17 +12,6 @@ commits, create via `gh`, return the URL.
 **Use when:** The branch is committed and you just want the PR.
 **Use `/sk:finish` instead when:** You want review + commit + PR + task board in one flow.
 
-## Preloaded state
-
-Filled in when the command loads, so the first steps need not run these again:
-
-- Branch: !`git branch --show-current 2>/dev/null || true`
-- Default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true`
-- Uncommitted: !`git status --short 2>/dev/null || true`
-- Recent commits: !`git log --oneline -10 2>/dev/null || true`
-
-If a line above is empty or still shows its command (shell injection is off, or this is not a git repository), gather that fact with the steps below.
-
 ## Step 1: Preflight
 
 If this isn't a git repository or has no commits yet, say so and stop — don't error out.

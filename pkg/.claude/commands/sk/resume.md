@@ -1,6 +1,5 @@
 ---
 description: "Resume work from a previous session: reads the active task and restores context. Use when the user asks where they left off, what was in progress, or to pick up earlier work."
-allowed-tools: Bash(git branch --show-current), Bash(git symbolic-ref *), Bash(git status *), Bash(git log *), Bash(cat docs/tasks/.current)
 ---
 
 # Resume — Session Continuity
@@ -8,18 +7,6 @@ allowed-tools: Bash(git branch --show-current), Bash(git symbolic-ref *), Bash(g
 Quickly restore context from a previous session and present a briefing.
 
 **Use when:** Starting a new Claude Code session and you have active work.
-
-## Preloaded state
-
-Filled in when the command loads, so the first steps need not run these again:
-
-- Branch: !`git branch --show-current 2>/dev/null || true`
-- Default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true`
-- Uncommitted: !`git status --short 2>/dev/null || true`
-- Recent commits: !`git log --oneline -10 2>/dev/null || true`
-- Active task: !`cat docs/tasks/.current 2>/dev/null || true`
-
-If a line above is empty or still shows its command (shell injection is off, or this is not a git repository), gather that fact with the steps below.
 
 ## Step 1: Gather State (parallel)
 
