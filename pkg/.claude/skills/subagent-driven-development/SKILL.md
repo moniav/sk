@@ -1,6 +1,6 @@
 ---
 name: subagent-driven-development
-description: Implements a task with one fresh subagent per subtask, each followed by spec and quality review, while you keep the task file. Use whenever a task has about five or more subtasks, a long session risks drifting, or the user asks for subagents to do the implementation.
+description: Load when a task has about five or more subtasks, a long session risks drifting, or the user wants subagents to write the code: one fresh implementer per subtask, each followed by spec and quality review, while you keep the task file.
 ---
 
 # Subagent-Driven Development

@@ -1,6 +1,6 @@
 ---
 name: technical-diagrams
-description: Generates SVG architecture, flow, sequence and component diagrams in one consistent visual style. Use whenever the user wants a picture of how a system, its data or a process fits together, or documentation needs an SVG figure.
+description: Generates SVG architecture, flow and component diagrams in one consistent visual style. Use when the user asks for a diagram of a system, process or component, or when documentation needs an SVG figure.
 ---
 
 # Technical SVG Diagrams

@@ -1,6 +1,6 @@
 ---
 name: plow-ahead
-description: Lets you proceed through minor ambiguity by stating each assumption and continuing, stopping only for real blockers, with a decision log at the end. Use whenever the user tells you to stop asking, to decide for yourself, or to keep going without checking in.
+description: Load when the user tells you to stop asking questions, decide for yourself, or just keep going: it sets how to proceed on stated assumptions, what still needs a stop (destructive, irreversible or security-related choices), and the decision log you hand back.
 ---
 
 # Plow Ahead — Autonomy Contract

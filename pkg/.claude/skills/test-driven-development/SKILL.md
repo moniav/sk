@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-description: Writes and runs a failing test before changing production code, then makes it pass. Use whenever you fix a bug or add or change behaviour in code, however small the change, including when the user asks to skip tests or add them later. Not needed for edits to tests alone or for questions about testing.
+description: Load before you write or edit production code to fix a bug or change behaviour: you write and run a failing test first, then the code that makes it pass. Applies to every code change, including one-line fixes and rushed requests; skipping it is how regressions ship. Not needed for edits to tests alone or for questions about testing.
 ---
 
 # Test-Driven Development
