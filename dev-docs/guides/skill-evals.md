@@ -37,18 +37,26 @@ Cases that need `Bash` cannot run on native Windows (no sandbox backend): use WS
 
 ```
 dev-docs/evals/
-└── trigger/<skill>/<case>/
-    ├── prompt.md              the request, as a user would type it
-    └── graders/
-        ├── fired.md           passes when the skill was invoked
-        └── stayed-quiet.md    passes when it was not
+├── trigger/<skill>/<case>/
+│   ├── prompt.md              the request, as a user would type it
+│   └── graders/
+│       ├── fired.md           passes when the skill was invoked
+│       └── stayed-quiet.md    passes when it was not
+└── behaviour/<case>/
+    ├── case.yaml              tags, turn and time limits, tools, and context.scaffold_script
+    ├── fixture.sh             builds the small git repository the case runs in
+    ├── prompt.md              the request
+    └── graders/               what must have happened (llm, regex, tool_used, tool_order, file_exists)
 ```
 
 **Trigger cases** (`--tag trigger`): for each model-invoked skill, two requests that should fire it (`--tag fire`) and one near miss that should not (`--tag quiet`).
 Each case is also tagged with its skill name.
 
-**Behaviour cases** are not written yet.
-They need one organic task each for `dev`, `test` and `debug`, with a rubric of three to six checkable criteria, and they need `Bash`, so they run under WSL2 or in CI.
+**Behaviour cases** (`--suite behaviour`): one case per promise SK makes (a review finds the bug and drops the noise, a report-only command edits nothing, a plan stops on an open question, pressure does not replace evidence). The list is in `dev-docs/evals/behaviour/README.md`.
+Each run starts in an empty directory, so `fixture.sh` builds the repository: files and git state only, since project configuration written there is not loaded.
+`--suite behaviour` passes `--scaffold` (the fixtures are this repository's own scripts), grants `Bash`, `Edit`, `Write` and `Agent`, and runs every case with and without the plugin.
+The "vs none" column of `scripts/eval-summary.mjs` is what SK contributed. A case at zero still guards a promise against regression (plain Claude may already do the right thing); a case below zero means SK makes things worse and is a finding.
+They need `Bash`, so they run on Linux, macOS, WSL2 or CI.
 
 ## Writing a case
 
@@ -59,6 +67,9 @@ They need one organic task each for `dev`, `test` and `debug`, with a rubric of 
 4. Never ask the session which skills it used.
 5. For a "must not fire" check, use `tool_used` with `min: 0` and `max: 0`.
 6. Give trigger graders `arm: both` so they are scored in every mode.
+7. In a behaviour case, a grader only the plugin could pass (a section name SK's report uses) gets `arm: with-only`; a grader both arms could pass stays scored, which is what makes the difference measurable.
+8. An `llm` grader names the concrete evidence: superficial evidence (the right file name with the wrong content, the right heading over an empty section) is a fail.
+9. Never copy a case's prompt or grader wording into a description or command. The case then measures the copy, not the behaviour.
 
 ## Reading a result
 
@@ -73,3 +84,6 @@ They need one organic task each for `dev`, `test` and `debug`, with a rubric of 
 - Record a baseline before changing descriptions or shortening prompts.
 - A change merges only if the suite scores at least as well as the baseline on every model tested.
 - Put the before and after scores in the changelog entry.
+- For behaviour cases: `node scripts/eval-summary.mjs before.json after.json` labels each case improved, regressed, stable or persistent fail, and exits 1 on any regression. A regression blocks the merge.
+- Pin `--model` (and `--judge-model` when it matters) so two results are comparable, and leave a partial result (`partial: true`) out of any comparison.
+- Expect noise: with 3 runs a case moves by a third when one run flips. Treat a move of one run on one case as noise; a regression is a case that drops from passing (80% or more) to failing on a rerun too. The baseline `behaviour-3.0-sonnet.json` (3 runs, Sonnet, Sonnet judge, $3.63) is the reference for 3.1.0.

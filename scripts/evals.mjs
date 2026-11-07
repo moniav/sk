@@ -5,6 +5,13 @@
 //
 //   npm run evals -- --tag trigger --model haiku --runs 1 --max-cost-usd 2
 //   npm run evals -- --snapshot v2.0.0 --tag trigger --json dev-docs/evals/baselines/v2.0.0-haiku.json
+//   npm run evals -- --suite behaviour --model sonnet --runs 1 --max-cost-usd 15
+//
+// --suite trigger    the trigger cases, one arm (did the skill fire?)
+// --suite behaviour  the behaviour cases: each case's fixture.sh builds its repository (--scaffold),
+//                    Bash, Edit, Write and Agent are granted, and every case also runs without the
+//                    plugin (--ablation with-without), so the result shows what SK contributed.
+//                    The judge defaults to Sonnet: Haiku misjudged long reports in testing.
 //
 // The suite always runs against a frozen copy of the plugin, never the live tree:
 // a run takes minutes, and a tree that is edited meanwhile gives a result that
@@ -23,6 +30,17 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CASES = join(ROOT, "dev-docs", "evals");
 const env = { ...process.env };
 const passthrough = process.argv.slice(2);
+
+let suite = null;
+const suiteIdx = passthrough.indexOf("--suite");
+if (suiteIdx !== -1) {
+  suite = passthrough[suiteIdx + 1];
+  passthrough.splice(suiteIdx, 2);
+  if (!["trigger", "behaviour"].includes(suite)) {
+    console.log("[ERROR] --suite must be trigger or behaviour");
+    process.exit(1);
+  }
+}
 
 let snapshotRef = null;
 const snapIdx = passthrough.indexOf("--snapshot");
@@ -90,7 +108,14 @@ if (version && (Number(version[1]) < 2 || (Number(version[1]) === 2 && Number(ve
   console.log(`[INFO] git ${version[0]} is older than 2.31 -- running the evals without git on PATH`);
 }
 
-const args = ["plugin", "eval", ".", ...evalArgs, "--ablation", "none", "--no-publish", "--trust-plugin", ...passthrough];
+// The fixture scripts are this repository's own files, so --scaffold only runs code we wrote.
+const suiteArgs =
+  suite === "behaviour"
+    ? ["--tag", "behaviour", "--ablation", "with-without", "--scaffold", ...(passthrough.includes("--judge-model") ? [] : ["--judge-model", "sonnet"]), "--allow-tools", "Bash", "Edit", "Write", "Agent"]
+    : suite === "trigger"
+      ? ["--tag", "trigger", "--ablation", "none"]
+      : ["--ablation", "none"];
+const args = ["plugin", "eval", ".", ...evalArgs, ...suiteArgs, "--no-publish", "--trust-plugin", ...passthrough];
 const quoted = args.map((a) => (/[\s"]/.test(a) ? `"${a.replace(/"/g, '\\"')}"` : a)).join(" ");
 const run = spawnSync(`claude ${quoted}`, { cwd, env, stdio: "inherit", shell: true });
 

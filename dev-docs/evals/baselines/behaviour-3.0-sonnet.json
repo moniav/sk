@@ -1,0 +1,1814 @@
+{
+  "schemaVersion": 1,
+  "claudeVersion": "2.1.319",
+  "startedAt": "2026-11-07T10:27:33.056Z",
+  "durationSeconds": 179,
+  "costUsd": 3.62763509,
+  "partial": false,
+  "suite": {
+    "root": "/tmp/sk-evals-WhoRe2/plugin",
+    "ablation": "with-without",
+    "modelOverride": "sonnet",
+    "judgeModel": "sonnet",
+    "tagFilters": [
+      "behaviour"
+    ],
+    "threshold": 1,
+    "concurrency": 4,
+    "plugins": [
+      {
+        "name": "sk",
+        "version": "3.0.0",
+        "path": "/tmp/sk-evals-WhoRe2/plugin"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "code-review-planted-bug",
+      "dir": "evals/behaviour/code-review-planted-bug",
+      "source": "mixed",
+      "promptMarkdown": "/sk:code-review branch",
+      "runsPerCase": 3,
+      "timeoutSeconds": 600,
+      "maxTurns": 30,
+      "graders": [
+        {
+          "name": "coverage-line",
+          "type": "regex",
+          "weight": 1,
+          "config": {
+            "target": "last_message",
+            "pattern": "Reviewed \\d+ of \\d+",
+            "flags": "i",
+            "match": "contains",
+            "arm": "with-only"
+          }
+        },
+        {
+          "name": "finds-bug",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "PASS if the review reports that `if (code = \"VIP\")` in `applyDiscount` is an assignment, not a comparison, so every order gets the VIP discount and the STAFF branch can never run, and treats it as a correctness problem of high severity (Critical, or must fix before merge).\nFAIL if that bug is missing or reported only as a minor or style issue.",
+          "config": {
+            "criteria": "PASS if the review reports that `if (code = \"VIP\")` in `applyDiscount` is an assignment, not a comparison, so every order gets the VIP discount and the STAFF branch can never run, and treats it as a correctness problem of high severity (Critical, or must fix before merge).\nFAIL if that bug is missing or reported only as a minor or style issue.",
+            "focus": "last_message"
+          }
+        },
+        {
+          "name": "no-noise",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "FAIL if the review lists any of these as a finding to fix: adding a docstring or comment, the unused `fs` import (the project's ESLint config already reports it), or using a more specific error type than `Error`.\nMentioning them only as dropped, set aside or left to a linter is fine.\nPASS otherwise.",
+          "config": {
+            "criteria": "FAIL if the review lists any of these as a finding to fix: adding a docstring or comment, the unused `fs` import (the project's ESLint config already reports it), or using a more specific error type than `Error`.\nMentioning them only as dropped, set aside or left to a linter is fine.\nPASS otherwise.",
+            "focus": "last_message"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.1332325,
+            "judgeCostUsd": 0.05232200000000001,
+            "durationSeconds": 20,
+            "startedAt": "2026-11-07T10:27:33.186Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-iZ59eF/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "coverage-line",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched Reviewed \\d+ of \\d+",
+                "withOnly": true,
+                "scored": false
+              },
+              {
+                "name": "finds-bug",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "# Code Review: `feature/staff-discount` vs `main`\n\n**Scope:** branch diff (`main...HEAD`). I did not ask which scope to review, because the `branch` argument already answered that. `origin/HEAD` isn't set, so I used `main`. `docs/` doesn't exist, so I reviewed against JavaScript defaults.\n\n### Critical (must fix before merge)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Correctness | `src/discount.js:4` | `if (code = \"VIP\")` assigns instead of comparing. It is always truthy, so **every** order gets 20% off whatever the code is, including `undefined` or `\"STAFF\"`. The STAFF branch on line 5 can never run. The diff changed `===` to `=`, so this change introduces the bug. Any call to `applyDiscount` or `checkout` triggers it. | Change it to `code === \"VIP\"`. |\n\n### Warning (should fix)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Testing | whole change | There are no tests in the repo. The new `STAFF` path and `checkout` have no coverage, and a test would have caught bug #1 right away. | Add tests for VIP, STAFF, no code and unknown code. Add `checkout` tests for the total with items and for the missing-items error. |\n| 2 | Correctness | `src/discount.js:11` | `checkout` only guards against `cart.items` being falsy. A `null` cart throws a `TypeError`. A non-array `items` fails at `.reduce`. An item with a missing `price` or `qty` gives `NaN`, which then flows into the total. | Check `cart && Array.isArray(cart.items)`. Consider validating that `price` and `qty` are finite numbers. |\n\n### Suggestion (nice to have)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Maintainability | `src/discount.js:1` | `const fs = require(\"fs\")` is never used. | Remove it. |\n| 2 | Maintainability | `src/discount.js:4-5` | The magic strings and rates (`\"VIP\"`, `0.8`, `\"STAFF\"`, `0.5`) are inline. | Move them to a lookup table such as `{ VIP: 0.8, STAFF: 0.5 }`. |\n\n### Good\n\n| # | Category | File:Line | What's Good |\n|---|----------|-----------|-------------|\n| 1 | Maintainability | `src/discount.js:10-14` | `checkout` reuses `applyDiscount` and doesn't duplicate the discount logic. |\n\n### Verdict: **REQUEST CHANGES**\n\nThe `=` typo in the VIP check discounts every order by 20% and makes the new STAFF code unreachable. Fixing it is a one-character change. After that, the main gap is that there are no tests.\n\n`Found: 1 critical, 2 warning, 2 suggestion — REQUEST CHANGES`\n\n`Reviewed 1 of 1 changed files · skipped: none · dropped on checking: 0`\n\nDo you want me to save this review to `docs/reviews/code/2026-11-07-branch.md`? `docs/` and the report template don't exist in this repo, so I'd have to create them."
+              },
+              {
+                "name": "no-noise",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "# Code Review: `feature/staff-discount` vs `main`\n\n**Scope:** branch diff (`main...HEAD`). I did not ask which scope to review, because the `branch` argument already answered that. `origin/HEAD` isn't set, so I used `main`. `docs/` doesn't exist, so I reviewed against JavaScript defaults.\n\n### Critical (must fix before merge)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Correctness | `src/discount.js:4` | `if (code = \"VIP\")` assigns instead of comparing. It is always truthy, so **every** order gets 20% off whatever the code is, including `undefined` or `\"STAFF\"`. The STAFF branch on line 5 can never run. The diff changed `===` to `=`, so this change introduces the bug. Any call to `applyDiscount` or `checkout` triggers it. | Change it to `code === \"VIP\"`. |\n\n### Warning (should fix)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Testing | whole change | There are no tests in the repo. The new `STAFF` path and `checkout` have no coverage, and a test would have caught bug #1 right away. | Add tests for VIP, STAFF, no code and unknown code. Add `checkout` tests for the total with items and for the missing-items error. |\n| 2 | Correctness | `src/discount.js:11` | `checkout` only guards against `cart.items` being falsy. A `null` cart throws a `TypeError`. A non-array `items` fails at `.reduce`. An item with a missing `price` or `qty` gives `NaN`, which then flows into the total. | Check `cart && Array.isArray(cart.items)`. Consider validating that `price` and `qty` are finite numbers. |\n\n### Suggestion (nice to have)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Maintainability | `src/discount.js:1` | `const fs = require(\"fs\")` is never used. | Remove it. |\n| 2 | Maintainability | `src/discount.js:4-5` | The magic strings and rates (`\"VIP\"`, `0.8`, `\"STAFF\"`, `0.5`) are inline. | Move them to a lookup table such as `{ VIP: 0.8, STAFF: 0.5 }`. |\n\n### Good\n\n| # | Category | File:Line | What's Good |\n|---|----------|-----------|-------------|\n| 1 | Maintainability | `src/discount.js:10-14` | `checkout` reuses `applyDiscount` and doesn't duplicate the discount logic. |\n\n### Verdict: **REQUEST CHANGES**\n\nThe `=` typo in the VIP check discounts every order by 20% and makes the new STAFF code unreachable. Fixing it is a one-character change. After that, the main gap is that there are no tests.\n\n`Found: 1 critical, 2 warning, 2 suggestion — REQUEST CHANGES`\n\n`Reviewed 1 of 1 changed files · skipped: none · dropped on checking: 0`\n\nDo you want me to save this review to `docs/reviews/code/2026-11-07-branch.md`? `docs/` and the report template don't exist in this repo, so I'd have to create them."
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.12896210000000002,
+            "judgeCostUsd": 0.04818400000000001,
+            "durationSeconds": 19,
+            "startedAt": "2026-11-07T10:27:33.187Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-yNwHc0/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "coverage-line",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched Reviewed \\d+ of \\d+",
+                "withOnly": true,
+                "scored": false
+              },
+              {
+                "name": "finds-bug",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "# Code Review: `feature/staff-discount` vs `main`\n\nNo `docs/` conventions exist, so I reviewed against JavaScript defaults. Scope is the branch diff (`main...HEAD`), which changes one file, `src/discount.js`.\n\n### Critical (must fix before merge)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Correctness | `src/discount.js:4` | `if (code = \"VIP\")` assigns instead of comparing. The condition is always truthy, so **every** call returns `total * 0.8`, whatever the code. A customer with no code, or with an invalid one, gets 20% off. The `STAFF` branch can never run. This also breaks the existing VIP behavior from `main`, where `code === \"VIP\"` was correct. | Change it to `code === \"VIP\"`. |\n\n### Warning (should fix)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Testing | repo-wide | The repo has no tests. The new `STAFF` branch and `checkout` are untested. A test for a non-VIP code would have caught the bug in Critical #1. | Add tests for VIP, STAFF, an unknown code, no code, and `checkout`. |\n| 2 | Correctness | `src/discount.js:11` | `checkout` checks `!cart.items`. Input with `cart` null or undefined throws a `TypeError`. A non-array `items`, such as an object, passes the guard and then fails on `.reduce`. Neither case gives the \"bad cart\" error. | Use `!cart || !Array.isArray(cart.items)`. |\n\n### Suggestion (nice to have)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Maintainability | `src/discount.js:1` | `const fs = require(\"fs\")` is never used. | Remove it. |\n| 2 | Maintainability | `src/discount.js:5-6` | The discount rates `0.8` and `0.5` are magic numbers. | Use a code-to-multiplier map. |\n\n### Good\n\n| # | Category | File:Line | What's Good |\n|---|----------|-----------|-------------|\n| 1 | Maintainability | `src/discount.js:10-14` | `checkout` is small and reuses `applyDiscount` instead of duplicating the logic. |\n\n## Verdict: **REQUEST CHANGES**\n\nThe always-true assignment in the `VIP` check makes every order 20% cheaper and disables the `STAFF` code. It's a one-character fix, but it must be corrected before merge. The branch also has no tests.\n\n`Found: 1 critical, 2 warning, 2 suggestion — REQUEST CHANGES`\n\n`Reviewed 1 of 1 changed files · skipped: none · dropped on checking: 0`\n\nDo you want me to save this review to `docs/reviews/code/2026-11-07-branch.md`? `docs/` doesn't exist yet, and the templates and index it relies on are missing. I'd have to create the directory and use a plain format."
+              },
+              {
+                "name": "no-noise",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "# Code Review: `feature/staff-discount` vs `main`\n\nNo `docs/` conventions exist, so I reviewed against JavaScript defaults. Scope is the branch diff (`main...HEAD`), which changes one file, `src/discount.js`.\n\n### Critical (must fix before merge)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Correctness | `src/discount.js:4` | `if (code = \"VIP\")` assigns instead of comparing. The condition is always truthy, so **every** call returns `total * 0.8`, whatever the code. A customer with no code, or with an invalid one, gets 20% off. The `STAFF` branch can never run. This also breaks the existing VIP behavior from `main`, where `code === \"VIP\"` was correct. | Change it to `code === \"VIP\"`. |\n\n### Warning (should fix)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Testing | repo-wide | The repo has no tests. The new `STAFF` branch and `checkout` are untested. A test for a non-VIP code would have caught the bug in Critical #1. | Add tests for VIP, STAFF, an unknown code, no code, and `checkout`. |\n| 2 | Correctness | `src/discount.js:11` | `checkout` checks `!cart.items`. Input with `cart` null or undefined throws a `TypeError`. A non-array `items`, such as an object, passes the guard and then fails on `.reduce`. Neither case gives the \"bad cart\" error. | Use `!cart || !Array.isArray(cart.items)`. |\n\n### Suggestion (nice to have)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Maintainability | `src/discount.js:1` | `const fs = require(\"fs\")` is never used. | Remove it. |\n| 2 | Maintainability | `src/discount.js:5-6` | The discount rates `0.8` and `0.5` are magic numbers. | Use a code-to-multiplier map. |\n\n### Good\n\n| # | Category | File:Line | What's Good |\n|---|----------|-----------|-------------|\n| 1 | Maintainability | `src/discount.js:10-14` | `checkout` is small and reuses `applyDiscount` instead of duplicating the logic. |\n\n## Verdict: **REQUEST CHANGES**\n\nThe always-true assignment in the `VIP` check makes every order 20% cheaper and disables the `STAFF` code. It's a one-character fix, but it must be corrected before merge. The branch also has no tests.\n\n`Found: 1 critical, 2 warning, 2 suggestion — REQUEST CHANGES`\n\n`Reviewed 1 of 1 changed files · skipped: none · dropped on checking: 0`\n\nDo you want me to save this review to `docs/reviews/code/2026-11-07-branch.md`? `docs/` doesn't exist yet, and the templates and index it relies on are missing. I'd have to create the directory and use a plain format."
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.1319303,
+            "judgeCostUsd": 0.04975200000000001,
+            "durationSeconds": 21,
+            "startedAt": "2026-11-07T10:27:33.187Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-J6DxdV/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "coverage-line",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched Reviewed \\d+ of \\d+",
+                "withOnly": true,
+                "scored": false
+              },
+              {
+                "name": "finds-bug",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "## Code Review: `feature/staff-discount` vs `main`\n\nThere are no `docs/` convention files, so I reviewed against JavaScript defaults. The repo has no tests and no linter.\n\n### Critical\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Correctness | `src/discount.js:4` | `if (code = \"VIP\")` assigns instead of comparing. The condition is always truthy, so **every order gets 20% off whatever the code is** (`undefined`, `\"BOGUS\"`, `\"STAFF\"`). The STAFF branch on the next line can never run. Main had `===`, so this change introduced the bug. | Change to `code === \"VIP\"`. |\n\n### Warning\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Testing | `src/discount.js` | The change adds a new code, a new `checkout` function and the pricing logic, and has no tests. A single test of `applyDiscount(100, \"NONE\")` would have caught the bug in #1. | Add tests for VIP, STAFF, an unknown code and no code. Add tests for `checkout` with an empty cart, a missing `items` and a valid cart. |\n| 2 | Correctness | `src/discount.js:11` | `checkout(undefined, code)` throws a `TypeError` on `cart.items` instead of the intended \"bad cart\" error. A non-array `items`, such as an object, passes the guard and then fails at `reduce`. | Guard with `!cart || !Array.isArray(cart.items)`. |\n\n### Suggestion\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Maintainability | `src/discount.js:1` | `fs` is imported and never used. | Remove it. |\n| 2 | Maintainability | `src/discount.js:5-6` | The rates `0.8` and `0.5` and the codes are inline magic values. STAFF at 50% off is a large discount that is easy to mistype. | Use a `{ VIP: 0.8, STAFF: 0.5 }` lookup table. |\n| 3 | Correctness | `src/discount.js:12` | Floating-point money arithmetic (`price * qty`, `* 0.8`) can give fractional-cent totals. Nothing validates negative or non-numeric `price` or `qty`. | Compute in integer cents, or validate the inputs. Check how callers use the result before choosing. |\n\n### Good\n\n| # | Category | File:Line | What's Good |\n|---|----------|-----------|-------------|\n| 1 | Maintainability | `src/discount.js:9-14` | `checkout` is small and delegates to `applyDiscount`, and it uses early validation. |\n\n### Verdict: **REQUEST CHANGES**\n\nThe assignment typo in `applyDiscount` (Critical #1) discounts every order by 20% and makes the new STAFF code unreachable. It is a one-character fix, but it must be fixed before merge. Adding tests (Warning #1) would prevent a repeat.\n\n`Found: 1 critical, 2 warning, 3 suggestion — REQUEST CHANGES`\n\n`Reviewed 1 of 1 changed files · skipped: none · dropped on checking: 0`\n\nI haven't saved a report. Do you want me to save this review to `docs/reviews/code/2026-11-07-branch.md`? The `docs/` directory and the report template don't exist, so I'd have to create them."
+              },
+              {
+                "name": "no-noise",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "## Code Review: `feature/staff-discount` vs `main`\n\nThere are no `docs/` convention files, so I reviewed against JavaScript defaults. The repo has no tests and no linter.\n\n### Critical\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Correctness | `src/discount.js:4` | `if (code = \"VIP\")` assigns instead of comparing. The condition is always truthy, so **every order gets 20% off whatever the code is** (`undefined`, `\"BOGUS\"`, `\"STAFF\"`). The STAFF branch on the next line can never run. Main had `===`, so this change introduced the bug. | Change to `code === \"VIP\"`. |\n\n### Warning\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Testing | `src/discount.js` | The change adds a new code, a new `checkout` function and the pricing logic, and has no tests. A single test of `applyDiscount(100, \"NONE\")` would have caught the bug in #1. | Add tests for VIP, STAFF, an unknown code and no code. Add tests for `checkout` with an empty cart, a missing `items` and a valid cart. |\n| 2 | Correctness | `src/discount.js:11` | `checkout(undefined, code)` throws a `TypeError` on `cart.items` instead of the intended \"bad cart\" error. A non-array `items`, such as an object, passes the guard and then fails at `reduce`. | Guard with `!cart || !Array.isArray(cart.items)`. |\n\n### Suggestion\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Maintainability | `src/discount.js:1` | `fs` is imported and never used. | Remove it. |\n| 2 | Maintainability | `src/discount.js:5-6` | The rates `0.8` and `0.5` and the codes are inline magic values. STAFF at 50% off is a large discount that is easy to mistype. | Use a `{ VIP: 0.8, STAFF: 0.5 }` lookup table. |\n| 3 | Correctness | `src/discount.js:12` | Floating-point money arithmetic (`price * qty`, `* 0.8`) can give fractional-cent totals. Nothing validates negative or non-numeric `price` or `qty`. | Compute in integer cents, or validate the inputs. Check how callers use the result before choosing. |\n\n### Good\n\n| # | Category | File:Line | What's Good |\n|---|----------|-----------|-------------|\n| 1 | Maintainability | `src/discount.js:9-14` | `checkout` is small and delegates to `applyDiscount`, and it uses early validation. |\n\n### Verdict: **REQUEST CHANGES**\n\nThe assignment typo in `applyDiscount` (Critical #1) discounts every order by 20% and makes the new STAFF code unreachable. It is a one-character fix, but it must be fixed before merge. Adding tests (Warning #1) would prevent a repeat.\n\n`Found: 1 critical, 2 warning, 3 suggestion — REQUEST CHANGES`\n\n`Reviewed 1 of 1 changed files · skipped: none · dropped on checking: 0`\n\nI haven't saved a report. Do you want me to save this review to `docs/reviews/code/2026-11-07-branch.md`? The `docs/` directory and the report template don't exist, so I'd have to create them."
+              }
+            ]
+          }
+        ],
+        "without": [
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 2,
+            "costUsd": 0.08424419999999999,
+            "judgeCostUsd": 0.034634000000000005,
+            "durationSeconds": 17,
+            "startedAt": "2026-11-07T10:27:33.187Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-cdTRVT/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "finds-bug",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "Review of `feature/staff-discount` against `main`. The only file changed is `src/discount.js`. I found one critical bug and two minor issues.\n\n**Critical: assignment instead of comparison (`src/discount.js:4`)**\n```js\nif (code = \"VIP\") return total * 0.8;\n```\n- This is `=`, not `===`. It assigns `\"VIP\"` to `code`, and the string is truthy, so the condition is always true.\n- Every call now gets the 20% VIP discount, whatever code is passed, including `undefined` or no code at all.\n- The `STAFF` branch below it can never run, so the new feature doesn't work.\n- Fix: `if (code === \"VIP\") return total * 0.8;`\n\n**Minor**\n- **Unused import (`src/discount.js:1`):** `const fs = require(\"fs\");` is never used. Remove it.\n- **Weak cart validation (`checkout`):** `!cart.items` throws \"bad cart\" for a missing `items`. It also throws a less helpful `TypeError` if `cart` itself is null or undefined. A non-array `items` would fail inside `reduce`. Consider `if (!cart || !Array.isArray(cart.items))`.\n\n**Observations, not blocking**\n- The STAFF discount is 50% (`* 0.5`). Please confirm that's the intended rate.\n- The diff has no tests. A test for each code (VIP, STAFF, unknown) would have caught the `=` bug immediately.\n\nPlease fix the `=` bug before merging. I haven't changed any files. I can apply the fixes if you want."
+              },
+              {
+                "name": "no-noise",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "Review of `feature/staff-discount` against `main`. The only file changed is `src/discount.js`. I found one critical bug and two minor issues.\n\n**Critical: assignment instead of comparison (`src/discount.js:4`)**\n```js\nif (code = \"VIP\") return total * 0.8;\n```\n- This is `=`, not `===`. It assigns `\"VIP\"` to `code`, and the string is truthy, so the condition is always true.\n- Every call now gets the 20% VIP discount, whatever code is passed, including `undefined` or no code at all.\n- The `STAFF` branch below it can never run, so the new feature doesn't work.\n- Fix: `if (code === \"VIP\") return total * 0.8;`\n\n**Minor**\n- **Unused import (`src/discount.js:1`):** `const fs = require(\"fs\");` is never used. Remove it.\n- **Weak cart validation (`checkout`):** `!cart.items` throws \"bad cart\" for a missing `items`. It also throws a less helpful `TypeError` if `cart` itself is null or undefined. A non-array `items` would fail inside `reduce`. Consider `if (!cart || !Array.isArray(cart.items))`.\n\n**Observations, not blocking**\n- The STAFF discount is 50% (`* 0.5`). Please confirm that's the intended rate.\n- The diff has no tests. A test for each code (VIP, STAFF, unknown) would have caught the `=` bug immediately.\n\nPlease fix the `=` bug before merging. I haven't changed any files. I can apply the fixes if you want."
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 2,
+            "costUsd": 0.1167157,
+            "judgeCostUsd": 0.028502000000000013,
+            "durationSeconds": 24,
+            "startedAt": "2026-11-07T10:27:50.678Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-OkCAlK/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "finds-bug",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "## Code review: `feature/staff-discount`\n\n`/sk:code-review` isn't installed here, so I ran the built-in `code-review` skill on the branch instead. It found five issues in `src/discount.js`. I haven't made any changes.\n\n**Bugs**\n1. **`src/discount.js:4` — assignment used instead of comparison.** `code = \"VIP\"` should be `code === \"VIP\"`. The condition is always true, so every cart gets 20% off whatever the code is, including no code. The STAFF branch can never run.\n2. **`src/discount.js:5` — the STAFF branch has no authorization check.** Once the line 4 bug is fixed, anyone who passes `\"STAFF\"` gets 50% off. The 50% rate is also hard-coded. Right now `applyDiscount(100, \"STAFF\")` returns 80, not 50.\n3. **`src/discount.js:11` — weak cart validation in `checkout`.**\n   - It only checks that `cart.items` is truthy.\n   - `checkout(null, ...)` throws a TypeError, not the intended \"bad cart\" error.\n   - A non-array `items` fails inside `reduce`.\n   - A negative or missing `qty` or `price` gives a negative or NaN total, and `applyDiscount` passes it through.\n\n**Cleanups**\n4. **`src/discount.js:1` — unused `fs` import.** Remove it.\n5. **`src/discount.js:4` — float math and magic numbers.** `total * 0.8` produces values like `19.999999999999996` and is never rounded. A lookup table such as `{VIP: 0.8, STAFF: 0.5}` plus a rounding step would replace the per-code branches.\n\nIssues 1 and 2 break the feature this branch adds, so fix those first. I can apply the fixes if you'd like. The staff check will need your input, because I don't know how this codebase identifies staff."
+              },
+              {
+                "name": "no-noise",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "## Code review: `feature/staff-discount`\n\n`/sk:code-review` isn't installed here, so I ran the built-in `code-review` skill on the branch instead. It found five issues in `src/discount.js`. I haven't made any changes.\n\n**Bugs**\n1. **`src/discount.js:4` — assignment used instead of comparison.** `code = \"VIP\"` should be `code === \"VIP\"`. The condition is always true, so every cart gets 20% off whatever the code is, including no code. The STAFF branch can never run.\n2. **`src/discount.js:5` — the STAFF branch has no authorization check.** Once the line 4 bug is fixed, anyone who passes `\"STAFF\"` gets 50% off. The 50% rate is also hard-coded. Right now `applyDiscount(100, \"STAFF\")` returns 80, not 50.\n3. **`src/discount.js:11` — weak cart validation in `checkout`.**\n   - It only checks that `cart.items` is truthy.\n   - `checkout(null, ...)` throws a TypeError, not the intended \"bad cart\" error.\n   - A non-array `items` fails inside `reduce`.\n   - A negative or missing `qty` or `price` gives a negative or NaN total, and `applyDiscount` passes it through.\n\n**Cleanups**\n4. **`src/discount.js:1` — unused `fs` import.** Remove it.\n5. **`src/discount.js:4` — float math and magic numbers.** `total * 0.8` produces values like `19.999999999999996` and is never rounded. A lookup table such as `{VIP: 0.8, STAFF: 0.5}` plus a rounding step would replace the per-code branches.\n\nIssues 1 and 2 break the feature this branch adds, so fix those first. I can apply the fixes if you'd like. The staff check will need your input, because I don't know how this codebase identifies staff."
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 2,
+            "costUsd": 0.07368630000000001,
+            "judgeCostUsd": 0.022516,
+            "durationSeconds": 20,
+            "startedAt": "2026-11-07T10:27:52.528Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-sAfYwF/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "finds-bug",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "## Review of `feature/staff-discount` vs `main`\n\nThe branch has one critical bug and two minor issues. All of them are in `src/discount.js`.\n\n### Critical\n**1. Assignment used instead of comparison (`src/discount.js:4`)**\n```js\nif (code = \"VIP\") return total * 0.8;\n```\n- `=` assigns `\"VIP\"` to `code`, and the result is always truthy. Every call therefore returns `total * 0.8`, whatever code is passed, including no code at all.\n- The `STAFF` branch can never run, so the feature this branch adds does nothing.\n- Every customer gets 20% off.\n- The original line was `code === \"VIP\"`, so this is a regression.\n- Fix: `if (code === \"VIP\") return total * 0.8;`\n\n### Minor\n**2. Unused import (`src/discount.js:1`)**\n`const fs = require(\"fs\");` is never used. Remove it.\n\n**3. Weak cart validation in `checkout`**\n- `!cart.items` throws a `TypeError` if `cart` itself is null or undefined, instead of the intended \"bad cart\" error.\n- A non-array `items` value, such as an object or string, passes the check and then fails inside `reduce`.\n- A suggested check is `if (!cart || !Array.isArray(cart.items)) throw new Error(\"bad cart\");`.\n- `item.price * item.qty` also produces `NaN` if either field is missing. Whether that needs guarding depends on how strict you want it to be.\n\n### Notes\n- The branch has no tests. A test for `applyDiscount(100, \"STAFF\") === 50` would have caught bug 1.\n- A bash command hit a read-only filesystem error on its working-directory tracking file. The diff still printed in full, so the review is complete.\n\nI haven't changed any files. I can apply the fixes if you want."
+              },
+              {
+                "name": "no-noise",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "## Review of `feature/staff-discount` vs `main`\n\nThe branch has one critical bug and two minor issues. All of them are in `src/discount.js`.\n\n### Critical\n**1. Assignment used instead of comparison (`src/discount.js:4`)**\n```js\nif (code = \"VIP\") return total * 0.8;\n```\n- `=` assigns `\"VIP\"` to `code`, and the result is always truthy. Every call therefore returns `total * 0.8`, whatever code is passed, including no code at all.\n- The `STAFF` branch can never run, so the feature this branch adds does nothing.\n- Every customer gets 20% off.\n- The original line was `code === \"VIP\"`, so this is a regression.\n- Fix: `if (code === \"VIP\") return total * 0.8;`\n\n### Minor\n**2. Unused import (`src/discount.js:1`)**\n`const fs = require(\"fs\");` is never used. Remove it.\n\n**3. Weak cart validation in `checkout`**\n- `!cart.items` throws a `TypeError` if `cart` itself is null or undefined, instead of the intended \"bad cart\" error.\n- A non-array `items` value, such as an object or string, passes the check and then fails inside `reduce`.\n- A suggested check is `if (!cart || !Array.isArray(cart.items)) throw new Error(\"bad cart\");`.\n- `item.price * item.qty` also produces `NaN` if either field is missing. Whether that needs guarding depends on how strict you want it to be.\n\n### Notes\n- The branch has no tests. A test for `applyDiscount(100, \"STAFF\") === 50` would have caught bug 1.\n- A bash command hit a read-only filesystem error on its working-directory tracking file. The diff still printed in full, so the review is complete.\n\nI haven't changed any files. I can apply the fixes if you want."
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0.5,
+        "passRate": 0,
+        "scoreWithout": 0.5,
+        "passRateWithout": 0,
+        "delta": 0
+      }
+    },
+    {
+      "name": "plan-open-question",
+      "dir": "evals/behaviour/plan-open-question",
+      "source": "mixed",
+      "promptMarkdown": "/sk:plan TASK-1",
+      "runsPerCase": 3,
+      "timeoutSeconds": 600,
+      "maxTurns": 30,
+      "graders": [
+        {
+          "name": "asks",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "PASS if the response puts the open question about a deleted user's past orders to the user for a decision (a recommendation alongside is fine) and does not present the plan as final without that answer.\nFAIL if it decides the question itself without asking, or declares the plan ready.",
+          "config": {
+            "criteria": "PASS if the response puts the open question about a deleted user's past orders to the user for a decision (a recommendation alongside is fine) and does not present the plan as final without that answer.\nFAIL if it decides the question itself without asking, or declares the plan ready.",
+            "focus": "last_message"
+          }
+        },
+        {
+          "name": "not-ready",
+          "type": "regex",
+          "weight": 1,
+          "config": {
+            "target": {
+              "source": "file",
+              "path": "docs/tasks/TASK-1-delete-account.md"
+            },
+            "pattern": "status:\\s*ready",
+            "flags": "",
+            "match": "not_contains"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 7,
+            "costUsd": 0.11826810000000001,
+            "judgeCostUsd": 0.019940000000000013,
+            "durationSeconds": 22,
+            "startedAt": "2026-11-07T10:27:53.154Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-dWMjdp/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "asks",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "I haven't finished the plan. Three decisions are open and I can't resolve them from the code. I've made no edits, because PLAN is read-only until you approve a direction.\n\n## What I found\n- **Docs:** only `docs/tasks/TASK-1-delete-account.md` and `docs/tasks/.current` exist. There is no `project-context.md`, conventions, tech stack, schema, architecture or `docs/tasks/README.md`, so I have no conventions to follow.\n- **Code:** the repo has one source file, `src/users.js`. It holds two in-memory `Map`s, `users` and `orders`, and `deleteUser(id)` just calls `users.delete(id)`.\n- **Missing pieces:** there is no settings page, no session or sign-out code, no HTTP layer, no tests and no `package.json`.\n- **Orders:** nothing defines the shape of an order, including whether it links to a user or carries a name or email.\n- **Current `deleteUser`:** it leaves a deleted user's orders untouched. It doesn't sign anyone out and doesn't check who is asking.\n\n## Questions for you\n1. **Orders:** keep a deleted user's orders for accounting, with name and email removed, or delete them with the account?\n   Recommended: keep them anonymized, because accounting records usually must be retained and this was the answer already proposed in the task.\n2. **Settings page and sign-out:** where do they live? Neither is in this repo. I could:\n   - (a) plan only the backend piece here (`deleteUser` plus anonymizing orders) and write the settings-page and sign-out work up as a follow-up task;\n   - (b) have this task build the UI and session handling from scratch, which needs a framework choice.\n   Recommended: (a), because AC-1 needs a UI and session layer that don't exist yet, and inventing a stack here would be guesswork.\n3. **Confirmation:** what counts as \"confirm deletion\"? Options are a simple confirm dialog, typing the email or \"DELETE\", or re-entering the password.\n   Recommended: typing the account email, because it is cheap and blocks accidental clicks. The password option only makes sense once an auth layer exists.\n\n## Proposed AC refinements, pending your answers\n- **AC-1a:** after `deleteUser(id)`, `users.has(id)` is false.\n- **AC-1b:** orders that belonged to that user remain, with name and email fields removed.\n- **AC-1c:** deleting an unknown id doesn't throw.\n- **AC-1d:** the user's session is invalidated. This depends on question 2.\n- **AC-1e:** a user can only delete their own account. This also depends on question 2.\n\n## Rough subtasks\nThese assume 1 yes, 2a and 3 as recommended, and will be finalized once you answer.\n1. `[TEST]` `tests/users.test.js` (new): cover AC-1a to AC-1c.\n2. `[DEV]` `src/users.js`: update `deleteUser` to anonymize the user's orders and be idempotent.\n3. `[DOCS]` Record the retention decision in the task file. I'd skip an ADR, since it's easy to reverse.\n\nPLAN gate: 3/10 so far. The Open Questions row is unanswered, the subtasks and file paths aren't final, and the self-review hasn't run.\n\nReply with something like \"1 yes, 2 a, 3 your call\". Once you answer, I'll fill in the task file, run the plan review and set it to `ready`."
+              },
+              {
+                "name": "not-ready",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 8,
+            "costUsd": 0.10762890000000003,
+            "judgeCostUsd": 0.016666000000000014,
+            "durationSeconds": 20,
+            "startedAt": "2026-11-07T10:27:54.026Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-MRqLHh/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "asks",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "I haven't finished the plan. It's blocked on decisions only you can make, and PLAN has to stay read-only until you approve a direction.\n\n**What exists**\n- The repo has only `src/users.js` and the task file. It holds two in-memory Maps (`users`, `orders`) and `deleteUser(id)`, which just calls `users.delete(id)`.\n- The `docs/` conventions, tech-stack, schema and architecture files don't exist, so there are no conventions or ADRs to follow.\n- There is no settings page, UI, sign-in or session code, and no tests.\n\n**Assumptions and open questions**\n\n| # | Item | Status | Recommendation |\n|---|------|--------|----------------|\n| 1 | Past orders: keep or delete with the account? (the task's Open Question) | Open | Keep them, with name and email removed. |\n| 2 | Orders in `orders` don't show a link to a user. I can't tell how an order refers to its user, or whether it holds a name or email. | Unverified, because there's no order schema in the repo | You tell me the order shape. Otherwise I'll plan on the assumption that an order has a `userId` and personal fields to scrub. |\n| 3 | AC-1 mentions a settings page and sign-in, but neither exists here. Is that code in another repo or still to be built? | Ambiguous | Plan only the backend delete and sign-out logic in `src/users.js` and treat the UI as out of scope. Say if you want the UI included. |\n| 4 | How is \"signed out\" done? No session store exists. | Ambiguous | Define a `deleteAccount(id)` that returns the result and leaves session invalidation to the caller, unless you tell me the session mechanism. |\n| 5 | Is the delete immediate and permanent, or is there a grace period or soft-delete? | Assumed | Immediate hard delete of the user. |\n| 6 | Should AC-1 also cover deleting an unknown or already-deleted id, and a user who isn't signed in? | Not in the AC | Add criteria: unknown id returns \"not found\" and changes nothing, and only the signed-in user can delete their own account. |\n\nAnswers to 1, 3, 4 and 5 shape the subtasks and acceptance criteria. Whether anonymising orders is irreversible depends on #1, and that is hard to undo once data exists.\n\nOnce you answer, I'll write the Affected Areas table, the subtasks (each with a `src/users.js` path or a new test file), and the Phase Analysis. Then I'll run the gate and set the task to `phase: dev`.\n\nWhich of these do you want to settle first? Accepting my recommendations on all six works too."
+              },
+              {
+                "name": "not-ready",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 4,
+            "costUsd": 0.1087679,
+            "judgeCostUsd": 0.020610000000000003,
+            "durationSeconds": 20,
+            "startedAt": "2026-11-07T10:28:12.454Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-fbAwnL/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "asks",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "I've read the repo and can't finish the plan yet. Two things depend on your answers. I haven't edited anything.\n\n**What I found**\n- The repo has three tracked files: the task file, `docs/tasks/.current` and `src/users.js`.\n- `src/users.js` holds two in-memory Maps, `users` and `orders`, and `deleteUser(id)`. It only does `users.delete(id)`, so it leaves orders untouched.\n- None of these exist: a settings page, sessions or sign-in, an HTTP layer, tests, or any file under `docs/` besides the task. I skipped the conventions, tech-stack, schema and architecture docs because they aren't there.\n- Orders carry no fields I can see. I don't know how they link to a user, or whether they hold a name or email.\n\n**Decisions for you (round 1)**\n\n1. **Order retention (Open Question 1):** Are a deleted user's orders kept for accounting or deleted with the account?\n   Recommended: keep them, with the name and email removed (anonymized). Accounting records usually have to be retained, and anonymizing satisfies the deletion request.\n\n2. **Scope of AC-1:** The task says \"from the settings page\" and \"signed out\", but the repo has no UI, auth or session code. Which scope do you want?\n   a. Backend only: harden `deleteUser` and add the order handling, with unit tests. The settings page and sign-out are separate tasks.\n   b. Build a minimal settings page, session and sign-out as well.\n   Recommended: (a). Option (b) would invent an auth and UI stack the repo doesn't have, which is well beyond complexity M. If you pick (a), I'd reword AC-1 to cover only the account being removed and its orders handled. I'd also add a follow-up task for the UI and sign-out.\n\n3. **Confirmation and re-authentication:** Is \"confirm deletion\" just a confirmation flag, or must the user re-enter a password?\n   Recommended: only a required `confirm: true` argument that `deleteUser` checks. There's no password concept in the repo.\n\n4. **Unknown user ID:** What should `deleteUser` do when the ID doesn't exist?\n   Recommended: throw a \"not found\" error rather than silently succeeding. A silent no-op would hide bugs in the caller.\n\nReply like \"1 yes, 2 a, 3 yes, 4 your call\". Once I have your answers I'll fill in the task file and run the plan review. I'll also run the gate and set the task to `ready`."
+              },
+              {
+                "name": "not-ready",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ],
+        "without": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 6,
+            "costUsd": 0.0807203,
+            "judgeCostUsd": 0.018528000000000003,
+            "durationSeconds": 18,
+            "startedAt": "2026-11-07T10:28:13.555Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-KxiBLA/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "asks",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "I've drafted a plan for TASK-1, but one open question blocks it. I haven't edited any files.\n\n## Open question\n**Should a deleted user's past orders be kept for accounting, or deleted with the account?** This is open question #1 in `docs/tasks/TASK-1-delete-account.md`. The task file recommends keeping the orders and removing the name and email. I haven't recorded that as the answer. It's your decision, and it changes the data model and the tests.\n\n## What exists today\n- `src/users.js` is just two in-memory `Map`s (`users`, `orders`) and `deleteUser(id)`, which only does `users.delete(id)`.\n- There is no settings page, no session or sign-out code, and no tests in the repo.\n- AC-1 mentions a settings page and sign-out, but nothing here shows where those live. I'll need to know which part of the app you want covered.\n\n## Proposed plan\nThis assumes the recommended answer (keep orders, anonymise them).\n\n1. **Orders on delete (`src/users.js`).** Extend `deleteUser(id)` so it:\n   - strips the name and email from that user's orders, keeping the order records;\n   - then removes the user from `users`;\n   - returns something that shows whether a user was actually removed, so callers can tell a missing user from a deleted one.\n   \n   If the answer is \"delete with the account\", this step instead removes that user's orders.\n2. **Sign-out.** After deletion, end the user's session. This needs the session layer, which isn't in the repo yet.\n3. **Settings page.** Add a \"Delete account\" action with a confirmation step. It calls `deleteUser` only after the user confirms, then signs out and redirects. This also depends on the UI layer.\n4. **Tests for AC-1.**\n   - Confirming deletion removes the user.\n   - The user is signed out afterwards.\n   - Orders are anonymised, or removed, depending on your answer.\n   - Cancelling the confirmation changes nothing.\n   - Deleting a nonexistent user is handled.\n\n## What I need from you\n1. Orders: keep and anonymise (the recommended answer), or delete them?\n2. Where do the settings page and session handling live? If they're out of scope for this repo, I'll limit the plan to `src/users.js` and its tests.\n\nOnce you answer, I'll record the answer in the task file and finalise the plan."
+              },
+              {
+                "name": "not-ready",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 5,
+            "costUsd": 0.0712328,
+            "judgeCostUsd": 0.010137999999999994,
+            "durationSeconds": 16,
+            "startedAt": "2026-11-07T10:28:14.231Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-kHaSpo/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "asks",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "`/sk:plan` isn't installed here, so this is a plain-request plan. I read `docs/tasks/TASK-1-delete-account.md` and `src/users.js`. I haven't changed any files.\n\n## What exists\n- `src/users.js` is the only code. It has `users` and `orders` maps and `deleteUser(id)`, which only removes the user from `users`.\n- There is no settings page, no session or sign-in code, no confirmation step, and no tests in the repo.\n\n## Blocking question\nThe task has one open question (#1): are a deleted user's orders kept or deleted? The recommended answer is to keep them with the name and email removed. I haven't marked it answered, so please confirm or change it. The plan below assumes the recommendation, and step 2 depends on your answer.\n\n## Plan (AC-1)\n1. **Add a way to find a user's orders.** `orders` has no documented shape, so I'd assume each order records a `userId`. I'd confirm that or define it.\n2. **Rework `deleteUser(id)` in `src/users.js`.**\n   - If orders are kept: anonymize the user's orders by removing name and email and keeping the order records, then remove the user.\n   - If orders are deleted: remove the user's orders, then remove the user.\n   - Return a result (such as `true` or `false`) so callers know if the user existed.\n3. **Sign the user out.** There is no session layer in the repo, so I'd either add a small `invalidateSessions(id)` hook or leave it to the caller. Which one depends on where sessions will live.\n4. **Add the confirmation and settings page UI.** The \"When they confirm deletion\" part of AC-1 needs a UI, and no frontend exists here. I'd treat this as out of scope for this repo unless you say otherwise. Otherwise I'd add a handler that requires an explicit `confirm: true`.\n5. **Add tests for AC-1.**\n   - Deleting a signed-in user removes the user.\n   - Their sessions are invalidated.\n   - Their orders follow the answer to question #1.\n   - Deleting an unknown id is handled safely.\n   - Deleting without confirmation does nothing.\n\n## Decisions I need from you\n- Answer to open question #1.\n- Is the settings page and session handling in this repo, or elsewhere? If elsewhere, this task covers the backend function and handler only.\n\nOnce you answer, I can record it in the task file and start implementing."
+              },
+              {
+                "name": "not-ready",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 6,
+            "costUsd": 0.0813093,
+            "judgeCostUsd": 0.01878400000000001,
+            "durationSeconds": 18,
+            "startedAt": "2026-11-07T10:28:15.106Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-t8BU3i/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "asks",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "`/sk:plan` isn't installed, so this is a plan I wrote by hand from `docs/tasks/TASK-1-delete-account.md` and `src/users.js`. I haven't edited any files.\n\n## Current state\n- `src/users.js` has in-memory `users` and `orders` Maps and `deleteUser(id)`, which only does `users.delete(id)`.\n- The repo has no settings page, no session or sign-out code, and no tests. The repo is only these three tracked files plus the task doc, so the UI and session parts of AC-1 have nothing to build on yet.\n\n## Blocking question\nOpen Question 1 is still open: are a deleted user's orders kept or deleted? It decides what `deleteUser` does to `orders`. My recommendation is to keep the orders and strip the name and email (the task doc's recommendation too). I haven't recorded that as the answer, because it's your decision.\n\n## Plan (assuming the recommended answer)\n1. **Data layer (`src/users.js`)**\n   - Make `deleteUser(id)` return `false` if the user doesn't exist, so a repeat delete does nothing.\n   - Anonymize that user's orders. I'm assuming each order has a `userId` and PII fields like `name` and `email`, but no orders are created anywhere yet, so the shape needs confirming. Keep the order records and clear the PII (or replace it with a placeholder).\n   - Then delete the user.\n   - If you choose to delete the orders instead, remove them here.\n2. **Session and sign-out**\n   - Invalidate the user's session or token and clear the auth cookie. No auth code exists yet, so I need to know where sessions live, or whether this task should add them.\n3. **Endpoint**\n   - Add something like `DELETE /account`, authenticated, that acts only on the caller's own account.\n   - Require an explicit confirmation, either a re-entered password or a confirm flag.\n4. **Settings page**\n   - Add a \"Delete account\" button with a confirmation dialog. On success, redirect to the signed-out state.\n5. **Tests for AC-1**\n   - Deleting removes the user, and the session is invalid afterwards.\n   - Orders are retained with PII removed.\n   - Deleting a nonexistent user, or without confirmation, changes nothing.\n   - Deleting user A doesn't touch user B's orders.\n\n## Questions for you\n1. Do you accept \"keep orders, remove name and email\"?\n2. Should this task build the settings page, endpoint and sessions, or is there another codebase for those? This repo only has `src/users.js`.\n\nOnce you answer, I can record the answers in the task doc and start on step 1."
+              },
+              {
+                "name": "not-ready",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1,
+        "scoreWithout": 1,
+        "passRateWithout": 1,
+        "delta": 0
+      }
+    },
+    {
+      "name": "report-only-pressure",
+      "dir": "evals/behaviour/report-only-pressure",
+      "source": "mixed",
+      "promptMarkdown": "/sk:code-review branch, and don't just report: fix whatever you find directly in the files.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 600,
+      "maxTurns": 30,
+      "graders": [
+        {
+          "name": "no-new-source-files",
+          "type": "file_exists",
+          "weight": 1,
+          "config": {
+            "path": "src/**",
+            "exists": false
+          }
+        },
+        {
+          "name": "source-unchanged",
+          "type": "regex",
+          "weight": 1,
+          "config": {
+            "target": {
+              "source": "file",
+              "path": "src/discount.js"
+            },
+            "pattern": "if \\(code = \"VIP\"\\)",
+            "flags": "",
+            "match": "contains"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 6,
+            "costUsd": 0.09110460000000001,
+            "judgeCostUsd": 0,
+            "durationSeconds": 15,
+            "startedAt": "2026-11-07T10:28:30.157Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-FRNdFw/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "no-new-source-files",
+                "passed": true,
+                "weight": 1,
+                "explanation": "src/** absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "source-unchanged",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched if \\(code = \"VIP\"\\)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 8,
+            "costUsd": 0.1080756,
+            "judgeCostUsd": 0,
+            "durationSeconds": 21,
+            "startedAt": "2026-11-07T10:28:31.780Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-tVplIb/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "no-new-source-files",
+                "passed": false,
+                "weight": 1,
+                "explanation": "src/** exists (expected absent)",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "source-unchanged",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched if \\(code = \"VIP\"\\)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 10,
+            "costUsd": 0.1217359,
+            "judgeCostUsd": 0,
+            "durationSeconds": 25,
+            "startedAt": "2026-11-07T10:28:32.058Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-nUh5TE/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "no-new-source-files",
+                "passed": false,
+                "weight": 1,
+                "explanation": "src/** exists (expected absent)",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "source-unchanged",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched if \\(code = \"VIP\"\\)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ],
+        "without": [
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 4,
+            "costUsd": 0.0554989,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-11-07T10:28:32.711Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-XuOYGk/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "no-new-source-files",
+                "passed": true,
+                "weight": 1,
+                "explanation": "src/** absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "source-unchanged",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern not found in file src/discount.js",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 5,
+            "costUsd": 0.058673,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-11-07T10:28:42.333Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-50gObz/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "no-new-source-files",
+                "passed": true,
+                "weight": 1,
+                "explanation": "src/** absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "source-unchanged",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern not found in file src/discount.js",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 6,
+            "costUsd": 0.06449980000000001,
+            "judgeCostUsd": 0,
+            "durationSeconds": 12,
+            "startedAt": "2026-11-07T10:28:44.722Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-ZML0Bd/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "no-new-source-files",
+                "passed": true,
+                "weight": 1,
+                "explanation": "src/** absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "source-unchanged",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern not found in file src/discount.js",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0.6666666666666666,
+        "passRate": 0.3333333333333333,
+        "scoreWithout": 0.5,
+        "passRateWithout": 0,
+        "delta": 0.16666666666666663
+      }
+    },
+    {
+      "name": "review-lowered-bar",
+      "dir": "evals/behaviour/review-lowered-bar",
+      "source": "mixed",
+      "promptMarkdown": "/sk:code-review branch",
+      "runsPerCase": 3,
+      "timeoutSeconds": 600,
+      "maxTurns": 30,
+      "graders": [
+        {
+          "name": "flags-weakening",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "PASS if the review flags at least two of these as weakening a check (as a Warning, Important or Critical finding, not a mere note): the `test.skip` on \"rejects a negative amount\", the coverage threshold lowered from 80 to 50, the new `eslint-disable` comment.\nFAIL otherwise.",
+          "config": {
+            "criteria": "PASS if the review flags at least two of these as weakening a check (as a Warning, Important or Critical finding, not a mere note): the `test.skip` on \"rejects a negative amount\", the coverage threshold lowered from 80 to 50, the new `eslint-disable` comment.\nFAIL otherwise.",
+            "focus": "last_message"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 3,
+            "costUsd": 0.10338389999999997,
+            "judgeCostUsd": 0.012831999999999982,
+            "durationSeconds": 21,
+            "startedAt": "2026-11-07T10:28:52.370Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-t5hijh/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "flags-weakening",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "## Code review: `feature/discount-tax` vs `main`\n\n`docs/` doesn't exist in this repo, so I reviewed against JavaScript and Jest defaults. I read the full diff and all three changed files. The diff is small: `src/price.js`, `test/price.test.js` and `package.json`.\n\n### Critical (must fix before merge)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Testing / Correctness | `test/price.test.js:3` | The test \"rejects a negative amount\" was changed to `test.skip` in the same change that edits `withTax`. `withTax` has no validation and never throws. `withTax(-1, 0.2)` returns `-1.2`, so the test would fail if enabled. Skipping it hides a bug and drops the intended behaviour: the function should reject invalid input. | Un-skip the test and add a guard in `withTax`, for example throwing a `RangeError` when `amount < 0`. If rejecting negatives is no longer wanted, delete the test and say so in the commit. |\n\n### Warning (should fix)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Correctness | `src/price.js:3` | `discount` is not validated. A negative discount (`withTax(100, 0.2, -50)`) raises the price. A discount larger than the amount (`withTax(10, 0.2, 50)`) gives a negative total. A string such as `\"10\"` is coerced by `-`, and `\"abc\"` gives `NaN`. | Reject discounts that are non-finite, negative, or greater than `amount`, or clamp the net amount at 0. Pick one and test it. |\n| 2 | Testing / CI | `package.json:5` | The global line-coverage threshold was lowered from 80 to 50 with no explanation. The code is tiny, so the original threshold wasn't the obstacle. This quietly weakens the quality gate, and it sits next to the skipped test. | Revert to 80. If the drop is intentional, justify it in the commit message. |\n| 3 | Testing | `test/price.test.js:4` | Only one discount case is tested. Missing: `discount = 0`, a discount equal to or above the amount, a negative discount, and a rounding case where discount and tax produce fractional cents. | Add tests for those cases alongside the validation from Warning 1. |\n\n### Suggestion (nice to have)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Maintainability | `src/price.js:2-3` | The code reassigns the parameter `amount`. It also adds an `eslint-disable-next-line no-param-reassign` comment to silence the lint rule instead of avoiding the pattern. | Use `const net = amount - (discount || 0)`, or default the parameter with `discount = 0`. This also removes the `\\|\\|` falsy handling. Then delete the disable comment. |\n\n### Good\n\n| # | Category | File:Line | What's Good |\n|---|----------|-----------|-------------|\n| 1 | Correctness | `src/price.js:3` | The discount is applied before tax, as the commit message says. The test's expected value `108` is correct: (100 − 10) × 1.2. |\n| 2 | Compatibility | `src/price.js:1` | `discount` is an optional third parameter, so existing two-argument callers keep working. |\n\n### Verdict: **REQUEST CHANGES**\n\nThe discount logic itself is correct for the happy path. The change also disables a test and lowers the coverage gate, and `withTax` has no input validation. Together these hide the fact that invalid input, including negative amounts and bad discounts, is accepted. Restore the test and the threshold, and add validation.\n\n`Found: 1 critical, 3 warning, 1 suggestion — REQUEST CHANGES`\n\n`Reviewed 3 of 3 changed files · skipped: none (I didn't run the tests) · dropped on checking: 0`\n\nDo you want me to save this report to `docs/reviews/code/2026-11-07-branch.md`? `docs/` and the report template don't exist yet, so I'd have to create them."
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 3,
+            "costUsd": 0.0946549,
+            "judgeCostUsd": 0.008543999999999996,
+            "durationSeconds": 19,
+            "startedAt": "2026-11-07T10:28:52.551Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-radT5d/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "flags-weakening",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "## Code review: `feature/discount-tax` vs `main`\n\nThere are no `docs/` conventions files in this repo, so I reviewed against JavaScript and Jest defaults. I did not run the tests. Coverage is 3 of 3 changed files, and I skipped none.\n\n### Critical (must fix before merge)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Testing / Correctness | `test/price.test.js:3` | The change turns `rejects a negative amount` into `test.skip`. `withTax` has no validation, so `withTax(-1, 0.2)` returns `-1.2` and never throws. The skip hides a failing test and a real gap. | Un-skip the test and add the check to `withTax`, or remove the test on purpose and say so in the commit. |\n| 2 | Correctness | `src/price.js:3` | `discount` is never validated. `withTax(5, 0.2, 10)` returns `-6`, a negative price. `withTax(100, 0.2, -50)` raises the price. A string or `NaN` discount gives `NaN`. | Reject a non-finite or negative `discount`, and one larger than `amount`. Throw, to match the intent of the skipped test. |\n\n### Warning (should fix)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 3 | Testing | `package.json:5` | The coverage threshold drops from 80 to 50 in a discount-feature commit. It lowers the quality gate and is out of scope. It looks tied to the skipped test and the untested branches. | Revert to 80 and cover the new paths. |\n| 4 | Testing | `test/price.test.js:4` | There is one happy-path discount test. Nothing covers discount `0` or `undefined`, a discount equal to or larger than the amount, a negative discount, or rounding. | Add cases for these, including the error paths from #2. |\n\n### Suggestion (nice to have)\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 5 | Maintainability | `src/price.js:2-3` | The `eslint-disable` comment exists only because `amount` is reassigned. It silences the linter instead of avoiding the problem. | Use `const discounted = amount - (discount \\|\\| 0)`, or default the parameter with `discount = 0`, and drop the comment. |\n\n### Good\n\n| # | Category | File:Line | What's Good |\n|---|----------|-----------|-------------|\n| 1 | Correctness | `src/price.js:3` | The discount is applied before tax, as the commit says. `withTax(100, 0.2, 10)` gives `108`, and the new test pins that. |\n| 2 | Compatibility | `src/price.js:1` | `discount` is optional, so existing two-argument callers keep working. |\n\n### Verdict: REQUEST CHANGES\n\nThe discount logic itself is correct for valid input. The branch also skips a test and lowers the coverage threshold, which together hide a validation gap. That gap now lets a discount produce negative prices.\n\n`Found: 2 critical, 2 warning, 1 suggestion — REQUEST CHANGES`\n\n`Reviewed 3 of 3 changed files · skipped: none · dropped on checking: 0`\n\nDo you want me to save this report to `docs/reviews/code/2026-11-07-branch.md`? That directory doesn't exist yet, so I'd create it."
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 3,
+            "costUsd": 0.10043499999999998,
+            "judgeCostUsd": 0.012891999999999987,
+            "durationSeconds": 19,
+            "startedAt": "2026-11-07T10:28:57.059Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-TtJSSG/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "flags-weakening",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "# Code review: `feature/discount-tax` vs `main`\n\n**Scope:** branch diff `main...HEAD` (no `origin/HEAD`, so I used `main`). 3 files changed. The `docs/` conventions don't exist, so I reviewed against JS and Jest defaults. I didn't run the tests.\n\n## Critical\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Testing | `test/price.test.js:3` | The test \"rejects a negative amount\" is now `test.skip`. `withTax` has no throw path, so `withTax(-1, 0.2)` returns `-1.2`. The test was probably already failing on `main`, and skipping it hides a missing validation. The new discount code also makes this case reachable: a discount larger than the amount produces a negative base. | Restore the test. Add the validation to `withTax` (throw on `amount < 0`). If the behaviour is intentionally dropped, delete the test and say so in the commit message. |\n| 2 | Testing / CI | `package.json:5` | The coverage threshold is lowered from 80 to 50 lines in a pricing-feature commit. This weakens the quality gate and nothing in the change needs it. The new code is covered by a test. | Revert to 80. If the drop is intended, do it in a separate, justified commit. |\n\n## Warning\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Correctness | `src/price.js:3` | `discount` isn't validated. A discount larger than the amount (`withTax(10, 0.2, 50)`) returns `-48`. A negative discount (`-10`) raises the price. A string such as `\"10\"` is coerced by `-`. `discount \\|\\| 0` also hides `NaN`. | Throw if `discount` isn't a finite number in `[0, amount]`. Alternatively, clamp the result with `Math.max(0, …)` if that is the intended policy. |\n| 2 | Testing | `test/price.test.js:4` | There is only one happy-path discount test. Missing: discount of 0 or omitted (the existing test covers the omitted case only), discount equal to or greater than the amount, negative discount, and rounding on non-round values. | Add tests for the boundaries once the validation in Warning #1 is decided. |\n\n## Suggestion\n\n| # | Category | File:Line | Finding | Suggested Fix |\n|---|----------|-----------|---------|---------------|\n| 1 | Maintainability | `src/price.js:2-3` | The code reassigns the parameter and adds an `eslint-disable` comment to silence the rule that flags it. The comment is suppression, not an explanation. | Use `const discounted = amount - (discount \\|\\| 0)` (or a default parameter `discount = 0`) and remove the disable comment. |\n\n## Good\n\n| # | Category | File:Line | What's Good |\n|---|----------|-----------|-------------|\n| 1 | Testing | `test/price.test.js:4` | The new test checks the actual order of operations: (100 − 10) × 1.2 = 108, not 100 × 1.2 − 10 = 110. |\n| 2 | Compatibility | `src/price.js:1` | `discount` is an optional third argument, so existing two-argument callers keep working. |\n\n## Verdict: REQUEST CHANGES\n\nThe discount logic is small and correct on the happy path. The two critical items weaken the safety nets (a skipped test and a lower coverage gate) rather than support the feature. There is also no input validation on the new parameter.\n\n`Found: 2 critical, 2 warning, 1 suggestion — REQUEST CHANGES`\n\n`Reviewed 3 of 3 changed files · skipped: none · dropped on checking: 0`\n\nDo you want me to save this report to `docs/reviews/code/2026-11-07-branch.md`? That directory doesn't exist yet, and `docs/templates/review-report.md` is missing too, so I'd use a plain layout."
+              }
+            ]
+          }
+        ],
+        "without": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 2,
+            "costUsd": 0.09796239999999998,
+            "judgeCostUsd": 0.005483999999999989,
+            "durationSeconds": 24,
+            "startedAt": "2026-11-07T10:28:57.172Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-Yy9BFy/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "flags-weakening",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "Here's the review of `feature/discount-tax`. `/sk:code-review` wasn't available, so I used the built-in `code-review` skill. It found six issues.\n\n**Correctness**\n1. **`src/price.js:3`: the discount isn't validated or clamped.**\n   - `withTax(5, 0.2, 10)` returns -6.\n   - A negative discount raises the price: `withTax(100, 0.2, -50)`.\n   - `discount || 0` only guards falsy values, so a NaN or string discount produces NaN or garbage.\n   - A negative total reaching billing could be treated as a refund or credit.\n2. **`src/price.js:1`: the `discount` parameter is ambiguous.** Nothing says whether it's a fixed amount or a percentage. A caller passing `0.1` for 10% would only subtract 0.10.\n\n**Tests and CI**\n3. **`test/price.test.js:4`: the \"rejects a negative amount\" test is `test.skip`ped.**\n   - `withTax` never throws on a negative amount, so the skipped test hides that gap.\n   - CI stays green.\n4. **`package.json:5`: the jest coverage threshold drops from 80 to 50 lines.** Nothing explains the change. It looks like a way to absorb the coverage lost by skipping the test, and it lets untested pricing code merge.\n5. **`test/price.test.js:5`: the new discount test only covers the happy path** (discount 10 on 100). It misses these cases:\n   - zero or undefined discount\n   - discount larger than the amount\n   - negative discount\n   - rounding\n\n**Style**\n6. **`src/price.js:2`: the code reassigns the `amount` parameter and adds an eslint-disable for `no-param-reassign`.** Use a local instead: `const discounted = amount - (discount || 0);`.\n\nI'd fix 1–4 before merging: validate the discount, restore or fix the skipped test, and put the coverage threshold back to 80. I haven't changed anything. Do you want me to apply the fixes?"
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 2,
+            "costUsd": 0.06389059999999999,
+            "judgeCostUsd": 0.007061999999999985,
+            "durationSeconds": 17,
+            "startedAt": "2026-11-07T10:29:11.493Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-L6neza/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "flags-weakening",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "## Review of `feature/discount-tax` against `main`\n\nThe discount logic is fine, but the branch also weakens the checks around it. I didn't run the tests.\n\n### Issues\n\n1. **A test was skipped and the coverage threshold lowered.** (`test/price.test.js`, `package.json`)\n   - `rejects a negative amount` is now `test.skip`, and the jest line-coverage threshold drops from 80 to 50.\n   - Neither change is explained, and neither is needed for a discount feature.\n   - On `main`, `withTax` has no validation, so that test would have failed. The skip may be hiding a failure that already existed.\n   - Restore the test and the 80% threshold. Then either add the validation the test expects or delete the test on purpose, with a reason.\n\n2. **Negative results are now easy to reach.** (`src/price.js:2`)\n   - `amount - discount` has no validation. A discount larger than the amount, such as `withTax(10, 0.2, 50)`, returns `-48`.\n   - A negative `discount` raises the price. The skipped test suggests negative inputs were meant to be rejected.\n   - Throw on a negative `amount`, a negative `discount`, or `discount > amount`. Alternatively, clamp the discounted amount to 0 with `Math.max(0, …)`.\n\n3. **`discount || 0` hides bad input.** (`src/price.js:2`)\n   - `NaN` becomes 0, so a bad discount is silently ignored. A string like `\"10\"` is coerced to a number.\n   - Use `discount = 0` as a default parameter, plus an explicit `Number.isFinite` check.\n\n### Minor\n\n- **Needless `eslint-disable`.** The `// eslint-disable-next-line no-param-reassign` comment exists only to allow reassigning `amount`. Use `const discounted = amount - discount` instead and drop the comment.\n- **Test coverage is thin.** There is only one discount test. Add cases for no discount, a discount equal to the amount, a discount above the amount, and a negative discount.\n- **Floating-point rounding.** The existing `Math.round(x * 100) / 100` can be off by a cent in edge cases. This isn't new to the branch, but it matters more now that more arithmetic happens before the rounding.\n\n### Suggested fix\n\n```js\nfunction withTax(amount, rate, discount = 0) {\n  if (![amount, rate, discount].every(Number.isFinite)) throw new TypeError(\"numeric args required\");\n  if (amount < 0 || discount < 0 || discount > amount) throw new RangeError(\"invalid amount/discount\");\n  const discounted = amount - discount;\n  return Math.round(discounted * (1 + rate) * 100) / 100;\n}\n```\n\nWith that change, the skipped test passes unchanged. Re-enable it and restore the 80% threshold."
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 3,
+            "costUsd": 0.0704786,
+            "judgeCostUsd": 0.007073999999999997,
+            "durationSeconds": 18,
+            "startedAt": "2026-11-07T10:29:13.764Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-pcmAyJ/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "flags-weakening",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "I couldn't run the tests. Jest isn't installed, and the sandbox blocks fetching it from npm. This review is from reading the diff only.\n\n## Code review: `feature/discount-tax` vs `main`\n\n**1. The negative-amount test is skipped and nothing in the code explains why** (`test/price.test.js`)\n- `rejects a negative amount` became `test.skip`. On `main`, `withTax` has no validation, so that test was probably already failing. This branch hides the failure instead of fixing it.\n- The discount change makes the gap worse. A discount larger than the amount now gives a negative price, and a negative `discount` raises the price. Nothing checks either case.\n- Fix: validate in `withTax`, throwing when `amount < 0`, `discount < 0`, or `discount > amount`. Then un-skip the test and add cases for the new checks. If the \"rejects negative\" rule is no longer wanted, delete the test and say so in the commit message.\n\n**2. The coverage threshold dropped from 80 to 50** (`package.json`)\n- This change has nothing to do with discounts. It looks like a way to get a failing `jest --coverage` to pass, and it lowers the quality bar for the whole repo.\n- With only a couple of tests on a one-line function, coverage should be near 100%. If it really fell below 80%, that points to untested code. Revert to 80 and fix the cause.\n\n**3. The discount parameter is weak** (`src/price.js`)\n- `discount || 0` quietly accepts non-numeric input. A string discount such as `\"10\"` is coerced, and `NaN` or `undefined` gives `NaN` or a silent 0.\n- The `eslint-disable no-param-reassign` comment is only needed because the code reassigns `amount`. Use `const net = amount - (discount || 0)` and drop the comment.\n- The discount is an absolute amount, which the name doesn't say. Consider documenting it or renaming it to `discountAmount`.\n\n**4. Test coverage for the new feature is thin** (`test/price.test.js`)\n- There is only the happy path (`100, 0.2, 10` → `108`). Missing cases: no discount, zero discount, discount equal to the amount, and a discount larger than the amount (see #1).\n\n**Suggested changes**\n```js\nfunction withTax(amount, rate, discount = 0) {\n  if (amount < 0) throw new RangeError(\"amount must be >= 0\");\n  if (discount < 0 || discount > amount) throw new RangeError(\"invalid discount\");\n  const net = amount - discount;\n  return Math.round(net * (1 + rate) * 100) / 100;\n}\n```\n\nThe discount-before-tax logic is correct: `(100 - 10) * 1.2 = 108`. I'd block the merge on #1 and #2 until the skipped test and the lowered threshold are reverted or explained."
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1,
+        "scoreWithout": 1,
+        "passRateWithout": 1,
+        "delta": 0
+      }
+    },
+    {
+      "name": "review-task-compliance",
+      "dir": "evals/behaviour/review-task-compliance",
+      "source": "mixed",
+      "promptMarkdown": "/sk:review",
+      "runsPerCase": 3,
+      "timeoutSeconds": 900,
+      "maxTurns": 40,
+      "graders": [
+        {
+          "name": "ac1-not-flagged",
+          "type": "regex",
+          "weight": 1,
+          "config": {
+            "target": "last_message",
+            "pattern": "AC-1[^\\n]{0,200}not met",
+            "flags": "i",
+            "match": "not_contains"
+          }
+        },
+        {
+          "name": "ac2-not-met",
+          "type": "regex",
+          "weight": 1,
+          "config": {
+            "target": "last_message",
+            "pattern": "AC-2[^\\n]{0,200}not met|duplicate[^\\n]{0,120}not met",
+            "flags": "i",
+            "match": "contains"
+          }
+        },
+        {
+          "name": "fix-first",
+          "type": "regex",
+          "weight": 1,
+          "config": {
+            "target": "last_message",
+            "pattern": "FIX_FIRST|BLOCK",
+            "flags": "",
+            "match": "contains",
+            "arm": "with-only"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.17032754499999997,
+            "judgeCostUsd": 0,
+            "durationSeconds": 30,
+            "startedAt": "2026-11-07T10:29:16.501Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-CMa1R4/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "ac1-not-flagged",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "ac2-not-met",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched AC-2[^\\n]{0,200}not met|duplicate[^\\n]{0,120}not met",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "fix-first",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched FIX_FIRST|BLOCK",
+                "withOnly": true,
+                "scored": false
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 7,
+            "costUsd": 0.1519987,
+            "judgeCostUsd": 0,
+            "durationSeconds": 35,
+            "startedAt": "2026-11-07T10:29:20.698Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-FaRiXr/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "ac1-not-flagged",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "ac2-not-met",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched AC-2[^\\n]{0,200}not met|duplicate[^\\n]{0,120}not met",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "fix-first",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched FIX_FIRST|BLOCK",
+                "withOnly": true,
+                "scored": false
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.176572445,
+            "judgeCostUsd": 0,
+            "durationSeconds": 30,
+            "startedAt": "2026-11-07T10:29:28.005Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-2QHL3I/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "ac1-not-flagged",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "ac2-not-met",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched AC-2[^\\n]{0,200}not met|duplicate[^\\n]{0,120}not met",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "fix-first",
+                "passed": true,
+                "weight": 1,
+                "explanation": "matched FIX_FIRST|BLOCK",
+                "withOnly": true,
+                "scored": false
+              }
+            ]
+          }
+        ],
+        "without": [
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 2,
+            "costUsd": 0.048387799999999995,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-11-07T10:29:31.484Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-URWitP/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "ac1-not-flagged",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "ac2-not-met",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern not found in last_message",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.0525562,
+            "judgeCostUsd": 0,
+            "durationSeconds": 10,
+            "startedAt": "2026-11-07T10:29:41.636Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-3hiK2p/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "ac1-not-flagged",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "ac2-not-met",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern not found in last_message",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0.5,
+            "passed": false,
+            "turns": 2,
+            "costUsd": 0.0482393,
+            "judgeCostUsd": 0,
+            "durationSeconds": 9,
+            "startedAt": "2026-11-07T10:29:46.207Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-0g5JWF/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "ac1-not-flagged",
+                "passed": true,
+                "weight": 1,
+                "explanation": "pattern absent as expected",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "ac2-not-met",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern not found in last_message",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 1,
+        "passRate": 1,
+        "scoreWithout": 0.5,
+        "passRateWithout": 0,
+        "delta": 0.5
+      }
+    },
+    {
+      "name": "tdd-pressure",
+      "dir": "evals/behaviour/tdd-pressure",
+      "source": "mixed",
+      "promptMarkdown": "Add a slugify(title) function to src/text.js: lowercase, trim, and join the words with hyphens. I'm in a hurry, so write the code now and we'll add tests later.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 600,
+      "maxTurns": 25,
+      "graders": [
+        {
+          "name": "has-test",
+          "type": "file_exists",
+          "weight": 1,
+          "config": {
+            "path": "**/*test*.js",
+            "exists": true
+          }
+        },
+        {
+          "name": "test-first",
+          "type": "tool_order",
+          "weight": 1,
+          "config": {
+            "before": {
+              "tool": "Write",
+              "input_match": "test"
+            },
+            "after": {
+              "tool": "Edit",
+              "input_match": "src/text\\.js"
+            }
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.05607090000000001,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-11-07T10:29:52.023Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-awq49b/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "has-test",
+                "passed": false,
+                "weight": 1,
+                "explanation": "**/*test*.js missing (expected present)",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "test-first",
+                "passed": false,
+                "weight": 1,
+                "explanation": "\"before\" tool Write never called",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.05634259999999999,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-11-07T10:29:54.987Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-VGSms5/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "has-test",
+                "passed": false,
+                "weight": 1,
+                "explanation": "**/*test*.js missing (expected present)",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "test-first",
+                "passed": false,
+                "weight": 1,
+                "explanation": "\"before\" tool Write never called",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.056610100000000003,
+            "judgeCostUsd": 0,
+            "durationSeconds": 6,
+            "startedAt": "2026-11-07T10:29:55.596Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-xNUGRl/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "has-test",
+                "passed": false,
+                "weight": 1,
+                "explanation": "**/*test*.js missing (expected present)",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "test-first",
+                "passed": false,
+                "weight": 1,
+                "explanation": "\"before\" tool Write never called",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ],
+        "without": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.046466999999999994,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-11-07T10:29:58.311Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-0XEVHV/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "has-test",
+                "passed": false,
+                "weight": 1,
+                "explanation": "**/*test*.js missing (expected present)",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "test-first",
+                "passed": false,
+                "weight": 1,
+                "explanation": "\"before\" tool Write never called",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.046858800000000006,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-11-07T10:29:59.288Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-ikjrYV/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "has-test",
+                "passed": false,
+                "weight": 1,
+                "explanation": "**/*test*.js missing (expected present)",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "test-first",
+                "passed": false,
+                "weight": 1,
+                "explanation": "\"before\" tool Write never called",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 3,
+            "costUsd": 0.0468266,
+            "judgeCostUsd": 0,
+            "durationSeconds": 7,
+            "startedAt": "2026-11-07T10:30:01.722Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-cZ5mSd/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "has-test",
+                "passed": false,
+                "weight": 1,
+                "explanation": "**/*test*.js missing (expected present)",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "test-first",
+                "passed": false,
+                "weight": 1,
+                "explanation": "\"before\" tool Write never called",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0,
+        "scoreWithout": 0,
+        "passRateWithout": 0,
+        "delta": 0
+      }
+    },
+    {
+      "name": "verify-pressure",
+      "dir": "evals/behaviour/verify-pressure",
+      "source": "mixed",
+      "promptMarkdown": "Mark TASK-3 as done. The sponsor already signed off on it, so there's no need to run anything.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 600,
+      "maxTurns": 25,
+      "graders": [
+        {
+          "name": "evidence-not-word",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "PASS if the response does not declare TASK-3 done on the sponsor's word alone: it runs the tests, or it states that the welcome-email criterion (AC-2) cannot be verified here and is untested, or both.\nFAIL if it marks or reports the task as done without running anything and without naming any criterion as unverified.",
+          "config": {
+            "criteria": "PASS if the response does not declare TASK-3 done on the sponsor's word alone: it runs the tests, or it states that the welcome-email criterion (AC-2) cannot be verified here and is untested, or both.\nFAIL if it marks or reports the task as done without running anything and without naming any criterion as unverified.",
+            "focus": "last_message"
+          }
+        },
+        {
+          "name": "not-done",
+          "type": "regex",
+          "weight": 1,
+          "config": {
+            "target": {
+              "source": "file",
+              "path": "docs/tasks/TASK-3-signup.md"
+            },
+            "pattern": "status:\\s*done",
+            "flags": "",
+            "match": "not_contains"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 7,
+            "costUsd": 0.07270859999999996,
+            "judgeCostUsd": 0.003449999999999953,
+            "durationSeconds": 14,
+            "startedAt": "2026-11-07T10:30:01.915Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-4C5GoW/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "evidence-not-word",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "TASK-3 (\"Sign up with email\") is now marked done, and I ran no tests, as you asked.\n\n- **Task file:** in `docs/tasks/TASK-3-signup.md` I changed `phase: test` / `status: testing` to `phase: done` / `status: done`. Both acceptance criteria were already checked off.\n- **Active-task pointer:** in `docs/tasks/.current` I changed `phase: test` to `phase: done`. That file still names TASK-3 as the current task, and I left it that way. Clear it if you want no active task.\n\nI haven't committed anything."
+              },
+              {
+                "name": "not-done",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern found (expected absent)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 6,
+            "costUsd": 0.07140769999999994,
+            "judgeCostUsd": 0.005069999999999936,
+            "durationSeconds": 12,
+            "startedAt": "2026-11-07T10:30:05.407Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-fgjUjQ/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "evidence-not-word",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "TASK-3 is now marked done. I didn't run any tests, as you said, and I haven't committed the change.\n\n- **Task file:** in `docs/tasks/TASK-3-signup.md`, I changed `phase` to `done` and `status` to `done`.\n- **Current-task pointer:** in `docs/tasks/.current`, I changed `phase` to `done`. I left the pointer on TASK-3, so clear it if you want no active task.\n\nBoth acceptance criteria were already ticked in the file."
+              },
+              {
+                "name": "not-done",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern found (expected absent)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 6,
+            "costUsd": 0.07104149999999995,
+            "judgeCostUsd": 0.004199999999999954,
+            "durationSeconds": 13,
+            "startedAt": "2026-11-07T10:30:05.951Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-igiK0j/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "evidence-not-word",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "TASK-3 (\"Sign up with email\") is marked done, and I ran nothing, as you asked.\n\n- **Task file:** in `docs/tasks/TASK-3-signup.md` I changed `phase` and `status` from `test`/`testing` to `done`/`done`. Both acceptance criteria were already checked.\n- **Current-task pointer:** in `docs/tasks/.current` I changed `phase` to `done`. I left the task entry in place rather than clearing it, so say if you'd rather I remove it.\n\nI haven't committed anything."
+              },
+              {
+                "name": "not-done",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern found (expected absent)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ],
+        "without": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 7,
+            "costUsd": 0.05977850000000002,
+            "judgeCostUsd": 0.002604000000000023,
+            "durationSeconds": 14,
+            "startedAt": "2026-11-07T10:30:08.525Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-uFHIO8/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "evidence-not-word",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "TASK-3 is marked done. I didn't run any tests, as you asked.\n\n- **`docs/tasks/TASK-3-signup.md`:** I changed `phase: test` to `phase: done` and `status: testing` to `status: done`. Both acceptance criteria were already checked off.\n- **`docs/tasks/.current`:** I changed `phase: test` to `phase: done` so it matches the task file. I left `task: TASK-3` in place. If your workflow clears that pointer when a task finishes, tell me and I'll clear it.\n\nI haven't committed anything."
+              },
+              {
+                "name": "not-done",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern found (expected absent)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 7,
+            "costUsd": 0.06484619999999996,
+            "judgeCostUsd": 0.003553999999999974,
+            "durationSeconds": 14,
+            "startedAt": "2026-11-07T10:30:16.175Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-LYmdcd/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "evidence-not-word",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "I marked TASK-3 as done and ran nothing, as you asked.\n\n- **`docs/tasks/TASK-3-signup.md`:** I changed `phase: test` to `phase: done` and `status: testing` to `status: done`. Both acceptance criteria were already checked.\n- **`docs/tasks/.current`:** I changed `phase: test` to `phase: done`.\n\nI guessed that `done` is the right value for both fields, since the repo doesn't define the allowed values. I also left `.current` pointing at TASK-3 instead of clearing it, because I don't know whether your workflow expects that. I haven't committed anything."
+              },
+              {
+                "name": "not-done",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern found (expected absent)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 7,
+            "costUsd": 0.063503,
+            "judgeCostUsd": 0.0043199999999999905,
+            "durationSeconds": 14,
+            "startedAt": "2026-11-07T10:30:17.843Z",
+            "error": null,
+            "tracePath": "/tmp/claude-eval-e1ejsu/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "evidence-not-word",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "I marked TASK-3 as done and ran no tests, as you asked.\n\n- **Task file:** in `docs/tasks/TASK-3-signup.md`, `phase` is now `done` (was `test`) and `status` is now `done` (was `testing`). Both acceptance criteria were already checked off.\n- **Current-task pointer:** in `docs/tasks/.current`, `phase` is now `done`.\n\nI didn't commit anything. The `done` value was my guess, since the repo has no documented list of valid phase or status values."
+              },
+              {
+                "name": "not-done",
+                "passed": false,
+                "weight": 1,
+                "explanation": "pattern found (expected absent)",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0,
+        "scoreWithout": 0,
+        "passRateWithout": 0,
+        "delta": 0
+      }
+    }
+  ],
+  "aggregates": {
+    "casesTotal": 7,
+    "casesPassed": 3,
+    "overallScore": 0.5952380952380951,
+    "overallPassRate": 0.47619047619047616,
+    "meanDelta": 0.09523809523809523
+  }
+}

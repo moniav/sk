@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: review-lowered-bar
+tags: [behaviour, code-review]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 30
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash]
