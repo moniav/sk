@@ -14,7 +14,8 @@ const COPY = ["pkg", "scripts", "package.json", "CLAUDE.md", "Readme.md", ".clau
 
 const edit = (dir, rel, from, to) => {
   const path = join(dir, rel);
-  const text = readFileSync(path, "utf-8");
+  // A Windows checkout has CRLF line endings; anchors are written with \n.
+  const text = readFileSync(path, "utf-8").replace(/\r\n/g, "\n");
   if (!text.includes(from)) throw new Error(`fixture anchor not found in ${rel}: ${from}`);
   writeFileSync(path, text.replace(from, to));
 };
