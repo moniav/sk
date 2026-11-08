@@ -9,7 +9,7 @@ user-invocable: false
 
 Answer "how should this flow look and behave?" by building it several different ways and letting the user click through each, instead of deciding it in prose.
 
-Adapted from the `prototype` and `break-ui` skills in [emilkowalski/skill](https://github.com/emilkowalski/skill) (MIT).
+Adapted from the `prototype` and `break-ui` skills in [emilkowalski/skill](https://github.com/emilkowalski/skill) (MIT); the reference comparison and stop rule in step 5 from the `stageshow` skill in [benjitaylor/skills](https://github.com/benjitaylor/skills) (MIT).
 
 ## Rules
 
@@ -46,7 +46,7 @@ One self-contained HTML file: `docs/prd/PRD-{N}-prototypes/F-{n}-{slug}.html`, w
 
 ### 5. Verify
 
-Open the file with a browser tool if one is available: flip through every variant on both datasets, click every path, and check the console is clean. Screenshot each variant. Without a browser tool, read the file back and trace each variant's path from trigger to end state, and say that it was not run.
+Open the file with a browser tool if one is available: flip through every variant on both datasets, click every path, and check the console is clean. Screenshot each variant and put it beside a reference: the product's closest existing screen, or a design the user named. Fix what reads emptier, flatter or more cluttered than the reference before anything else. If several rounds of fixes change nothing visible, stop changing the file and list what still looks wrong, worst first. Without a browser tool, read the file back and trace each variant's path from trigger to end state, and say that it was not run.
 
 ### 6. Present and stop
 

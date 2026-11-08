@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **Product visuals and interface detail.** `/sk:copywrite`'s landing page reference gains *Product visuals*: when a product illustration beats a screenshot, its five failures (too much, wireframe, boxed, flat, bland) with a fix for each, one thing happening, a poster frame that tells the story alone, no invented marks, a phone-width redesign; the audit gains a 14th check. `/sk:ui-review`'s anti-patterns gain seven interface rows (25 to 31): mixed icon styles, labels that swap in one frame, missing exits, popovers that move while open, lists that jump, wrapped units, padded or spread-out rows. The `prototype` skill compares each variant's screenshot with a reference and stops after rounds that change nothing visible. Adapted from the `stageshow` skill in [benjitaylor/skills](https://github.com/benjitaylor/skills) (MIT); its React kit and filming scripts are not included, and the reference points to the skill for building such visuals.
+
+**Upgrade notes:** `/sk:scaffold update` brings the new rows in `docs/reference/ui-design/anti-patterns.md`.
+
 ## 3.2.0 (2026-11-07)
 
 - **Plugin icon.** `pkg/.claude-plugin/icon.png` (1024 px), so the plugin directory has an icon to list; its SVG source is `dev-docs/assets/icon.svg`.
