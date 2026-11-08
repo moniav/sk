@@ -51,9 +51,24 @@ For marketing and landing pages. The copy side of the same checks is `/sk:copywr
 | 23 | Primary CTA not repeated at the bottom of the page | MED | Repeat the same button, same label, after the last section |
 | 24 | CTA label that says nothing ("Submit", "Get started", "Learn more") | MED | Say what happens: "Start my free trial", "Join the waitlist" |
 
+## Interface Detail and Motion Anti-Patterns
+
+For any interface. Detail and motion faults a viewer notices even when the layout is right; a motion fix also honours `prefers-reduced-motion`. Adapted from the `stageshow` skill in [benjitaylor/skills](https://github.com/benjitaylor/skills) (MIT).
+
+| # | Anti-pattern | Severity | Fix |
+|---|--------------|----------|-----|
+| 25 | Filled and outline icons mixed in one toolbar, nav or list | LOW | One icon family and one style per surface |
+| 26 | A label or value that swaps in one frame when it changes ("Save" to "Saved", a total) | MED | Change it in place: the old text leaves as the new arrives, and the control keeps its size |
+| 27 | An element that enters with an animation but vanishes with none (toast, popover, row) | LOW | Keep it mounted through its exit, then remove it |
+| 28 | A popover or menu that moves while open as its content changes height | MED | Anchor it to the edge it opened from and reserve its height |
+| 29 | A list that jumps when a row is added or removed | MED | Animate the space the row takes so its neighbours move with it |
+| 30 | A number's unit wrapping onto its own line in a stat or tile | LOW | Keep number and unit on one line; size the number to the tile |
+| 31 | Rows padded far taller than their text, or spread out to fill an empty pane | LOW | Pad to the text (about 8 to 12px) and fill the pane with content, or shorten the pane |
+
 ## How to use in a review
 
 - Match the product type (from `project-context.md`) to the category rows above.
 - For a marketing or landing page, also check rows 18 to 24.
+- For any interface, check rows 25 to 31; the motion rows (26 to 29) need the running UI or its code.
 - Cite the row number in findings and give the specific fix, not generic advice.
 - Treat HIGH rows as Critical/Warning; LOW as Suggestion.

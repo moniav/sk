@@ -2,14 +2,15 @@
 
 Read this file when writing, rewriting or auditing a landing page. The copy rules are in `../SKILL.md`; headline formulas and page structures are in `frameworks.md` beside this file.
 
-Adapted from the SaaS landing page guide published by Higgsfield ([source](https://claude.ai/artifact/TkJ6e7Whsw6fhcuErqDWCH)), rewritten; its vendor build prompt and example figures are not included.
+Adapted from the SaaS landing page guide published by Higgsfield ([source](https://claude.ai/artifact/TkJ6e7Whsw6fhcuErqDWCH)), rewritten; its vendor build prompt and example figures are not included. Product visuals adapted from the `stageshow` skill in [benjitaylor/skills](https://github.com/benjitaylor/skills) (MIT), rewritten.
 
 ## Contents
 1. [The 5-second test](#the-5-second-test)
 2. [Section jobs](#section-jobs)
 3. [Page-level rules](#page-level-rules)
-4. [After the first draft](#after-the-first-draft)
-5. [Audit checklist](#audit-checklist)
+4. [Product visuals](#product-visuals)
+5. [After the first draft](#after-the-first-draft)
+6. [Audit checklist](#audit-checklist)
 
 ---
 
@@ -46,7 +47,7 @@ Not every page needs every section (a waitlist page has no pricing). Keep this o
 These go beyond the words. Put them in the deliverable as build notes for whoever makes the page.
 
 - **One page, one action.** One primary CTA with the same label everywhere it repeats. No nav links, secondary offers or footer clutter competing with it. A second action ("Book a demo" beside "Start my free trial") only when buyers genuinely split.
-- **The product above the fold.** A real screenshot, short clip or interactive preview in the hero. If none exists yet, a marked placeholder, never stock imagery.
+- **The product above the fold.** A real screenshot, short clip or interactive preview in the hero. If none exists yet, a marked placeholder or a product illustration built to the rules in *Product visuals* below, never stock imagery.
 - **Proof beside the button.** A line of proof (customer count, rating, a named quote) within sight of each primary CTA, not only in the proof strip.
 - **Risk reversal under the button.** "No card required · Cancel any time · Set up in 2 minutes": only the parts that are true.
 - **Least friction to sign up.** Ask only for what is needed to start, often an email alone. No card for a trial. Social or SSO sign-in where the audience uses it.
@@ -55,6 +56,25 @@ These go beyond the words. Put them in the deliverable as build notes for whoeve
 - **One number, one change.** Name the metric the page exists for (trial starts, waitlist joins). When testing, change one thing at a time so a result can be attributed.
 
 Never invent logos, numbers, reviews or customer names. Leave a marked placeholder instead: `[PROOF: customer count]`.
+
+## Product visuals
+
+A real screenshot is often too busy to read at hero size, and before launch there may be nothing to capture. A product illustration (the real interface, simplified) sits between the two. It fails in five ways:
+
+| Failure | Looks like | Fix |
+|---------|------------|-----|
+| Too much | Real text in every row, numbers everywhere | Real words only where the story is (usually 3 to 7 strings); quiet placeholder bars for the rest |
+| Wireframe | Two gray blocks and a button | Keep what identifies the product: its chrome, its title, the rows that give the action a reason |
+| Boxed | A whole window shrunk onto a backdrop with even margins | Crop to the panel where the story happens and let the window run off one or two edges |
+| Flat | Every element the same weight | One focal object, at most one or two smaller supporting ones overlapping its edge |
+| Bland | A gray window whatever the brand | The product's own colors, icons and type |
+
+- **One thing happens.** A still shows the moment after an action (the row archived, the total updated); an animation shows one action and its result in a few seconds.
+- **The poster frame tells the story alone.** Thumbnails, screenshots and visitors with reduced motion see one frame of an animation. Choose the frame where the result is on screen, never one caught mid-change.
+- **No invented marks.** No made-up logos, no stock AI sparkles, no letter in a colored square standing in for a brand.
+- **Built for a phone too.** At phone width it is redesigned for the column (a tighter crop, fewer elements), not shrunk.
+
+Building such visuals in React, with a component kit and a script that films and checks them, is what the `stageshow` skill in benjitaylor/skills does; install it beside SK when a page needs them.
 
 ## After the first draft
 
@@ -82,5 +102,6 @@ For an existing page. Mark each check Pass, Fail or Not checked, with the eviden
 | 11 | Sign-up asks only for what is needed to start |
 | 12 | Works and loads fast on mobile |
 | 13 | Copy, screenshots and visuals look like one company |
+| 14 | The hero visual reads as the real product, shows one thing happening, and (when animated) its poster frame tells the story alone |
 
-Checks 5, 11, 12 and 13 need the live page or its code. From copy alone, mark them Not checked and say what would settle each.
+Checks 5, 11, 12, 13 and 14 need the live page or its code. From copy alone, mark them Not checked and say what would settle each.

@@ -494,6 +494,7 @@ SK stands on other people's work. Each borrowed piece carries a credit line in i
 | [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) | Apache-2.0, ideas only | the secret-file skip list; the chunked scan for large repositories |
 | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) | Apache-2.0, ideas only | the chunked scan for large repositories |
 | Higgsfield's SaaS landing page guide | not stated | the landing page reference and audit in `/sk:copywrite` |
+| [benjitaylor/skills](https://github.com/benjitaylor/skills) (`stageshow`) | MIT | product visuals in the landing page reference, the interface detail and motion rows in `/sk:ui-review`, the reference comparison in `prototype` |
 
 SK itself is MIT licensed (see [LICENSE](./LICENSE)).
 
