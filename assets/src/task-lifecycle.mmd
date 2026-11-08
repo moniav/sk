@@ -9,10 +9,12 @@ stateDiagram-v2
 
     state Plan {
         direction TB
+        p0: Read similar past tasks
         p1: Write problem statement
         p2: Define acceptance criteria
         p3: Break into subtasks
         p4: Resolve open questions
+        p0 --> p1
         p1 --> p2
         p2 --> p3
         p3 --> p4
